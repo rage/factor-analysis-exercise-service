@@ -1,12 +1,15 @@
 /* eslint-disable i18next/no-literal-string */
 import type { NextApiRequest, NextApiResponse } from "next"
+import { cors, runMiddleware } from "../../util/cors"
 
 import { Alternative, Answer, ClientErrorResponse } from "../../util/stateInterfaces"
 
-export default (
+export default async (
   req: NextApiRequest,
   res: NextApiResponse<GradingResult | ClientErrorResponse>,
-): void => {
+): Promise<void> => {
+  await runMiddleware(req, res, cors)
+
   if (req.method !== "POST") {
     return res.status(404).json({ message: "Not found" })
   }

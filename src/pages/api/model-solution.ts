@@ -1,5 +1,6 @@
 /* eslint-disable i18next/no-literal-string */
 import { NextApiRequest, NextApiResponse } from "next"
+import { cors, runMiddleware } from "../../util/cors"
 
 import {
   ClientErrorResponse,
@@ -7,7 +8,9 @@ import {
   PublicAlternative,
 } from "../../util/stateInterfaces"
 
-export default (req: NextApiRequest, res: NextApiResponse): void => {
+export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+  await runMiddleware(req, res, cors)
+
   if (req.method !== "POST") {
     return res.status(404).json({ message: "Not found" })
   }

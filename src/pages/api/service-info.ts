@@ -3,12 +3,14 @@ import type { NextApiRequest, NextApiResponse } from "next"
 
 import { ExerciseServiceInfoApi } from "../../shared-module/bindings"
 import basePath from "../../shared-module/utils/base-path"
+import { cors, runMiddleware } from "../../util/cors"
 import { ClientErrorResponse } from "../../util/stateInterfaces"
 
-export default (
+export default async (
   req: NextApiRequest,
   res: NextApiResponse<ExerciseServiceInfoApi | ClientErrorResponse>,
-): void => {
+): Promise<void> => {
+  await runMiddleware(req, res, cors)
   if (req.method !== "GET") {
     return res.status(404).json({ message: "Not found" })
   }
