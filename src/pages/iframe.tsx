@@ -2,39 +2,40 @@ import { css } from "@emotion/css"
 import { useRouter } from "next/router"
 import React, { useState } from "react"
 import ReactDOM from "react-dom"
+import { v4 } from "uuid"
 
 import { Renderer } from "../components/Renderer"
 import { ExerciseTaskGrading } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { isSetStateMessage } from "../shared-module/iframe-protocol-types.guard"
-import { Alternative, Answer, ModelSolutionApi, PublicAlternative } from "../util/stateInterfaces"
+import { Answer, FactorQuery, ModelSolutionApi, PublicOption } from "../util/stateInterfaces"
 
 import { ExerciseFeedback } from "./api/grade"
 
 export interface SubmissionData {
   grading: ExerciseTaskGrading
   user_answer: Answer
-  public_spec: PublicAlternative[]
+  public_spec: PublicOption
 }
 
 export type State =
   | {
-      view_type: "exercise"
-      public_spec: PublicAlternative[]
-    }
+    view_type: "exercise"
+    public_spec: PublicOption
+  }
   | {
-      view_type: "view-submission"
-      public_spec: PublicAlternative[]
-      answer: Answer
-      feedback_json: ExerciseFeedback | null
-      model_solution_spec: ModelSolutionApi | null
-      grading: ExerciseTaskGrading | null
-    }
+    view_type: "view-submission"
+    public_spec: PublicOption
+    answer: Answer
+    feedback_json: ExerciseFeedback | null
+    model_solution_spec: ModelSolutionApi | null
+    grading: ExerciseTaskGrading | null
+  }
   | {
-      view_type: "exercise-editor"
-      private_spec: Alternative[]
-    }
+    view_type: "exercise-editor"
+    private_spec: FactorQuery 
+  }
 
 const Iframe: React.FC = () => {
   const [state, setState] = useState<State | null>(null)
@@ -51,19 +52,26 @@ const Iframe: React.FC = () => {
         if (messageData.view_type === "exercise") {
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicAlternative[],
+            public_spec: messageData.data.public_spec as PublicOption,
           })
         } else if (messageData.view_type === "exercise-editor") {
-          setState({
-            view_type: messageData.view_type,
-            private_spec:
-              (JSON.parse(messageData.data.private_spec as string) as Alternative[]) || [],
-          })
+          if (messageData.data.private_spec === null) {
+            setState({
+              view_type: messageData.view_type,
+              private_spec: EmptyForm,
+            })
+          } else { 
+            setState({
+              view_type: messageData.view_type,
+              private_spec:
+                (JSON.parse(messageData.data.private_spec as string) as FactorQuery),
+            })
+          }
         } else if (messageData.view_type === "view-submission") {
           const userAnswer = messageData.data.user_answer as Answer
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicAlternative[],
+            public_spec: messageData.data.public_spec as PublicOption,
             answer: userAnswer,
             feedback_json: messageData.data.grading?.feedback_json as ExerciseFeedback | null,
             model_solution_spec: messageData.data.model_solution_spec as ModelSolutionApi | null,
@@ -93,6 +101,16 @@ const Iframe: React.FC = () => {
       </div>
     </HeightTrackingContainer>
   )
+}
+
+const EmptyForm: FactorQuery = {
+  id: v4(),
+  labelAmount: 0,
+  questionAmount: 0,
+  isFactorial: false,
+  factorAmount: 0,
+  optionLabels: [],
+  questions: [],
 }
 
 export default Iframe

@@ -2,7 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { cors, runMiddleware } from "../../util/cors"
 
-import { Alternative, ClientErrorResponse, PublicAlternative } from "../../util/stateInterfaces"
+import { ClientErrorResponse, FactorQuery, PublicOption } from "../../util/stateInterfaces"
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await runMiddleware(req, res, cors)
@@ -16,8 +16,19 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
 function handlePost(
   req: NextApiRequest,
-  res: NextApiResponse<PublicAlternative[] | ClientErrorResponse>,
+  res: NextApiResponse<PublicOption | ClientErrorResponse>,
 ) {
+
+  const form: FactorQuery = req.body
+
+  const publicForm: PublicOption = {
+    id: form.id,
+    optionLabels: form.optionLabels,
+    questions: form.questions
+  }
+
+/*
+
   const uncheckedAlternatives: unknown = req.body
   if (!Array.isArray(uncheckedAlternatives)) {
     return res
@@ -29,5 +40,6 @@ function handlePost(
     id: x.id,
     name: x.name,
   }))
-  return res.status(200).json(publicAlternatives)
+  */
+  return res.status(200).json(publicForm)
 }

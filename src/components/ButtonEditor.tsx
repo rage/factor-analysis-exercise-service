@@ -1,11 +1,11 @@
 import styled from "@emotion/styled"
 import { useTranslation } from "react-i18next"
 
-import { Alternative } from "../util/stateInterfaces"
+import { Label } from "../util/stateInterfaces"
 interface Props {
-  item: Alternative
+  item: Label
   onDelete: () => void
-  onChange: (item: Alternative) => void
+  onChange: (item: Label) => void
 }
 
 const StyledButtonEditor = styled.div`
@@ -26,11 +26,11 @@ const Input = styled.input`
   margin-right: 0.5rem;
 `
 
-const InputCheckbox = styled.input`
+const InputValuebox = styled.input`
   margin: 0 auto;
   margin-right: 0.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
 `
 
 const DeleteButton = styled.button`
@@ -42,18 +42,17 @@ const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
   const { t } = useTranslation()
   return (
     <StyledButtonEditor>
-      <InputCheckbox
-        type="checkbox"
-        checked={item.correct || false}
+      <InputValuebox
+        type="number"
         onChange={(e) => {
-          onChange({ ...item, correct: e.target.checked })
+          onChange({ ...item, value: parseInt(e.target.value) })
         }}
       />
       <Input
         placeholder={t("input-placeholder-option-text")}
-        value={item.name}
+        value={item.label}
         onChange={(e) => {
-          onChange({ ...item, name: e.target.value })
+          onChange({ ...item, label: e.target.value })
         }}
       />
       {/* eslint-disable-next-line i18next/no-literal-string */}

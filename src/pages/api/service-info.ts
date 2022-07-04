@@ -21,7 +21,7 @@ export default async (
 const handlePost = (_req: NextApiRequest, res: NextApiResponse<ExerciseServiceInfoApi>) => {
   const prefix = basePath()
   res.json({
-    service_name: "Example exercise",
+    service_name: "Factor analysis",
     user_interface_iframe_path: `${prefix}/iframe`,
     grade_endpoint_path: `${prefix}/api/grade`,
     public_spec_endpoint_path: `${prefix}/api/public-spec`,
