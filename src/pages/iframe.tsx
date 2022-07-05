@@ -9,24 +9,24 @@ import { ExerciseTaskGrading } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { isSetStateMessage } from "../shared-module/iframe-protocol-types.guard"
-import { Answer, FactorQuery, ModelSolutionApi, PublicOption } from "../util/stateInterfaces"
+import { Answer, FactorialSurvey, ModelSolutionApi, PublicSurvey } from "../util/stateInterfaces"
 
 import { ExerciseFeedback } from "./api/grade"
 
 export interface SubmissionData {
   grading: ExerciseTaskGrading
   user_answer: Answer
-  public_spec: PublicOption
+  public_spec: PublicSurvey
 }
 
 export type State =
   | {
     view_type: "exercise"
-    public_spec: PublicOption
+    public_spec: PublicSurvey
   }
   | {
     view_type: "view-submission"
-    public_spec: PublicOption
+    public_spec: PublicSurvey
     answer: Answer
     feedback_json: ExerciseFeedback | null
     model_solution_spec: ModelSolutionApi | null
@@ -34,7 +34,7 @@ export type State =
   }
   | {
     view_type: "exercise-editor"
-    private_spec: FactorQuery 
+    private_spec: FactorialSurvey 
   }
 
 const Iframe: React.FC = () => {
@@ -52,10 +52,11 @@ const Iframe: React.FC = () => {
         if (messageData.view_type === "exercise") {
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicOption,
+            public_spec: messageData.data.public_spec as PublicSurvey,
           })
         } else if (messageData.view_type === "exercise-editor") {
           if (messageData.data.private_spec === null) {
+            console.log("does this happen?")
             setState({
               view_type: messageData.view_type,
               private_spec: EmptyForm,
@@ -64,14 +65,14 @@ const Iframe: React.FC = () => {
             setState({
               view_type: messageData.view_type,
               private_spec:
-                (JSON.parse(messageData.data.private_spec as string) as FactorQuery),
+                (JSON.parse(messageData.data.private_spec as string) as FactorialSurvey),
             })
           }
         } else if (messageData.view_type === "view-submission") {
           const userAnswer = messageData.data.user_answer as Answer
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicOption,
+            public_spec: messageData.data.public_spec as PublicSurvey,
             answer: userAnswer,
             feedback_json: messageData.data.grading?.feedback_json as ExerciseFeedback | null,
             model_solution_spec: messageData.data.model_solution_spec as ModelSolutionApi | null,
@@ -103,7 +104,7 @@ const Iframe: React.FC = () => {
   )
 }
 
-const EmptyForm: FactorQuery = {
+const EmptyForm: FactorialSurvey = {
   id: v4(),
   labelAmount: 0,
   questionAmount: 0,

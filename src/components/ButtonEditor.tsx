@@ -26,10 +26,10 @@ const Input = styled.input`
   margin-right: 0.5rem;
 `
 
-const InputValuebox = styled.input`
+const InputNumberbox = styled.input`
   margin: 0 auto;
   margin-right: 0.5rem;
-  width: 2rem;
+  width: 2.5rem;
   height: 2rem;
 `
 
@@ -42,7 +42,7 @@ const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
   const { t } = useTranslation()
   return (
     <StyledButtonEditor>
-      <InputValuebox
+      <InputNumberbox
         type="number"
         onChange={(e) => {
           onChange({ ...item, value: parseInt(e.target.value) })

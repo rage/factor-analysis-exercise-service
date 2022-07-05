@@ -1,10 +1,10 @@
-import { FactorQuery, Label, Question } from "./stateInterfaces";
+import { FactorialSurvey, Label, Question } from "./stateInterfaces";
 
-export function migrateFactorQuery(oldForm: unknown): FactorQuery {
+export function migrateFactorialSurvey(oldForm: unknown): FactorialSurvey {
   return {
-    ...(oldForm as FactorQuery),
-    optionLabels: (oldForm as FactorQuery).optionLabels.map((x) => (migrateLabels(x))),
-    questions: (oldForm as FactorQuery).questions.map((x) => migrateWeights(x)),
+    ...(oldForm as FactorialSurvey),
+    optionLabels: (oldForm as FactorialSurvey).optionLabels.map((x) => (migrateLabels(x))),
+    // questions: (oldForm as FactorialSurvey).questions.map((x) => migrateWeights(x)),
   }
 }
 
@@ -14,9 +14,11 @@ function migrateLabels(oldLabel: unknown): Label {
   }
 }
 
+/*
 function migrateWeights(oldQuestion: unknown): Question {
   return {
     ...(oldQuestion as Question),
     factorWeights: (oldQuestion as Question).factorWeights.map((x) => (x as number))
   }
 }
+*/

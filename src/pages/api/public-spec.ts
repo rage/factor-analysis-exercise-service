@@ -2,7 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { cors, runMiddleware } from "../../util/cors"
 
-import { ClientErrorResponse, FactorQuery, PublicOption } from "../../util/stateInterfaces"
+import { ClientErrorResponse, FactorialSurvey, PublicSurvey } from "../../util/stateInterfaces"
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await runMiddleware(req, res, cors)
@@ -16,30 +16,23 @@ export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> 
 
 function handlePost(
   req: NextApiRequest,
-  res: NextApiResponse<PublicOption | ClientErrorResponse>,
+  res: NextApiResponse<PublicSurvey | ClientErrorResponse>,
 ) {
 
-  const form: FactorQuery = req.body
+  const form: FactorialSurvey = req.body
 
-  const publicForm: PublicOption = {
+  // Add a reasonable error checking here!
+  if (!form) {
+    return res
+      .status(400)
+      .json({ message: "Malformed data:" + JSON.stringify(form) })
+  }
+
+  const publicForm: PublicSurvey = {
     id: form.id,
     optionLabels: form.optionLabels,
     questions: form.questions
   }
 
-/*
-
-  const uncheckedAlternatives: unknown = req.body
-  if (!Array.isArray(uncheckedAlternatives)) {
-    return res
-      .status(400)
-      .json({ message: "Malformed data:" + JSON.stringify(uncheckedAlternatives) })
-  }
-
-  const publicAlternatives = uncheckedAlternatives.map<PublicAlternative>((x: Alternative) => ({
-    id: x.id,
-    name: x.name,
-  }))
-  */
   return res.status(200).json(publicForm)
 }
