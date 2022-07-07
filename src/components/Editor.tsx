@@ -58,10 +58,12 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
     port.postMessage(message)
   }, [state, port])
 
+    console.log(state)
   return (
 
+    
     <div>
-      <div
+      {state && <div
         className={css`
           display: flex;
           flex-direction: column;
@@ -74,7 +76,7 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
       >
         <CheckBox
           label="Factorial"
-          checked={(state.isFactorial) ?? false}
+          checked={(state?.isFactorial) ?? false }
           onChange={function (checked: boolean): void {
             const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
             newState.isFactorial = checked
@@ -89,8 +91,8 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
 
         <TextField
           label="Amount of Factors"
-          value={state.factorAmount?.toString() ?? "0"}
-          disabled={(state.isFactorial) ? false : !state.isFactorial}
+          value={state?.factorAmount?.toString() ?? "0"}
+          disabled={!(state?.isFactorial) ?? true}
           type="number"
           onChange={(value) => {
             const parsed = parseInt(value)
@@ -123,10 +125,10 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
             padding-right: 1;
           `}
         />
-      </div>
+      </div>}
       <ButtonWrapper>
         Options
-        {(typeof state.optionLabels !== 'undefined') && state.optionLabels.map((o) => (
+        {(typeof state?.optionLabels !== 'undefined') && state.optionLabels.map((o) => (
           <ButtonEditor
             key={o.id}
             item={o}
@@ -171,7 +173,7 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
       </ButtonWrapper>
       <ButtonWrapper>
         Questions
-        {(typeof state.questions !== 'undefined') && state.questions.map((o) => (
+        {(typeof state?.questions !== 'undefined') && state.questions.map((o) => (
           <QuestionEditor
             key={o.id}
             item={o}
@@ -199,19 +201,6 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
                 private_spec: { ...state, questions: newQuestions }
               })
             }}
-            onChangeVector={(task) => {
-              const newQuestions = state.questions.map((e) => {
-                if (e.id !== o.id) {
-                  return e
-                }
-                return task
-              })
-              // eslint-disable-next-line i18next/no-literal-string
-              setState({
-                view_type: "exercise-editor",
-                private_spec: { ...state, questions: newQuestions }
-              })
-            }}
           />
         ))}
 
@@ -221,7 +210,7 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
             if (typeof newState.questions === 'undefined') {
               newState.questions = []
             }
-            newState.questions.push({ question: "", rate: null, factorWeights: "", id: v4() })
+            newState.questions.push({ question: "", id: v4() })
             // eslint-disable-next-line i18next/no-literal-string
             setState({ view_type: "exercise-editor", private_spec: newState })
           }}
@@ -229,8 +218,6 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
           Add Question
         </NewButton>
       </ButtonWrapper>
-
-
     </div>
   )
 }

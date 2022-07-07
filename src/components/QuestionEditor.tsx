@@ -8,7 +8,6 @@ interface Props {
   factorAmount: number | null
   onDelete: () => void
   onChangeQuestion: (item: Question) => void
-  onChangeVector: (item: Question) => void
 }
 
 const StyledButtonEditor = styled.div`
@@ -27,7 +26,7 @@ const DeleteButton = styled.button`
   height: 2rem;
 `
 
-const ButtonEditor: React.FC<Props> = ({ item, factorAmount, onDelete, onChangeQuestion, onChangeVector }) => {
+const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion }) => {
   return (
     <StyledButtonEditor>
       <TextField
@@ -41,19 +40,6 @@ const ButtonEditor: React.FC<Props> = ({ item, factorAmount, onDelete, onChangeQ
         flex: 1;
         padding-right: 1;
       `}
-      />
-      <TextField
-        label={`vector of ${factorAmount}`}
-        value={item.factorWeights ?? ""}
-        type="text"
-        disabled={(factorAmount !== 0) ? false : true}
-        onChange={(value) => {
-          onChangeVector({ ...item, factorWeights: value })
-        }}
-        className={css`
-      flex: 1;
-      padding-right: 1;
-    `}
       />
       {/* eslint-disable-next-line i18next/no-literal-string */}
       <DeleteButton onClick={onDelete}>x</DeleteButton>

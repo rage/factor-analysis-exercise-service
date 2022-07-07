@@ -34,7 +34,7 @@ export type State =
   }
   | {
     view_type: "exercise-editor"
-    private_spec: FactorialSurvey 
+    private_spec: FactorialSurvey
   }
 
 const Iframe: React.FC = () => {
@@ -55,19 +55,11 @@ const Iframe: React.FC = () => {
             public_spec: messageData.data.public_spec as PublicSurvey,
           })
         } else if (messageData.view_type === "exercise-editor") {
-          if (messageData.data.private_spec === null) {
-            console.log("does this happen?")
-            setState({
-              view_type: messageData.view_type,
-              private_spec: EmptyForm,
-            })
-          } else { 
             setState({
               view_type: messageData.view_type,
               private_spec:
                 (JSON.parse(messageData.data.private_spec as string) as FactorialSurvey),
             })
-          }
         } else if (messageData.view_type === "view-submission") {
           const userAnswer = messageData.data.user_answer as Answer
           setState({
@@ -102,16 +94,6 @@ const Iframe: React.FC = () => {
       </div>
     </HeightTrackingContainer>
   )
-}
-
-const EmptyForm: FactorialSurvey = {
-  id: v4(),
-  labelAmount: 0,
-  questionAmount: 0,
-  isFactorial: false,
-  factorAmount: 0,
-  optionLabels: [],
-  questions: [],
 }
 
 export default Iframe
