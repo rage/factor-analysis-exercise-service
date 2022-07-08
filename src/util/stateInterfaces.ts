@@ -23,13 +23,14 @@ export interface ModelSolutionApi {
 
 export interface Question {
   id: string
+  questionNr: number
   question: string
-  rate: number | null
-  factorWeights: string
 }
 
-export interface Matrix {
-  vector: number[][]
+export interface RatedQuestion {
+  questionId: string
+  questionNr: number
+  rate: number
 }
 
 export interface Label {
@@ -40,16 +41,14 @@ export interface Label {
 
 export interface FactorialSurvey {
   id: string
-  labelAmount: number
-  questionAmount: number
-  isFactorial: boolean
-  factorAmount: number | null
+  factorAmount: number
   optionLabels: Label[]
   questions: Question[]
+  matrix: number[][]
 }
 
 export interface SubmittedForm {
-  answeredQuestions: Question[]
+  answeredQuestions: RatedQuestion[]
 }
 
 // Shouldthere be a public version of Question without factorial vector

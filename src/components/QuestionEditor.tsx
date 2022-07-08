@@ -5,10 +5,17 @@ import TextField from "../shared-module/components/InputFields/TextField"
 import { Question } from "../util/stateInterfaces"
 interface Props {
   item: Question
-  factorAmount: number | null
   onDelete: () => void
   onChangeQuestion: (item: Question) => void
+  onChangeOrder: (item: Question) => void
 }
+
+const InputNumberbox = styled.input`
+  margin: 0 auto;
+  margin-right: 0.5rem;
+  width: 2.5rem;
+  height: 2rem;
+`
 
 const StyledButtonEditor = styled.div`
   margin: 0 auto;
@@ -26,9 +33,15 @@ const DeleteButton = styled.button`
   height: 2rem;
 `
 
-const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion }) => {
+const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion, onChangeOrder }) => {
   return (
     <StyledButtonEditor>
+      <InputNumberbox
+        type="number"
+        onChange={(e) => {
+          onChangeOrder({ ...item, questionNr: parseInt(e.target.value) })
+        }}
+      />
       <TextField
         label="Question text"
         value={item.question ?? "0"}

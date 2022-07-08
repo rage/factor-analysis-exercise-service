@@ -2,7 +2,6 @@ import { css } from "@emotion/css"
 import { useRouter } from "next/router"
 import React, { useState } from "react"
 import ReactDOM from "react-dom"
-import { v4 } from "uuid"
 
 import { Renderer } from "../components/Renderer"
 import { ExerciseTaskGrading } from "../shared-module/bindings"
@@ -58,7 +57,7 @@ const Iframe: React.FC = () => {
             setState({
               view_type: messageData.view_type,
               private_spec:
-                (JSON.parse(messageData.data.private_spec as string) as FactorialSurvey),
+                (JSON.parse(messageData.data.private_spec as string) as FactorialSurvey) || {},
             })
         } else if (messageData.view_type === "view-submission") {
           const userAnswer = messageData.data.user_answer as Answer
