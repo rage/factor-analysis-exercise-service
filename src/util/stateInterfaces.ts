@@ -30,6 +30,7 @@ export interface Question {
 export interface RatedQuestion {
   questionId: string
   questionNr: number
+  question: string
   rate: number
 }
 

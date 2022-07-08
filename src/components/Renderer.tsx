@@ -5,8 +5,8 @@ import { ExerciseFeedback } from "../pages/api/grade"
 import { State } from "../pages/iframe"
 
 import Editor from "./Editor"
-import Exercise from "./Exercise"
 import Submission from "./Submission"
+import Survey from "./Survey"
 
 interface RendererProps {
   state: State | null
@@ -26,7 +26,7 @@ export const Renderer: React.FC<RendererProps> = ({ state, setState, port }) => 
   }
 
   if (state.view_type === "exercise") {
-    return <Exercise port={port} state={state.public_spec} />
+    return <Survey port={port} state={state.public_spec} />
   } else if (state.view_type === "view-submission") {
     const feedbackJson: unknown | null = state.grading?.feedback_json
     const exerciseFeedback = feedbackJson ? (feedbackJson as ExerciseFeedback) : null
