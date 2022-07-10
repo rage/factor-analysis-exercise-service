@@ -38,6 +38,7 @@ const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion, onCha
     <StyledButtonEditor>
       <InputNumberbox
         type="number"
+        value={item.questionNr}
         onChange={(e) => {
           onChangeOrder({ ...item, questionNr: parseInt(e.target.value) })
         }}
@@ -51,8 +52,11 @@ const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion, onCha
         }}
         className={css`
         flex: 1;
-        padding-right: 1;
-      `}
+        padding: 0.5rem;
+        width: 100%;
+        margin: 0 auto;
+        margin-right: 0.5rem;
+        `}
       />
       {/* eslint-disable-next-line i18next/no-literal-string */}
       <DeleteButton onClick={onDelete}>x</DeleteButton>

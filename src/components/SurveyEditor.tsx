@@ -6,6 +6,7 @@ import styled from "@emotion/styled"
 import ButtonEditor from "./ButtonEditor"
 import { v4 } from "uuid"
 import QuestionEditor from "./QuestionEditor"
+import MatrixEditor from "./MatrixEditor"
 
 
 interface Props {
@@ -34,7 +35,7 @@ const NewButton = styled.button`
 const SurveyEditor: React.FC<Props> = ({ state, setState }) => {
   return (
     <div>
-     
+
       {state && <div>
         <TextField
           label="Amount of Factors"
@@ -154,6 +155,17 @@ const SurveyEditor: React.FC<Props> = ({ state, setState }) => {
         >
           Add Question
         </NewButton>
+      </ButtonWrapper>
+      <ButtonWrapper>
+        <MatrixEditor
+          item={state}
+          onChange={(value: number[][]) => {
+            setState({
+              view_type: "exercise-editor",
+              private_spec: { ...state, matrix: value }
+            })
+          }}
+        />
       </ButtonWrapper>
     </div>
   )

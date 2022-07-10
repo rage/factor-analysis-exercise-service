@@ -1,4 +1,3 @@
-import styled from "@emotion/styled"
 import { useEffect } from "react"
 
 import { State } from "../pages/iframe"
@@ -13,26 +12,6 @@ interface Props {
   setState: (newState: State) => void
   port: MessagePort
 }
-
-// eslint-disable-next-line i18next/no-literal-string
-const ButtonWrapper = styled.div`
-  padding: 1rem 0;
-`
-
-const NewButton = styled.button`
-  margin: 0 auto;
-  margin-bottom: 1rem;
-  width: 100%;
-  display: block;
-  padding: 0.5rem;
-  background-color: white;
-  border: 1px solid black;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: #f1f1f1;
-  }
-`
 
 const Editor: React.FC<Props> = ({ state, setState, port }) => {
 
