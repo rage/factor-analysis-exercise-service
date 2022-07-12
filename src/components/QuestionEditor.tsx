@@ -33,7 +33,7 @@ const DeleteButton = styled.button`
   height: 2rem;
 `
 
-const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion, onChangeOrder }) => {
+const QuestionEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion, onChangeOrder }) => {
   return (
     <StyledButtonEditor>
       <InputNumberbox
@@ -64,4 +64,4 @@ const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion, onCha
   )
 }
 
-export default ButtonEditor
+export default QuestionEditor

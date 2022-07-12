@@ -44,6 +44,7 @@ const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
     <StyledButtonEditor>
       <InputNumberbox
         type="number"
+        value={item.value}
         onChange={(e) => {
           onChange({ ...item, value: parseInt(e.target.value) })
         }}

@@ -1,12 +1,13 @@
 import { State } from "../pages/iframe"
 import TextField from "../shared-module/components/InputFields/TextField"
-import { FactorialSurvey } from "../util/stateInterfaces"
+import { FactorialSurvey, Question } from "../util/stateInterfaces"
 
 import styled from "@emotion/styled"
 import ButtonEditor from "./ButtonEditor"
 import { v4 } from "uuid"
 import QuestionEditor from "./QuestionEditor"
 import MatrixEditor from "./MatrixEditor"
+import ListInputEditor from "./ListInputEditor"
 
 
 interface Props {
@@ -155,6 +156,20 @@ const SurveyEditor: React.FC<Props> = ({ state, setState }) => {
         >
           Add Question
         </NewButton>
+      </ButtonWrapper>
+      <ButtonWrapper>
+        <ListInputEditor
+          topic="questions"
+          item={state}
+          onChange={(value) => {
+            const newQuestions: Question[] = []
+            value.map((e) => {
+              newQuestions.push({ id: v4(), questionNr: Number(e[0]), question: (e[1] as string) })
+            })
+            const newState: FactorialSurvey = { ...(state as FactorialSurvey), questions: newQuestions }
+            setState({ view_type: "exercise-editor", private_spec: newState })
+          }}
+        />
       </ButtonWrapper>
       <ButtonWrapper>
         <MatrixEditor
