@@ -1,4 +1,6 @@
+import { css } from "@emotion/css"
 import styled from "@emotion/styled"
+import TextField from "../shared-module/components/InputFields/TextField"
 
 import { Label } from "../util/stateInterfaces"
 interface Props {
@@ -18,20 +20,6 @@ const StyledLabelEditor = styled.div`
   justify-content: space-apart;
 `
 
-const Input = styled.input`
-  padding: 0.5rem;
-  width: 100%;
-  margin: 0 auto;
-  margin-right: 0.5rem;
-`
-
-const InputNumberbox = styled.input`
-  margin: 0 auto;
-  margin-right: 0.5rem;
-  width: 2.5rem;
-  height: 2rem;
-`
-
 const DeleteButton = styled.button`
   width: 2rem;
   height: 2rem;
@@ -40,19 +28,35 @@ const DeleteButton = styled.button`
 const LabelEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
   return (
     <StyledLabelEditor>
-      <InputNumberbox
+      <TextField
+        aria-label="rate-value"
+        label="value"
         type="number"
-        value={item.value}
+        value={(item.value as string)}
         onChange={(e) => {
-          const parsedNumber = parseInt(e.target?.value)
+          const parsedNumber = parseInt(e)
           onChange({ ...item, value: isNaN(parsedNumber) ? "NaN" : parsedNumber})
         }}
+        className={css`
+        padding: 0.5rem;
+        width: 6rem;
+        margin: 0 auto;
+        margin-right: 0.5rem;
+        `}
       />
-      <Input
+      <TextField
+        label="Label text"
         value={item.label}
         onChange={(e) => {
-          onChange({ ...item, label: e.target.value })
+          onChange({ ...item, label: e })
         }}
+        className={css`
+        flex: 1;
+        padding: 0.5rem;
+        width: 100%;
+        margin: 0 auto;
+        margin-right: 0.5rem;
+        `}
       />
       {/* eslint-disable-next-line i18next/no-literal-string */}
       <DeleteButton onClick={onDelete}>x</DeleteButton>

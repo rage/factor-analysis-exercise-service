@@ -11,7 +11,7 @@ interface Props {
 const ListInputEditor: React.FC<Props> = ({ topic, onChange }) => {
   return (
     <TextArea
-      label={`Input ${topic}s as numbered list (1; ${topic}-text..[newline] 2; ${topic}-text..)`}
+      label={`Input ${topic}s as (semicolon) numbered list (1; ${topic}-text..[newline] 2; ${topic}-text..)`}
       autoResize
       className={css`
             width: 100%;

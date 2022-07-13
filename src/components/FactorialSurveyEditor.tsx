@@ -44,7 +44,7 @@ const Input = styled.input`
 const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
   return (
     <div
-    className={css`
+      className={css`
         display: flex;
         flex-direction: column;
       `}>
@@ -57,29 +57,26 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
               value={state?.factorAmount?.toString() ?? "Amount of Factors: 0"}
               type="number"
               onChange={(e) => {
-                const parsedNumber = parseInt(e.target.value) 
+                const parsedNumber = parseInt(e.target.value)
                 if (isNaN(parsedNumber)) {
                   return
                 }
                 const newState: FactorialSurvey = { ...(state as FactorialSurvey), factors: [], factorAmount: parsedNumber }
                 for (let i = 0; i < parsedNumber; i++) {
-                  newState.factors.push({id: v4(), name: "", score: 99999});
+                  newState.factors.push({ id: v4(), name: "", score: 99999 });
                 }
                 setState({ view_type: "exercise-editor", private_spec: newState })
               }}
             />
             <ol>
               {state?.factors?.map(e => {
-                e.id = v4()
-                console.log(e)
                 return (
-
                   <li>
                     <Input
                       value={e.name}
                       type="text"
                       onChange={(event) => {
-                        const factor: Factor = {...e, name: event.target.value}
+                        const factor: Factor = { ...e, name: event.target.value }
                         const newFactors = state.factors.map((f) => {
                           if (f.id !== e.id) {
                             return f
@@ -104,35 +101,40 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
       <fieldset>
         <legend>Options</legend>
         <ButtonWrapper>
-          {state?.optionLabels?.map((o) => (
-            <LabelEditor
-              key={o.id}
-              item={o}
-              onDelete={() => {
-                const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
+          <ol>
+            {state?.optionLabels?.map((o) => (
+              <li>
+                <LabelEditor
+                  key={o.id}
+                  item={o}
+                  onDelete={() => {
+                    const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
 
-                const newLabels = newState.optionLabels.filter((e) => e.id !== o.id)
-                // eslint-disable-next-line i18next/no-literal-string
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, optionLabels: newLabels }
-                })
-              }}
-              onChange={(task) => {
-                const newLabels = state.optionLabels.map((e) => {
-                  if (e.id !== o.id) {
-                    return e
-                  }
-                  return task
-                })
-                // eslint-disable-next-line i18next/no-literal-string
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, optionLabels: newLabels }
-                })
-              }}
-            />
-          ))}
+                    const newLabels = newState.optionLabels.filter((e) => e.id !== o.id)
+                    // eslint-disable-next-line i18next/no-literal-string
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: { ...state, optionLabels: newLabels }
+                    })
+                  }}
+                  onChange={(task) => {
+                    const newLabels = state.optionLabels.map((e) => {
+                      if (e.id !== o.id) {
+                        return e
+                      }
+                      return task
+                    })
+                    // eslint-disable-next-line i18next/no-literal-string
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: { ...state, optionLabels: newLabels }
+                    })
+                  }}
+                />
+              </li>
+            ))}
+          </ol>
+
           <NewButton
             onClick={() => {
               const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
@@ -148,51 +150,56 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
           </NewButton>
         </ButtonWrapper>
       </fieldset>
+
       <fieldset>
-
         <legend>Questions</legend>
-        <ButtonWrapper>
-          {state?.questions?.map((o) => (
-            <QuestionEditor
-              key={o.id}
-              item={o}
-              onDelete={() => {
-                const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
 
-                const newQuestions = newState.questions.filter((e) => e.id !== o.id)
-                // eslint-disable-next-line i18next/no-literal-string
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, questions: newQuestions }
-                })
-              }}
-              onChangeQuestion={(task) => {
-                const newQuestions = state.questions.map((e) => {
-                  if (e.id !== o.id) {
-                    return e
-                  }
-                  return task
-                })
-                // eslint-disable-next-line i18next/no-literal-string
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, questions: newQuestions }
-                })
-              }}
-              onChangeOrder={(task) => {
-                const newQuestions = state.questions.map((e) => {
-                  if (e.id !== o.id) {
-                    return e
-                  }
-                  return task
-                })
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, questions: newQuestions }
-                })
-              }}
-            />
-          ))}
+        <ButtonWrapper>
+          <ol>
+            {state?.questions?.map((o) => (
+              <li>
+                <QuestionEditor
+                  key={o.id}
+                  item={o}
+                  onDelete={() => {
+                    const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
+
+                    const newQuestions = newState.questions.filter((e) => e.id !== o.id)
+                    // eslint-disable-next-line i18next/no-literal-string
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: { ...state, questions: newQuestions }
+                    })
+                  }}
+                  onChangeQuestion={(task) => {
+                    const newQuestions = state.questions.map((e) => {
+                      if (e.id !== o.id) {
+                        return e
+                      }
+                      return task
+                    })
+                    // eslint-disable-next-line i18next/no-literal-string
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: { ...state, questions: newQuestions }
+                    })
+                  }}
+                  onChangeOrder={(task) => {
+                    const newQuestions = state.questions.map((e) => {
+                      if (e.id !== o.id) {
+                        return e
+                      }
+                      return task
+                    })
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: { ...state, questions: newQuestions }
+                    })
+                  }}
+                />
+              </li>
+            ))}
+          </ol>
 
           <NewButton
             onClick={() => {
@@ -209,6 +216,7 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
             Add Question
           </NewButton>
         </ButtonWrapper>
+        OR
         <ButtonWrapper>
           <ListInputEditor
             topic="question"

@@ -1,8 +1,9 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
-import TextField from "../shared-module/components/InputFields/TextField"
+import TextArea from "../shared-module/components/InputFields/TextAreaField"
 
 import { Question } from "../util/stateInterfaces"
+import MarkdownText from "./MarkdownText"
 interface Props {
   item: Question
   onDelete: () => void
@@ -10,14 +11,7 @@ interface Props {
   onChangeOrder: (item: Question) => void
 }
 
-const InputNumberbox = styled.input`
-  margin: 0 auto;
-  margin-right: 0.5rem;
-  width: 2.5rem;
-  height: 2rem;
-`
-
-const StyledLabelEditor = styled.div`
+const StyledEditor = styled.div`
   margin: 0 auto;
   margin-bottom: 1rem;
   width: 100%;
@@ -33,20 +27,12 @@ const DeleteButton = styled.button`
   height: 2rem;
 `
 
-const QuestionEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion, onChangeOrder }) => {
+const QuestionEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion }) => {
   return (
-    <StyledLabelEditor>
-      <InputNumberbox
-        type="number"
-        value={item.questionNr}
-        onChange={(e) => {
-          onChangeOrder({ ...item, questionNr: parseInt(e.target.value) })
-        }}
-      />
-      <TextField
+    <StyledEditor>
+      <TextArea
         label="Question text"
-        value={item.question ?? "0"}
-        type="text"
+        value={item.question ?? ""}
         onChange={(value) => {
           onChangeQuestion({ ...item, question: value })
         }}
@@ -58,9 +44,17 @@ const QuestionEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion, onC
         margin-right: 0.5rem;
         `}
       />
+      <div
+        className={css`
+          flex: 1;
+          margin: 0.5rem;
+        `}
+      >
+        {item.question && <MarkdownText text={item.question} />}
+      </div>
       {/* eslint-disable-next-line i18next/no-literal-string */}
       <DeleteButton onClick={onDelete}>x</DeleteButton>
-    </StyledLabelEditor>
+    </StyledEditor>
   )
 }
 
