@@ -11,7 +11,7 @@ interface Props {
 const ListInputEditor: React.FC<Props> = ({ topic, onChange }) => {
   return (
     <TextArea
-      label={`Input ${topic} as numbered list (1; itemtext..[newline] 2; itemtext..)`}
+      label={`Input ${topic}s as numbered list (1; ${topic}-text..[newline] 2; ${topic}-text..)`}
       autoResize
       className={css`
             width: 100%;
@@ -22,16 +22,14 @@ const ListInputEditor: React.FC<Props> = ({ topic, onChange }) => {
           `}
       onChange={(value) => {
         const data = value ? value : ""
-        const lista = data.split("\n").map((e) => {
-          const f = e.split(";")
-          const indx = f[0].split(' ').join('')
+        const parsedList = data.split("\n").map((e) => {
+          const tmp = e.split(";")
+          const indx = tmp[0].split(' ').join('')
           return (
-            [parseInt(indx), f[1]]
+            [parseInt(indx), tmp[1]]
           )
         })
-        console.log(data)
-        console.log(lista, typeof lista)
-        onChange(lista)
+        onChange(parsedList)
       }}
     />)
 }

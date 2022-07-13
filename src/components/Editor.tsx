@@ -4,7 +4,7 @@ import { State } from "../pages/iframe"
 import { CurrentStateMessage } from "../shared-module/iframe-protocol-types"
 import { FactorialSurvey } from "../util/stateInterfaces"
 
-import SurveyEditor from "./SurveyEditor"
+import FactorialSurveyEditor from "./FactorialSurveyEditor"
 
 const CURRENT_STATE = "current-state"
 interface Props {
@@ -29,7 +29,7 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
 
   return (
     <div>
-      <SurveyEditor
+      <FactorialSurveyEditor
         key={state.id}
         state={state}
         setState={setState}

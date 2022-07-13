@@ -1,5 +1,4 @@
 import styled from "@emotion/styled"
-import { useTranslation } from "react-i18next"
 
 import { Label } from "../util/stateInterfaces"
 interface Props {
@@ -8,7 +7,7 @@ interface Props {
   onChange: (item: Label) => void
 }
 
-const StyledButtonEditor = styled.div`
+const StyledLabelEditor = styled.div`
   margin: 0 auto;
   margin-bottom: 1rem;
   width: 100%;
@@ -38,19 +37,18 @@ const DeleteButton = styled.button`
   height: 2rem;
 `
 
-const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
-  const { t } = useTranslation()
+const LabelEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
   return (
-    <StyledButtonEditor>
+    <StyledLabelEditor>
       <InputNumberbox
         type="number"
         value={item.value}
         onChange={(e) => {
-          onChange({ ...item, value: parseInt(e.target.value) })
+          const parsedNumber = parseInt(e.target?.value)
+          onChange({ ...item, value: isNaN(parsedNumber) ? "NaN" : parsedNumber})
         }}
       />
       <Input
-        placeholder={t("input-placeholder-option-text")}
         value={item.label}
         onChange={(e) => {
           onChange({ ...item, label: e.target.value })
@@ -58,8 +56,8 @@ const ButtonEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
       />
       {/* eslint-disable-next-line i18next/no-literal-string */}
       <DeleteButton onClick={onDelete}>x</DeleteButton>
-    </StyledButtonEditor>
+    </StyledLabelEditor>
   )
 }
 
-export default ButtonEditor
+export default LabelEditor

@@ -31,18 +31,19 @@ export interface RatedQuestion {
   questionId: string
   questionNr: number
   question: string
-  rate: number
+  rate: number | "NaN"
 }
 
 export interface Label {
   id: string
   label: string
-  value: number
+  value: number | "NaN"
 }
 
 export interface FactorialSurvey {
   id: string
   factorAmount: number
+  factors: Factor[]
   optionLabels: Label[]
   questions: Question[]
   matrix: number[][]
@@ -52,7 +53,12 @@ export interface SubmittedForm {
   answeredQuestions: RatedQuestion[]
 }
 
-// Shouldthere be a public version of Question without factorial vector
+export interface Factor {
+  id: string
+  name: string
+  score: number
+}
+
 export interface PublicSurvey {
   id: string
   optionLabels: Label[]

@@ -17,7 +17,7 @@ const InputNumberbox = styled.input`
   height: 2rem;
 `
 
-const StyledButtonEditor = styled.div`
+const StyledLabelEditor = styled.div`
   margin: 0 auto;
   margin-bottom: 1rem;
   width: 100%;
@@ -35,7 +35,7 @@ const DeleteButton = styled.button`
 
 const QuestionEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion, onChangeOrder }) => {
   return (
-    <StyledButtonEditor>
+    <StyledLabelEditor>
       <InputNumberbox
         type="number"
         value={item.questionNr}
@@ -60,7 +60,7 @@ const QuestionEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion, onC
       />
       {/* eslint-disable-next-line i18next/no-literal-string */}
       <DeleteButton onClick={onDelete}>x</DeleteButton>
-    </StyledButtonEditor>
+    </StyledLabelEditor>
   )
 }
 

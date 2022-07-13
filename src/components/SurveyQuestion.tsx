@@ -1,4 +1,3 @@
-import { FormControl, FormLabel, RadioGroup, FormControlLabel, Radio } from "@mui/material"
 import { Label, RatedQuestion } from "../util/stateInterfaces"
 
 interface Props {
@@ -13,24 +12,29 @@ const SurveyQuestion: React.FC<Props> = ({
   onClick
 }) => {
   return (
-    <FormControl>
-      <FormLabel id="id">{question.question}</FormLabel>
-      <RadioGroup
-        onChange={(e) => {
-          onClick(question.questionId, parseInt(e.target.value))
-        }}
-      >
-        {options.map((option) => {
-          return (
-            <FormControlLabel
-              value={option.value}
-              control={<Radio />}
-              label={option.label}
-            />
-          )
-        })}
-      </RadioGroup>
-    </FormControl>
+    <form>
+      <div className="radio">
+        <fieldset>
+          <legend>{question.question}</legend>
+          {options.map((option) => {
+            return (
+              <div>
+                <input
+                  type="radio"
+                  value={option.value}
+                  onChange={(e) => {
+                    onClick(question.questionId, parseInt(e.target.value) ?? NaN)
+                  }}
+                  checked={question.rate === option.value}
+                />
+                <label>{option.label}</label>
+              </div>
+            )
+          })}
+        </fieldset>
+      </div>
+    </form>
+
   )
 }
 
