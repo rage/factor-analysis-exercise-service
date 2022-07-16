@@ -8,13 +8,13 @@ import { ExerciseTaskGrading } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { isSetStateMessage } from "../shared-module/iframe-protocol-types.guard"
-import { Answer, FactorialSurvey, ModelSolutionApi, PublicSurvey } from "../util/stateInterfaces"
+import { FactorialSurvey, ModelSolutionApi, PublicSurvey, RatedQuestion } from "../util/stateInterfaces"
 
 import { ExerciseFeedback } from "./api/grade"
 
 export interface SubmissionData {
   grading: ExerciseTaskGrading
-  user_answer: Answer
+  user_answer: RatedQuestion[]
   public_spec: PublicSurvey
 }
 
@@ -26,7 +26,7 @@ export type State =
   | {
     view_type: "view-submission"
     public_spec: PublicSurvey
-    answer: Answer
+    answer: RatedQuestion[]
     feedback_json: ExerciseFeedback | null
     model_solution_spec: ModelSolutionApi | null
     grading: ExerciseTaskGrading | null
@@ -60,7 +60,7 @@ const Iframe: React.FC = () => {
                 (JSON.parse(messageData.data.private_spec as string) as FactorialSurvey) || {},
             })
         } else if (messageData.view_type === "view-submission") {
-          const userAnswer = messageData.data.user_answer as Answer
+          const userAnswer = messageData.data.user_answer as RatedQuestion[]
           setState({
             view_type: messageData.view_type,
             public_spec: messageData.data.public_spec as PublicSurvey,

@@ -54,7 +54,7 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
           <legend>Factors</legend>
           <div>
             <input
-              value={state?.factorAmount?.toString() ?? "Amount of Factors: 0"}
+              value={state?.factorAmount?.toString() ?? 0}
               type="number"
               onChange={(e) => {
                 const parsedNumber = parseInt(e.target.value)
