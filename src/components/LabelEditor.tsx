@@ -32,10 +32,10 @@ const LabelEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
         aria-label="rate-value"
         label="value"
         type="number"
-        value={(item.value as string)}
+        value={(item.value as unknown as string)}
         onChange={(e) => {
           const parsedNumber = parseInt(e)
-          onChange({ ...item, value: isNaN(parsedNumber) ? "NaN" : parsedNumber})
+          onChange({ ...item, value: isNaN(parsedNumber) ? null : parsedNumber })
         }}
         className={css`
         padding: 0.5rem;

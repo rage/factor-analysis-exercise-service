@@ -4,7 +4,7 @@ import { State } from "../pages/iframe"
 import { CurrentStateMessage } from "../shared-module/iframe-protocol-types"
 import { FactorialSurvey } from "../util/stateInterfaces"
 
-import FactorialSurveyEditor from "./FactorialSurveyEditor"
+import FactorialSurveyEditor from "./FactorialSurvey/FactorialSurveyEditor"
 
 const CURRENT_STATE = "current-state"
 interface Props {

@@ -1,13 +1,14 @@
-import { State } from "../pages/iframe"
-import { Factor, FactorialSurvey, Question } from "../util/stateInterfaces"
+import { State } from "../../pages/iframe"
+import { Factor, FactorialSurvey, Question } from "../../util/stateInterfaces"
 
 import styled from "@emotion/styled"
 import { v4 } from "uuid"
 import QuestionEditor from "./QuestionEditor"
-import MatrixEditor from "./MatrixEditor"
+import MatrixEditor from "../MatrixEditor"
 import ListInputEditor from "./ListInputEditor"
-import LabelEditor from "./LabelEditor"
+import LabelEditor from "../LabelEditor"
 import { css } from "@emotion/css"
+import BreedList from "../BreedList"
 
 
 interface Props {
@@ -49,6 +50,7 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
         flex-direction: column;
       `}>
 
+      <BreedList onClick={value => console.log(value)} />
       {state &&
         <fieldset>
           <legend>Factors</legend>
@@ -71,7 +73,7 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
             <ol>
               {state?.factors?.map(e => {
                 return (
-                  <li>
+                  <li key={e.id}>
                     <Input
                       value={e.name}
                       type="text"
@@ -103,7 +105,7 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
         <ButtonWrapper>
           <ol>
             {state?.optionLabels?.map((o) => (
-              <li>
+              <li key={o.id}>
                 <LabelEditor
                   key={o.id}
                   item={o}
@@ -141,7 +143,7 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
               if (typeof newState.optionLabels === 'undefined') {
                 newState.optionLabels = []
               }
-              newState.optionLabels.push({ label: "", value: "NaN", id: v4() })
+              newState.optionLabels.push({ label: "", value: null, id: v4() })
               // eslint-disable-next-line i18next/no-literal-string
               setState({ view_type: "exercise-editor", private_spec: newState })
             }}
@@ -156,15 +158,15 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
 
         <ButtonWrapper>
           <ol>
-            {state?.questions?.map((o) => (
-              <li>
+            {state?.questions?.map((q) => (
+              <li key={q.id}>
                 <QuestionEditor
-                  key={o.id}
-                  item={o}
+                  key={q.id}
+                  item={q}
                   onDelete={() => {
                     const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
 
-                    const newQuestions = newState.questions.filter((e) => e.id !== o.id)
+                    const newQuestions = newState.questions.filter((e) => e.id !== q.id)
                     // eslint-disable-next-line i18next/no-literal-string
                     setState({
                       view_type: "exercise-editor",
@@ -173,24 +175,12 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
                   }}
                   onChangeQuestion={(task) => {
                     const newQuestions = state.questions.map((e) => {
-                      if (e.id !== o.id) {
+                      if (e.id !== q.id) {
                         return e
                       }
                       return task
                     })
                     // eslint-disable-next-line i18next/no-literal-string
-                    setState({
-                      view_type: "exercise-editor",
-                      private_spec: { ...state, questions: newQuestions }
-                    })
-                  }}
-                  onChangeOrder={(task) => {
-                    const newQuestions = state.questions.map((e) => {
-                      if (e.id !== o.id) {
-                        return e
-                      }
-                      return task
-                    })
                     setState({
                       view_type: "exercise-editor",
                       private_spec: { ...state, questions: newQuestions }

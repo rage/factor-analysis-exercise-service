@@ -1,17 +1,34 @@
+import { css } from '@emotion/css'
 import Breeds from '../data/breeds_fin.json'
 
-const BreedList: React.FC = () => {
+interface Props {
+  onClick: (breed: string) => void
+}
+
+const BreedList: React.FC<Props> = ({ onClick }) => {
   const breeds = Breeds.Rotu
   return (
-    <ul>
-      {breeds.map((breed) => {
-        return (
-          <li>
-            {breed}
-          </li>
-        )
-      })}
-    </ul>
+    <div className={css`
+      display: flex;
+      flex-direction: column;
+    `}>
+
+      <label>select your breed</label>
+      <select
+        name="breeds"
+        id="breed-select"
+        onChange={(event) => onClick(event.target.value)}>
+        <option value="">--Please choose your breed--</option>
+        {breeds.map((breed) => {
+          return (
+            <option value={breed}>
+              {breed}
+            </option>
+          )
+        })}
+      </select>
+    </div >
+
   )
 }
 

@@ -1,12 +1,14 @@
 import { css } from "@emotion/css";
-import TextArea from "../shared-module/components/InputFields/TextAreaField";
-import { FactorialSurvey } from "../util/stateInterfaces";
+import TextArea from "../../shared-module/components/InputFields/TextAreaField";
+import { FactorialSurvey } from "../../util/stateInterfaces";
 
 interface Props {
   item: FactorialSurvey
   onChange: (parsedList: (string | number)[][]) => void
   topic: string
 }
+
+//export from excel or .csv?
 
 const ListInputEditor: React.FC<Props> = ({ topic, onChange }) => {
   return (

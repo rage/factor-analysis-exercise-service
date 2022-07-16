@@ -1,10 +1,10 @@
-import { Label, RatedQuestion } from "../util/stateInterfaces"
-import MarkdownText from "./MarkdownText"
+import { Label, RatedQuestion } from "../../util/stateInterfaces"
+import MarkdownText from "../MarkdownText"
 
 interface Props {
   question: RatedQuestion
   options: Label[]
-  onClick: (questionId: string, rate: number | "NaN") => void
+  onClick: (questionId: string, rate: number | null) => void
 }
 
 const SurveyQuestion: React.FC<Props> = ({
@@ -24,9 +24,9 @@ const SurveyQuestion: React.FC<Props> = ({
               <div>
                 <input
                   type="radio"
-                  value={option.value}
+                  value={option.value ?? undefined}
                   onChange={(e) => {
-                    onClick(question.questionId, isNaN(parseInt(e.target.value)) ? "NaN" : parseInt(e.target.value))
+                    onClick(question.questionId, isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value))
                   }}
                   checked={question.rate === option.value}
                 />
@@ -37,7 +37,6 @@ const SurveyQuestion: React.FC<Props> = ({
         </fieldset>
       </div>
     </form>
-
   )
 }
 

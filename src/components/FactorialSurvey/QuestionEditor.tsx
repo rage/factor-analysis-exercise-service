@@ -1,14 +1,13 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
-import TextArea from "../shared-module/components/InputFields/TextAreaField"
+import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 
-import { Question } from "../util/stateInterfaces"
-import MarkdownText from "./MarkdownText"
+import { Question } from "../../util/stateInterfaces"
+import MarkdownText from "../MarkdownText"
 interface Props {
   item: Question
   onDelete: () => void
   onChangeQuestion: (item: Question) => void
-  onChangeOrder: (item: Question) => void
 }
 
 const StyledEditor = styled.div`

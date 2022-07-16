@@ -6,7 +6,7 @@ import { State } from "../pages/iframe"
 
 import Editor from "./Editor"
 import Submission from "./Submission"
-import Survey from "./Survey"
+import Survey from "./FactorialSurvey/Survey"
 
 interface RendererProps {
   state: State | null

@@ -31,21 +31,23 @@ export interface RatedQuestion {
   questionId: string
   questionNr: number
   question: string
-  rate: number | "NaN"
+  rate: number | null  // use rather null
 }
 
 export interface Label {
   id: string
   label: string
-  value: number | "NaN"
+  value: number | null
 }
 
+//** FactorialSurvey is x. */
 export interface FactorialSurvey {
   id: string
   factorAmount: number
   factors: Factor[]
   optionLabels: Label[]
   questions: Question[]
+  /** What is this matrix and how it's used */
   matrix: number[][]
 }
 
@@ -59,6 +61,7 @@ export interface Factor {
   score: number
 }
 
+//map to public spec
 export interface PublicSurvey {
   id: string
   optionLabels: Label[]

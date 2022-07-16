@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { CurrentStateMessage } from "../shared-module/iframe-protocol-types"
-import { PublicSurvey, RatedQuestion, SubmittedForm } from "../util/stateInterfaces"
+import { CurrentStateMessage } from "../../shared-module/iframe-protocol-types"
+import { PublicSurvey, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
 import SurveyQuestion from "./SurveyQuestion"
 
 interface Props {
@@ -42,7 +42,7 @@ const Survey: React.FC<Props> = ({ port, state }) => {
   }
 
   
-  const updateRate = (questionId: string, rate: number) => {
+  const updateRate = (questionId: string, rate: number | null) => {
     if (!port) {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Cannot send current state to parent because I don't have a port")
