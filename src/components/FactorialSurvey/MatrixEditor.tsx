@@ -1,7 +1,7 @@
 import { css } from "@emotion/css"
 import { useState } from "react"
-import TextArea from "../shared-module/components/InputFields/TextAreaField"
-import { FactorialSurvey } from "../util/stateInterfaces"
+import TextArea from "../../shared-module/components/InputFields/TextAreaField"
+import { FactorialSurvey } from "../../util/stateInterfaces"
 
 interface Props {
   item: FactorialSurvey

@@ -40,14 +40,18 @@ export interface Label {
   value: number | null
 }
 
-//** FactorialSurvey is x. */
+/** FactorialSurvey is super cool */
 export interface FactorialSurvey {
   id: string
   factorAmount: number
   factors: Factor[]
   optionLabels: Label[]
   questions: Question[]
-  /** What is this matrix and how it's used */
+  /**
+   *  Matrix for caculating factors for the factorial survey
+   *  weights to be multiplied with the evaluated question rates
+   *  row by question, col by factor: [question, factor] * question_rate
+   */
   matrix: number[][]
 }
 

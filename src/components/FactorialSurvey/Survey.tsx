@@ -12,7 +12,7 @@ interface Props {
 
 const Survey: React.FC<Props> = ({ port, state }) => {
   const INITIAL_R = state.questions.map((q) => {
-    return {questionId: q.id, questionNr: q.questionNr, rate: 0, question: q.question}
+    return {questionId: q.id, questionNr: q.questionNr, rate: null, question: q.question}
   })
 
   const [ratedQuestions, _setRatedQuestions] = useState<RatedQuestion[]>(INITIAL_R)

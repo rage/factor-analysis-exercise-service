@@ -29,6 +29,7 @@ const SurveyQuestion: React.FC<Props> = ({
                     onClick(question.questionId, isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value))
                   }}
                   checked={question.rate === option.value}
+                  required
                 />
                 <label>{option.label}</label>
               </div>
