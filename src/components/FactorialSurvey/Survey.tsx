@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { CurrentStateMessage } from "../../shared-module/iframe-protocol-types"
-import { PublicSurvey, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
+import { PublicFactorialSurveySpec, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
 import SurveyQuestion from "./SurveyQuestion"
 
 interface Props {
-  state: PublicSurvey
+  state: PublicFactorialSurveySpec
   port: MessagePort
 }
 

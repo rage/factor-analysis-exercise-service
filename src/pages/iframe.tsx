@@ -8,24 +8,24 @@ import { ExerciseTaskGrading } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { isSetStateMessage } from "../shared-module/iframe-protocol-types.guard"
-import { FactorialSurvey, ModelSolutionApi, PublicSurvey, RatedQuestion } from "../util/stateInterfaces"
+import { FactorialSurvey, ModelSolutionApi, PublicFactorialSurveySpec, RatedQuestion } from "../util/stateInterfaces"
 
 import { ExerciseFeedback } from "./api/grade"
 
 export interface SubmissionData {
   grading: ExerciseTaskGrading
   user_answer: RatedQuestion[]
-  public_spec: PublicSurvey
+  public_spec: PublicFactorialSurveySpec
 }
 
 export type State =
   | {
     view_type: "exercise"
-    public_spec: PublicSurvey
+    public_spec: PublicFactorialSurveySpec
   }
   | {
     view_type: "view-submission"
-    public_spec: PublicSurvey
+    public_spec: PublicFactorialSurveySpec
     answer: RatedQuestion[]
     feedback_json: ExerciseFeedback | null
     model_solution_spec: ModelSolutionApi | null
@@ -51,7 +51,7 @@ const Iframe: React.FC = () => {
         if (messageData.view_type === "exercise") {
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicSurvey,
+            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec,
           })
         } else if (messageData.view_type === "exercise-editor") {
             setState({
@@ -63,7 +63,7 @@ const Iframe: React.FC = () => {
           const userAnswer = messageData.data.user_answer as RatedQuestion[]
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicSurvey,
+            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec,
             answer: userAnswer,
             feedback_json: messageData.data.grading?.feedback_json as ExerciseFeedback | null,
             model_solution_spec: messageData.data.model_solution_spec as ModelSolutionApi | null,

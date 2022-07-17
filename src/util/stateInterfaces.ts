@@ -27,20 +27,29 @@ export interface Question {
   question: string
 }
 
+/** Evaluated survey question contains numerical | NA value as rate */
 export interface RatedQuestion {
   questionId: string
   questionNr: number
   question: string
-  rate: number | null  // use rather null
+  rate: number | null  
 }
 
+/** Option labels for rating the factorial survey question
+ */
 export interface Label {
   id: string
   label: string
   value: number | null
 }
 
-/** FactorialSurvey is super cool */
+/** FactorialSurvey for factorial analysis, options are constant for the whole set of questions
+ * 
+ * @factors Factor[]
+ * @optionLabels Label[]
+ * @questions Question[]
+ * @matrix number[factor][question]
+ */
 export interface FactorialSurvey {
   id: string
   factorAmount: number
@@ -66,7 +75,7 @@ export interface Factor {
 }
 
 //map to public spec
-export interface PublicSurvey {
+export interface PublicFactorialSurveySpec {
   id: string
   optionLabels: Label[]
   questions: Question[]

@@ -3,12 +3,12 @@ import React from "react"
 
 import { ExerciseFeedback } from "../pages/api/grade"
 import { baseTheme } from "../shared-module/styles"
-import { ModelSolutionApi, PublicSurvey, RatedQuestion } from "../util/stateInterfaces"
+import { ModelSolutionApi, PublicFactorialSurveySpec, RatedQuestion } from "../util/stateInterfaces"
 import MarkdownText from "./MarkdownText"
 
 interface SubmissionProps {
   port: MessagePort
-  publicSpec: PublicSurvey
+  publicSpec: PublicFactorialSurveySpec
   answer: RatedQuestion[]
   gradingFeedback: ExerciseFeedback | null
   modelSolutionSpec: ModelSolutionApi | null
