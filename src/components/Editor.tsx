@@ -6,6 +6,7 @@ import { CurrentStateMessage } from "../shared-module/iframe-protocol-types"
 import { FactorialSurvey, Survey } from "../util/stateInterfaces"
 
 import FactorialSurveyEditor from "./FactorialSurvey/FactorialSurveyEditor"
+import SurveyItemEditor from "./Survey/SurveyItemEditor"
 
 const CURRENT_STATE = "current-state"
 interface Props {
@@ -32,12 +33,23 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
   }, [state, port])
 
   switch (surveyType) {
-    
     case types[1]: {
       const newState: FactorialSurvey = {...(state) as FactorialSurvey, type: types[1]}
       return (
         <div>
           <FactorialSurveyEditor
+            key={newState.id}
+            state={newState}
+            setState={setState}
+          />
+        </div>
+      )
+    }
+    case types[2]: {
+      const newState: Survey = {...(state) as Survey, type: types[2]}
+      return (
+        <div>
+          <SurveyItemEditor 
             key={newState.id}
             state={newState}
             setState={setState}
@@ -60,7 +72,6 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
             }}
           >
             <option value={types[0]}>--</option>
-
             <option value={types[1]}>
               {types[1]}
             </option>

@@ -9,9 +9,9 @@ export interface Alternative {
   correct: boolean
 }
 
-export interface Answer {
+/* export interface Answer {
   selectedOptionId: string
-}
+} */
 
 export interface ClientErrorResponse {
   message: string
@@ -75,7 +75,6 @@ export interface Factor {
   score: number
 }
 
-//map to public spec
 export interface PublicFactorialSurveySpec {
   id: string
   optionLabels: Label[]
@@ -85,7 +84,13 @@ export interface PublicFactorialSurveySpec {
 export interface SurveyItem {
   id: string
   question: string
-  answer: Label[] | string[] | string | number | null
+  answer: Answer | null
+}
+
+export interface Answer {
+  id: string
+  type: string
+  answer: string[] | string | number | null
 }
 
 export interface Survey {

@@ -8,7 +8,7 @@ import { ExerciseTaskGrading } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { isSetStateMessage } from "../shared-module/iframe-protocol-types.guard"
-import { FactorialSurvey, ModelSolutionApi, PublicFactorialSurveySpec, RatedQuestion } from "../util/stateInterfaces"
+import { FactorialSurvey, ModelSolutionApi, PublicFactorialSurveySpec, RatedQuestion, Survey } from "../util/stateInterfaces"
 
 import { ExerciseFeedback } from "./api/grade"
 
@@ -33,7 +33,7 @@ export type State =
   }
   | {
     view_type: "exercise-editor"
-    private_spec: FactorialSurvey
+    private_spec: FactorialSurvey | Survey
   }
 
 const Iframe: React.FC = () => {
@@ -57,7 +57,9 @@ const Iframe: React.FC = () => {
             setState({
               view_type: messageData.view_type,
               private_spec:
-                (JSON.parse(messageData.data.private_spec as string) as FactorialSurvey) || {},
+                (JSON.parse(messageData.data.private_spec as string) as FactorialSurvey) 
+                || (JSON.parse(messageData.data.private_spec as string) as Survey)
+                || {},
             })
         } else if (messageData.view_type === "view-submission") {
           const userAnswer = messageData.data.user_answer as RatedQuestion[]
