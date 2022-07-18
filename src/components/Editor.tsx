@@ -30,11 +30,14 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
       valid: true,
     }
     port.postMessage(message)
+    if (state.type) setSurveyType(state.type)
   }, [state, port])
 
+
+  console.log("Got state ", state)
   switch (surveyType) {
-    case types[1]: {
-      const newState: FactorialSurvey = {...(state) as FactorialSurvey, type: types[1]}
+    case (types[1]): {
+      const newState: FactorialSurvey = { ...(state) as FactorialSurvey, type: types[1] }
       return (
         <div>
           <FactorialSurveyEditor
@@ -45,11 +48,11 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
         </div>
       )
     }
-    case types[2]: {
-      const newState: Survey = {...(state) as Survey, type: types[2]}
+    case (types[2]): {
+      const newState: Survey = { ...(state) as Survey, type: types[2] }
       return (
         <div>
-          <SurveyItemEditor 
+          <SurveyItemEditor
             key={newState.id}
             state={newState}
             setState={setState}

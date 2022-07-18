@@ -21,11 +21,11 @@ export interface SubmissionData {
 export type State =
   | {
     view_type: "exercise"
-    public_spec: PublicFactorialSurveySpec
+    public_spec: PublicFactorialSurveySpec | Survey
   }
   | {
     view_type: "view-submission"
-    public_spec: PublicFactorialSurveySpec
+    public_spec: PublicFactorialSurveySpec | Survey
     answer: RatedQuestion[]
     feedback_json: ExerciseFeedback | null
     model_solution_spec: ModelSolutionApi | null
@@ -51,7 +51,7 @@ const Iframe: React.FC = () => {
         if (messageData.view_type === "exercise") {
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec,
+            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec | Survey,
           })
         } else if (messageData.view_type === "exercise-editor") {
             setState({
@@ -65,7 +65,7 @@ const Iframe: React.FC = () => {
           const userAnswer = messageData.data.user_answer as RatedQuestion[]
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec,
+            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec | Survey,
             answer: userAnswer,
             feedback_json: messageData.data.grading?.feedback_json as ExerciseFeedback | null,
             model_solution_spec: messageData.data.model_solution_spec as ModelSolutionApi | null,
