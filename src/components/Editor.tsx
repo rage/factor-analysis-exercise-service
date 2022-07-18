@@ -33,8 +33,6 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
     if (state.type) setSurveyType(state.type)
   }, [state, port])
 
-
-  console.log("Got state ", state)
   switch (surveyType) {
     case (types[1]): {
       const newState: FactorialSurvey = { ...(state) as FactorialSurvey, type: types[1] }

@@ -1,7 +1,9 @@
+import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { v4 } from "uuid";
 import { State } from "../../pages/iframe";
-import { Survey } from "../../util/stateInterfaces";
+import { Survey, SurveyItem } from "../../util/stateInterfaces";
+import QuestionEditor from "./QuestionEditor";
 
 interface Props {
   state: Survey
@@ -36,20 +38,59 @@ const Input = styled.input`
 
 const SurveyItemEditor: React.FC<Props> = ({ state, setState }) => {
   return (
-    <ButtonWrapper>
-      <NewButton
-        onClick={() => {
-          const newState: Survey = { ...(state as Survey) }
-          if (typeof newState.content === 'undefined') {
-            newState.content = []
-          }
-          newState.content.push({ id: v4(), question: "", answer: null })
-          setState({ view_type: "exercise-editor", private_spec: newState })
-        }}
-      >
-        Add Survey Question
-      </NewButton>
-    </ButtonWrapper>
+    <div
+      className={css`
+        display: flex;
+        flex-direction: column;
+      `}>
+      <ol>
+
+        {state?.content?.map((item) => {
+          return (
+            <li key={item.id}>
+              <QuestionEditor
+                item={item}
+                onDelete={() => {
+                  const newContent: SurveyItem[] = state.content.filter((e) => e.id !== item.id)
+                  // eslint-disable-next-line i18next/no-literal-string
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: { ...state, content: newContent }
+                  })
+                }}
+                onChangeQuestion={(quest) => {
+                  const newContent = state.content.map((e) => {
+                    if (e.id !== quest.id) {
+                      return e
+                    }
+                    return quest
+                  })
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: { ...state, content: newContent }
+                  })
+                }}
+              />
+            </li>
+          )
+
+        })}
+      </ol>
+      <ButtonWrapper>
+        <NewButton
+          onClick={() => {
+            const newState: Survey = { ...(state as Survey) }
+            if (typeof newState.content === 'undefined') {
+              newState.content = []
+            }
+            newState.content.push({ id: v4(), question: "", answer: null })
+            setState({ view_type: "exercise-editor", private_spec: newState })
+          }}
+        >
+          Add Survey Question
+        </NewButton>
+      </ButtonWrapper>
+    </div>
   )
 }
 

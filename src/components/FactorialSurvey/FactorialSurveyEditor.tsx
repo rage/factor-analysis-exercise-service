@@ -163,16 +163,6 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
                 <QuestionEditor
                   key={q.id}
                   item={q}
-                  onDelete={() => {
-                    const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
-
-                    const newQuestions = newState.questions.filter((e) => e.id !== q.id)
-                    // eslint-disable-next-line i18next/no-literal-string
-                    setState({
-                      view_type: "exercise-editor",
-                      private_spec: { ...state, questions: newQuestions }
-                    })
-                  }}
                   onChangeQuestion={(task) => {
                     const newQuestions = state.questions.map((e) => {
                       if (e.id !== q.id) {
@@ -190,23 +180,8 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
               </li>
             ))}
           </ol>
-
-          <NewButton
-            onClick={() => {
-              const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
-              if (typeof newState.questions === 'undefined') {
-                newState.questions = []
-              }
-              const questionIndex = newState.questions.length + 1
-              newState.questions.push({ question: "", id: v4(), questionNr: questionIndex })
-              // eslint-disable-next-line i18next/no-literal-string
-              setState({ view_type: "exercise-editor", private_spec: newState })
-            }}
-          >
-            Add Question
-          </NewButton>
         </ButtonWrapper>
-        OR
+        Input questions as a list
         <ButtonWrapper>
           <ListInputEditor
             topic="question"
@@ -214,6 +189,7 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
             onChange={(value) => {
               const newQuestions: Question[] = []
               value.map((e) => {
+                if (!e[0]) return
                 newQuestions.push({ id: v4(), questionNr: Number(e[0]), question: (e[1] as string) })
               })
               const newState: FactorialSurvey = { ...(state as FactorialSurvey), questions: newQuestions }

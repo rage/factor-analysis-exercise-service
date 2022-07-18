@@ -19,9 +19,12 @@ const BreedList: React.FC<Props> = ({ onClick }) => {
         id="breed-select"
         onChange={(event) => onClick(event.target.value)}>
         <option value="">--Please choose your breed--</option>
-        {breeds.map((breed) => {
+        {breeds.map((breed, idx) => {
           return (
-            <option value={breed}>
+            <option
+              key={idx}
+              value={breed}
+            >
               {breed}
             </option>
           )

@@ -6,7 +6,6 @@ import { Question } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
 interface Props {
   item: Question
-  onDelete: () => void
   onChangeQuestion: (item: Question) => void
 }
 
@@ -21,12 +20,7 @@ const StyledEditor = styled.div`
   justify-content: space-apart;
 `
 
-const DeleteButton = styled.button`
-  width: 2rem;
-  height: 2rem;
-`
-
-const QuestionEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion }) => {
+const QuestionEditor: React.FC<Props> = ({ item, onChangeQuestion }) => {
   return (
     <StyledEditor>
       <TextArea
@@ -51,8 +45,6 @@ const QuestionEditor: React.FC<Props> = ({ item, onDelete, onChangeQuestion }) =
       >
         {item.question && <MarkdownText text={item.question} />}
       </div>
-      {/* eslint-disable-next-line i18next/no-literal-string */}
-      <DeleteButton onClick={onDelete}>x</DeleteButton>
     </StyledEditor>
   )
 }
