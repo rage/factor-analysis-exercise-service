@@ -52,6 +52,7 @@ export interface Label {
  */
 export interface FactorialSurvey {
   id: string
+  type: string //"factorial"
   factorAmount: number
   factors: Factor[]
   optionLabels: Label[]
@@ -79,4 +80,16 @@ export interface PublicFactorialSurveySpec {
   id: string
   optionLabels: Label[]
   questions: Question[]
+}
+
+export interface SurveyItem {
+  id: string
+  question: string
+  answer: Label[] | string[] | string | number | null
+}
+
+export interface Survey {
+  id: string
+  type: string //"non-factorial"
+  content: SurveyItem[]
 }
