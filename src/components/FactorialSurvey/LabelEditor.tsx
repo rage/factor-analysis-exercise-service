@@ -1,8 +1,8 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
-import TextField from "../shared-module/components/InputFields/TextField"
+import TextField from "../../shared-module/components/InputFields/TextField"
 
-import { Label } from "../util/stateInterfaces"
+import { Label } from "../../util/stateInterfaces"
 interface Props {
   item: Label
   onDelete: () => void

@@ -6,10 +6,8 @@ import { v4 } from "uuid"
 import QuestionEditor from "./QuestionEditor"
 import MatrixEditor from "./MatrixEditor"
 import ListInputEditor from "./ListInputEditor"
-import LabelEditor from "../LabelEditor"
+import LabelEditor from "./LabelEditor"
 import { css } from "@emotion/css"
-import BreedList from "../BreedList"
-
 
 interface Props {
   state: FactorialSurvey
@@ -49,8 +47,7 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
         display: flex;
         flex-direction: column;
       `}>
-
-      <BreedList onClick={value => console.log(value)} />
+        
       {state &&
         <fieldset>
           <legend>Factors</legend>

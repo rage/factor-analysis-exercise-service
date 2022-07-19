@@ -3,7 +3,7 @@ import styled from "@emotion/styled"
 import { v4 } from "uuid"
 import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 
-import { Answer, SurveyItem } from "../../util/stateInterfaces"
+import { Answer, AnswerType, SurveyItem } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
 interface Props {
   item: SurveyItem
@@ -60,18 +60,33 @@ const QuestionEditor: React.FC<Props> = ({
       {/* eslint-disable-next-line i18next/no-literal-string */}
       <select
         onChange={(event) => {
-          const answer: Answer = item.answer ?? {id: v4(), type: "", answer: ""}
-          answer.type = event.target.value
-          onChangeQuestion({ ...item, answer: {...answer, type: event.target.value}})
+          const answer: Answer = item.answer ?? { id: v4(), type: AnswerType.None, answer: "", options: null }
+          const answerType: AnswerType = (event.target.value as unknown as AnswerType)
+          if (!answerType) return
+          onChangeQuestion({ ...item, answer: { ...answer, type: answerType } })
         }}>
-        <option value="">Choose answer type</option>
-        <option value="text">text</option>
-        <option value="number">number</option>
-        <option value="multiple-choice">multiple-choise</option>
-        <option value="radio-group">radio-group</option>
-        <option value="breed-list">breed-list drop-down</option>
+
+        {Object.values(AnswerType).map((t) => {
+          if (t === AnswerType.None) {
+            return <option value={AnswerType.None}>Choose answer type</option>
+          }
+          return (
+            <option
+              value={t}
+              key={t}
+              selected={item.answer?.type === t ? true : false}
+            >
+              {t}
+            </option>
+          )
+        })}
       </select>
       <DeleteButton onClick={onDelete}>x</DeleteButton>
+      {(item.answer?.type === AnswerType.MultiChoice || item.answer?.type === AnswerType.RadioGroup) &&
+        <div>
+          input youroptions here
+        </div>
+      }
     </StyledEditor>
   )
 }

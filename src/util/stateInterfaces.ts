@@ -32,7 +32,7 @@ export interface RatedQuestion {
   questionId: string
   questionNr: number
   question: string
-  rate: number | null  
+  rate: number | null
 }
 
 /** Option labels for rating the factorial survey question
@@ -52,7 +52,7 @@ export interface Label {
  */
 export interface FactorialSurvey {
   id: string
-  type: string //"factorial"
+  type: SurveyType.Factorial
   factorAmount: number
   factors: Factor[]
   optionLabels: Label[]
@@ -77,6 +77,7 @@ export interface Factor {
 
 export interface PublicFactorialSurveySpec {
   id: string
+  type: SurveyType.Factorial
   optionLabels: Label[]
   questions: Question[]
 }
@@ -89,12 +90,27 @@ export interface SurveyItem {
 
 export interface Answer {
   id: string
-  type: string
+  type: AnswerType
+  options: string[] | null
   answer: string[] | string | number | null
 }
 
 export interface Survey {
   id: string
-  type: string //"non-factorial"
+  type: SurveyType.NonFactorial
   content: SurveyItem[]
+}
+
+export enum SurveyType {
+  Factorial = "factorial",
+  NonFactorial = "non-factorial",
+}
+
+export enum AnswerType {
+  None = '',
+  Text = 'text',
+  Number = 'number',
+  MultiChoice = 'multiple-choice',
+  RadioGroup = 'radio-group',
+  BreedList = 'breed-list'
 }

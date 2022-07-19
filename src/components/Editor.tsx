@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 
 import { State } from "../pages/iframe"
 import { CurrentStateMessage } from "../shared-module/iframe-protocol-types"
-import { FactorialSurvey, Survey } from "../util/stateInterfaces"
+import { FactorialSurvey, Survey, SurveyType } from "../util/stateInterfaces"
 
 import FactorialSurveyEditor from "./FactorialSurvey/FactorialSurveyEditor"
 import SurveyItemEditor from "./Survey/SurveyItemEditor"
@@ -17,8 +17,7 @@ interface Props {
 
 const Editor: React.FC<Props> = ({ state, setState, port }) => {
 
-  const types = ["initial", "factorial", "non-factorial"]
-  const [surveyType, setSurveyType] = useState(types[0])
+  const [surveyType, setSurveyType] = useState<SurveyType>()
 
   useEffect(() => {
     if (!port) {
@@ -33,9 +32,10 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
     if (state.type) setSurveyType(state.type)
   }, [state, port])
 
+
   switch (surveyType) {
-    case (types[1]): {
-      const newState: FactorialSurvey = { ...(state) as FactorialSurvey, type: types[1] }
+    case (SurveyType.Factorial): {
+      const newState: FactorialSurvey = { ...(state) as FactorialSurvey, type: surveyType }
       return (
         <div>
           <FactorialSurveyEditor
@@ -46,8 +46,8 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
         </div>
       )
     }
-    case (types[2]): {
-      const newState: Survey = { ...(state) as Survey, type: types[2] }
+    case (SurveyType.NonFactorial): {
+      const newState: Survey = { ...(state) as Survey, type: surveyType }
       return (
         <div>
           <SurveyItemEditor
@@ -69,15 +69,16 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
             name="type-selection"
             id="survey-type"
             onChange={(event) => {
-              setSurveyType(event.target.value)
+              const surveyType: SurveyType = event.target.value as unknown as SurveyType
+              setSurveyType(surveyType)
             }}
           >
-            <option value={types[0]}>--</option>
-            <option value={types[1]}>
-              {types[1]}
+            <option value={""}>--</option>
+            <option value={SurveyType.Factorial}>
+              {SurveyType.Factorial}
             </option>
-            <option value={types[2]}>
-              {types[2]}
+            <option value={SurveyType.NonFactorial}>
+              {SurveyType.NonFactorial}
             </option>
           </select>
         </div>

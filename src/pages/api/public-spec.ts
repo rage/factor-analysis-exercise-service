@@ -2,7 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { cors, runMiddleware } from "../../util/cors"
 
-import { ClientErrorResponse, FactorialSurvey, PublicFactorialSurveySpec, Survey } from "../../util/stateInterfaces"
+import { ClientErrorResponse, FactorialSurvey, PublicFactorialSurveySpec, Survey, SurveyType } from "../../util/stateInterfaces"
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await runMiddleware(req, res, cors)
@@ -30,7 +30,7 @@ function handlePost(
 
   form.type
 
-  const publicForm = (form.type === "factorial") 
+  const publicForm = (form.type === SurveyType.Factorial) 
   ? ({
     id: form.id,
     type: form.type,

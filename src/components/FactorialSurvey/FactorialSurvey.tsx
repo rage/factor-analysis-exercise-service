@@ -2,14 +2,12 @@ import { useState } from "react"
 import { CurrentStateMessage } from "../../shared-module/iframe-protocol-types"
 import { PublicFactorialSurveySpec, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
 import BreedList from "../BreedList"
-import SurveyQuestion from "./SurveyQuestion"
+import SurveyQuestion from "./FactorialSurveyQuestion"
 
 interface Props {
   state: PublicFactorialSurveySpec
   port: MessagePort
 }
-
-
 
 const FactorialSurvey: React.FC<Props> = ({ port, state }) => {
   const INITIAL_R = state.questions.map((q) => {
@@ -41,7 +39,6 @@ const FactorialSurvey: React.FC<Props> = ({ port, state }) => {
     port.postMessage(message)
     return res
   }
-
 
   const updateRate = (questionId: string, rate: number | null) => {
     if (!port) {
