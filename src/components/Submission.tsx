@@ -3,12 +3,12 @@ import React from "react"
 
 import { ExerciseFeedback } from "../pages/api/grade"
 import { baseTheme } from "../shared-module/styles"
-import { ModelSolutionApi, PublicFactorialSurveySpec, RatedQuestion } from "../util/stateInterfaces"
+import { ModelSolutionApi, PublicFactorialSurveySpec, RatedQuestion, Survey } from "../util/stateInterfaces"
 import MarkdownText from "./MarkdownText"
 
 interface SubmissionProps {
   port: MessagePort
-  publicSpec: PublicFactorialSurveySpec
+  publicSpec: PublicFactorialSurveySpec | Survey
   answer: RatedQuestion[]
   gradingFeedback: ExerciseFeedback | null
   modelSolutionSpec: ModelSolutionApi | null
@@ -33,7 +33,7 @@ const Submission: React.FC<SubmissionProps> = ({ publicSpec, answer }) => {
         return (
           <fieldset>
             <MarkdownText text={question.question} />
-            {publicSpec.optionLabels.map((option) => {
+            {(publicSpec.type === "factorial") && (publicSpec as PublicFactorialSurveySpec).optionLabels.map((option) => {
               const selected = question.rate === option.value
               const border = `4px solid ${GREEN}`
               return (

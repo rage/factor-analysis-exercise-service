@@ -6,7 +6,9 @@ import { State } from "../pages/iframe"
 
 import Editor from "./Editor"
 import Submission from "./Submission"
-import Survey from "./FactorialSurvey/Survey"
+import FactorialSurvey from "./FactorialSurvey/FactorialSurvey"
+import { PublicFactorialSurveySpec, Survey } from "../util/stateInterfaces"
+import SurveyExercise from "./Survey/SurveyExercise"
 
 interface RendererProps {
   state: State | null
@@ -25,9 +27,11 @@ export const Renderer: React.FC<RendererProps> = ({ state, setState, port }) => 
     return <>{t("waiting-for-content")}</>
   }
 
-  if (state.view_type === "exercise") {
-    return <Survey port={port} state={state.public_spec} />
-  } else if (state.view_type === "view-submission") {
+  if (state.view_type === "exercise" && state.public_spec.type === "factorial") {
+    return <FactorialSurvey port={port} state={(state.public_spec as PublicFactorialSurveySpec)} />
+  } else if (state.view_type === "exercise" && state.public_spec.type === "non-factorial") {
+    return <SurveyExercise port={port} state={state.public_spec as Survey} />
+  }  else if (state.view_type === "view-submission") {
     const feedbackJson: unknown | null = state.grading?.feedback_json
     const exerciseFeedback = feedbackJson ? (feedbackJson as ExerciseFeedback) : null
     return (

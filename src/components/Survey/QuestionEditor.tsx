@@ -69,6 +69,7 @@ const QuestionEditor: React.FC<Props> = ({
         <option value="number">number</option>
         <option value="multiple-choice">multiple-choise</option>
         <option value="radio-group">radio-group</option>
+        <option value="breed-list">breed-list drop-down</option>
       </select>
       <DeleteButton onClick={onDelete}>x</DeleteButton>
     </StyledEditor>

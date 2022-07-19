@@ -32,7 +32,8 @@ function handlePost(
 
   const publicForm = (form.type === "factorial") 
   ? ({
-    id: (form as FactorialSurvey).id,
+    id: form.id,
+    type: form.type,
     optionLabels: (form as FactorialSurvey).optionLabels,
     questions: (form as FactorialSurvey).questions
   }) as PublicFactorialSurveySpec
