@@ -11,7 +11,7 @@ interface Props {
   onChangeQuestion: (item: SurveyItem) => void
 }
 
-const StyledEditor = styled.div`
+const StyledOuterEditor = styled.div`
   margin: 0 auto;
   margin-bottom: 1rem;
   width: 100%;
@@ -23,9 +23,27 @@ const StyledEditor = styled.div`
   flex-direction: column;
 `
 
+const StyledInnerEditor = styled.div`
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 1px solid black;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-apart;
+`
+
 const DeleteButton = styled.button`
   width: 2rem;
   height: 2rem;
+`
+
+const Input = styled.input`
+  padding: 0.5rem;
+  width: 100%;
+  margin: 0 auto;
+  margin-right: 0.5rem;
 `
 
 const QuestionEditor: React.FC<Props> = ({
@@ -34,15 +52,21 @@ const QuestionEditor: React.FC<Props> = ({
   onChangeQuestion,
 }) => {
   return (
-    <StyledEditor>
-      <div
-        className={css`
+    <StyledOuterEditor>
+      <StyledInnerEditor>
+        <div
+          className={css`
             flex: 1;
-            margin: 0.5rem;
-          `}
-      >
-        {item.question && <MarkdownText text={item.question} />}
-      </div>
+            padding: 0.5rem;
+            width: 100%;
+            margin: 0 auto;
+            margin-right: 0.5rem;
+        `}>
+          {item.question && <MarkdownText text={item.question} />}
+        </div>
+        <DeleteButton onClick={onDelete}>x</DeleteButton>
+      </StyledInnerEditor>
+
       <TextArea
         label="Question text editor"
         value={item.question ?? ""}
@@ -50,21 +74,32 @@ const QuestionEditor: React.FC<Props> = ({
           onChangeQuestion({ ...item, question: value })
         }}
         className={css`
-        flex: 1;
-        padding: 0.5rem;
-        width: 100%;
-        margin: 0 auto;
-        margin-right: 0.5rem;
+          flex: 1;
+          padding: 0rem;
+          width: 100%;
+          margin: 0 auto;
+          margin-right: 0.5rem;
         `}
       />
+
       {/* eslint-disable-next-line i18next/no-literal-string */}
       <select
         onChange={(event) => {
-          const answer: Answer = item.answer ?? { id: v4(), type: AnswerType.None, answer: "", options: null }
+          const answer: Answer = item.answer ?? { id: v4(), type: AnswerType.None, answer: "", options: [] }
           const answerType: AnswerType = (event.target.value as unknown as AnswerType)
           if (!answerType) return
           onChangeQuestion({ ...item, answer: { ...answer, type: answerType } })
-        }}>
+        }}
+        className={css`
+          flex: 1;
+          padding: 0rem;
+          width: 100%;
+          margin: 0 auto;
+          margin-right: 0.5rem;
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+        `}
+        defaultValue={AnswerType.None}>
 
         {Object.values(AnswerType).map((t) => {
           if (t === AnswerType.None) {
@@ -81,13 +116,42 @@ const QuestionEditor: React.FC<Props> = ({
           )
         })}
       </select>
-      <DeleteButton onClick={onDelete}>x</DeleteButton>
+
       {(item.answer?.type === AnswerType.MultiChoice || item.answer?.type === AnswerType.RadioGroup) &&
         <div>
-          input youroptions here
+          <ol>
+            {item.answer.options.map((o, o_idx) => {
+              return (
+                <li key={o_idx}>
+                  <StyledInnerEditor>
+                    <Input
+                      value={o}
+                      type="text"
+                      onChange={(e) => {
+                        const newAnswer = item.answer
+                        newAnswer.options[o_idx] = e.target.value
+                        onChangeQuestion({ ...item, answer: newAnswer })
+                      }}
+                    />
+                    <DeleteButton
+                      onClick={() => {
+                        const newAnswer = { ...item.answer, options: item.answer.options.filter((e) => o !== e) }
+                        onChangeQuestion({ ...item, answer: newAnswer })
+                      }}>x</DeleteButton>
+                  </StyledInnerEditor>
+                </li>
+              )
+            })}
+          </ol>
+
+          <button onClick={() => {
+            const newItem = item as SurveyItem
+            newItem.answer.options.push("")
+            onChangeQuestion({ ...item, answer: newItem.answer })
+          }}>add option</button>
         </div>
       }
-    </StyledEditor>
+    </StyledOuterEditor>
   )
 }
 

@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import { v4 } from "uuid";
 import { State } from "../../pages/iframe";
-import { Survey, SurveyItem } from "../../util/stateInterfaces";
+import { Answer, AnswerType, Survey, SurveyItem } from "../../util/stateInterfaces";
 import QuestionEditor from "./QuestionEditor";
 
 interface Props {
@@ -83,7 +83,8 @@ const SurveyItemEditor: React.FC<Props> = ({ state, setState }) => {
             if (typeof newState.content === 'undefined') {
               newState.content = []
             }
-            newState.content.push({ id: v4(), question: "", answer: null })
+            const answerObject: Answer = { id: v4(), type: AnswerType.None, options: [], answer: "" }
+            newState.content.push({ id: v4(), question: "", answer: answerObject })
             setState({ view_type: "exercise-editor", private_spec: newState })
           }}
         >

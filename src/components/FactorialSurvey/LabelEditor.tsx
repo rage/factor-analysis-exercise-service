@@ -38,10 +38,10 @@ const LabelEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
           onChange({ ...item, value: isNaN(parsedNumber) ? null : parsedNumber })
         }}
         className={css`
-        padding: 0.5rem;
-        width: 6rem;
-        margin: 0 auto;
-        margin-right: 0.5rem;
+          padding: 0.5rem;
+          width: 6rem;
+          margin: 0 auto;
+          margin-right: 0.5rem;
         `}
       />
       <TextField
@@ -51,11 +51,11 @@ const LabelEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
           onChange({ ...item, label: e })
         }}
         className={css`
-        flex: 1;
-        padding: 0.5rem;
-        width: 100%;
-        margin: 0 auto;
-        margin-right: 0.5rem;
+          flex: 1;
+          padding: 0.5rem;
+          width: 100%;
+          margin: 0 auto;
+          margin-right: 0.5rem;
         `}
       />
       {/* eslint-disable-next-line i18next/no-literal-string */}

@@ -85,13 +85,13 @@ export interface PublicFactorialSurveySpec {
 export interface SurveyItem {
   id: string
   question: string
-  answer: Answer | null
+  answer: Answer
 }
 
 export interface Answer {
   id: string
   type: AnswerType
-  options: string[] | null
+  options: string[]
   answer: string[] | string | number | null
 }
 
