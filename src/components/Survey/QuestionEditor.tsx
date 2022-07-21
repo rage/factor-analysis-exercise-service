@@ -99,17 +99,16 @@ const QuestionEditor: React.FC<Props> = ({
           margin-top: 1rem;
           margin-bottom: 1rem;
         `}
-        defaultValue={AnswerType.None}>
+        value={item.answer.type}>
 
         {Object.values(AnswerType).map((t) => {
           if (t === AnswerType.None) {
-            return <option value={AnswerType.None}>Choose answer type</option>
+            return <option value={AnswerType.None}>Select answer type</option>
           }
           return (
             <option
               value={t}
               key={t}
-              selected={item.answer?.type === t ? true : false}
             >
               {t}
             </option>

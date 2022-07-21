@@ -1,15 +1,13 @@
 import { useState } from "react"
 import { CurrentStateMessage } from "../../shared-module/iframe-protocol-types"
 import { Answer, Survey, SurveyItem } from "../../util/stateInterfaces"
-import BreedList from "../BreedList"
-//import SurveyQuestion from "./SurveyQuestion"
+import MarkdownText from "../MarkdownText"
+import SurveyExerciseQuestion from "./SurveyExerciseQuestion"
 
 interface Props {
   state: Survey
   port: MessagePort
 }
-
-
 
 const SurveyExercise: React.FC<Props> = ({ port, state }) => {
   const INITIAL_R = state.content.map((q) => {
@@ -30,7 +28,7 @@ const SurveyExercise: React.FC<Props> = ({ port, state }) => {
     console.info("Posting current state to parent")
     // the type should be the same one that is received as the initial selected id
     const data: SurveyItem[] = value ? value as SurveyItem[] : []
-    
+
     const message: CurrentStateMessage = {
       // eslint-disable-next-line i18next/no-literal-string
       message: "current-state",
@@ -60,14 +58,20 @@ const SurveyExercise: React.FC<Props> = ({ port, state }) => {
 
   return (
     <div>
-      <BreedList onClick={value => console.log(value)} />
-
       {answeredQuestions.map((question) => {
         return (
           <div>
-
-            {question.question}
+            <fieldset>
+              <legend>
+                <MarkdownText text={question.question} />
+              </legend>
+              <SurveyExerciseQuestion
+                question={question}
+                updateAnswer={updateAnswer}
+              />
+            </fieldset>
           </div>
+
         )
       })}
     </div>
