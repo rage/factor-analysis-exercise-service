@@ -1,10 +1,11 @@
 import { css } from "@emotion/css";
 import TextArea from "../../shared-module/components/InputFields/TextAreaField";
 import { FactorialSurvey } from "../../util/stateInterfaces";
+import { parseLabelQuestion } from "../../util/utils";
 
 interface Props {
   item: FactorialSurvey
-  onChange: (parsedList: (string | number)[][]) => void
+  onChange: (parsedList: (string[] | null)[]) => void
   topic: string
 }
 
@@ -13,7 +14,7 @@ interface Props {
 const ListInputEditor: React.FC<Props> = ({ topic, onChange }) => {
   return (
     <TextArea
-      label={`Input ${topic}s as (semicolon) numbered list (1; ${topic}-text..[newline] 2; ${topic}-text..)`}
+      label={`Input ${topic}s as (semicolon separated) label;question list (${topic}label; ${topic}-text..[newline] ${topic}label; ${topic}-text..)`}
       autoResize
       className={css`
             width: 100%;
@@ -25,10 +26,8 @@ const ListInputEditor: React.FC<Props> = ({ topic, onChange }) => {
       onChange={(value) => {
         const data = value ? value : ""
         const parsedList = data.split("\n").map((e) => {
-          const tmp = e.split(";")
-          const indx = tmp[0].split(' ').join('')
           return (
-            [parseInt(indx), tmp[1]]
+            parseLabelQuestion(e)
           )
         })
         onChange(parsedList)

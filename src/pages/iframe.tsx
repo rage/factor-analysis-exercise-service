@@ -8,7 +8,7 @@ import { ExerciseTaskGrading } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { isSetStateMessage } from "../shared-module/iframe-protocol-types.guard"
-import { FactorialSurvey, ModelSolutionApi, PublicFactorialSurveySpec, RatedQuestion } from "../util/stateInterfaces"
+import { FactorialSurvey, ModelSolutionApi, PublicFactorialSurveySpec, RatedQuestion, Survey } from "../util/stateInterfaces"
 
 import { ExerciseFeedback } from "./api/grade"
 
@@ -21,11 +21,11 @@ export interface SubmissionData {
 export type State =
   | {
     view_type: "exercise"
-    public_spec: PublicFactorialSurveySpec
+    public_spec: PublicFactorialSurveySpec | Survey
   }
   | {
     view_type: "view-submission"
-    public_spec: PublicFactorialSurveySpec
+    public_spec: PublicFactorialSurveySpec | Survey
     answer: RatedQuestion[]
     feedback_json: ExerciseFeedback | null
     model_solution_spec: ModelSolutionApi | null
@@ -33,7 +33,7 @@ export type State =
   }
   | {
     view_type: "exercise-editor"
-    private_spec: FactorialSurvey
+    private_spec: FactorialSurvey | Survey
   }
 
 const Iframe: React.FC = () => {
@@ -51,19 +51,21 @@ const Iframe: React.FC = () => {
         if (messageData.view_type === "exercise") {
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec,
+            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec | Survey,
           })
         } else if (messageData.view_type === "exercise-editor") {
             setState({
               view_type: messageData.view_type,
               private_spec:
-                (JSON.parse(messageData.data.private_spec as string) as FactorialSurvey) || {},
+                (JSON.parse(messageData.data.private_spec as string) as FactorialSurvey) 
+                || (JSON.parse(messageData.data.private_spec as string) as Survey)
+                || {},
             })
         } else if (messageData.view_type === "view-submission") {
           const userAnswer = messageData.data.user_answer as RatedQuestion[]
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec,
+            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec | Survey,
             answer: userAnswer,
             feedback_json: messageData.data.grading?.feedback_json as ExerciseFeedback | null,
             model_solution_spec: messageData.data.model_solution_spec as ModelSolutionApi | null,

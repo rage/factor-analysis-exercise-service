@@ -1,22 +1,20 @@
 import { useState } from "react"
 import { CurrentStateMessage } from "../../shared-module/iframe-protocol-types"
 import { PublicFactorialSurveySpec, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
-import SurveyQuestion from "./SurveyQuestion"
+import BreedList from "../BreedList"
+import SurveyQuestion from "./FactorialSurveyQuestion"
 
 interface Props {
   state: PublicFactorialSurveySpec
   port: MessagePort
 }
 
-
-
-const Survey: React.FC<Props> = ({ port, state }) => {
+const FactorialSurvey: React.FC<Props> = ({ port, state }) => {
   const INITIAL_R = state.questions.map((q) => {
-    return {questionId: q.id, questionNr: q.questionNr, rate: null, question: q.question}
+    return { questionId: q.id, questionLabel: q.questionLabel, rate: null, question: q.question }
   })
 
   const [ratedQuestions, _setRatedQuestions] = useState<RatedQuestion[]>(INITIAL_R)
-
 
   const setRatedQuestions: typeof _setRatedQuestions = (value) => {
     const res = _setRatedQuestions(value)
@@ -41,7 +39,6 @@ const Survey: React.FC<Props> = ({ port, state }) => {
     return res
   }
 
-  
   const updateRate = (questionId: string, rate: number | null) => {
     if (!port) {
       // eslint-disable-next-line i18next/no-literal-string
@@ -53,19 +50,21 @@ const Survey: React.FC<Props> = ({ port, state }) => {
       if (quest.questionId !== questionId) {
         return quest
       }
-      return {...quest, rate: rate}
+      return { ...quest, rate: rate }
     })
     setRatedQuestions(newRatedQ)
   }
 
   return (
     <div>
+      <BreedList onClick={value => console.log(value)} />
+
       {ratedQuestions.map((question) => {
         return (
           <SurveyQuestion
             question={question}
-            options={state.optionLabels}
-            onClick={(id ,rate) => updateRate(id, rate)}
+            options={state.options}
+            onClick={(id, rate) => updateRate(id, rate)}
           />
         )
       })}
@@ -73,4 +72,4 @@ const Survey: React.FC<Props> = ({ port, state }) => {
   )
 }
 
-export default Survey
+export default FactorialSurvey
