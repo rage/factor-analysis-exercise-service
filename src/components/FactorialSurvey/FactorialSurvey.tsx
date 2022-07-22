@@ -11,11 +11,10 @@ interface Props {
 
 const FactorialSurvey: React.FC<Props> = ({ port, state }) => {
   const INITIAL_R = state.questions.map((q) => {
-    return { questionId: q.id, questionNr: q.questionNr, rate: null, question: q.question }
+    return { questionId: q.id, questionLabel: q.questionLabel, rate: null, question: q.question }
   })
 
   const [ratedQuestions, _setRatedQuestions] = useState<RatedQuestion[]>(INITIAL_R)
-
 
   const setRatedQuestions: typeof _setRatedQuestions = (value) => {
     const res = _setRatedQuestions(value)
@@ -64,7 +63,7 @@ const FactorialSurvey: React.FC<Props> = ({ port, state }) => {
         return (
           <SurveyQuestion
             question={question}
-            options={state.optionLabels}
+            options={state.options}
             onClick={(id, rate) => updateRate(id, rate)}
           />
         )

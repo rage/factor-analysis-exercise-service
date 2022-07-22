@@ -1,9 +1,9 @@
-import { Label, RatedQuestion } from "../../util/stateInterfaces"
+import { FactorialOption, RatedQuestion } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
 
 interface Props {
   question: RatedQuestion
-  options: Label[]
+  options: FactorialOption[]
   onClick: (questionId: string, rate: number | null) => void
 }
 
@@ -31,7 +31,7 @@ const SurveyQuestion: React.FC<Props> = ({
                   checked={question.rate === option.value}
                   required
                 />
-                <label>{option.label}</label>
+                <label>{option.name}</label>
               </div>
             )
           })}

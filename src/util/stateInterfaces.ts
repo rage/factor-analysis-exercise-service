@@ -23,30 +23,30 @@ export interface ModelSolutionApi {
 
 export interface Question {
   id: string
-  questionNr: number
+  questionLabel: string
   question: string
 }
 
 /** Evaluated survey question contains numerical | NA value as rate */
 export interface RatedQuestion {
   questionId: string
-  questionNr: number
+  questionLabel: string
   question: string
   rate: number | null
 }
 
-/** Option labels for rating the factorial survey question
+/** Answer option for rating factorial survey questions
  */
-export interface Label {
+export interface FactorialOption {
   id: string
-  label: string
+  name: string
   value: number | null
 }
 
 /** FactorialSurvey for factorial analysis, options are constant for the whole set of questions
  * 
  * @factors Factor[]
- * @optionLabels Label[]
+ * @options FactorialOption[]
  * @questions Question[]
  * @matrix number[factor][question]
  */
@@ -55,10 +55,10 @@ export interface FactorialSurvey {
   type: SurveyType.Factorial
   factorAmount: number
   factors: Factor[]
-  optionLabels: Label[]
+  options: FactorialOption[]
   questions: Question[]
   /**
-   *  Matrix for caculating factors for the factorial survey
+   *  Matrix for caculating factor scores for the factorial survey
    *  weights to be multiplied with the evaluated question rates
    *  row by question, col by factor: [question, factor] * question_rate
    */
@@ -72,13 +72,13 @@ export interface SubmittedForm {
 export interface Factor {
   id: string
   name: string
-  score: number
+  score: number | null
 }
 
 export interface PublicFactorialSurveySpec {
   id: string
   type: SurveyType.Factorial
-  optionLabels: Label[]
+  options: FactorialOption[]
   questions: Question[]
 }
 

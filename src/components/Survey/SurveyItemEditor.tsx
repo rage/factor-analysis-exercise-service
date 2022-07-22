@@ -29,13 +29,6 @@ const NewButton = styled.button`
   }
 `
 
-const Input = styled.input`
-  padding: 0.5rem;
-  width: 100%;
-  margin: 0 auto;
-  margin-right: 0.5rem;
-`
-
 const SurveyItemEditor: React.FC<Props> = ({ state, setState }) => {
   return (
     <div

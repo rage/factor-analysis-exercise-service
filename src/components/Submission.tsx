@@ -33,7 +33,7 @@ const Submission: React.FC<SubmissionProps> = ({ publicSpec, answer }) => {
         return (
           <fieldset>
             <MarkdownText text={question.question} />
-            {(publicSpec.type === "factorial") && (publicSpec as PublicFactorialSurveySpec).optionLabels.map((option) => {
+            {(publicSpec.type === "factorial") && (publicSpec as PublicFactorialSurveySpec).options.map((option) => {
               const selected = question.rate === option.value
               const border = `4px solid ${GREEN}`
               return (

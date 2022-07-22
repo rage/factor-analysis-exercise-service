@@ -27,12 +27,10 @@ const StyledInnerEditor = styled.div`
   margin: 0 auto;
   margin-bottom: 1rem;
   width: 100%;
-  border: 1px solid black;
-  padding: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-apart;
-`
+  `
 
 const DeleteButton = styled.button`
   width: 2rem;
