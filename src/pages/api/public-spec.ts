@@ -28,13 +28,11 @@ function handlePost(
       .json({ message: "Malformed data:" + JSON.stringify(form) })
   }
 
-  form.type
-
   const publicForm = (form.type === SurveyType.Factorial) 
   ? ({
     id: form.id,
     type: form.type,
-    optionLabels: (form as FactorialSurvey).optionLabels,
+    options: (form as FactorialSurvey).options,
     questions: (form as FactorialSurvey).questions
   }) as PublicFactorialSurveySpec
   

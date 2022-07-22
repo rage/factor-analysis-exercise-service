@@ -4,6 +4,7 @@ import { v4 } from "uuid"
 import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 
 import { Answer, AnswerType, SurveyItem } from "../../util/stateInterfaces"
+import { parseLabelQuestion } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 interface Props {
   item: SurveyItem
@@ -60,16 +61,18 @@ const QuestionEditor: React.FC<Props> = ({
             margin: 0 auto;
             margin-right: 0.5rem;
         `}>
-          {item.question && <MarkdownText text={item.question} />}
+          {item.question && <MarkdownText text={item.question.question} />}
         </div>
         <DeleteButton onClick={onDelete}>x</DeleteButton>
       </StyledInnerEditor>
-
+      <legend>{item.question.questionLabel}</legend>
       <TextArea
-        label="Question text editor"
-        value={item.question ?? ""}
+        label="Editor (label ; question)"
+        //value={item.question.question ?? ""}   If this, then label wont show, neither will text appear unless it's correctly parsed
         onChange={(value) => {
-          onChangeQuestion({ ...item, question: value })
+          const parsedValue = parseLabelQuestion(value)
+          if (!parsedValue) return
+          onChangeQuestion({ ...item, question: { ...item.question, questionLabel: parsedValue[0], question: parsedValue[1] } })
         }}
         className={css`
           flex: 1;

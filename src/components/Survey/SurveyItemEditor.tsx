@@ -77,7 +77,7 @@ const SurveyItemEditor: React.FC<Props> = ({ state, setState }) => {
               newState.content = []
             }
             const answerObject: Answer = { id: v4(), type: AnswerType.None, options: [], answer: "" }
-            newState.content.push({ id: v4(), question: "", answer: answerObject })
+            newState.content.push({ id: v4(), question: {id: v4(), question: "", questionLabel: ""}, answer: answerObject })
             setState({ view_type: "exercise-editor", private_spec: newState })
           }}
         >

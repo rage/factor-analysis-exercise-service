@@ -74,7 +74,10 @@ export interface Factor {
   name: string
   score: number | null
 }
-
+/** PublicSpec for Factorial survey
+ * @options FactorOption[]
+ * @questions Question[]
+ */
 export interface PublicFactorialSurveySpec {
   id: string
   type: SurveyType.Factorial
@@ -84,7 +87,7 @@ export interface PublicFactorialSurveySpec {
 
 export interface SurveyItem {
   id: string
-  question: string
+  question: Question
   answer: Answer
 }
 

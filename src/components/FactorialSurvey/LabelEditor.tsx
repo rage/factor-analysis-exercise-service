@@ -2,11 +2,11 @@ import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 import TextField from "../../shared-module/components/InputFields/TextField"
 
-import { Label } from "../../util/stateInterfaces"
+import { FactorialOption } from "../../util/stateInterfaces"
 interface Props {
-  item: Label
+  item: FactorialOption
   onDelete: () => void
-  onChange: (item: Label) => void
+  onChange: (item: FactorialOption) => void
 }
 
 const StyledLabelEditor = styled.div`
@@ -46,9 +46,9 @@ const LabelEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
       />
       <TextField
         label="Label text"
-        value={item.label}
+        value={item.name}
         onChange={(e) => {
-          onChange({ ...item, label: e })
+          onChange({ ...item, name: e })
         }}
         className={css`
           flex: 1;
