@@ -7,7 +7,7 @@ import { CurrentStateMessage } from "../shared-module/iframe-protocol-types"
 import { PrivateSpec, SurveyType } from "../util/stateInterfaces"
 
 import FactorialSurveyEditor from "./FactorialSurvey/FactorialSurveyEditor"
-import SurveyItemEditor from "./Survey/SurveyItemEditor"
+import SurveyItemEditor from "./Survey/SurveyEditor"
 
 const CURRENT_STATE = "current-state"
 interface Props {

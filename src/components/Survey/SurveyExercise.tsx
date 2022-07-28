@@ -10,11 +10,11 @@ interface Props {
 }
 
 const SurveyExercise: React.FC<Props> = ({ port, state }) => {
-  const INITIAL_R = state.content.map((q) => {
+  const INITIAL_ANSWERED = state.content.map((q) => {
     return ({ id: q.id, question: q.question, answer: q.answer } as SurveyItem)
   })
 
-  const [answeredQuestions, _setAnsweredQuestions] = useState<SurveyItem[]>(INITIAL_R)
+  const [answeredQuestions, _setAnsweredQuestions] = useState<SurveyItem[]>(INITIAL_ANSWERED)
 
 
   const setAnsweredQuestions: typeof _setAnsweredQuestions = (value) => {

@@ -10,7 +10,6 @@ const SurveyExerciseQuestion: React.FC<Props> = ({
   question,
   updateAnswer,
 }) => {
-  console.log("in the right question thingie")
   switch (question.answer.type) {
     case AnswerType.BreedList: {
       return (

@@ -113,3 +113,5 @@ export enum AnswerType {
 }
 
 export type PrivateSpec = FactorialSurvey | Survey | null
+
+export type PublicSpec = PublicFactorialSurveySpec | Survey

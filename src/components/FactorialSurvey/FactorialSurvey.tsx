@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { CurrentStateMessage } from "../../shared-module/iframe-protocol-types"
 import { PublicFactorialSurveySpec, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
-import BreedList from "../BreedList"
 import SurveyQuestion from "./FactorialSurveyQuestion"
 
 interface Props {
@@ -57,8 +56,6 @@ const FactorialSurvey: React.FC<Props> = ({ port, state }) => {
 
   return (
     <div>
-      <BreedList onClick={value => console.log(value)} />
-
       {ratedQuestions.map((question) => {
         return (
           <SurveyQuestion

@@ -1,50 +1,29 @@
-import { useState } from "react"
-
-import { CurrentStateMessage } from "../shared-module/iframe-protocol-types"
-import { Answer, PublicAlternative } from "../util/stateInterfaces"
-
-import ExerciseBase from "./ExerciseBase"
+import { PublicSpec, SurveyType } from "../util/stateInterfaces"
+import FactorialSurvey from "./FactorialSurvey/FactorialSurvey"
+import SurveyExercise from "./Survey/SurveyExercise"
 
 interface Props {
-  state: PublicAlternative[]
+  state: PublicSpec
   port: MessagePort
 }
 
-const Exercise: React.FC<Props> = ({ port, state }) => {
-  const [selectedId, _setSelectedId] = useState<string | null>(null)
-
-  const setSelectedId: typeof _setSelectedId = (value) => {
-    const res = _setSelectedId(value)
-    if (!port) {
-      // eslint-disable-next-line i18next/no-literal-string
-      console.error("Cannot send current state to parent because I don't have a port")
-      return
+const Exercise: React.FC<Props> = ({ state, port }) => {
+  switch (state.type) {
+    case SurveyType.Factorial: {
+      return (
+        <div>
+          <FactorialSurvey state={state} port={port}/>
+        </div>
+      )
     }
-    // eslint-disable-next-line i18next/no-literal-string
-    console.info("Posting current state to parent")
-    // the type should be the same one that is received as the initial selected id
-    const data: Answer = { selectedOptionId: value ? value.toString() : "" }
-    const message: CurrentStateMessage = {
-      // eslint-disable-next-line i18next/no-literal-string
-      message: "current-state",
-      data,
-      valid: true,
+    case SurveyType.NonFactorial: {
+      return (
+        <div>
+          <SurveyExercise state={state} port={port}/>
+        </div>
+      )
     }
-    port.postMessage(message)
-    return res
   }
-
-  return (
-    <ExerciseBase
-      alternatives={state}
-      selectedId={selectedId}
-      onClick={(selectedId) => {
-        setSelectedId(selectedId)
-      }}
-      interactable={true}
-      model_solutions={null}
-    />
-  )
 }
 
 export default Exercise
