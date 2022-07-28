@@ -44,11 +44,6 @@ export interface FactorialOption {
 }
 
 /** FactorialSurvey for factorial analysis, options are constant for the whole set of questions
- * 
- * @factors Factor[]
- * @options FactorialOption[]
- * @questions Question[]
- * @matrix number[factor][question]
  */
 export interface FactorialSurvey {
   id: string
@@ -74,9 +69,8 @@ export interface Factor {
   name: string
   score: number | null
 }
+
 /** PublicSpec for Factorial survey
- * @options FactorOption[]
- * @questions Question[]
  */
 export interface PublicFactorialSurveySpec {
   id: string
@@ -117,3 +111,5 @@ export enum AnswerType {
   RadioGroup = 'radio-group',
   BreedList = 'breed-list'
 }
+
+export type PrivateSpec = FactorialSurvey | Survey | null
