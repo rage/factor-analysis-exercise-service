@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { CurrentStateMessage } from "../../shared-module/iframe-protocol-types"
+import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
 import { PublicFactorialSurveySpec, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
 import SurveyQuestion from "./FactorialSurveyQuestion"
 

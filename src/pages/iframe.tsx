@@ -4,32 +4,32 @@ import React, { useState } from "react"
 import ReactDOM from "react-dom"
 
 import { Renderer } from "../components/Renderer"
-import { ExerciseTaskGrading } from "../shared-module/bindings"
+import { ExerciseTaskGradingResult } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
+import { isSetStateMessage } from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
-import { isSetStateMessage } from "../shared-module/iframe-protocol-types.guard"
-import { FactorialSurvey, ModelSolutionApi, PrivateSpec, PublicFactorialSurveySpec, RatedQuestion, Survey } from "../util/stateInterfaces"
+import { ModelSolutionApi, PrivateSpec, PublicSpec, RatedQuestion, SubmittedForm } from "../util/stateInterfaces"
 
 import { ExerciseFeedback } from "./api/grade"
 
 export interface SubmissionData {
-  grading: ExerciseTaskGrading
+  grading: ExerciseTaskGradingResult
   user_answer: RatedQuestion[]
-  public_spec: PublicFactorialSurveySpec
+  public_spec: PublicSpec
 }
 
 export type State =
   | {
     view_type: "exercise"
-    public_spec: PublicFactorialSurveySpec | Survey
+    public_spec: PublicSpec
   }
   | {
     view_type: "view-submission"
-    public_spec: PublicFactorialSurveySpec | Survey
-    answer: RatedQuestion[]
+    public_spec: PublicSpec
+    answer: SubmittedForm
     feedback_json: ExerciseFeedback | null
     model_solution_spec: ModelSolutionApi | null
-    grading: ExerciseTaskGrading | null
+    grading: ExerciseTaskGradingResult | null
   }
   | {
     view_type: "exercise-editor"
@@ -51,21 +51,20 @@ const Iframe: React.FC = () => {
         if (messageData.view_type === "exercise") {
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec | Survey,
+            public_spec: messageData.data.public_spec as PublicSpec,
           })
         } else if (messageData.view_type === "exercise-editor") {
             setState({
               view_type: messageData.view_type,
               private_spec:
-                (JSON.parse(messageData.data.private_spec as string) as FactorialSurvey) 
-                || (JSON.parse(messageData.data.private_spec as string) as Survey)
-                || null,
+                (JSON.parse(messageData.data.private_spec as string) as PrivateSpec)
             })
         } else if (messageData.view_type === "view-submission") {
-          const userAnswer = messageData.data.user_answer as RatedQuestion[]
+          console.log("submission view in iframe")
+          const userAnswer = messageData.data.user_answer as SubmittedForm
           setState({
             view_type: messageData.view_type,
-            public_spec: messageData.data.public_spec as PublicFactorialSurveySpec | Survey,
+            public_spec: messageData.data.public_spec as PublicSpec,
             answer: userAnswer,
             feedback_json: messageData.data.grading?.feedback_json as ExerciseFeedback | null,
             model_solution_spec: messageData.data.model_solution_spec as ModelSolutionApi | null,
@@ -77,6 +76,8 @@ const Iframe: React.FC = () => {
         }
       })
     } else {
+      console.log(messageData)
+      console.log(isSetStateMessage(messageData))
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Frame received an unknown message from message port")
     }

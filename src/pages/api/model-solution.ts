@@ -23,17 +23,18 @@ const handleRequest = (
   res: NextApiResponse<ModelSolutionApi | ClientErrorResponse>,
 ) => {
   const uncheckedAlternatives: unknown = req.body
-  if (!Array.isArray(uncheckedAlternatives)) {
+  /* if (!Array.isArray(uncheckedAlternatives)) {
     return res
       .status(400)
       .json({ message: "Malformed data:" + JSON.stringify(uncheckedAlternatives) })
-  }
+  } */
 
-  const correctAlternatives: ModelSolutionApi = {
+  /* const correctAlternatives: ModelSolutionApi = {
     correctOptionIds: uncheckedAlternatives
       .filter((alt) => Boolean(alt.correct))
       .map<string>((x: PublicAlternative) => x.id),
-  }
+  } */
 
-  return res.status(200).json(correctAlternatives)
+  const result: ModelSolutionApi = {correctOptionIds: []}
+  return res.status(200).json(result)
 }

@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { cors, runMiddleware } from "../../util/cors"
 
-import { Alternative, Answer, ClientErrorResponse } from "../../util/stateInterfaces"
+import { ClientErrorResponse, Factor, PrivateSpec, SubmittedForm } from "../../util/stateInterfaces"
 
 export default async (
   req: NextApiRequest,
@@ -27,18 +27,18 @@ interface GradingResult {
 }
 
 export interface ExerciseFeedback {
-  selectedOptionIsCorrect: boolean
+  factorReport: Factor[] 
 }
 
 interface GradingRequest {
-  exercise_spec: Alternative[]
-  submission_data: Answer
+  exercise_spec: PrivateSpec
+  submission_data: SubmittedForm
 }
 
 const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) => {
   const gradingRequest: GradingRequest = req.body
 
-  if (!gradingRequest?.submission_data?.selectedOptionId) {
+  if (!gradingRequest?.submission_data) {
     return res.status(200).json({
       grading_progress: "FullyGraded",
       score_given: 0,
@@ -48,24 +48,11 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     })
   }
 
-  const selectedOptionId = gradingRequest?.submission_data?.selectedOptionId
-
-  const selectedOptionSpec = gradingRequest?.exercise_spec.find((o) => o.id == selectedOptionId)
-  if (!selectedOptionSpec || !selectedOptionSpec.correct) {
-    return res.status(200).json({
-      grading_progress: "FullyGraded",
-      score_given: 0,
-      score_maximum: 1,
-      feedback_text: "Your answer was not correct",
-      feedback_json: { selectedOptionIsCorrect: false },
-    })
-  }
-
   res.status(200).json({
     grading_progress: "FullyGraded",
     score_given: 1,
     score_maximum: 1,
     feedback_text: "Good job!",
-    feedback_json: { selectedOptionIsCorrect: true },
+    feedback_json: null   // put the calculated factor scores here for now
   })
 }

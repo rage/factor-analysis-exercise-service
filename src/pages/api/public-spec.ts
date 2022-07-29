@@ -2,7 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 import { cors, runMiddleware } from "../../util/cors"
 
-import { ClientErrorResponse, FactorialSurvey, PublicFactorialSurveySpec, Survey, SurveyType } from "../../util/stateInterfaces"
+import { ClientErrorResponse, FactorialSurvey, PrivateSpec, PublicFactorialSurveySpec, Survey, SurveyType } from "../../util/stateInterfaces"
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await runMiddleware(req, res, cors)
@@ -19,7 +19,7 @@ function handlePost(
   res: NextApiResponse<PublicFactorialSurveySpec | Survey | ClientErrorResponse>,
 ) {
 
-  const form: FactorialSurvey | Survey = req.body
+  const form: PrivateSpec = req.body
 
   // Add a reasonable error checking here!
   if (!form) {
@@ -28,16 +28,14 @@ function handlePost(
       .json({ message: "Malformed data:" + JSON.stringify(form) })
   }
 
-  const publicForm = (form.type === SurveyType.Factorial) 
-  ? ({
-    id: form.id,
-    type: form.type,
-    options: (form as FactorialSurvey).options,
-    questions: (form as FactorialSurvey).questions
-  }) as PublicFactorialSurveySpec
-  
-  : form as Survey
-   
+  const publicForm = (form.type === SurveyType.Factorial)
+    ? ({
+      id: form.id,
+      type: form.type,
+      options: (form as FactorialSurvey).options,
+      questions: (form as FactorialSurvey).questions
+    }) as PublicFactorialSurveySpec
+    : form as Survey
 
   return res.status(200).json(publicForm)
 }

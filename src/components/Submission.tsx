@@ -3,13 +3,13 @@ import React from "react"
 
 import { ExerciseFeedback } from "../pages/api/grade"
 import { baseTheme } from "../shared-module/styles"
-import { ModelSolutionApi, PublicFactorialSurveySpec, RatedQuestion, Survey } from "../util/stateInterfaces"
+import { ModelSolutionApi, PublicSpec, SubmittedForm } from "../util/stateInterfaces"
 import MarkdownText from "./MarkdownText"
 
 interface SubmissionProps {
   port: MessagePort
-  publicSpec: PublicFactorialSurveySpec | Survey
-  answer: RatedQuestion[]
+  publicSpec: PublicSpec
+  answer: SubmittedForm
   gradingFeedback: ExerciseFeedback | null
   modelSolutionSpec: ModelSolutionApi | null
 }
@@ -20,7 +20,7 @@ const Submission: React.FC<SubmissionProps> = ({ publicSpec, answer }) => {
 
   const COLOR = baseTheme.colors.blue[300]
   const CHOSEN_COLOR = baseTheme.colors.blue[700]
-
+  console.log("In the submission now")
   return (
     <div
       className={css`
@@ -28,33 +28,13 @@ const Submission: React.FC<SubmissionProps> = ({ publicSpec, answer }) => {
         flex-direction: column;
       `}
     >
-      {answer.map((question) => {
+      <h1>Hello there</h1>
+      {answer.answeredQuestions.map((question) => {
 
         return (
-          <fieldset>
+          <fieldset key={question.questionId}>
             <MarkdownText text={question.question} />
-            {(publicSpec.type === "factorial") && (publicSpec as PublicFactorialSurveySpec).options.map((option) => {
-              const selected = question.rate === option.value
-              const border = `4px solid ${GREEN}`
-              return (
-                <button
-                  role="radio"
-                  className={css`
-                    padding: 1rem 2rem;
-                    background-color: ${selected ? CHOSEN_COLOR : COLOR};
-                    border-radius: 1rem;
-                    border: ${border};
-                    color: ${selected ? baseTheme.colors.primary[100] : baseTheme.colors.primary[200]};
-                    margin-top: 0.5rem;
-                    margin-bottom: 0.5rem;
-                  `}
-                  aria-checked={selected}
-                  key={option.id}
-                >
-                  {option}
-                </button>
-              )
-            })}
+            
           </fieldset>
         )
       })}

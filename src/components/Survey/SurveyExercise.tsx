@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { CurrentStateMessage } from "../../shared-module/iframe-protocol-types"
+import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
 import { Answer, Survey, SurveyItem } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
 import SurveyExerciseQuestion from "./SurveyExerciseQuestion"
