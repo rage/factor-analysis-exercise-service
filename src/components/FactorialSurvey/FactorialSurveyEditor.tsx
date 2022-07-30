@@ -91,7 +91,7 @@ const FactorialSurveyEditor: React.FC<Props> = ({ state, setState }) => {
               if (typeof newState.options === 'undefined') {
                 newState.options = []
               }
-              newState.options.push({ name: "", value: null, id: v4() })
+              newState.options.push({ name: "", value: 0, id: v4() })
               // eslint-disable-next-line i18next/no-literal-string
               setState({ view_type: "exercise-editor", private_spec: newState })
             }}

@@ -40,7 +40,7 @@ export interface RatedQuestion {
 export interface FactorialOption {
   id: string
   name: string
-  value: number | null
+  value: number | string
 }
 
 /** FactorialSurvey for factorial analysis, options are constant for the whole set of questions
@@ -104,12 +104,12 @@ export enum SurveyType {
 }
 
 export enum AnswerType {
-  None = '',
-  Text = 'text',
-  Number = 'number',
-  MultiChoice = 'multiple-choice',
-  RadioGroup = 'radio-group',
-  BreedList = 'breed-list'
+  None = "",
+  Text = "text",
+  Number = "number",
+  MultiChoice = "multiple-choice",
+  RadioGroup = "radio-group",
+  BreedList = "breed-list"
 }
 
 export type PrivateSpec = FactorialSurvey | Survey | null
