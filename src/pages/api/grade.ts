@@ -2,7 +2,8 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { cors, runMiddleware } from "../../util/cors"
 
-import { ClientErrorResponse, Factor, PrivateSpec, SubmittedForm } from "../../util/stateInterfaces"
+import { ClientErrorResponse, Factor, PrivateSpec, SubmittedForm, SurveyType } from "../../util/stateInterfaces"
+import { calculateFactors } from "../../util/utils"
 
 export default async (
   req: NextApiRequest,
@@ -27,7 +28,7 @@ interface GradingResult {
 }
 
 export interface ExerciseFeedback {
-  factorReport: Factor[] 
+  factorReport: Factor[]
 }
 
 interface GradingRequest {
@@ -48,11 +49,22 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     })
   }
 
+  if (gradingRequest.exercise_spec?.type === SurveyType.Factorial) {
+    const factors: Factor[] = calculateFactors(gradingRequest.exercise_spec, gradingRequest.submission_data.answeredQuestions)
+    return res.status(200).json({
+      grading_progress: "FullyGraded",
+      score_given: 1,
+      score_maximum: 1,
+      feedback_text: "Good job!",
+      feedback_json: { factorReport: factors }  // put the calculated factor scores here for now
+    })
+  }
+  
   res.status(200).json({
     grading_progress: "FullyGraded",
     score_given: 1,
     score_maximum: 1,
     feedback_text: "Good job!",
-    feedback_json: null   // put the calculated factor scores here for now
+    feedback_json: null
   })
 }

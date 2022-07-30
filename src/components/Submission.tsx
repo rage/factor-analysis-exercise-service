@@ -4,7 +4,6 @@ import React from "react"
 import { ExerciseFeedback } from "../pages/api/grade"
 import { baseTheme } from "../shared-module/styles"
 import { ModelSolutionApi, PublicSpec, SubmittedForm } from "../util/stateInterfaces"
-import MarkdownText from "./MarkdownText"
 
 interface SubmissionProps {
   port: MessagePort
@@ -14,9 +13,9 @@ interface SubmissionProps {
   modelSolutionSpec: ModelSolutionApi | null
 }
 
-const Submission: React.FC<SubmissionProps> = ({ publicSpec, answer }) => {
+const Submission: React.FC<SubmissionProps> = ({ publicSpec, answer, gradingFeedback }) => {
   // Border colors
-   const GREEN = baseTheme.colors.green[300]
+  const GREEN = baseTheme.colors.green[300]
 
   const COLOR = baseTheme.colors.blue[300]
   const CHOSEN_COLOR = baseTheme.colors.blue[700]
@@ -29,13 +28,18 @@ const Submission: React.FC<SubmissionProps> = ({ publicSpec, answer }) => {
       `}
     >
       <h1>Hello there</h1>
-      {answer.answeredQuestions.map((question) => {
-
+      {gradingFeedback?.factorReport.map((f) => {
         return (
-          <fieldset key={question.questionId}>
-            <MarkdownText text={question.question} />
-            
-          </fieldset>
+          <>
+            <fieldset key={f.id}>
+              <p>
+                {f.name}
+              </p>
+              <p>
+                {f.score}
+              </p>
+            </fieldset>
+          </>
         )
       })}
     </div>

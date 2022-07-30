@@ -3,7 +3,7 @@ import { useEffect } from "react"
 import { v4 } from "uuid"
 
 import { State } from "../pages/iframe"
-import { CurrentStateMessage } from "../shared-module/iframe-protocol-types"
+import { CurrentStateMessage } from "../shared-module/exercise-service-protocol-types"
 import { PrivateSpec, SurveyType } from "../util/stateInterfaces"
 
 import FactorialSurveyEditor from "./FactorialSurvey/FactorialSurveyEditor"
