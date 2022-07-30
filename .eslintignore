@@ -1,0 +1,8 @@
+node_modules
+target
+.next
+out
+playwright-report
+storybook-static
+services/**/shared-module
+services/main-frontend/public/monaco-editor
