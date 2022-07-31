@@ -33,6 +33,7 @@ export interface RatedQuestion {
   questionLabel: string
   question: string
   rate: number | null
+  chosenOption: string
 }
 
 /** Answer option for rating factorial survey questions
@@ -104,12 +105,12 @@ export enum SurveyType {
 }
 
 export enum AnswerType {
-  None = '',
-  Text = 'text',
-  Number = 'number',
-  MultiChoice = 'multiple-choice',
-  RadioGroup = 'radio-group',
-  BreedList = 'breed-list'
+  None = "",
+  Text = "text",
+  Number = "number",
+  MultiChoice = "multiple-choice",
+  RadioGroup = "radio-group",
+  BreedList = "breed-list"
 }
 
 export type PrivateSpec = FactorialSurvey | Survey | null
