@@ -33,6 +33,7 @@ export interface RatedQuestion {
   questionLabel: string
   question: string
   rate: number | null
+  chosenOption: string
 }
 
 /** Answer option for rating factorial survey questions
@@ -40,7 +41,7 @@ export interface RatedQuestion {
 export interface FactorialOption {
   id: string
   name: string
-  value: number | string
+  value: number | null
 }
 
 /** FactorialSurvey for factorial analysis, options are constant for the whole set of questions

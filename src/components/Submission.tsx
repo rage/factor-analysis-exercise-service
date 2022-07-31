@@ -19,7 +19,6 @@ const Submission: React.FC<SubmissionProps> = ({ publicSpec, answer, gradingFeed
 
   const COLOR = baseTheme.colors.blue[300]
   const CHOSEN_COLOR = baseTheme.colors.blue[700]
-  console.log("In the submission now")
   return (
     <div
       className={css`

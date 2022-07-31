@@ -4,7 +4,7 @@ import MarkdownText from "../MarkdownText"
 interface Props {
   question: RatedQuestion
   options: FactorialOption[]
-  onClick: (questionId: string, rate: number | null) => void
+  onClick: (questionId: string, rate: number | null, chosenOption: string) => void
 }
 
 const SurveyQuestion: React.FC<Props> = ({
@@ -26,9 +26,12 @@ const SurveyQuestion: React.FC<Props> = ({
                   type="radio"
                   value={option.value ?? undefined}
                   onChange={(e) => {
-                    onClick(question.questionId, isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value))
+                    onClick(
+                      question.questionId, 
+                      isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value), 
+                      option.name)
                   }}
-                  checked={question.rate === option.value}
+                  checked={question.chosenOption === option.name}
                   required
                 />
                 <label>{option.name}</label>

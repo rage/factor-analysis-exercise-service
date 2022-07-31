@@ -60,7 +60,6 @@ const Iframe: React.FC = () => {
                 (JSON.parse(messageData.data.private_spec as string) as PrivateSpec)
             })
         } else if (messageData.view_type === "view-submission") {
-          console.log("submission view in iframe")
           const userAnswer = messageData.data.user_answer as SubmittedForm
           setState({
             view_type: messageData.view_type,
@@ -76,8 +75,6 @@ const Iframe: React.FC = () => {
         }
       })
     } else {
-      console.log(messageData)
-      console.log(isSetStateMessage(messageData))
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Frame received an unknown message from message port")
     }
