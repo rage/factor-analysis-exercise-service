@@ -1,7 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
 import { NextApiRequest, NextApiResponse } from "next"
-import { cors, runMiddleware } from "../../util/cors"
 
+import { cors, runMiddleware } from "../../util/cors"
 import {
   ClientErrorResponse,
   ModelSolutionApi,
@@ -35,6 +35,6 @@ const handleRequest = (
       .map<string>((x: PublicAlternative) => x.id),
   } */
 
-  const result: ModelSolutionApi = {correctOptionIds: []}
+  const result: ModelSolutionApi = { correctOptionIds: [] }
   return res.status(200).json(result)
 }

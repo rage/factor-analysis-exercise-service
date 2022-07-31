@@ -1,5 +1,6 @@
 import { css } from "@emotion/css"
 import { useState } from "react"
+
 import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 import { FactorialSurvey } from "../../util/stateInterfaces"
 
@@ -9,20 +10,19 @@ interface Props {
 }
 
 const parseMatrixString = (matrixToParse: string): number[][] => {
-  const matrix = matrixToParse.split(' ').join('')
-    .split('\n').join('')
+  const matrix = matrixToParse
+    .split(" ")
+    .join("")
+    .split("\n")
+    .join("")
     .split("],[")
     .map((s) => {
-      return (
-        s.split('[').join('')
-          .split(']').join('')
-          .split(',').map(Number)
-      )
+      return s.split("[").join("").split("]").join("").split(",").map(Number)
     })
   return matrix
 }
 
-const MatrixEditor: React.FC<Props> = ({ item, onChange }) => {
+const MatrixEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChange }) => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   return (
@@ -30,12 +30,12 @@ const MatrixEditor: React.FC<Props> = ({ item, onChange }) => {
       label="Factor Matrix JSON"
       autoResize
       className={css`
-            width: 100%;
-            textarea {
-              width: 100%;
-              resize: vertical;
-            }
-          `}
+        width: 100%;
+        textarea {
+          width: 100%;
+          resize: vertical;
+        }
+      `}
       onChange={(value) => {
         const matrixString = value ? (JSON.parse(value) as string) : ""
         const matrix = parseMatrixString(matrixString)

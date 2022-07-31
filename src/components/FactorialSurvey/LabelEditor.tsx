@@ -1,7 +1,7 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
-import TextField from "../../shared-module/components/InputFields/TextField"
 
+import TextField from "../../shared-module/components/InputFields/TextField"
 import { FactorialOption } from "../../util/stateInterfaces"
 interface Props {
   item: FactorialOption
@@ -25,7 +25,7 @@ const DeleteButton = styled.button`
   height: 2rem;
 `
 
-const LabelEditor: React.FC<Props> = ({ item, onDelete, onChange }) => {
+const LabelEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onDelete, onChange }) => {
   return (
     <StyledLabelEditor>
       <TextField

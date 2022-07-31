@@ -1,8 +1,8 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 import { v4 } from "uuid"
-import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 
+import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 import { Answer, AnswerType, SurveyItem } from "../../util/stateInterfaces"
 import { parseLabelQuestion } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
@@ -31,7 +31,7 @@ const StyledInnerEditor = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-apart;
-  `
+`
 
 const DeleteButton = styled.button`
   width: 2rem;
@@ -45,7 +45,7 @@ const Input = styled.input`
   margin-right: 0.5rem;
 `
 
-const SurveyItemEditor: React.FC<Props> = ({
+const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
   item,
   onDelete,
   onChangeSurveyItem, // change survey item
@@ -60,7 +60,8 @@ const SurveyItemEditor: React.FC<Props> = ({
             width: 100%;
             margin: 0 auto;
             margin-right: 0.5rem;
-        `}>
+          `}
+        >
           {item.question && <MarkdownText text={item.question.question} />}
         </div>
         <DeleteButton onClick={onDelete}>x</DeleteButton>
@@ -71,8 +72,13 @@ const SurveyItemEditor: React.FC<Props> = ({
         //value={item.question.question ?? ""}   If this, then label wont show, neither will text appear unless it's correctly parsed
         onChange={(value) => {
           const parsedValue = parseLabelQuestion(value)
-          if (!parsedValue) return
-          onChangeSurveyItem({ ...item, question: { ...item.question, questionLabel: parsedValue[0], question: parsedValue[1] } })
+          if (!parsedValue) {
+            return
+          }
+          onChangeSurveyItem({
+            ...item,
+            question: { ...item.question, questionLabel: parsedValue[0], question: parsedValue[1] },
+          })
         }}
         className={css`
           flex: 1;
@@ -86,9 +92,16 @@ const SurveyItemEditor: React.FC<Props> = ({
       {/* eslint-disable-next-line i18next/no-literal-string */}
       <select
         onChange={(event) => {
-          const answer: Answer = item.answer ?? { id: v4(), type: AnswerType.None, answer: "", options: [] }
-          const answerType: AnswerType = (event.target.value as unknown as AnswerType)
-          if (!answerType) return
+          const answer: Answer = item.answer ?? {
+            id: v4(),
+            type: AnswerType.None,
+            answer: "",
+            options: [],
+          }
+          const answerType: AnswerType = event.target.value as unknown as AnswerType
+          if (!answerType) {
+            return
+          }
           onChangeSurveyItem({ ...item, answer: { ...answer, type: answerType } })
         }}
         className={css`
@@ -100,24 +113,22 @@ const SurveyItemEditor: React.FC<Props> = ({
           margin-top: 1rem;
           margin-bottom: 1rem;
         `}
-        value={item.answer.type}>
-
+        value={item.answer.type}
+      >
         {Object.values(AnswerType).map((t) => {
           if (t === AnswerType.None) {
             return <option value={AnswerType.None}>Select answer type</option>
           }
           return (
-            <option
-              value={t}
-              key={t}
-            >
+            <option value={t} key={t}>
               {t}
             </option>
           )
         })}
       </select>
 
-      {(item.answer?.type === AnswerType.MultiChoice || item.answer?.type === AnswerType.RadioGroup) &&
+      {(item.answer?.type === AnswerType.MultiChoice ||
+        item.answer?.type === AnswerType.RadioGroup) && (
         <div>
           <ol>
             {item.answer.options.map((o, o_idx) => {
@@ -135,22 +146,32 @@ const SurveyItemEditor: React.FC<Props> = ({
                     />
                     <DeleteButton
                       onClick={() => {
-                        const newAnswer = { ...item.answer, options: item.answer.options.filter((e) => o !== e) }
+                        const newAnswer = {
+                          ...item.answer,
+                          options: item.answer.options.filter((e) => o !== e),
+                        }
                         onChangeSurveyItem({ ...item, answer: newAnswer })
-                      }}>x</DeleteButton>
+                      }}
+                    >
+                      x
+                    </DeleteButton>
                   </StyledInnerEditor>
                 </li>
               )
             })}
           </ol>
 
-          <button onClick={() => {
-            const newItem = item as SurveyItem
-            newItem.answer.options.push("")
-            onChangeSurveyItem({ ...item, answer: newItem.answer })
-          }}>add option</button>
+          <button
+            onClick={() => {
+              const newItem = item as SurveyItem
+              newItem.answer.options.push("")
+              onChangeSurveyItem({ ...item, answer: newItem.answer })
+            }}
+          >
+            add option
+          </button>
         </div>
-      }
+      )}
     </StyledOuterEditor>
   )
 }

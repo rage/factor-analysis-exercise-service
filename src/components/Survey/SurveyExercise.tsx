@@ -1,7 +1,9 @@
 import { useState } from "react"
+
 import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
 import { Answer, Survey, SurveyItem } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
+
 import SurveyExerciseQuestion from "./SurveyExerciseQuestion"
 
 interface Props {
@@ -9,13 +11,12 @@ interface Props {
   port: MessagePort
 }
 
-const SurveyExercise: React.FC<Props> = ({ port, state }) => {
+const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state }) => {
   const INITIAL_ANSWERED = state.content.map((q) => {
-    return ({ id: q.id, question: q.question, answer: q.answer } as SurveyItem)
+    return { id: q.id, question: q.question, answer: q.answer } as SurveyItem
   })
 
   const [answeredQuestions, _setAnsweredQuestions] = useState<SurveyItem[]>(INITIAL_ANSWERED)
-
 
   const setAnsweredQuestions: typeof _setAnsweredQuestions = (value) => {
     const res = _setAnsweredQuestions(value)
@@ -27,7 +28,7 @@ const SurveyExercise: React.FC<Props> = ({ port, state }) => {
     // eslint-disable-next-line i18next/no-literal-string
     console.info("Posting current state to parent")
     // the type should be the same one that is received as the initial selected id
-    const data: SurveyItem[] = value ? value as SurveyItem[] : []
+    const data: SurveyItem[] = value ? (value as SurveyItem[]) : []
 
     const message: CurrentStateMessage = {
       // eslint-disable-next-line i18next/no-literal-string
@@ -38,7 +39,6 @@ const SurveyExercise: React.FC<Props> = ({ port, state }) => {
     port.postMessage(message)
     return res
   }
-
 
   const updateAnswer = (questionId: string, answer: Answer) => {
     if (!port) {
@@ -65,13 +65,9 @@ const SurveyExercise: React.FC<Props> = ({ port, state }) => {
               <legend>
                 <MarkdownText text={item.question.question} />
               </legend>
-              <SurveyExerciseQuestion
-                question={item}
-                updateAnswer={updateAnswer}
-              />
+              <SurveyExerciseQuestion question={item} updateAnswer={updateAnswer} />
             </fieldset>
           </div>
-
         )
       })}
     </div>

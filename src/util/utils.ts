@@ -1,9 +1,8 @@
 import { Factor, FactorialSurvey, RatedQuestion } from "./stateInterfaces"
 
-
 export const calculateFactors = (
   survey: FactorialSurvey,
-  ratedQuestions: RatedQuestion[]
+  ratedQuestions: RatedQuestion[],
 ): Factor[] => {
   const matrix = survey.matrix
   const factors: Factor[] = survey.factors
@@ -16,7 +15,7 @@ export const calculateFactors = (
     f.score = score
   })
 
-  return (factors)
+  return factors
 }
 
 export interface Pair {
@@ -24,11 +23,11 @@ export interface Pair {
   question: string
 }
 
-export const parseLabelQuestion = (
-  input: string
-): string[] | null => {
-  const parsedString = input.split(';')
-  if (!parsedString[0] || !parsedString[1]) return null
+export const parseLabelQuestion = (input: string): string[] | null => {
+  const parsedString = input.split(";")
+  if (!parsedString[0] || !parsedString[1]) {
+    return null
+  }
   const labelQuestion = [parsedString[0], parsedString[1]]
   return labelQuestion
 }

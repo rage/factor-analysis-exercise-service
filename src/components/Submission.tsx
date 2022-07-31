@@ -13,7 +13,11 @@ interface SubmissionProps {
   modelSolutionSpec: ModelSolutionApi | null
 }
 
-const Submission: React.FC<SubmissionProps> = ({ publicSpec, answer, gradingFeedback }) => {
+const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
+  publicSpec,
+  answer,
+  gradingFeedback,
+}) => {
   // Border colors
   const GREEN = baseTheme.colors.green[300]
 
@@ -31,12 +35,8 @@ const Submission: React.FC<SubmissionProps> = ({ publicSpec, answer, gradingFeed
         return (
           <>
             <fieldset key={f.id}>
-              <p>
-                {f.name}
-              </p>
-              <p>
-                {f.score}
-              </p>
+              <p>{f.name}</p>
+              <p>{f.score}</p>
             </fieldset>
           </>
         )

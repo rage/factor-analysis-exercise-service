@@ -16,9 +16,7 @@ interface Props {
   port: MessagePort
 }
 
-
-const Editor: React.FC<Props> = ({ state, setState, port }) => {
-
+const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, port }) => {
   useEffect(() => {
     if (!port) {
       return
@@ -33,10 +31,12 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
 
   if (!state) {
     return (
-      <div className={css`
-        display: flex;
-        flex-direction: column;
-      `}>
+      <div
+        className={css`
+          display: flex;
+          flex-direction: column;
+        `}
+      >
         <label>Choose type of Survey</label>
         <select
           name="type-selection"
@@ -44,7 +44,7 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
           onChange={(event) => {
             const surveyType = event.target.value
             switch (surveyType) {
-              case (SurveyType.Factorial): {
+              case SurveyType.Factorial: {
                 setState({
                   view_type: "exercise-editor",
                   private_spec: {
@@ -54,61 +54,47 @@ const Editor: React.FC<Props> = ({ state, setState, port }) => {
                     factors: [],
                     options: [],
                     questions: [],
-                    matrix: []
-                  }
+                    matrix: [],
+                  },
                 })
-                break;
+                break
               }
-              case (SurveyType.NonFactorial): {
+              case SurveyType.NonFactorial: {
                 setState({
                   view_type: "exercise-editor",
-                  private_spec: { type: SurveyType.NonFactorial, id: v4(), content: [] }
+                  private_spec: { type: SurveyType.NonFactorial, id: v4(), content: [] },
                 })
-                break;
+                break
               }
               default: {
                 setState({
                   view_type: "exercise-editor",
-                  private_spec: null
+                  private_spec: null,
                 })
               }
             }
-
           }}
         >
           <option value={undefined}>--</option>
-          <option value={SurveyType.Factorial}>
-            {SurveyType.Factorial}
-          </option>
-          <option value={SurveyType.NonFactorial}>
-            {SurveyType.NonFactorial}
-          </option>
+          <option value={SurveyType.Factorial}>{SurveyType.Factorial}</option>
+          <option value={SurveyType.NonFactorial}>{SurveyType.NonFactorial}</option>
         </select>
       </div>
     )
   }
 
-
   switch (state.type) {
-    case (SurveyType.Factorial): {
+    case SurveyType.Factorial: {
       return (
         <div>
-          <FactorialSurveyEditor
-            key={state.id}
-            state={state}
-            setState={setState}
-          />
+          <FactorialSurveyEditor key={state.id} state={state} setState={setState} />
         </div>
       )
     }
-    case (SurveyType.NonFactorial): {
+    case SurveyType.NonFactorial: {
       return (
         <div>
-          <SurveyItemEditor
-            key={state.id}
-            state={state}
-            setState={setState}
-          />
+          <SurveyItemEditor key={state.id} state={state} setState={setState} />
         </div>
       )
     }

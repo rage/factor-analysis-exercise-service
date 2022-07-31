@@ -6,7 +6,7 @@ interface Props {
   updateAnswer: (questionId: string, answer: Answer) => void
 }
 
-const SurveyExerciseQuestion: React.FC<Props> = ({
+const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
   question,
   updateAnswer,
 }) => {
@@ -14,7 +14,7 @@ const SurveyExerciseQuestion: React.FC<Props> = ({
     case AnswerType.BreedList: {
       return (
         <div>
-          <BreedList onClick={value => console.log(value)} />
+          <BreedList onClick={(value) => console.log(value)} />
         </div>
       )
     }
@@ -22,7 +22,7 @@ const SurveyExerciseQuestion: React.FC<Props> = ({
       return (
         <div>
           <input
-            value={question.answer.answer ?? ''}
+            value={question.answer.answer ?? ""}
             type="number"
             onChange={(e) => {
               const newAnswer = question.answer
@@ -37,7 +37,7 @@ const SurveyExerciseQuestion: React.FC<Props> = ({
       return (
         <div>
           <input
-            value={question.answer.answer ?? ''}
+            value={question.answer.answer ?? ""}
             type="text"
             onChange={(e) => {
               const newAnswer = question.answer
@@ -49,7 +49,7 @@ const SurveyExerciseQuestion: React.FC<Props> = ({
       )
     }
     case AnswerType.MultiChoice: {
-      const selectedOptions: string[] = question.answer.answer as string[] || []
+      const selectedOptions: string[] = (question.answer.answer as string[]) || []
       return (
         <div>
           {question.answer.options.map((o) => {
@@ -61,16 +61,17 @@ const SurveyExerciseQuestion: React.FC<Props> = ({
                   name={o}
                   checked={selectedOptions.includes(o)}
                   onChange={(e) => {
-                    const newSeleceted = selectedOptions.filter(option => o !== option)
+                    const newSeleceted = selectedOptions.filter((option) => o !== option)
                     e.target.checked && newSeleceted.push(o)
-                    const newAnswer = { ...(question.answer), answer: newSeleceted }
+                    const newAnswer = { ...question.answer, answer: newSeleceted }
                     updateAnswer(question.id, newAnswer)
-                  }} />
+                  }}
+                />
                 <label>{o}</label>
               </div>
             )
           })}
-        </div >
+        </div>
       )
     }
     case AnswerType.RadioGroup: {
@@ -98,9 +99,7 @@ const SurveyExerciseQuestion: React.FC<Props> = ({
       )
     }
     default: {
-      return (
-        <p>unsupported answer type</p>
-      )
+      return <p>unsupported answer type</p>
     }
   }
 }

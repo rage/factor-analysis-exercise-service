@@ -7,10 +7,10 @@ interface Props {
   onClick: (questionId: string, rate: number | null, chosenOption: string) => void
 }
 
-const SurveyQuestion: React.FC<Props> = ({
+const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
   question,
   options,
-  onClick
+  onClick,
 }) => {
   return (
     <form>
@@ -27,9 +27,10 @@ const SurveyQuestion: React.FC<Props> = ({
                   value={option.value ?? undefined}
                   onChange={(e) => {
                     onClick(
-                      question.questionId, 
-                      isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value), 
-                      option.name)
+                      question.questionId,
+                      isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value),
+                      option.name,
+                    )
                   }}
                   checked={question.chosenOption === option.name}
                   required

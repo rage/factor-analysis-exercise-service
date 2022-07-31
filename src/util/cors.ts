@@ -1,9 +1,9 @@
-import Cors from 'cors'
-import {  NextApiRequest, NextApiResponse } from 'next'
+import Cors from "cors"
+import { NextApiRequest, NextApiResponse } from "next"
 
 // Initializing the cors middleware
 export const cors = Cors({
-  methods: ['GET', 'HEAD'],
+  methods: ["GET", "HEAD"],
 })
 
 // Helper method to wait for a middleware to execute before continuing

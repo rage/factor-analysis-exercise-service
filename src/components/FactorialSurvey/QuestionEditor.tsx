@@ -1,7 +1,7 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
-import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 
+import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 import { Question } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
 interface Props {
@@ -18,7 +18,7 @@ const StyledOuterEditor = styled.div`
   align-items: left;
   justify-content: space-apart;
   flex-direction: column;
-  `
+`
 
 const StyledInnerEditor = styled.div`
   margin: 0 auto;
@@ -27,14 +27,14 @@ const StyledInnerEditor = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-apart;
-  `
+`
 
-const QuestionEditor: React.FC<Props> = ({ item, onChangeQuestion }) => {
+const QuestionEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChangeQuestion }) => {
   return (
     <StyledOuterEditor>
       <fieldset>
         <legend>{item.questionLabel}</legend>
-        <StyledInnerEditor        >
+        <StyledInnerEditor>
           {item.question && <MarkdownText text={item.question} />}
         </StyledInnerEditor>
         <TextArea
@@ -44,12 +44,12 @@ const QuestionEditor: React.FC<Props> = ({ item, onChangeQuestion }) => {
             onChangeQuestion({ ...item, question: value })
           }}
           className={css`
-        flex: 1;
-        padding: 0.5rem;
-        width: 100%;
-        margin: 0 auto;
-        margin-right: 0.5rem;
-        `}
+            flex: 1;
+            padding: 0.5rem;
+            width: 100%;
+            margin: 0 auto;
+            margin-right: 0.5rem;
+          `}
         />
       </fieldset>
     </StyledOuterEditor>

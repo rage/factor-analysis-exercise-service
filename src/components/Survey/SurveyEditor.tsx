@@ -1,9 +1,11 @@
-import { css } from "@emotion/css";
-import styled from "@emotion/styled";
-import { v4 } from "uuid";
-import { State } from "../../pages/iframe";
-import { Answer, AnswerType, Survey, SurveyItem } from "../../util/stateInterfaces";
-import SurveyItemEditor from "./SurveyItemEditor";
+import { css } from "@emotion/css"
+import styled from "@emotion/styled"
+import { v4 } from "uuid"
+
+import { State } from "../../pages/iframe"
+import { Answer, AnswerType, Survey, SurveyItem } from "../../util/stateInterfaces"
+
+import SurveyItemEditor from "./SurveyItemEditor"
 
 interface Props {
   state: Survey
@@ -29,15 +31,15 @@ const NewButton = styled.button`
   }
 `
 
-const SurveyEditor: React.FC<Props> = ({ state, setState }) => {
+const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState }) => {
   return (
     <div
       className={css`
         display: flex;
         flex-direction: column;
-      `}>
+      `}
+    >
       <ol>
-
         {state?.content?.map((item) => {
           return (
             <li key={item.id}>
@@ -48,7 +50,7 @@ const SurveyEditor: React.FC<Props> = ({ state, setState }) => {
                   // eslint-disable-next-line i18next/no-literal-string
                   setState({
                     view_type: "exercise-editor",
-                    private_spec: { ...state, content: newContent }
+                    private_spec: { ...state, content: newContent },
                   })
                 }}
                 onChangeSurveyItem={(quest) => {
@@ -60,24 +62,32 @@ const SurveyEditor: React.FC<Props> = ({ state, setState }) => {
                   })
                   setState({
                     view_type: "exercise-editor",
-                    private_spec: { ...state, content: newContent }
+                    private_spec: { ...state, content: newContent },
                   })
                 }}
               />
             </li>
           )
-
         })}
       </ol>
       <ButtonWrapper>
         <NewButton
           onClick={() => {
             const newState: Survey = { ...(state as Survey) }
-            if (typeof newState.content === 'undefined') {
+            if (typeof newState.content === "undefined") {
               newState.content = []
             }
-            const answerObject: Answer = { id: v4(), type: AnswerType.None, options: [], answer: "" }
-            newState.content.push({ id: v4(), question: {id: v4(), question: "", questionLabel: ""}, answer: answerObject })
+            const answerObject: Answer = {
+              id: v4(),
+              type: AnswerType.None,
+              options: [],
+              answer: "",
+            }
+            newState.content.push({
+              id: v4(),
+              question: { id: v4(), question: "", questionLabel: "" },
+              answer: answerObject,
+            })
             setState({ view_type: "exercise-editor", private_spec: newState })
           }}
         >

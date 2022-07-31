@@ -1,4 +1,5 @@
 import { PublicSpec, SurveyType } from "../util/stateInterfaces"
+
 import FactorialSurvey from "./FactorialSurvey/FactorialSurvey"
 import SurveyExercise from "./Survey/SurveyExercise"
 
@@ -7,19 +8,19 @@ interface Props {
   port: MessagePort
 }
 
-const Exercise: React.FC<Props> = ({ state, port }) => {
+const Exercise: React.FC<React.PropsWithChildren<Props>> = ({ state, port }) => {
   switch (state.type) {
     case SurveyType.Factorial: {
       return (
         <div>
-          <FactorialSurvey state={state} port={port}/>
+          <FactorialSurvey state={state} port={port} />
         </div>
       )
     }
     case SurveyType.NonFactorial: {
       return (
         <div>
-          <SurveyExercise state={state} port={port}/>
+          <SurveyExercise state={state} port={port} />
         </div>
       )
     }

@@ -110,7 +110,7 @@ export enum AnswerType {
   Number = "number",
   MultiChoice = "multiple-choice",
   RadioGroup = "radio-group",
-  BreedList = "breed-list"
+  BreedList = "breed-list",
 }
 
 export type PrivateSpec = FactorialSurvey | Survey | null

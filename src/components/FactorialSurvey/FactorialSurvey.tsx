@@ -1,6 +1,8 @@
 import { useState } from "react"
+
 import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
 import { PublicFactorialSurveySpec, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
+
 import SurveyQuestion from "./FactorialSurveyQuestion"
 
 interface Props {
@@ -8,9 +10,15 @@ interface Props {
   port: MessagePort
 }
 
-const FactorialSurvey: React.FC<Props> = ({ port, state }) => {
+const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({ port, state }) => {
   const INITIAL_R = state.questions.map((q) => {
-    return { questionId: q.id, questionLabel: q.questionLabel, rate: null, question: q.question, chosenOption: "" }
+    return {
+      questionId: q.id,
+      questionLabel: q.questionLabel,
+      rate: null,
+      question: q.question,
+      chosenOption: "",
+    }
   })
 
   const [ratedQuestions, _setRatedQuestions] = useState<RatedQuestion[]>(INITIAL_R)
@@ -26,7 +34,7 @@ const FactorialSurvey: React.FC<Props> = ({ port, state }) => {
     console.info("Posting current state to parent")
     // the type should be the same one that is received as the initial selected id
     const data: SubmittedForm = {
-      answeredQuestions: value ? value as RatedQuestion[] : []
+      answeredQuestions: value ? (value as RatedQuestion[]) : [],
     }
     const message: CurrentStateMessage = {
       // eslint-disable-next-line i18next/no-literal-string

@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react"
 
 import Button from "../shared-module/components/Button"
 import TextField from "../shared-module/components/InputFields/TextField"
-import MarkdownText from "./MarkdownText"
 
+import MarkdownText from "./MarkdownText"
 
 const EditorWrapper = styled.div`
   width: 100%;
@@ -20,8 +20,12 @@ export interface MarkdownEditorProps {
   label: string
 }
 
-export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ text, label, onChange }) => {
-//  const { t } = useTranslation()
+export const MarkdownEditor: React.FC<React.PropsWithChildren<MarkdownEditorProps>> = ({
+  text,
+  label,
+  onChange,
+}) => {
+  //  const { t } = useTranslation()
   const [previewVisible, setPreviewVisible] = useState(false)
   const [, setShowTabs] = useState(text.length > 0)
 
@@ -61,7 +65,7 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ text, label, onC
             margin-left: 0.5rem;
           `}
         >
-        {/* {t("markdown-preview")} */}
+          {/* {t("markdown-preview")} */}
         </Button>
       </EditorWrapper>
     </>

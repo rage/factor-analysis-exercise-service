@@ -3,12 +3,18 @@ import { useRouter } from "next/router"
 import React, { useState } from "react"
 import ReactDOM from "react-dom"
 
-import { Renderer } from "../components/Renderer"
+import Renderer from "../components/Renderer"
 import { ExerciseTaskGradingResult } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import { isSetStateMessage } from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
-import { ModelSolutionApi, PrivateSpec, PublicSpec, RatedQuestion, SubmittedForm } from "../util/stateInterfaces"
+import {
+  ModelSolutionApi,
+  PrivateSpec,
+  PublicSpec,
+  RatedQuestion,
+  SubmittedForm,
+} from "../util/stateInterfaces"
 
 import { ExerciseFeedback } from "./api/grade"
 
@@ -20,23 +26,23 @@ export interface SubmissionData {
 
 export type State =
   | {
-    view_type: "exercise"
-    public_spec: PublicSpec
-  }
+      view_type: "exercise"
+      public_spec: PublicSpec
+    }
   | {
-    view_type: "view-submission"
-    public_spec: PublicSpec
-    answer: SubmittedForm
-    feedback_json: ExerciseFeedback | null
-    model_solution_spec: ModelSolutionApi | null
-    grading: ExerciseTaskGradingResult | null
-  }
+      view_type: "view-submission"
+      public_spec: PublicSpec
+      answer: SubmittedForm
+      feedback_json: ExerciseFeedback | null
+      model_solution_spec: ModelSolutionApi | null
+      grading: ExerciseTaskGradingResult | null
+    }
   | {
-    view_type: "exercise-editor"
-    private_spec: PrivateSpec
-  }
+      view_type: "exercise-editor"
+      private_spec: PrivateSpec
+    }
 
-const Iframe: React.FC = () => {
+const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [state, setState] = useState<State | null>(null)
   const router = useRouter()
   const rawMaxWidth = router?.query?.width
@@ -54,11 +60,10 @@ const Iframe: React.FC = () => {
             public_spec: messageData.data.public_spec as PublicSpec,
           })
         } else if (messageData.view_type === "exercise-editor") {
-            setState({
-              view_type: messageData.view_type,
-              private_spec:
-                (JSON.parse(messageData.data.private_spec as string) as PrivateSpec)
-            })
+          setState({
+            view_type: messageData.view_type,
+            private_spec: JSON.parse(messageData.data.private_spec as string) as PrivateSpec,
+          })
         } else if (messageData.view_type === "view-submission") {
           const userAnswer = messageData.data.user_answer as SubmittedForm
           setState({

@@ -4,5 +4,5 @@ target
 out
 playwright-report
 storybook-static
-services/**/shared-module
+*/shared-module
 services/main-frontend/public/monaco-editor
