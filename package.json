@@ -28,6 +28,7 @@
     "@tanstack/react-query": "^4.0.10",
     "commonmark": "^0.30.0",
     "cors": "^2.8.5",
+    "dataframe-js": "^1.4.4",
     "date-fns": "^2.29.1",
     "express": "^4.18.1",
     "http-proxy-middleware": "^2.0.6",
@@ -50,6 +51,7 @@
   "devDependencies": {
     "@types/commonmark": "^0.27.5",
     "@types/cors": "^2.8.12",
+    "@types/dataframe-js": "^1.4.0",
     "@types/lodash": "^4.14.182",
     "@types/node": "^18.6.1",
     "@types/react": "^18.0.15",

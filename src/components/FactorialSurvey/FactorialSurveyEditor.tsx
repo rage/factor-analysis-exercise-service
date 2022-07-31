@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 import { v4 } from "uuid"
@@ -8,6 +9,7 @@ import { Factor, FactorialSurvey, Question } from "../../util/stateInterfaces"
 import LabelEditor from "./LabelEditor"
 import ListInputEditor from "./ListInputEditor"
 import MatrixEditor from "./MatrixEditor"
+import OutputMatrix from "./OutputMatrix"
 import QuestionEditor from "./QuestionEditor"
 
 interface Props {
@@ -49,169 +51,176 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
         flex-direction: column;
       `}
     >
-      <fieldset>
-        <legend>Options</legend>
-        <ButtonWrapper>
-          <ol>
-            {state?.options?.map((o) => (
-              <li key={o.id}>
-                <LabelEditor
-                  key={o.id}
-                  item={o}
-                  onDelete={() => {
-                    const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
-
-                    const newLabels = newState.options.filter((e) => e.id !== o.id)
-                    // eslint-disable-next-line i18next/no-literal-string
-                    setState({
-                      view_type: "exercise-editor",
-                      private_spec: { ...state, options: newLabels },
-                    })
-                  }}
-                  onChange={(task) => {
-                    const newLabels = state.options.map((e) => {
-                      if (e.id !== o.id) {
-                        return e
-                      }
-                      return task
-                    })
-                    // eslint-disable-next-line i18next/no-literal-string
-                    setState({
-                      view_type: "exercise-editor",
-                      private_spec: { ...state, options: newLabels },
-                    })
-                  }}
-                />
-              </li>
-            ))}
-          </ol>
-
-          <NewButton
-            onClick={() => {
-              const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
-              if (typeof newState.options === "undefined") {
-                newState.options = []
-              }
-              newState.options.push({ name: "", value: 0, id: v4() })
-              // eslint-disable-next-line i18next/no-literal-string
-              setState({ view_type: "exercise-editor", private_spec: newState })
-            }}
-          >
-            Add Option
-          </NewButton>
-        </ButtonWrapper>
-      </fieldset>
-
-      <fieldset>
-        <legend>Questions</legend>
-        <ButtonWrapper>
-          {state?.questions?.map((q) => (
-            <QuestionEditor
-              key={q.id}
-              item={q}
-              onChangeQuestion={(task) => {
-                const newQuestions = state.questions.map((e) => {
-                  if (e.id !== q.id) {
-                    return e
-                  }
-                  return task
-                })
-                // eslint-disable-next-line i18next/no-literal-string
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, questions: newQuestions },
-                })
-              }}
-            />
-          ))}
-        </ButtonWrapper>
-        Input questions as a list
-        <ButtonWrapper>
-          <ListInputEditor
-            topic="question"
-            item={state}
-            onChange={(value) => {
-              const newQuestions: Question[] = []
-              value.map((e) => {
-                if (!e) {
-                  return
-                }
-                newQuestions.push({ id: v4(), questionLabel: e[0], question: e[1] })
-              })
-              const newState: FactorialSurvey = {
-                ...(state as FactorialSurvey),
-                questions: newQuestions,
-              }
-              setState({ view_type: "exercise-editor", private_spec: newState })
-            }}
-          />
-        </ButtonWrapper>
-      </fieldset>
-
-      {state && (
+      <>
         <fieldset>
-          <legend>Factors</legend>
-          <div>
-            <input
-              value={state?.factorAmount?.toString() ?? 0}
-              type="number"
-              onChange={(e) => {
-                const parsedNumber = parseInt(e.target.value)
-                if (isNaN(parsedNumber)) {
-                  return
+          <legend>Options</legend>
+          <ButtonWrapper>
+            <ol>
+              {state?.options?.map((o) => (
+                <li key={o.id}>
+                  <LabelEditor
+                    key={o.id}
+                    item={o}
+                    onDelete={() => {
+                      const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
+
+                      const newLabels = newState.options.filter((e) => e.id !== o.id)
+                      // eslint-disable-next-line i18next/no-literal-string
+                      setState({
+                        view_type: "exercise-editor",
+                        private_spec: { ...state, options: newLabels },
+                      })
+                    }}
+                    onChange={(task) => {
+                      const newLabels = state.options.map((e) => {
+                        if (e.id !== o.id) {
+                          return e
+                        }
+                        return task
+                      })
+                      // eslint-disable-next-line i18next/no-literal-string
+                      setState({
+                        view_type: "exercise-editor",
+                        private_spec: { ...state, options: newLabels },
+                      })
+                    }}
+                  />
+                </li>
+              ))}
+            </ol>
+
+            <NewButton
+              onClick={() => {
+                const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
+                if (typeof newState.options === "undefined") {
+                  newState.options = []
                 }
+                newState.options.push({ name: "", value: 0, id: v4() })
+                // eslint-disable-next-line i18next/no-literal-string
+                setState({ view_type: "exercise-editor", private_spec: newState })
+              }}
+            >
+              Add Option
+            </NewButton>
+          </ButtonWrapper>
+        </fieldset>
+
+        <fieldset>
+          <legend>Questions</legend>
+          <ButtonWrapper>
+            <ol>
+              {state?.questions?.map((q) => (
+                <li key={q.id}>
+                  <QuestionEditor
+                    key={q.id}
+                    item={q}
+                    onChangeQuestion={(task) => {
+                      const newQuestions = state.questions.map((e) => {
+                        if (e.id !== q.id) {
+                          return e
+                        }
+                        return task
+                      })
+                      // eslint-disable-next-line i18next/no-literal-string
+                      setState({
+                        view_type: "exercise-editor",
+                        private_spec: { ...state, questions: newQuestions },
+                      })
+                    }}
+                  />
+                </li>
+              ))}
+            </ol>
+          </ButtonWrapper>
+          Input questions as a list
+          <ButtonWrapper>
+            <ListInputEditor
+              topic="question"
+              item={state}
+              onChange={(value) => {
+                const newQuestions: Question[] = []
+                value.map((e) => {
+                  if (!e) {
+                    return
+                  }
+                  newQuestions.push({ id: v4(), questionLabel: e[0], question: e[1] })
+                })
                 const newState: FactorialSurvey = {
                   ...(state as FactorialSurvey),
-                  factors: [],
-                  factorAmount: parsedNumber,
-                }
-                for (let i = 0; i < parsedNumber; i++) {
-                  newState.factors.push({ id: v4(), name: "", score: 99999 })
+                  questions: newQuestions,
                 }
                 setState({ view_type: "exercise-editor", private_spec: newState })
               }}
             />
-            <ol>
-              {state?.factors?.map((e) => {
-                return (
-                  <li key={e.id}>
-                    <Input
-                      value={e.name}
-                      type="text"
-                      onChange={(event) => {
-                        const factor: Factor = { ...e, name: event.target.value }
-                        const newFactors = state.factors.map((f) => {
-                          if (f.id !== e.id) {
-                            return f
-                          }
-                          return factor
-                        })
-                        // eslint-disable-next-line i18next/no-literal-string
-                        setState({
-                          view_type: "exercise-editor",
-                          private_spec: { ...state, factors: newFactors },
-                        })
-                      }}
-                    />
-                  </li>
-                )
-              })}
-            </ol>
-          </div>
+          </ButtonWrapper>
         </fieldset>
-      )}
 
-      <ButtonWrapper>
-        <MatrixEditor
-          item={state}
-          onChange={(value: number[][]) => {
-            setState({
-              view_type: "exercise-editor",
-              private_spec: { ...state, matrix: value },
-            })
-          }}
-        />
-      </ButtonWrapper>
+        {state && (
+          <fieldset>
+            <legend>Factors</legend>
+            <div>
+              <input
+                value={state?.factorAmount?.toString() ?? 0}
+                type="number"
+                onChange={(e) => {
+                  const parsedNumber = parseInt(e.target.value)
+                  if (isNaN(parsedNumber)) {
+                    return
+                  }
+                  const newState: FactorialSurvey = {
+                    ...(state as FactorialSurvey),
+                    factors: [],
+                    factorAmount: parsedNumber,
+                  }
+                  for (let i = 0; i < parsedNumber; i++) {
+                    newState.factors.push({ id: v4(), name: "", score: 99999 })
+                  }
+                  setState({ view_type: "exercise-editor", private_spec: newState })
+                }}
+              />
+              <ol>
+                {state?.factors?.map((e) => {
+                  return (
+                    <li key={e.id}>
+                      <Input
+                        value={e.name}
+                        type="text"
+                        onChange={(event) => {
+                          const factor: Factor = { ...e, name: event.target.value }
+                          const newFactors = state.factors.map((f) => {
+                            if (f.id !== e.id) {
+                              return f
+                            }
+                            return factor
+                          })
+                          // eslint-disable-next-line i18next/no-literal-string
+                          setState({
+                            view_type: "exercise-editor",
+                            private_spec: { ...state, factors: newFactors },
+                          })
+                        }}
+                      />
+                    </li>
+                  )
+                })}
+              </ol>
+            </div>
+          </fieldset>
+        )}
+
+        <ButtonWrapper>
+          <MatrixEditor
+            item={state}
+            onChange={(value: number[][]) => {
+              setState({
+                view_type: "exercise-editor",
+                private_spec: { ...state, matrix: value },
+              })
+            }}
+          />
+        </ButtonWrapper>
+        <OutputMatrix state={state} />
+      </>
     </div>
   )
 }

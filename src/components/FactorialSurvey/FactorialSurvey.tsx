@@ -67,6 +67,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({ port, state
       {ratedQuestions.map((question) => {
         return (
           <SurveyQuestion
+            key={question.questionId}
             question={question}
             options={state.options}
             onClick={(id, rate, chosenOption) => updateRate(id, rate, chosenOption)}
