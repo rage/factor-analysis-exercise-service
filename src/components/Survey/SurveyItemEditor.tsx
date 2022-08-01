@@ -57,6 +57,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
 }) => {
   return (
     <StyledOuterEditor>
+      <legend>{item.question.questionLabel}</legend>
       <StyledInnerEditor>
         <div
           className={css`
@@ -71,7 +72,6 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
         </div>
         <DeleteButton onClick={onDelete}>x</DeleteButton>
       </StyledInnerEditor>
-      <legend>{item.question.questionLabel}</legend>
       <TextArea
         label="Editor (label ; question)"
         //value={item.question.question ?? ""}   If this, then label wont show, neither will text appear unless it's correctly parsed
