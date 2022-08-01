@@ -60,14 +60,14 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
     <div>
       {answeredQuestions.map((item) => {
         return (
-          <div>
-            <fieldset>
+          <>
+            <fieldset key={item.id}>
               <legend>
                 <MarkdownText text={item.question.question} />
               </legend>
               <SurveyExerciseQuestion question={item} updateAnswer={updateAnswer} />
             </fieldset>
-          </div>
+          </>
         )
       })}
     </div>

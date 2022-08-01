@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 
 import Breeds from "../data/breeds_fin.json"
@@ -15,7 +16,7 @@ const BreedList: React.FC<React.PropsWithChildren<Props>> = ({ onClick }) => {
         flex-direction: column;
       `}
     >
-      <label>select your breed</label>
+      <legend>select your breed</legend>
       <select name="breeds" id="breed-select" onChange={(event) => onClick(event.target.value)}>
         <option value="">--Please choose your breed--</option>
         {breeds.map((breed, idx) => {

@@ -23,7 +23,7 @@ const parseMatrixString = (matrixToParse: string): number[][] => {
 }
 
 const MatrixEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChange }) => {
-  const [errorMsg, setErrorMsg] = useState<string | null>(null)
+  const [_errorMsg, setErrorMsg] = useState<string | null>(null)
 
   return (
     <TextArea
@@ -46,7 +46,6 @@ const MatrixEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChange
         }
         onChange(matrix)
       }}
-      errorMessage={errorMsg ? errorMsg : ""}
       required={true}
     />
   )

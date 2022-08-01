@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import { useEffect } from "react"
 import { v4 } from "uuid"
@@ -37,7 +38,7 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
           flex-direction: column;
         `}
       >
-        <label>Choose type of Survey</label>
+        <legend>Choose type of Survey</legend>
         <select
           name="type-selection"
           id="survey-type"

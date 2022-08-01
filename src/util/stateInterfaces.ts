@@ -84,6 +84,14 @@ export interface SurveyItem {
   id: string
   question: Question
   answer: Answer
+  conditional: boolean
+  dependsOn?: SurveyItemCondition
+}
+
+export interface SurveyItemCondition {
+  id: string
+  questionLabel: string
+  triggeringOption: string //one string for now, have to check with research group what they need
 }
 
 export interface Answer {
@@ -111,6 +119,7 @@ export enum AnswerType {
   MultiChoice = "multiple-choice",
   RadioGroup = "radio-group",
   BreedList = "breed-list",
+  Date = "date",
 }
 
 export type PrivateSpec = FactorialSurvey | Survey | null

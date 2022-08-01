@@ -14,7 +14,11 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
     case AnswerType.BreedList: {
       return (
         <div>
-          <BreedList onClick={(value) => console.log(value)} />
+          <BreedList
+            onClick={(breed) => {
+              updateAnswer(question.id, { ...question.answer, answer: breed })
+            }}
+          />
         </div>
       )
     }
@@ -25,10 +29,9 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
             value={question.answer.answer ?? ""}
             type="number"
             onChange={(e) => {
-              const newAnswer = question.answer
-              newAnswer.answer = e.target.value
-              updateAnswer(question.id, newAnswer)
+              updateAnswer(question.id, { ...question.answer, answer: e.target.value })
             }}
+            required
           />
         </div>
       )
@@ -40,10 +43,9 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
             value={question.answer.answer ?? ""}
             type="text"
             onChange={(e) => {
-              const newAnswer = question.answer
-              newAnswer.answer = e.target.value
-              updateAnswer(question.id, newAnswer)
+              updateAnswer(question.id, { ...question.answer, answer: e.target.value })
             }}
+            required
           />
         </div>
       )
@@ -54,7 +56,7 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
         <div>
           {question.answer.options.map((o) => {
             return (
-              <div>
+              <div key={o}>
                 <input
                   type="checkbox"
                   id={o}
@@ -80,7 +82,7 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
           <div className="radio">
             {question.answer.options.map((option) => {
               return (
-                <div>
+                <div key={option}>
                   <input
                     type="radio"
                     value={option}
@@ -98,7 +100,21 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
         </form>
       )
     }
+    case AnswerType.Date: {
+      return (
+        <form>
+          <input
+            type="date"
+            onChange={(e) => {
+              updateAnswer(question.id, { ...question.answer, answer: e.target.value })
+            }}
+            required
+          />
+        </form>
+      )
+    }
     default: {
+      // eslint-disable-next-line i18next/no-literal-string
       return <p>unsupported answer type</p>
     }
   }

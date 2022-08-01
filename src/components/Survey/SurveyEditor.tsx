@@ -1,3 +1,4 @@
+/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 import { v4 } from "uuid"
@@ -65,6 +66,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
                     private_spec: { ...state, content: newContent },
                   })
                 }}
+                state={state}
               />
             </li>
           )
@@ -87,6 +89,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
               id: v4(),
               question: { id: v4(), question: "", questionLabel: "" },
               answer: answerObject,
+              conditional: false,
             })
             setState({ view_type: "exercise-editor", private_spec: newState })
           }}

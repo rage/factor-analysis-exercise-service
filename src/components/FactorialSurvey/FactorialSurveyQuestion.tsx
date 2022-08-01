@@ -21,7 +21,7 @@ const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
           </legend>
           {options.map((option) => {
             return (
-              <div>
+              <div key={option.id}>
                 <input
                   type="radio"
                   value={option.value ?? undefined}

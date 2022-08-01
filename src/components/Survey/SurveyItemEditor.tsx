@@ -1,15 +1,19 @@
+/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 import { v4 } from "uuid"
 
 import TextArea from "../../shared-module/components/InputFields/TextAreaField"
-import { Answer, AnswerType, SurveyItem } from "../../util/stateInterfaces"
+import { Answer, AnswerType, Survey, SurveyItem } from "../../util/stateInterfaces"
 import { parseLabelQuestion } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
+
+import SelectConditionForItem from "./SelectConditionForItem"
 interface Props {
   item: SurveyItem
   onDelete: () => void
   onChangeSurveyItem: (item: SurveyItem) => void
+  state: Survey
 }
 
 const StyledOuterEditor = styled.div`
@@ -48,7 +52,8 @@ const Input = styled.input`
 const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
   item,
   onDelete,
-  onChangeSurveyItem, // change survey item
+  onChangeSurveyItem,
+  state,
 }) => {
   return (
     <StyledOuterEditor>
@@ -171,6 +176,23 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             add option
           </button>
         </div>
+      )}
+      <StyledInnerEditor>
+        <legend>Conditional</legend>
+        <input
+          type="checkbox"
+          checked={item.conditional}
+          onChange={(e) => {
+            onChangeSurveyItem({
+              ...item,
+              conditional: e.target.checked,
+              dependsOn: undefined,
+            })
+          }}
+        />
+      </StyledInnerEditor>
+      {item.conditional && (
+        <SelectConditionForItem item={item} onChangeSurveyItem={onChangeSurveyItem} state={state} />
       )}
     </StyledOuterEditor>
   )
