@@ -5,9 +5,15 @@ import Breeds from "../data/breeds_fin.json"
 
 interface Props {
   onClick: (breed: string) => void
+  disabled: boolean | undefined
+  chosenBreed: string | null
 }
 
-const BreedList: React.FC<React.PropsWithChildren<Props>> = ({ onClick }) => {
+const BreedList: React.FC<React.PropsWithChildren<Props>> = ({
+  onClick,
+  disabled,
+  chosenBreed,
+}) => {
   const breeds = Breeds.Rotu
   return (
     <div
@@ -17,7 +23,13 @@ const BreedList: React.FC<React.PropsWithChildren<Props>> = ({ onClick }) => {
       `}
     >
       <legend>select your breed</legend>
-      <select name="breeds" id="breed-select" onChange={(event) => onClick(event.target.value)}>
+      <select
+        name="breeds"
+        id="breed-select"
+        onChange={(event) => onClick(event.target.value)}
+        disabled={disabled}
+        value={chosenBreed ?? ""}
+      >
         <option value="">--Please choose your breed--</option>
         {breeds.map((breed, idx) => {
           return (

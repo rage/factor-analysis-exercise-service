@@ -2,22 +2,26 @@ import { Answer, AnswerType, SurveyItem } from "../../util/stateInterfaces"
 import BreedList from "../BreedList"
 
 interface Props {
-  question: SurveyItem
-  updateAnswer: (questionId: string, answer: Answer) => void
+  item: SurveyItem
+  updateAnswer: (itemId: string, answer: Answer) => void
+  disabled?: boolean
 }
 
-const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
-  question,
+const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
+  item,
   updateAnswer,
+  disabled,
 }) => {
-  switch (question.answer.type) {
+  switch (item.answer.type) {
     case AnswerType.BreedList: {
       return (
         <div>
           <BreedList
             onClick={(breed) => {
-              updateAnswer(question.id, { ...question.answer, answer: breed })
+              updateAnswer(item.id, { ...item.answer, answer: breed })
             }}
+            chosenBreed={item.answer.answer as string}
+            disabled={disabled}
           />
         </div>
       )
@@ -26,12 +30,13 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <div>
           <input
-            value={question.answer.answer ?? ""}
+            value={item.answer.answer ?? ""}
             type="number"
             onChange={(e) => {
-              updateAnswer(question.id, { ...question.answer, answer: e.target.value })
+              updateAnswer(item.id, { ...item.answer, answer: e.target.value })
             }}
             required
+            disabled={disabled}
           />
         </div>
       )
@@ -40,21 +45,22 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <div>
           <input
-            value={question.answer.answer ?? ""}
+            value={item.answer.answer ?? ""}
             type="text"
             onChange={(e) => {
-              updateAnswer(question.id, { ...question.answer, answer: e.target.value })
+              updateAnswer(item.id, { ...item.answer, answer: e.target.value })
             }}
             required
+            disabled={disabled}
           />
         </div>
       )
     }
     case AnswerType.MultiChoice: {
-      const selectedOptions: string[] = (question.answer.answer as string[]) || []
+      const selectedOptions: string[] = (item.answer.answer as string[]) || []
       return (
         <div>
-          {question.answer.options.map((o) => {
+          {item.answer.options.map((o) => {
             return (
               <div key={o}>
                 <input
@@ -65,9 +71,10 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
                   onChange={(e) => {
                     const newSeleceted = selectedOptions.filter((option) => o !== option)
                     e.target.checked && newSeleceted.push(o)
-                    const newAnswer = { ...question.answer, answer: newSeleceted }
-                    updateAnswer(question.id, newAnswer)
+                    const newAnswer = { ...item.answer, answer: newSeleceted }
+                    updateAnswer(item.id, newAnswer)
                   }}
+                  disabled={disabled}
                 />
                 <label>{o}</label>
               </div>
@@ -80,17 +87,18 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <form>
           <div className="radio">
-            {question.answer.options.map((option) => {
+            {item.answer.options.map((option) => {
               return (
                 <div key={option}>
                   <input
                     type="radio"
                     value={option}
                     onChange={(e) => {
-                      updateAnswer(question.id, { ...question.answer, answer: e.target.value })
+                      updateAnswer(item.id, { ...item.answer, answer: e.target.value })
                     }}
-                    checked={option === question.answer.answer}
+                    checked={option === item.answer.answer}
                     required
+                    disabled={disabled}
                   />
                   <label>{option}</label>
                 </div>
@@ -106,9 +114,11 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
           <input
             type="date"
             onChange={(e) => {
-              updateAnswer(question.id, { ...question.answer, answer: e.target.value })
+              updateAnswer(item.id, { ...item.answer, answer: e.target.value })
             }}
             required
+            value={item.answer.answer as string}
+            disabled={disabled}
           />
         </form>
       )
@@ -120,4 +130,4 @@ const SurveyExerciseQuestion: React.FC<React.PropsWithChildren<Props>> = ({
   }
 }
 
-export default SurveyExerciseQuestion
+export default SurveyExerciseitem

@@ -18,7 +18,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({ port, state
       rate: null,
       question: q.question,
       chosenOption: "",
-    }
+    } as RatedQuestion
   })
 
   const [ratedQuestions, _setRatedQuestions] = useState<RatedQuestion[]>(INITIAL_R)

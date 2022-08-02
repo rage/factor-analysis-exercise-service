@@ -1,10 +1,10 @@
 import { useState } from "react"
 
 import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
-import { Answer, Survey, SurveyItem } from "../../util/stateInterfaces"
+import { Answer, SubmittedForm, Survey, SurveyItem } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
 
-import SurveyExerciseQuestion from "./SurveyExerciseQuestion"
+import SurveyExerciseItem from "./SurveyExerciseItem"
 
 interface Props {
   state: Survey
@@ -22,10 +22,10 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
     } as SurveyItem
   })
 
-  const [answeredQuestions, _setAnsweredQuestions] = useState<SurveyItem[]>(INITIAL_ANSWERED)
+  const [answeredItems, _setAnsweredItems] = useState<SurveyItem[]>(INITIAL_ANSWERED)
 
-  const setAnsweredQuestions: typeof _setAnsweredQuestions = (value) => {
-    const res = _setAnsweredQuestions(value)
+  const setAnsweredItems: typeof _setAnsweredItems = (value) => {
+    const res = _setAnsweredItems(value)
     if (!port) {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Cannot send current state to parent because I don't have a port")
@@ -34,7 +34,9 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
     // eslint-disable-next-line i18next/no-literal-string
     console.info("Posting current state to parent")
     // the type should be the same one that is received as the initial selected id
-    const data: SurveyItem[] = value ? (value as SurveyItem[]) : []
+    const data: SubmittedForm = {
+      answeredQuestions: value ? (value as SurveyItem[]) : [],
+    }
 
     const message: CurrentStateMessage = {
       // eslint-disable-next-line i18next/no-literal-string
@@ -46,27 +48,27 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
     return res
   }
 
-  const updateAnswer = (questionId: string, answer: Answer) => {
+  const updateAnswer = (itemId: string, answer: Answer) => {
     if (!port) {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Cannot send current state to parent because I don't have a port")
       return
     }
 
-    const newAnsweredQ = answeredQuestions.map((quest) => {
-      if (quest.id !== questionId) {
+    const newAnsweredQ = answeredItems.map((quest) => {
+      if (quest.id !== itemId) {
         return quest
       }
       return { ...quest, answer: answer }
     })
-    setAnsweredQuestions(newAnsweredQ)
+    setAnsweredItems(newAnsweredQ)
   }
 
   return (
     <div>
-      {answeredQuestions.map((item) => {
+      {answeredItems.map((item) => {
         if (item.conditional && item.dependsOn) {
-          const chosenOptions = answeredQuestions.find(
+          const chosenOptions = answeredItems.find(
             (surveyItem) => surveyItem.id === item.dependsOn?.id,
           )?.answer.answer as string[]
           if (chosenOptions.indexOf(item.dependsOn.triggeringOption) === -1) {
@@ -79,7 +81,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
               <legend>
                 <MarkdownText text={item.question.question} />
               </legend>
-              <SurveyExerciseQuestion question={item} updateAnswer={updateAnswer} />
+              <SurveyExerciseItem item={item} updateAnswer={updateAnswer} />
             </fieldset>
           </>
         )

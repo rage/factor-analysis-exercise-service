@@ -4,9 +4,16 @@ import React from "react"
 
 import { ExerciseFeedback } from "../pages/api/grade"
 //import { baseTheme } from "../shared-module/styles"
-import { PublicSpec, SubmittedForm, SurveyType } from "../util/stateInterfaces"
+import {
+  PublicSpec,
+  RatedQuestion,
+  SubmittedForm,
+  SurveyItem,
+  SurveyType,
+} from "../util/stateInterfaces"
 
 import FactorialSurveySubmission from "./FactorialSurvey/OutputSubmission"
+import SurveySubmission from "./Survey/OutputSubmission"
 
 interface SubmissionProps {
   port: MessagePort
@@ -46,8 +53,11 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
       {publicSpec.type === SurveyType.Factorial && (
         <FactorialSurveySubmission
           options={publicSpec.options}
-          userAnswer={answer.answeredQuestions}
+          userAnswer={answer.answeredQuestions as RatedQuestion[]}
         />
+      )}
+      {publicSpec.type === SurveyType.NonFactorial && (
+        <SurveySubmission items={answer.answeredQuestions as SurveyItem[]} />
       )}
     </div>
   )
