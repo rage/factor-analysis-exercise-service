@@ -55,7 +55,10 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     })
   }
 
-  if (gradingRequest.exercise_spec?.type === SurveyType.Factorial) {
+  if (
+    gradingRequest.exercise_spec?.type === SurveyType.Factorial &&
+    gradingRequest.exercise_spec.calculateFeedback
+  ) {
     const factors: Factor[] = calculateFactors(
       gradingRequest.exercise_spec,
       gradingRequest.submission_data.answeredQuestions,
@@ -65,7 +68,7 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
       score_given: 1,
       score_maximum: 1,
       feedback_text: "Good job!",
-      feedback_json: { factorReport: factors }, // put the calculated factor scores here for now
+      feedback_json: { factorReport: factors },
     })
   }
 

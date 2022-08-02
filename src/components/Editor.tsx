@@ -56,6 +56,7 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
                     options: [],
                     questions: [],
                     matrix: [],
+                    calculateFeedback: false,
                   },
                 })
                 break

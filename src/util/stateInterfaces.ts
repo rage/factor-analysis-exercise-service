@@ -1,24 +1,5 @@
-export interface PublicAlternative {
-  id: string
-  name: string
-}
-
-export interface Alternative {
-  id: string
-  name: string
-  correct: boolean
-}
-
-/* export interface Answer {
-  selectedOptionId: string
-} */
-
 export interface ClientErrorResponse {
   message: string
-}
-
-export interface ModelSolutionApi {
-  correctOptionIds: string[]
 }
 
 export interface Question {
@@ -50,6 +31,7 @@ export interface FactorialSurvey {
   id: string
   type: SurveyType.Factorial
   factorAmount: number
+  calculateFeedback: boolean
   factors: Factor[]
   options: FactorialOption[]
   questions: Question[]
