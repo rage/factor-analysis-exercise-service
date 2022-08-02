@@ -37,6 +37,7 @@
     "monaco-editor": "^0.33.0",
     "next": "^12.2.3",
     "react": "^18.2.0",
+    "react-collapsed": "^3.3.2",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.33.1",
     "react-hot-toast": "^2.3.0",

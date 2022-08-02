@@ -5,12 +5,14 @@ interface Props {
   question: RatedQuestion
   options: FactorialOption[]
   onClick: (questionId: string, rate: number | null, chosenOption: string) => void
+  disabled?: boolean
 }
 
 const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
   question,
   options,
   onClick,
+  disabled,
 }) => {
   return (
     <form>
@@ -34,6 +36,7 @@ const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
                   }}
                   checked={question.chosenOption === option.name}
                   required
+                  disabled={disabled}
                 />
                 <label>{option.name}</label>
               </div>
