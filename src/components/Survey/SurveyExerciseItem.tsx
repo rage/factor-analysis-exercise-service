@@ -123,6 +123,28 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
         </form>
       )
     }
+    case AnswerType.Dropdown: {
+      return (
+        <>
+          <select
+            onChange={(e) => {
+              updateAnswer(item.id, { ...item.answer, answer: e.target.value })
+            }}
+            value={item.answer.answer as string}
+            required
+            disabled={disabled}
+          >
+            {item.answer.options.map((option) => {
+              return (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              )
+            })}
+          </select>
+        </>
+      )
+    }
     default: {
       // eslint-disable-next-line i18next/no-literal-string
       return <p>unsupported answer type</p>

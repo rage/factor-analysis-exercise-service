@@ -102,6 +102,7 @@ export enum AnswerType {
   RadioGroup = "radio-group",
   BreedList = "breed-list",
   Date = "date",
+  Dropdown = "dropdown-selection",
 }
 
 export type PrivateSpec = FactorialSurvey | Survey | null

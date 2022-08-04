@@ -17,9 +17,10 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
   return (
     <>
       <legend>
-        question will be shown based on chosen answer:{" "}
+        This question will be shown based on chosen answer:{" "}
         <p>
-          {item.dependsOn?.questionLabel} {item.dependsOn?.triggeringOption}
+          Question: {item.dependsOn?.questionLabel} <br />
+          chosen option: {item.dependsOn?.triggeringOption}
         </p>
       </legend>
       <select

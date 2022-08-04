@@ -133,7 +133,8 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
       </select>
 
       {(item.answer?.type === AnswerType.MultiChoice ||
-        item.answer?.type === AnswerType.RadioGroup) && (
+        item.answer?.type === AnswerType.RadioGroup ||
+        item.answer?.type === AnswerType.Dropdown) && (
         <div>
           <ol>
             {item.answer.options.map((o, o_idx) => {
