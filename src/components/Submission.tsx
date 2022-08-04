@@ -42,12 +42,10 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
       <h2>Well done</h2>
       {gradingFeedback?.factorReport.map((f) => {
         return (
-          <>
-            <fieldset key={f.id}>
-              <p>{f.name}</p>
-              <p>{f.score}</p>
-            </fieldset>
-          </>
+          <fieldset key={f.id}>
+            <p>{f.name}</p>
+            <p>{f.score}</p>
+          </fieldset>
         )
       })}
       {publicSpec.type === SurveyType.Factorial && (
