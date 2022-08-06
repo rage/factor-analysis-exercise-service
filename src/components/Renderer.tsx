@@ -37,7 +37,6 @@ const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({ state, set
         publicSpec={state.public_spec}
         answer={state.answer}
         gradingFeedback={exerciseFeedback}
-        modelSolutionSpec={state.model_solution_spec ? state.model_solution_spec : null}
       />
     )
   } else if (state.view_type === "exercise-editor") {

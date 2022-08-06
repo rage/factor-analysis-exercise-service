@@ -8,13 +8,7 @@ import { ExerciseTaskGradingResult } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import { isSetStateMessage } from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
-import {
-  ModelSolutionApi,
-  PrivateSpec,
-  PublicSpec,
-  RatedQuestion,
-  SubmittedForm,
-} from "../util/stateInterfaces"
+import { PrivateSpec, PublicSpec, RatedQuestion, SubmittedForm } from "../util/stateInterfaces"
 
 import { ExerciseFeedback } from "./api/grade"
 
@@ -34,7 +28,6 @@ export type State =
       public_spec: PublicSpec
       answer: SubmittedForm
       feedback_json: ExerciseFeedback | null
-      model_solution_spec: ModelSolutionApi | null
       grading: ExerciseTaskGradingResult | null
     }
   | {
@@ -71,7 +64,6 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
             public_spec: messageData.data.public_spec as PublicSpec,
             answer: userAnswer,
             feedback_json: messageData.data.grading?.feedback_json as ExerciseFeedback | null,
-            model_solution_spec: messageData.data.model_solution_spec as ModelSolutionApi | null,
             grading: messageData.data.grading,
           })
         } else {
