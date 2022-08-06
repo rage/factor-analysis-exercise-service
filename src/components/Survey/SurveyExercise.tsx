@@ -69,7 +69,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
       {answeredItems.map((item) => {
         if (item.conditional && item.dependsOn) {
           const chosenOptions = answeredItems.find(
-            (surveyItem) => surveyItem.id === item.dependsOn?.id,
+            (surveyItem) => surveyItem.question.questionLabel === item.dependsOn?.questionLabel,
           )?.answer.answer as string[]
           if (chosenOptions.indexOf(item.dependsOn.triggeringOption) === -1) {
             return

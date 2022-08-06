@@ -1,8 +1,8 @@
 import { css } from "@emotion/css"
 
-import TextArea from "../../shared-module/components/InputFields/TextAreaField"
-import { Question } from "../../util/stateInterfaces"
-import { parseLabelQuestion, reverseParseLabelQuestion } from "../../util/utils"
+import TextArea from "../shared-module/components/InputFields/TextAreaField"
+import { Question } from "../util/stateInterfaces"
+import { parseLabelQuestion, reverseParseLabelQuestion } from "../util/utils"
 
 interface Props {
   questions: Question[]

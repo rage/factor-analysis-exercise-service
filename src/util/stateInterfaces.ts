@@ -71,7 +71,6 @@ export interface SurveyItem {
 }
 
 export interface SurveyItemCondition {
-  id: string
   questionLabel: string
   triggeringOption: string //one string for now, have to check with research group what they need
 }

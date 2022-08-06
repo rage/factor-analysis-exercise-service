@@ -5,9 +5,9 @@ import { v4 } from "uuid"
 
 import { State } from "../../pages/iframe"
 import { Factor, FactorialSurvey, Question } from "../../util/stateInterfaces"
+import ListInputEditor from "../ListInputEditor"
 
 import LabelEditor from "./LabelEditor"
-import ListInputEditor from "./ListInputEditor"
 import MatrixEditor from "./MatrixEditor"
 import OutputMatrix from "./OutputMatrix"
 import QuestionEditor from "./QuestionEditor"

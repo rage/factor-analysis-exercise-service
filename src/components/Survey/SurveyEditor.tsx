@@ -5,6 +5,7 @@ import { v4 } from "uuid"
 
 import { State } from "../../pages/iframe"
 import { Answer, AnswerType, Survey, SurveyItem } from "../../util/stateInterfaces"
+import ListInputEditor from "../ListInputEditor"
 
 import SurveyItemEditor from "./SurveyItemEditor"
 
@@ -96,6 +97,37 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
         >
           Add Survey Question
         </NewButton>
+      </ButtonWrapper>
+      Input questions as a list
+      <ButtonWrapper>
+        <ListInputEditor
+          topic="question"
+          questions={state.content.map((item) => item.question)}
+          onChange={(value) => {
+            const newContent: SurveyItem[] = []
+            value.map((e) => {
+              if (!e) {
+                return
+              }
+              const answerObject: Answer = {
+                id: v4(),
+                type: AnswerType.None,
+                options: [],
+                answer: "",
+              }
+              newContent.push({
+                id: v4(),
+                question: { id: v4(), questionLabel: e[0], question: e[1] },
+                answer: answerObject,
+                conditional: false,
+              })
+            })
+            setState({
+              view_type: "exercise-editor",
+              private_spec: { ...state, content: newContent },
+            })
+          }}
+        />
       </ButtonWrapper>
     </div>
   )

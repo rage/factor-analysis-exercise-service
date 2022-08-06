@@ -42,7 +42,9 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
           {state.matrix.map((question, qidx) => {
             return (
               <tr key={qidx}>
-                <Td>{state.questions[qidx]?.questionLabel}</Td>
+                <Td>
+                  {qidx + 1} {state.questions[qidx]?.questionLabel}
+                </Td>
                 {question.map((weight, idx) => {
                   return <Td key={idx}>{weight}</Td>
                 })}

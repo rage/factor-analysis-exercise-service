@@ -27,19 +27,12 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
         onChange={(e) => {
           const triggeringItemArray: string[] = e.target.value.split(",")
           const triggeringItem: SurveyItemCondition = {
-            id: triggeringItemArray[0],
-            questionLabel: triggeringItemArray[1],
-            triggeringOption: triggeringItemArray[2],
+            questionLabel: triggeringItemArray[0],
+            triggeringOption: triggeringItemArray[1],
           }
           onChangeSurveyItem({ ...item, dependsOn: triggeringItem })
         }}
-        defaultValue={
-          item.dependsOn?.id +
-          "," +
-          item.dependsOn?.questionLabel +
-          "," +
-          item.dependsOn?.triggeringOption
-        }
+        defaultValue={item.dependsOn?.questionLabel + "," + item.dependsOn?.triggeringOption}
       >
         {state.content.map((sItem) => {
           if (sItem.id === item.id) {
