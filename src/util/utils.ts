@@ -34,6 +34,13 @@ export const parseLabelQuestion = (input: string): string[] | null => {
   return labelQuestion
 }
 
+export const reverseParseLabelQuestion = (label: string, question: string): string => {
+  if (label.length > 0) {
+    return label + ";" + question
+  }
+  return "label ; question text"
+}
+
 export const vectorMatrixMultiplication = (
   questionVector: number[],
   matrix: number[][],

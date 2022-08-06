@@ -145,7 +145,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
           <ButtonWrapper>
             <ListInputEditor
               topic="question"
-              item={state}
+              questions={state.questions}
               onChange={(value) => {
                 const newQuestions: Question[] = []
                 value.map((e) => {

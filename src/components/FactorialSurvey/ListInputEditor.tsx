@@ -1,18 +1,22 @@
 import { css } from "@emotion/css"
 
 import TextArea from "../../shared-module/components/InputFields/TextAreaField"
-import { FactorialSurvey } from "../../util/stateInterfaces"
-import { parseLabelQuestion } from "../../util/utils"
+import { Question } from "../../util/stateInterfaces"
+import { parseLabelQuestion, reverseParseLabelQuestion } from "../../util/utils"
 
 interface Props {
-  item: FactorialSurvey
+  questions: Question[]
   onChange: (parsedList: (string[] | null)[]) => void
   topic: string
 }
 
 //export from excel or .csv?
 
-const ListInputEditor: React.FC<React.PropsWithChildren<Props>> = ({ topic, onChange }) => {
+const ListInputEditor: React.FC<React.PropsWithChildren<Props>> = ({
+  questions,
+  topic,
+  onChange,
+}) => {
   return (
     <TextArea
       label={`Input ${topic}s as (semicolon separated) label;question list (${topic}label; ${topic}-text..[newline] ${topic}label; ${topic}-text..)`}
@@ -31,6 +35,11 @@ const ListInputEditor: React.FC<React.PropsWithChildren<Props>> = ({ topic, onCh
         })
         onChange(parsedList)
       }}
+      defaultValue={questions
+        .map((quest) => {
+          return reverseParseLabelQuestion(quest.questionLabel, quest.question)
+        })
+        .join("\n")}
     />
   )
 }

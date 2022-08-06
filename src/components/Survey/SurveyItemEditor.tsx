@@ -5,7 +5,7 @@ import { v4 } from "uuid"
 
 import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 import { Answer, AnswerType, Survey, SurveyItem } from "../../util/stateInterfaces"
-import { parseLabelQuestion } from "../../util/utils"
+import { parseLabelQuestion, reverseParseLabelQuestion } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 
 import SelectConditionForItem from "./SelectConditionForItem"
@@ -85,6 +85,10 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             question: { ...item.question, questionLabel: parsedValue[0], question: parsedValue[1] },
           })
         }}
+        defaultValue={reverseParseLabelQuestion(
+          item.question.questionLabel,
+          item.question.question,
+        )}
         className={css`
           flex: 1;
           padding: 0rem;
@@ -122,7 +126,11 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
       >
         {Object.values(AnswerType).map((t) => {
           if (t === AnswerType.None) {
-            return <option value={AnswerType.None}>Select answer type</option>
+            return (
+              <option key={AnswerType.None} value={AnswerType.None}>
+                Select answer type
+              </option>
+            )
           }
           return (
             <option value={t} key={t}>

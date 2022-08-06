@@ -25,7 +25,7 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
       </legend>
       <select
         onChange={(e) => {
-          const triggeringItemArray: string[] = e.target.value.split(",\n,")
+          const triggeringItemArray: string[] = e.target.value.split(",")
           const triggeringItem: SurveyItemCondition = {
             id: triggeringItemArray[0],
             questionLabel: triggeringItemArray[1],
@@ -33,8 +33,14 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
           }
           onChangeSurveyItem({ ...item, dependsOn: triggeringItem })
         }}
+        defaultValue={
+          item.dependsOn?.id +
+          "," +
+          item.dependsOn?.questionLabel +
+          "," +
+          item.dependsOn?.triggeringOption
+        }
       >
-        <option>Change condition for displaying question</option>
         {state.content.map((sItem) => {
           if (sItem.id === item.id) {
             return
@@ -46,18 +52,8 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
               disabled={sItem.answer.options.length === 0}
             >
               {sItem.answer.options.map((option) => {
-                const triggeringItem: string[] = [
-                  sItem.id,
-                  "\n",
-                  sItem.question.questionLabel,
-                  "\n",
-                  option,
-                ]
-                return (
-                  <option key={option} value={triggeringItem as string[]}>
-                    {option}
-                  </option>
-                )
+                const triggeringItem: string[] = [sItem.id, sItem.question.questionLabel, option]
+                return <option key={option} value={triggeringItem as string[]} label={option} />
               })}
             </optgroup>
           )
