@@ -71,7 +71,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
           const chosenOptions = answeredItems.find(
             (surveyItem) => surveyItem.question.questionLabel === item.dependsOn?.questionLabel,
           )?.answer.answer as string[]
-          if (chosenOptions.indexOf(item.dependsOn.triggeringOption) === -1) {
+          if (chosenOptions?.indexOf(item.dependsOn.triggeringOption) === -1) {
             return
           }
         }

@@ -45,7 +45,7 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
               disabled={sItem.answer.options.length === 0}
             >
               {sItem.answer.options.map((option) => {
-                const triggeringItem: string[] = [sItem.id, sItem.question.questionLabel, option]
+                const triggeringItem: string[] = [sItem.question.questionLabel, option]
                 return <option key={option} value={triggeringItem as string[]} label={option} />
               })}
             </optgroup>
