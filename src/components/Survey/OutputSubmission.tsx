@@ -1,14 +1,21 @@
+import styled from "@emotion/styled"
 import React from "react"
 import useCollapse from "react-collapsed"
 
 import { SurveyItem } from "../../util/stateInterfaces"
-import MarkdownText from "../MarkdownText"
+import { ExerciseItemHeader } from "../ExerciseItemHeader"
 
 import SurveyExerciseItem from "./SurveyExerciseItem"
 
 interface Props {
   items: SurveyItem[]
 }
+
+const ItemWrapper = styled.div`
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+`
 
 const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items }) => {
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse()
@@ -22,17 +29,15 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items }) =
         <div className="content">
           {items.map((item) => {
             return (
-              <fieldset key={item.id}>
-                <legend>
-                  <MarkdownText text={item.question.question} />
-                </legend>
+              <ItemWrapper key={item.id}>
+                <ExerciseItemHeader questionText={item.question.question} />
                 <SurveyExerciseItem
                   key={item.id}
                   item={item}
                   updateAnswer={() => null}
                   disabled={true}
                 />
-              </fieldset>
+              </ItemWrapper>
             )
           })}
         </div>

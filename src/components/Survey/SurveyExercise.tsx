@@ -1,8 +1,9 @@
+import styled from "@emotion/styled"
 import { useState } from "react"
 
 import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
 import { Answer, SubmittedForm, Survey, SurveyItem } from "../../util/stateInterfaces"
-import MarkdownText from "../MarkdownText"
+import { ExerciseItemHeader } from "../ExerciseItemHeader"
 
 import SurveyExerciseItem from "./SurveyExerciseItem"
 
@@ -10,6 +11,12 @@ interface Props {
   state: Survey
   port: MessagePort
 }
+
+const ItemWrapper = styled.div`
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+`
 
 const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state }) => {
   const INITIAL_ANSWERED = state.content.map((q) => {
@@ -65,7 +72,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
   }
 
   return (
-    <div>
+    <>
       {answeredItems.map((item) => {
         if (item.conditional && item.dependsOn) {
           const chosenOptions = answeredItems.find(
@@ -76,17 +83,13 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
           }
         }
         return (
-          <>
-            <fieldset key={item.id}>
-              <legend>
-                <MarkdownText text={item.question.question} />
-              </legend>
-              <SurveyExerciseItem item={item} updateAnswer={updateAnswer} />
-            </fieldset>
-          </>
+          <ItemWrapper key={item.id}>
+            <ExerciseItemHeader questionText={item.question.question} />
+            <SurveyExerciseItem item={item} updateAnswer={updateAnswer} />
+          </ItemWrapper>
         )
       })}
-    </div>
+    </>
   )
 }
 
