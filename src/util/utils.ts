@@ -30,7 +30,9 @@ export const parseLabelQuestion = (input: string): string[] | null => {
   if (!parsedString[0] || !parsedString[1]) {
     return null
   }
-  const labelQuestion = [parsedString[0].split("\n").join("").split(" ").join(""), parsedString[1]]
+  const [label, ...text] = parsedString
+
+  const labelQuestion = [label.split("\n").join("").split(" ").join(""), text.join(";")]
   return labelQuestion
 }
 
@@ -38,7 +40,7 @@ export const reverseParseLabelQuestion = (label: string, question: string): stri
   if (label.length > 0) {
     return label + ";" + question
   }
-  return "label ; question text"
+  return ""
 }
 
 export const vectorMatrixMultiplication = (

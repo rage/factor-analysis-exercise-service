@@ -12,16 +12,16 @@ const Exercise: React.FC<React.PropsWithChildren<Props>> = ({ state, port }) => 
   switch (state.type) {
     case SurveyType.Factorial: {
       return (
-        <div>
+        <>
           <FactorialSurvey state={state} port={port} />
-        </div>
+        </>
       )
     }
     case SurveyType.NonFactorial: {
       return (
-        <div>
+        <>
           <SurveyExercise state={state} port={port} />
-        </div>
+        </>
       )
     }
   }

@@ -3,6 +3,8 @@ import styled from "@emotion/styled"
 
 import { Answer, AnswerType, SurveyItem } from "../../util/stateInterfaces"
 import BreedList from "../BreedList"
+import { CheckboxWrap } from "../StyledComponents/CheckboxWrap"
+import { RadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
 
 const CHECKED = "#44827E"
 interface Props {
@@ -14,101 +16,6 @@ interface Props {
 const Option = styled.option`
   text-align: left;
   padding: 0.5rem;
-`
-
-const CheckboxWrap = styled.div`
-  margin-bottom: 1.5px;
-  display: flex;
-  font-family: "Raleway";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 25px;
-  color: #1a2333;
-  align-items: left;
-
-  input[type="checkbox"] {
-    appearance: none;
-    background-color: #fff;
-    margin-right: 10px;
-    margin-top: 5px;
-    font: inherit;
-    color: currentColor;
-    width: 1.15em;
-    height: 1.1em;
-    border: 1px solid #989ca3;
-    transform: translateY(-0.075em);
-    display: grid;
-    place-content: center;
-  }
-
-  input[type="checkbox"]:before {
-    content: "";
-    width: 0.65em;
-    height: 0.65em;
-    transform: scale(0);
-    transition: 120ms transform ease-in-out;
-    box-shadow: inset 1em 1em #fff;
-    clip-path: polygon(28% 38%, 41% 53%, 75% 24%, 86% 38%, 40% 78%, 15% 50%);
-  }
-
-  input[type="checkbox"]:checked {
-    border-color: ${CHECKED};
-    background: ${CHECKED};
-  }
-  input[type="checkbox"]:checked::before {
-    transform: scale(1);
-  }
-`
-
-const RadioGroupWrap = styled.div`
-  margin-bottom: 2px;
-  display: flex;
-  border: 2px solid #ebedee;
-  border-radius: 2px;
-  font-family: "Raleway";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 60px;
-  color: #1a2333;
-  align-items: left;
-
-  input[type="radio"] {
-    appearance: none;
-    background-color: #fff;
-    margin-right: 10px;
-    margin-top: 20px;
-    margin-left: 20px;
-    font: inherit;
-    color: currentColor;
-    width: 1.15em;
-    height: 1.1em;
-    border: 1px solid #c1c1c1;
-    border-radius: 1em;
-    transform: translateY(-0.075em);
-    display: grid;
-    place-content: center;
-  }
-
-  input[type="radio"]:before {
-    content: "";
-    width: 0.65em;
-    height: 0.65em;
-    transform: scale(0);
-    transition: 120ms transform ease-in-out;
-    box-shadow: inset 1em 1em #fff;
-    clip-path: polygon(28% 38%, 41% 53%, 75% 24%, 86% 38%, 40% 78%, 15% 50%);
-  }
-
-  input[type="radio"]:checked {
-    border-color: ${CHECKED};
-    background: ${CHECKED};
-  }
-
-  input[type="radio"]:checked::before {
-    transform: scale(1);
-  }
 `
 
 const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
@@ -174,7 +81,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
         <div>
           {item.answer.options.map((o) => {
             return (
-              <CheckboxWrap key={o}>
+              <CheckboxWrap key={o} checkedCollor={CHECKED}>
                 <input
                   type="checkbox"
                   id={o}
@@ -201,7 +108,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
           <div className="radio">
             {item.answer.options.map((option) => {
               return (
-                <RadioGroupWrap key={option}>
+                <RadioGroupWrap key={option} checkedCollor={CHECKED}>
                   <input
                     type="radio"
                     value={option}
