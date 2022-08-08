@@ -98,8 +98,8 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
           Add Survey Question
         </NewButton>
       </ButtonWrapper>
-      Input questions as a list
-      <ButtonWrapper>
+      <ButtonWrapper aria-disabled>
+        Input questions as a list
         <ListInputEditor
           topic="question"
           questions={state.content.map((item) => item.question)}
@@ -127,6 +127,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
               private_spec: { ...state, content: newContent },
             })
           }}
+          disabled={state.content.length > 0}
         />
       </ButtonWrapper>
     </div>

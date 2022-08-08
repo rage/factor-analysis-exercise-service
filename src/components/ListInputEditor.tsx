@@ -8,6 +8,7 @@ interface Props {
   questions: Question[]
   onChange: (parsedList: (string[] | null)[]) => void
   topic: string
+  disabled?: boolean
 }
 
 //export from excel or .csv?
@@ -16,6 +17,7 @@ const ListInputEditor: React.FC<React.PropsWithChildren<Props>> = ({
   questions,
   topic,
   onChange,
+  disabled,
 }) => {
   return (
     <TextArea
@@ -41,6 +43,7 @@ const ListInputEditor: React.FC<React.PropsWithChildren<Props>> = ({
           return reverseParseLabelQuestion(quest.questionLabel, quest.question)
         })
         .join("\n")}
+      disabled={disabled}
     />
   )
 }
