@@ -2,7 +2,6 @@ import styled from "@emotion/styled"
 
 import { FactorialOption, RatedQuestion } from "../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../ExerciseItemHeader"
-import MarkdownText from "../MarkdownText"
 import { RadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
 
 interface Props {
@@ -15,7 +14,8 @@ interface Props {
 const ItemWrapper = styled.div`
   margin-top: 1rem;
   margin-bottom: 2rem;
-  margin-left: 1rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5;
 `
 
 const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({

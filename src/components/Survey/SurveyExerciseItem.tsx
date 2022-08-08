@@ -153,11 +153,11 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
             onChange={(e) => {
               updateAnswer(item.id, { ...item.answer, answer: e.target.value })
             }}
-            value={item.answer.answer as string}
+            value={item.answer.answer ? (item.answer.answer as string) : "default"}
             required
             disabled={disabled}
           >
-            <option></option>
+            <option value="default" disabled selected></option>
             {item.answer.options.map((option) => {
               return (
                 <Option key={option} value={option}>
@@ -171,7 +171,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
     }
     default: {
       // eslint-disable-next-line i18next/no-literal-string
-      return <p>unsupported answer type</p>
+      return null
     }
   }
 }

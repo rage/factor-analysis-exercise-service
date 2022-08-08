@@ -32,9 +32,15 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
           }
           onChangeSurveyItem({ ...item, dependsOn: triggeringItem })
         }}
-        defaultValue={item.dependsOn?.questionLabel + "," + item.dependsOn?.triggeringOption}
+        defaultValue={
+          item.dependsOn?.questionLabel
+            ? item.dependsOn?.questionLabel + "," + item.dependsOn?.triggeringOption
+            : "default"
+        }
       >
-        <option disabled>Set condition</option>
+        <option value="default" disabled selected>
+          Set condition
+        </option>
         {state.content.map((sItem) => {
           if (sItem.id === item.id) {
             return

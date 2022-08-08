@@ -27,9 +27,9 @@ const BreedList: React.FC<React.PropsWithChildren<Props>> = ({
         id="breed-select"
         onChange={(event) => onClick(event.target.value)}
         disabled={disabled}
-        value={chosenBreed ?? ""}
+        defaultValue={chosenBreed ? chosenBreed : "default"}
       >
-        <option value="" disabled>
+        <option value="default" disabled selected>
           Choose your breed
         </option>
         {breeds.map((breed, idx) => {

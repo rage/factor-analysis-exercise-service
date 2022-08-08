@@ -1,3 +1,4 @@
+import styled from "@emotion/styled"
 import React from "react"
 import useCollapse from "react-collapsed"
 
@@ -10,13 +11,20 @@ interface Props {
   userAnswer: RatedQuestion[]
 }
 
+const Wrapper = styled.div`
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5;
+`
+
 const FactorialSurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({
   options,
   userAnswer,
 }) => {
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse()
   return (
-    <div className="collapsible">
+    <Wrapper className="collapsible">
       <button className="header" {...getToggleProps()}>
         {isExpanded ? "Hide" : "Show Submission"}
       </button>
@@ -35,7 +43,7 @@ const FactorialSurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({
           })}
         </div>
       </div>
-    </div>
+    </Wrapper>
   )
 }
 
