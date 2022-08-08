@@ -19,13 +19,14 @@ const ListInputEditor: React.FC<React.PropsWithChildren<Props>> = ({
 }) => {
   return (
     <TextArea
-      label={`Input ${topic}s as (semicolon separated) label;question list (${topic}label; ${topic}-text..[newline] ${topic}label; ${topic}-text..)`}
+      placeholder={`Input ${topic}s as (semicolon separated) label;question list (${topic}label; ${topic}-text..[newline] ${topic}label; ${topic}-text..)`}
       autoResize
       className={css`
         width: 100%;
         textarea {
           width: 100%;
           resize: vertical;
+          max-height: 200px;
         }
       `}
       onChange={(value) => {

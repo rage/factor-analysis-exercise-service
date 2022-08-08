@@ -63,7 +63,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({ port, state
   }
 
   return (
-    <div>
+    <>
       {ratedQuestions.map((question) => {
         return (
           <SurveyQuestion
@@ -74,7 +74,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({ port, state
           />
         )
       })}
-    </div>
+    </>
   )
 }
 

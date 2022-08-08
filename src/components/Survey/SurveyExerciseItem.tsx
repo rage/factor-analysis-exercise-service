@@ -108,7 +108,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
           <div className="radio">
             {item.answer.options.map((option) => {
               return (
-                <RadioGroupWrap key={option} checkedCollor={CHECKED}>
+                <RadioGroupWrap key={option} checkedCollor={CHECKED} border>
                   <input
                     type="radio"
                     value={option}

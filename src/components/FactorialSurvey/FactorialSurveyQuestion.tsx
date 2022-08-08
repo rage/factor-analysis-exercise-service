@@ -1,5 +1,9 @@
+import styled from "@emotion/styled"
+
 import { FactorialOption, RatedQuestion } from "../../util/stateInterfaces"
+import { ExerciseItemHeader } from "../ExerciseItemHeader"
 import MarkdownText from "../MarkdownText"
+import { RadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
 
 interface Props {
   question: RatedQuestion
@@ -8,6 +12,12 @@ interface Props {
   disabled?: boolean
 }
 
+const ItemWrapper = styled.div`
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+`
+
 const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
   question,
   options,
@@ -15,15 +25,13 @@ const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
   disabled,
 }) => {
   return (
-    <form>
-      <div className="radio">
-        <fieldset>
-          <legend>
-            <MarkdownText text={question.question} />
-          </legend>
+    <ItemWrapper>
+      <form>
+        <div className="radio">
+          <ExerciseItemHeader questionText={question.question} />
           {options.map((option) => {
             return (
-              <div key={option.id}>
+              <RadioGroupWrap key={option.id} checkedCollor="#32BEA6" border={false}>
                 <input
                   type="radio"
                   value={option.value ?? undefined}
@@ -39,12 +47,12 @@ const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
                   disabled={disabled}
                 />
                 <label>{option.name}</label>
-              </div>
+              </RadioGroupWrap>
             )
           })}
-        </fieldset>
-      </div>
-    </form>
+        </div>
+      </form>
+    </ItemWrapper>
   )
 }
 

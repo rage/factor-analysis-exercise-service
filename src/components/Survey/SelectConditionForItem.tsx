@@ -34,6 +34,7 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
         }}
         defaultValue={item.dependsOn?.questionLabel + "," + item.dependsOn?.triggeringOption}
       >
+        <option disabled>Set condition</option>
         {state.content.map((sItem) => {
           if (sItem.id === item.id) {
             return
@@ -44,7 +45,6 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
               label={"question_label: " + sItem.question.questionLabel}
               disabled={sItem.answer.options.length === 0}
             >
-              <option>Set condition</option>
               {sItem.answer.options.map((option) => {
                 const triggeringItem: string[] = [sItem.question.questionLabel, option]
                 return <option key={option} value={triggeringItem as string[]} label={option} />

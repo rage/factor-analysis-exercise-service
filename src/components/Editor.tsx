@@ -77,7 +77,9 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
             }
           }}
         >
-          <option value={undefined}>--</option>
+          <option value={undefined} disabled>
+            --
+          </option>
           <option value={SurveyType.Factorial}>{SurveyType.Factorial}</option>
           <option value={SurveyType.NonFactorial}>{SurveyType.NonFactorial}</option>
         </select>

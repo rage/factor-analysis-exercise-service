@@ -2,12 +2,13 @@ import styled from "@emotion/styled"
 
 interface DivProps {
   checkedCollor: string
+  border?: boolean
 }
 
 export const RadioGroupWrap = styled.div<DivProps>`
   margin-bottom: 2px;
   display: flex;
-  border: 2px solid #ebedee;
+  border: ${({ border }) => (border ? "2px solid #ebedee" : "none")};
   border-radius: 2px;
   font-family: "Raleway";
   font-style: normal;

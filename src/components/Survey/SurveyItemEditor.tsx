@@ -73,7 +73,8 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
         <DeleteButton onClick={onDelete}>x</DeleteButton>
       </StyledInnerEditor>
       <TextArea
-        label="Editor (label ; question)"
+        label="Editor"
+        placeholder="question_label; question text"
         //value={item.question.question ?? ""}   If this, then label wont show, neither will text appear unless it's correctly parsed
         onChange={(value) => {
           const parsedValue = parseLabelQuestion(value)

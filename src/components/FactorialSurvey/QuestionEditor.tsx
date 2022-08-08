@@ -3,6 +3,7 @@ import styled from "@emotion/styled"
 
 import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 import { Question } from "../../util/stateInterfaces"
+import { parseLabelQuestion, reverseParseLabelQuestion } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 interface Props {
   item: Question
@@ -39,16 +40,27 @@ const QuestionEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChan
         </StyledInnerEditor>
         <TextArea
           label="Editor"
-          value={item.question ?? ""}
+          placeholder="question_label; question text"
+          autoResize
           onChange={(value) => {
-            onChangeQuestion({ ...item, question: value })
+            const parsedValue = parseLabelQuestion(value)
+            if (!parsedValue) {
+              return
+            }
+            onChangeQuestion({ ...item, questionLabel: parsedValue[0], question: parsedValue[1] })
           }}
+          defaultValue={reverseParseLabelQuestion(item.questionLabel, item.question)}
           className={css`
             flex: 1;
-            padding: 0.5rem;
             width: 100%;
-            margin: 0 auto;
-            margin-right: 0.5rem;
+            textarea {
+              width: 100%;
+              padding: 0.5rem;
+              margin: 0 auto;
+              margin-right: 0.5rem;
+              resize: vertical;
+              max-height: 120px;
+            }
           `}
         />
       </fieldset>

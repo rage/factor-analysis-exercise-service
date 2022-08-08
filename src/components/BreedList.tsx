@@ -22,7 +22,6 @@ const BreedList: React.FC<React.PropsWithChildren<Props>> = ({
         flex-direction: column;
       `}
     >
-      <legend>select your breed</legend>
       <select
         name="breeds"
         id="breed-select"
@@ -30,7 +29,9 @@ const BreedList: React.FC<React.PropsWithChildren<Props>> = ({
         disabled={disabled}
         value={chosenBreed ?? ""}
       >
-        <option value="">--Please choose your breed--</option>
+        <option value="" disabled>
+          Choose your breed
+        </option>
         {breeds.map((breed, idx) => {
           return (
             <option key={idx} value={breed}>
