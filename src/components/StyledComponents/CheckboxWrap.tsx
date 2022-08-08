@@ -11,7 +11,7 @@ export const CheckboxWrap = styled.div<DivProps>`
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
-  line-height: 25px;
+  line-height: 36px;
   color: #1a2333;
   align-items: left;
 
@@ -22,8 +22,8 @@ export const CheckboxWrap = styled.div<DivProps>`
     margin-top: 5px;
     font: inherit;
     color: currentColor;
-    width: 1.15em;
-    height: 1.1em;
+    width: 30px;
+    height: 28px;
     border: 1px solid #989ca3;
     transform: translateY(-0.075em);
     display: grid;
