@@ -1,6 +1,6 @@
 import { css } from "@emotion/css"
 import { useRouter } from "next/router"
-import React, { useState } from "react"
+import React, { useCallback, useState } from "react"
 import ReactDOM from "react-dom"
 
 import Renderer from "../components/Renderer"
@@ -44,7 +44,7 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
     maxWidth = Number(rawMaxWidth)
   }
 
-  const port = useExerciseServiceParentConnection((messageData) => {
+  const callback = useCallback((messageData: unknown) => {
     if (isSetStateMessage(messageData)) {
       ReactDOM.flushSync(() => {
         if (messageData.view_type === "exercise") {
@@ -75,7 +75,9 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Frame received an unknown message from message port")
     }
-  })
+  }, [])
+
+  const port = useExerciseServiceParentConnection(callback)
 
   return (
     <HeightTrackingContainer port={port}>
