@@ -1,7 +1,7 @@
 import styled from "@emotion/styled"
 
 import { FactorialOption, RatedQuestion } from "../../util/stateInterfaces"
-import { ExerciseItemHeader } from "../ExerciseItemHeader"
+import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 import { RadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
 
 interface Props {

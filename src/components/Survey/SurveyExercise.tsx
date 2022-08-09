@@ -3,7 +3,7 @@ import { useState } from "react"
 
 import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
 import { Answer, SubmittedForm, Survey, SurveyItem } from "../../util/stateInterfaces"
-import { ExerciseItemHeader } from "../ExerciseItemHeader"
+import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 
 import SurveyExerciseItem from "./SurveyExerciseItem"
 

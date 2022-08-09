@@ -3,6 +3,7 @@ import React from "react"
 import useCollapse from "react-collapsed"
 
 import { FactorialOption, RatedQuestion } from "../../util/stateInterfaces"
+import { InfoSection } from "../StyledComponents/InfoSection"
 
 import SurveyQuestion from "./FactorialSurveyQuestion"
 
@@ -31,6 +32,9 @@ const FactorialSurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({
       <div {...getCollapseProps()}>
         <div className="content">
           {userAnswer.map((quest) => {
+            if (quest.questionLabel == "info") {
+              return <InfoSection content={quest.question} />
+            }
             return (
               <SurveyQuestion
                 key={quest.questionId}

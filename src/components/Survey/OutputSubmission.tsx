@@ -3,7 +3,7 @@ import React from "react"
 import useCollapse from "react-collapsed"
 
 import { SurveyItem } from "../../util/stateInterfaces"
-import { ExerciseItemHeader } from "../ExerciseItemHeader"
+import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 
 import SurveyExerciseItem from "./SurveyExerciseItem"
 

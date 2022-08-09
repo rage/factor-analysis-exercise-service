@@ -47,6 +47,7 @@ const MatrixEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChange
         onChange(matrix)
       }}
       required={true}
+      placeholder={`input matrix as JSON object\n example:  "[ [ 1, 5, 9 ],[ 2, 6, 10 ],[ 3, 7, 11 ],[ 4, 8, 12 ] ]"`}
     />
   )
 }

@@ -6,10 +6,11 @@ import {
   ClientErrorResponse,
   Factor,
   PrivateSpec,
+  RatedQuestion,
   SubmittedForm,
   SurveyType,
 } from "../../util/stateInterfaces"
-import { calculateFactors } from "../../util/utils"
+import { calculateFactors, sanitizeQuestions } from "../../util/utils"
 
 export default async (
   req: NextApiRequest,
@@ -59,10 +60,10 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     gradingRequest.exercise_spec?.type === SurveyType.Factorial &&
     gradingRequest.exercise_spec.calculateFeedback
   ) {
-    const factors: Factor[] = calculateFactors(
-      gradingRequest.exercise_spec,
-      gradingRequest.submission_data.answeredQuestions,
-    )
+    const sanitizedAnswers = sanitizeQuestions(
+      gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
+    ) as RatedQuestion[]
+    const factors: Factor[] = calculateFactors(gradingRequest.exercise_spec, sanitizedAnswers)
     return res.status(200).json({
       grading_progress: "FullyGraded",
       score_given: 1,

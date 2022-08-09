@@ -2,6 +2,7 @@ import styled from "@emotion/styled"
 import React from "react"
 
 import { FactorialSurvey } from "../../util/stateInterfaces"
+import { sanitizeQuestions } from "../../util/utils"
 
 interface Props {
   state: FactorialSurvey
@@ -29,6 +30,7 @@ const Tbody = styled.tbody`
 `
 
 const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
+  const sanitizedQuestions = sanitizeQuestions(state.questions)
   return (
     <div>
       <Table>
@@ -43,7 +45,7 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
             return (
               <tr key={qidx}>
                 <Td>
-                  {qidx + 1} {state.questions[qidx]?.questionLabel}
+                  {qidx + 1} {sanitizedQuestions[qidx]?.questionLabel}
                 </Td>
                 {question.map((weight, idx) => {
                   return <Td key={idx}>{weight}</Td>

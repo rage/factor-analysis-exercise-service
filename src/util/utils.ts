@@ -1,4 +1,4 @@
-import { Factor, FactorialSurvey, RatedQuestion } from "./stateInterfaces"
+import { Factor, FactorialSurvey, Question, RatedQuestion, SubmittedForm } from "./stateInterfaces"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
@@ -55,3 +55,13 @@ export const vectorMatrixMultiplication = (
   console.log(collapsedMatrix)
   return mul(questionVector, collapsedMatrix)
 }
+
+export const sanitizeQuestions = (questions: QuestionItem[]) => {
+  const sanitizedForm = questions.filter(
+    (item: Question | RatedQuestion) => item.questionLabel !== "info",
+  )
+
+  return sanitizedForm
+}
+
+type QuestionItem = RatedQuestion | Question

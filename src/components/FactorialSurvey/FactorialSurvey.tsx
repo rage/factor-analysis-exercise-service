@@ -2,6 +2,7 @@ import { useState } from "react"
 
 import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
 import { PublicFactorialSurveySpec, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
+import { InfoSection } from "../StyledComponents/InfoSection"
 
 import SurveyQuestion from "./FactorialSurveyQuestion"
 
@@ -65,14 +66,18 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({ port, state
   return (
     <>
       {ratedQuestions.map((question) => {
-        return (
-          <SurveyQuestion
-            key={question.questionId}
-            question={question}
-            options={state.options}
-            onClick={(id, rate, chosenOption) => updateRate(id, rate, chosenOption)}
-          />
-        )
+        if (question.questionLabel === "info") {
+          return <InfoSection content={question.question} />
+        } else {
+          return (
+            <SurveyQuestion
+              key={question.questionId}
+              question={question}
+              options={state.options}
+              onClick={(id, rate, chosenOption) => updateRate(id, rate, chosenOption)}
+            />
+          )
+        }
       })}
     </>
   )

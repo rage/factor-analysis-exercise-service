@@ -53,6 +53,8 @@ const StyledInnerEditor = styled.div`
 `
 
 const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState }) => {
+  let questionIndex = 0
+
   return (
     <div
       className={css`
@@ -118,27 +120,39 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
           <legend>Questions</legend>
           <ButtonWrapper>
             <ol>
-              {state?.questions?.map((q) => (
-                <li key={q.id}>
-                  <QuestionEditor
+              {state?.questions?.map((q) => {
+                if (q.questionLabel !== "info") {
+                  questionIndex = questionIndex + 1
+                  console.log(questionIndex)
+                }
+                return (
+                  <li
                     key={q.id}
-                    item={q}
-                    onChangeQuestion={(task) => {
-                      const newQuestions = state.questions.map((e) => {
-                        if (e.id !== q.id) {
-                          return e
-                        }
-                        return task
-                      })
-                      // eslint-disable-next-line i18next/no-literal-string
-                      setState({
-                        view_type: "exercise-editor",
-                        private_spec: { ...state, questions: newQuestions },
-                      })
-                    }}
-                  />
-                </li>
-              ))}
+                    value={q.questionLabel === "info" ? 9 : questionIndex}
+                    className={css`
+                      list-style-type: ${q.questionLabel === "info" ? "lower-latin" : ""};
+                    `}
+                  >
+                    <QuestionEditor
+                      key={q.id}
+                      item={q}
+                      onChangeQuestion={(task) => {
+                        const newQuestions = state.questions.map((e) => {
+                          if (e.id !== q.id) {
+                            return e
+                          }
+                          return task
+                        })
+                        // eslint-disable-next-line i18next/no-literal-string
+                        setState({
+                          view_type: "exercise-editor",
+                          private_spec: { ...state, questions: newQuestions },
+                        })
+                      }}
+                    />
+                  </li>
+                )
+              })}
             </ol>
           </ButtonWrapper>
           Input questions as a list

@@ -27,11 +27,6 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
   answer,
   gradingFeedback,
 }) => {
-  // Border colors
-  /*  const GREEN = baseTheme.colors.green[300]
-
-  const COLOR = baseTheme.colors.blue[300]
-  const CHOSEN_COLOR = baseTheme.colors.blue[700] */
   return (
     <div
       className={css`
