@@ -4,6 +4,7 @@ import useCollapse from "react-collapsed"
 
 import { SurveyItem } from "../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
+import { InfoSection } from "../StyledComponents/InfoSection"
 
 import SurveyExerciseItem from "./SurveyExerciseItem"
 
@@ -29,6 +30,17 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items }) =
       <div {...getCollapseProps()}>
         <div className="content">
           {items.map((item) => {
+            if (item.conditional && item.dependsOn) {
+              const chosenOptions = items.find(
+                (surveyItem) => surveyItem.question.questionLabel === item.dependsOn?.questionLabel,
+              )?.answer.answer as string[]
+              if (chosenOptions?.indexOf(item.dependsOn.triggeringOption) === -1) {
+                return
+              }
+            }
+            if (item.question.questionLabel === "info") {
+              return <InfoSection content={item.question.question} />
+            }
             return (
               <div key={item.id}>
                 <ExerciseItemHeader questionText={item.question.question} />

@@ -75,7 +75,6 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
       <TextArea
         label="Editor"
         placeholder="question_label; question text"
-        //value={item.question.question ?? ""}   If this, then label wont show, neither will text appear unless it's correctly parsed
         onChange={(value) => {
           const parsedValue = parseLabelQuestion(value)
           if (!parsedValue) {
@@ -100,46 +99,48 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
       />
 
       {/* eslint-disable-next-line i18next/no-literal-string */}
-      <select
-        onChange={(event) => {
-          const answer: Answer = item.answer ?? {
-            id: v4(),
-            type: AnswerType.None,
-            answer: "",
-            options: [],
-          }
-          const answerType: AnswerType = event.target.value as unknown as AnswerType
-          if (!answerType) {
-            return
-          }
-          onChangeSurveyItem({ ...item, answer: { ...answer, type: answerType } })
-        }}
-        className={css`
-          flex: 1;
-          padding: 0rem;
-          width: 100%;
-          margin: 0 auto;
-          margin-right: 0.5rem;
-          margin-top: 1rem;
-          margin-bottom: 1rem;
-        `}
-        value={item.answer.type}
-      >
-        {Object.values(AnswerType).map((t) => {
-          if (t === AnswerType.None) {
+      {item.question.questionLabel !== "info" && (
+        <select
+          onChange={(event) => {
+            const answer: Answer = item.answer ?? {
+              id: v4(),
+              type: AnswerType.None,
+              answer: "",
+              options: [],
+            }
+            const answerType: AnswerType = event.target.value as unknown as AnswerType
+            if (!answerType) {
+              return
+            }
+            onChangeSurveyItem({ ...item, answer: { ...answer, type: answerType } })
+          }}
+          className={css`
+            flex: 1;
+            padding: 0rem;
+            width: 100%;
+            margin: 0 auto;
+            margin-right: 0.5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          `}
+          value={item.answer.type}
+        >
+          {Object.values(AnswerType).map((t) => {
+            if (t === AnswerType.None) {
+              return (
+                <option key={AnswerType.None} value={AnswerType.None}>
+                  Select answer type
+                </option>
+              )
+            }
             return (
-              <option key={AnswerType.None} value={AnswerType.None}>
-                Select answer type
+              <option value={t} key={t}>
+                {t}
               </option>
             )
-          }
-          return (
-            <option value={t} key={t}>
-              {t}
-            </option>
-          )
-        })}
-      </select>
+          })}
+        </select>
+      )}
 
       {(item.answer?.type === AnswerType.MultiChoice ||
         item.answer?.type === AnswerType.RadioGroup ||

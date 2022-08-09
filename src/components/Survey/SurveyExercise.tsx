@@ -4,6 +4,7 @@ import { useState } from "react"
 import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
 import { Answer, SubmittedForm, Survey, SurveyItem } from "../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
+import { InfoSection } from "../StyledComponents/InfoSection"
 
 import SurveyExerciseItem from "./SurveyExerciseItem"
 
@@ -82,6 +83,9 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
           if (chosenOptions?.indexOf(item.dependsOn.triggeringOption) === -1) {
             return
           }
+        }
+        if (item.question.questionLabel === "info") {
+          return <InfoSection content={item.question.question} />
         }
         return (
           <ItemWrapper key={item.id}>
