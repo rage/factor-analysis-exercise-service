@@ -1,4 +1,4 @@
-import { Factor, FactorialSurvey, Question, RatedQuestion, SubmittedForm } from "./stateInterfaces"
+import { Factor, FactorialSurvey, Question, RatedQuestion } from "./stateInterfaces"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
