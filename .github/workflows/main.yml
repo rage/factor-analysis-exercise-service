@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [deploy]
 
 jobs:
   build:
@@ -35,4 +35,4 @@ jobs:
           branch: gh-pages
           folder: out
 
-# source: https://www.linkedin.com/pulse/deploy-nextjs-app-github-pages-federico-antu%C3%B1a
+# source: https://fedeantuna.github.io/article/deploy-nextjs-app-to-github-pages
