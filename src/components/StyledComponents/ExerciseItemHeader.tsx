@@ -1,25 +1,23 @@
 import styled from "@emotion/styled"
 import React from "react"
 
-import { headingFont } from "../../shared-module/styles"
+import { baseTheme, headingFont } from "../../shared-module/styles"
 import MarkdownText from "../MarkdownText"
 
 interface Props {
   questionText: string
 }
-/* const GREEN = baseTheme.colors.green[100]
+const GREEN = baseTheme.colors.green[100]
 
-const COLOR = baseTheme.colors.blue[300]
-const CHOSEN_COLOR = baseTheme.colors.blue[700]
- */
 const Header = styled.div`
   font-family: ${headingFont};
   font-style: normal;
   font-weight: 500;
   font-size: 22px;
   line-height: 30px;
-  /* background: GREEN;
-  padding: 15px; */
+  /* background: ${GREEN};
+  padding: 5px; */
+  margin-bottom: 5px;
 
   /* identical to box height, or 136% */
   display: flex;

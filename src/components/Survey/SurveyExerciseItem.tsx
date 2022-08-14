@@ -119,7 +119,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
                     required
                     disabled={disabled}
                   />
-                  <label>{option}</label>
+                  <span>{option}</span>
                 </RadioGroupWrap>
               )
             })}

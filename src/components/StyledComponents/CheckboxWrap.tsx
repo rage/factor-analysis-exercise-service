@@ -5,21 +5,21 @@ interface DivProps {
 }
 
 export const CheckboxWrap = styled.div<DivProps>`
-  margin-bottom: 1.5px;
   display: flex;
   font-family: "Raleway";
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
-  line-height: 36px;
+  line-height: 30px;
   color: #1a2333;
   align-items: left;
+  justify-content: left;
+  gap: 0.5em;
+  grid-template-columns: 1em auto;
 
   input[type="checkbox"] {
     appearance: none;
     background-color: #fff;
-    margin-right: 10px;
-    margin-top: 5px;
     font: inherit;
     color: currentColor;
     width: 30px;
@@ -32,8 +32,8 @@ export const CheckboxWrap = styled.div<DivProps>`
 
   input[type="checkbox"]:before {
     content: "";
-    width: 0.65em;
-    height: 0.65em;
+    width: 20px;
+    height: 16px;
     transform: scale(0);
     transition: 120ms transform ease-in-out;
     box-shadow: inset 1em 1em #fff;
@@ -47,5 +47,12 @@ export const CheckboxWrap = styled.div<DivProps>`
 
   input[type="checkbox"]:checked::before {
     transform: scale(1);
+  }
+
+  label {
+    font-family: "Raleway";
+    font-style: normal;
+    font-weight: 500;
+    margin-left: 20 px;
   }
 `

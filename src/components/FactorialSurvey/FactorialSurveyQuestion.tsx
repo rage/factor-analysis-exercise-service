@@ -2,7 +2,7 @@ import styled from "@emotion/styled"
 
 import { FactorialOption, RatedQuestion } from "../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
-import { RadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
+import { CheckedRadioGroupWrap, RadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
 
 interface Props {
   question: RatedQuestion
@@ -31,7 +31,7 @@ const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
           <ExerciseItemHeader questionText={question.question} />
           {options.map((option) => {
             return (
-              <RadioGroupWrap key={option.id} checkedCollor="#32BEA6" border={false}>
+              <CheckedRadioGroupWrap key={option.id} checkedCollor="#32BEA6" border={true}>
                 <input
                   type="radio"
                   value={option.value ?? undefined}
@@ -47,7 +47,7 @@ const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
                   disabled={disabled}
                 />
                 <label>{option.name}</label>
-              </RadioGroupWrap>
+              </CheckedRadioGroupWrap>
             )
           })}
         </div>
