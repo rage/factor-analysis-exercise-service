@@ -17,7 +17,8 @@ const Header = styled.div`
   line-height: 30px;
   /* background: ${GREEN};
   padding: 5px; */
-  margin-bottom: 5px;
+  margin-bottom: 9px;
+  margin-top: 4px;
 
   /* identical to box height, or 136% */
   display: flex;

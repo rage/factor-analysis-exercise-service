@@ -3,7 +3,7 @@ import styled from "@emotion/styled"
 import { baseTheme } from "../../shared-module/styles"
 
 interface DivProps {
-  checkedCollor: string
+  checkedColor: string
   border?: boolean
 }
 
@@ -48,8 +48,8 @@ export const CheckedRadioGroupWrap = styled.div<DivProps>`
   }
 
   input[type="radio"]:checked {
-    border-color: ${({ checkedCollor }) => checkedCollor};
-    background: ${({ checkedCollor }) => checkedCollor};
+    border-color: ${({ checkedColor }) => checkedColor};
+    background: ${({ checkedColor }) => checkedColor};
   }
 
   input[type="radio"]:checked::before {

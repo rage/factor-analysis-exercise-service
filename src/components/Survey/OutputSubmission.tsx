@@ -19,6 +19,13 @@ const Wrapper = styled.div`
   margin-right: 0.5;
 `
 
+const ItemWrapper = styled.div`
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5;
+`
+
 const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items }) => {
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse()
 
@@ -42,7 +49,7 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items }) =
               return <InfoSection content={item.question.question} />
             }
             return (
-              <div key={item.id}>
+              <ItemWrapper key={item.id}>
                 <ExerciseItemHeader questionText={item.question.question} />
                 <SurveyExerciseItem
                   key={item.id}
@@ -50,7 +57,7 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items }) =
                   updateAnswer={() => null}
                   disabled={true}
                 />
-              </div>
+              </ItemWrapper>
             )
           })}
         </div>
