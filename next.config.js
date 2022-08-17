@@ -7,6 +7,7 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  output: "standalone",
   async headers() {
     return [
       {
@@ -21,7 +22,6 @@ const config = {
       },
     ]
   },
-  output: "standalone",
 }
 
 if (process.env.NEXT_PUBLIC_BASE_PATH) {
