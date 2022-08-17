@@ -18,10 +18,10 @@ const ItemWrapper = styled.div`
   margin-right: 0.5;
 `
 
-const withBorder = {
+/* const withBorder = {
   border: true,
   checkedColor: "#44827E",
-}
+} */
 
 const noBorder = {
   border: false,
