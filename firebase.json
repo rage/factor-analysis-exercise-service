@@ -9,7 +9,8 @@
     "rewrites": [
       {
         "source": "**",
-        "function": "nextServer"
+        "function": "nextServer",
+        "region": "europe-west3"
       }
     ]
   },
@@ -23,7 +24,7 @@
       ".runtimeconfig.json",
       "firebase-debug.log",
       "firebase-debug.*.log",
-      "node_modules"
+      "**/node_modules/**"
     ]
   }
 }
