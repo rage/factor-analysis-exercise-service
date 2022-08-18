@@ -74,6 +74,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
       </StyledInnerEditor>
       <TextArea
         label="Editor"
+        autoResize
         placeholder="question_label; question text"
         onChange={(value) => {
           const parsedValue = parseLabelQuestion(value)
@@ -93,6 +94,10 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
           flex: 1;
           padding: 0rem;
           width: 100%;
+            textarea {
+              width: 100%;
+              resize: vertical;
+              max-height: 150px;
           margin: 0 auto;
           margin-right: 0.5rem;
         `}
@@ -187,6 +192,25 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             add option
           </button>
         </div>
+      )}
+      {item.answer?.type === AnswerType.ConsentCheckbox && (
+        <TextArea
+          label="Checkbox text editor"
+          placeholder={"Consent message"}
+          autoResize
+          className={css`
+            width: 100%;
+            textarea {
+              width: 100%;
+              resize: vertical;
+              max-height: 100px;
+            }
+          `}
+          onChange={(value) => {
+            onChangeSurveyItem({ ...item, answer: { ...item.answer, options: [value] } })
+          }}
+          defaultValue={item.answer.options[0]}
+        />
       )}
       <StyledInnerEditor>
         <legend>Conditional</legend>

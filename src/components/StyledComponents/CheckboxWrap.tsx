@@ -2,28 +2,23 @@ import styled from "@emotion/styled"
 
 interface DivProps {
   checkedCollor: string
+  info?: boolean
 }
 
 export const CheckboxWrap = styled.div<DivProps>`
-  display: flex;
-  font-family: "Raleway";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 30px;
-  color: #1a2333;
+  display: grid;
   align-items: left;
   justify-content: left;
   gap: 0.5em;
-  grid-template-columns: 1em auto;
+  grid-template-columns: ${({ info }) => (info ? "1.5em auto" : "2em auto")};
 
   input[type="checkbox"] {
     appearance: none;
     background-color: #fff;
     font: inherit;
     color: currentColor;
-    width: 30px;
-    height: 28px;
+    width: ${({ info }) => (info ? "17px" : "30px")};
+    height: ${({ info }) => (info ? "17px" : "28px")};
     border: 1px solid #989ca3;
     transform: translateY(-0.075em);
     display: grid;
@@ -32,8 +27,8 @@ export const CheckboxWrap = styled.div<DivProps>`
 
   input[type="checkbox"]:before {
     content: "";
-    width: 20px;
-    height: 16px;
+    width: 12px;
+    height: 12px;
     transform: scale(0);
     transition: 120ms transform ease-in-out;
     box-shadow: inset 1em 1em #fff;
@@ -50,9 +45,9 @@ export const CheckboxWrap = styled.div<DivProps>`
   }
 
   label {
-    font-family: "Raleway";
-    font-style: normal;
-    font-weight: 500;
+    font: inherit;
     margin-left: 20 px;
+    line-height: 17px:
+    color: #1a2333;
   }
 `

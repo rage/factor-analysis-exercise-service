@@ -3,6 +3,7 @@ import { useState } from "react"
 
 import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
 import { Answer, SubmittedForm, Survey, SurveyItem } from "../../util/stateInterfaces"
+import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 import { InfoSection } from "../StyledComponents/InfoSection"
 
@@ -13,11 +14,39 @@ interface Props {
   port: MessagePort
 }
 
-const ItemWrapper = styled.div`
+export const ItemWrapper = styled.div`
   margin-top: 1rem;
   margin-bottom: 2rem;
   margin-left: 0.5rem;
   margin-right: 0.5;
+
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 30px;
+
+  color: #1a2333;
+`
+
+export const InfoHeaderWrapper = styled.div`
+  background: rgba(85, 179, 245, 0.05);
+  width: 100%;
+  padding: 15px;
+
+  font-family: Lato;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: 100%;
+
+  /* or 17px */
+  display: grid;
+  align-items: flex-end;
+  text-align: left;
+
+  color: #494949;
+  gap: 0.5rem;
 `
 
 const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state }) => {
@@ -86,6 +115,14 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
         }
         if (item.question.questionLabel === "info") {
           return <InfoSection content={item.question.question} />
+        }
+        if (item.question.questionLabel === "info-header") {
+          return (
+            <InfoHeaderWrapper>
+              <MarkdownText text={item.question.question} />
+              <SurveyExerciseItem item={item} updateAnswer={updateAnswer} />
+            </InfoHeaderWrapper>
+          )
         }
         return (
           <ItemWrapper key={item.id}>

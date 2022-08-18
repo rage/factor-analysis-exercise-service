@@ -102,6 +102,7 @@ export enum AnswerType {
   BreedList = "breed-list",
   Date = "date",
   Dropdown = "dropdown-selection",
+  ConsentCheckbox = "consent-checkbox",
 }
 
 export type PrivateSpec = FactorialSurvey | Survey | null
