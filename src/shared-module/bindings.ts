@@ -227,6 +227,7 @@ export interface CourseStructure {
   course: Course
   pages: Array<Page>
   chapters: Array<Chapter>
+  modules: Array<CourseModule>
 }
 
 export interface CourseUpdate {
@@ -378,6 +379,7 @@ export interface CourseMaterialExerciseTask {
   id: string
   exercise_slide_id: string
   exercise_iframe_url: string | null
+  pseudonumous_user_id: string | null
   assignment: unknown
   public_spec: unknown | null
   model_solution_spec: unknown | null
@@ -1017,6 +1019,10 @@ export interface CreateAccountDetails {
   password_confirmation: string
 }
 
+export interface UserInfo {
+  user_id: string
+}
+
 export interface RoleQuery {
   global?: boolean
   organization_id?: string
@@ -1119,4 +1125,23 @@ export interface MaterialReference {
 export interface NewMaterialReference {
   citation_key: string
   reference: string
+}
+
+export interface ModifiedModule {
+  id: string
+  name: string | null
+  order_number: number
+}
+
+export interface ModuleUpdates {
+  new_modules: Array<NewModule>
+  deleted_modules: Array<string>
+  modified_modules: Array<ModifiedModule>
+  moved_chapters: Array<[string, string]>
+}
+
+export interface NewModule {
+  name: string
+  order_number: number
+  chapters: Array<string>
 }
