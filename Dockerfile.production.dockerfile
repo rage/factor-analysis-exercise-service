@@ -1,4 +1,3 @@
-# This image is used in skaffold.production.yaml to cache the build
 FROM eu.gcr.io/moocfi-public/project-331-node-base:latest as builder
 
 RUN apt-get update \
@@ -18,6 +17,17 @@ RUN npm ci
 
 COPY --chown=node . /app
 
-ENV NEXT_PUBLIC_BASE_PATH="/example-exercise"
-
 RUN npm run build
+
+FROM eu.gcr.io/moocfi-public/project-331-node-base:latest as runtime
+
+COPY --from=builder /app/.next/standalone /app
+COPY --from=builder /app/.next/static /app/.next/static
+
+USER node
+
+WORKDIR /app
+
+EXPOSE 3002
+
+CMD [ "npm", "run", "start" ]
