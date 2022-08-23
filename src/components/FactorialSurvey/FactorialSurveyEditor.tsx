@@ -5,6 +5,7 @@ import { v4 } from "uuid"
 
 import { State } from "../../pages/iframe"
 import { Factor, FactorialSurvey, Question } from "../../util/stateInterfaces"
+import CsvReader from "../CsvReader"
 import ListInputEditor from "../ListInputEditor"
 
 import LabelEditor from "./LabelEditor"
@@ -191,6 +192,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
             }}
           />
         </StyledInnerEditor>
+        <CsvReader id={"12345"} />
 
         {state && state.calculateFeedback && (
           <>
