@@ -49,8 +49,11 @@ export interface SubmittedForm {
 
 export interface Factor {
   id: string
+  label: string
   name: string
-  score: number | null
+  description?: string
+  weights: Map<string, number>
+  score?: number | null
 }
 
 /** PublicSpec for Factorial survey

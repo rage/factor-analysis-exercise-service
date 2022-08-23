@@ -192,32 +192,25 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
             }}
           />
         </StyledInnerEditor>
-        <CsvReader id={"12345"} />
 
         {state && state.calculateFeedback && (
           <>
+            <CsvReader
+              id={state.id}
+              setFactors={(value) => {
+                const newFactors: Factor[] = [...value].map(([_label, factor]) => {
+                  return factor
+                })
+
+                setState({
+                  view_type: "exercise-editor",
+                  private_spec: { ...state, factors: newFactors },
+                })
+              }}
+            />
             <fieldset>
               <legend>Factors</legend>
               <div>
-                <input
-                  value={state?.factorAmount?.toString() ?? 0}
-                  type="number"
-                  onChange={(e) => {
-                    const parsedNumber = parseInt(e.target.value)
-                    if (isNaN(parsedNumber)) {
-                      return
-                    }
-                    const newState: FactorialSurvey = {
-                      ...(state as FactorialSurvey),
-                      factors: [],
-                      factorAmount: parsedNumber,
-                    }
-                    for (let i = 0; i < parsedNumber; i++) {
-                      newState.factors.push({ id: v4(), name: "", score: 99999 })
-                    }
-                    setState({ view_type: "exercise-editor", private_spec: newState })
-                  }}
-                />
                 <ol>
                   {state?.factors?.map((e) => {
                     return (
