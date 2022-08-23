@@ -55,7 +55,6 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
                     factors: [],
                     options: [],
                     questions: [],
-                    matrix: [],
                     calculateFeedback: false,
                   },
                 })

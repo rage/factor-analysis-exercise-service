@@ -238,17 +238,6 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 </ol>
               </div>
             </fieldset>
-            <ButtonWrapper>
-              <MatrixEditor
-                item={state}
-                onChange={(value: number[][]) => {
-                  setState({
-                    view_type: "exercise-editor",
-                    private_spec: { ...state, matrix: value },
-                  })
-                }}
-              />
-            </ButtonWrapper>
             <OutputMatrix state={state} />
           </>
         )}
