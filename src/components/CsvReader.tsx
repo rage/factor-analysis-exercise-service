@@ -22,16 +22,15 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({ setFactors }) => 
   const parseFileData = () => {
     const factors: Map<string, Factor> = new Map()
     headers.map((header) => {
-      const factor: Factor = { id: v4(), label: header, name: "", weights: new Map() }
+      const factor: Factor = { id: v4(), label: header, name: "", weights: {} }
       factors.set(header, factor)
     })
     data?.map((row: Record<string, unknown>) => {
-      console.log(row)
       factors.forEach((value, key) => {
-        return value.weights.set(Object.keys(row)[0], row[key] as number)
+        value.weights[Object.values(row)[0] as string] = row[key] as number
       })
     })
-    // console.log(factors)
+    console.log(factors)
     setFactors(factors)
   }
 

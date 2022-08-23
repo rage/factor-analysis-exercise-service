@@ -201,7 +201,6 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 const newFactors: Factor[] = [...value].map(([_label, factor]) => {
                   return factor
                 })
-
                 setState({
                   view_type: "exercise-editor",
                   private_spec: { ...state, factors: newFactors },

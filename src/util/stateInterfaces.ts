@@ -52,7 +52,7 @@ export interface Factor {
   label: string
   name: string
   description?: string
-  weights: Map<string, number>
+  weights: { [key: string]: number }
   score?: number | null
 }
 
