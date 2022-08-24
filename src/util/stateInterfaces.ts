@@ -49,7 +49,7 @@ export interface Factor {
   description?: string
   /** [QuestionLabel: weight] to be multiplied with the chosen option value for given question after form submission */
   weights: { [key: string]: number }
-  score?: number
+  score: number
 }
 
 /** PublicSpec for Factorial survey contains only questions and options
