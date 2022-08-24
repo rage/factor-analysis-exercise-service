@@ -10,7 +10,7 @@ interface Props {
   onChangeQuestion: (item: Question) => void
 }
 
-const StyledOuterEditor = styled.div`
+export const StyledOuterEditor = styled.div`
   margin: 0 auto;
   margin-bottom: 1rem;
   width: 100%;
@@ -21,7 +21,7 @@ const StyledOuterEditor = styled.div`
   flex-direction: column;
 `
 
-const StyledInnerEditor = styled.div`
+export const StyledInnerEditor = styled.div`
   margin: 0 auto;
   margin-bottom: 1rem;
   width: 100%;
