@@ -82,10 +82,10 @@ export const ButtonWrapper = styled.div`
 
 export const StyledLabelEditor = styled.div`
   margin: 0 auto;
-  margin-bottom: 1rem;
+  margin-bottom: 5px;
   width: 100%;
-  border: 1px solid black;
-  padding: 1rem;
+  border: 1px solid grey;
+  padding: 0 1rem 0 0;
   display: flex;
   align-items: center;
   justify-content: space-apart;
@@ -98,10 +98,8 @@ export const DeleteButton = styled.button`
 
 export const StyledOuterEditor = styled.div<{ border?: boolean }>`
   margin: 0 auto;
-  margin-bottom: 1rem;
   width: 100%;
   border: ${({ border }) => (border ? "1px solid black" : "none")};
-  padding: 1rem;
   display: flex;
   align-items: left;
   justify-content: space-apart;
@@ -110,7 +108,7 @@ export const StyledOuterEditor = styled.div<{ border?: boolean }>`
 
 export const StyledInnerEditor = styled.div`
   margin: 0 auto;
-  margin-bottom: 1rem;
+  padding: 0.5rem 0 0.5rem 0;
   width: 100%;
   display: flex;
   align-items: center;

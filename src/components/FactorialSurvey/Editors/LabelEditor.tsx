@@ -24,8 +24,11 @@ const LabelEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onDelete,
         className={css`
           padding: 0.5rem;
           width: 6rem;
-          margin: 0 auto;
-          margin-right: 0.5rem;
+          margin: 0;
+          textfield: {
+            margin: 0 auto;
+            margin-right: 0.5rem;
+          }
         `}
       />
       <TextField
@@ -37,9 +40,13 @@ const LabelEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onDelete,
         className={css`
           flex: 1;
           padding: 0.5rem;
-          width: 100%;
-          margin: 0 auto;
-          margin-right: 0.5rem;
+          margin: 0;
+          textfield: {
+            padding: 0;
+            width: 100%;
+            margin: 0 auto;
+            margin-right: 0.5rem;
+          }
         `}
       />
       {/* eslint-disable-next-line i18next/no-literal-string */}

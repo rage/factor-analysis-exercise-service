@@ -1,6 +1,7 @@
 import { css } from "@emotion/css"
 
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
+import { baseTheme, primaryFont } from "../../../shared-module/styles"
 import { Question } from "../../../util/stateInterfaces"
 import { parseLabelQuestion, reverseParseLabelQuestion } from "../../../util/utils"
 import MarkdownText from "../../MarkdownText"
@@ -15,7 +16,16 @@ const QuestionEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChan
     <StyledOuterEditor>
       <fieldset>
         <legend>{item.questionLabel}</legend>
-        <StyledInnerEditor>
+        <StyledInnerEditor
+          className={css`
+            font-family: ${primaryFont};
+            color: ${baseTheme.colors.grey[600]};
+            font-style: normal;
+            font-weight: 500;
+            font-size: 20px;
+            background-color: ${baseTheme.colors.clear[100]};
+          `}
+        >
           {item.question && <MarkdownText text={item.question} />}
         </StyledInnerEditor>
         <TextArea

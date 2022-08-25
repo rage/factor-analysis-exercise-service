@@ -31,91 +31,87 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
       <>
         <fieldset>
           <legend>Options</legend>
-          <ButtonWrapper>
-            <ol>
-              {state?.options?.map((o) => (
-                <li key={o.id}>
-                  <LabelEditor
-                    key={o.id}
-                    item={o}
-                    onDelete={() => {
-                      const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
+          <ol>
+            {state?.options?.map((o) => (
+              <li key={o.id}>
+                <LabelEditor
+                  key={o.id}
+                  item={o}
+                  onDelete={() => {
+                    const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
 
-                      const newLabels = newState.options.filter((e) => e.id !== o.id)
-                      setState({
-                        view_type: "exercise-editor",
-                        private_spec: { ...state, options: newLabels },
-                      })
-                    }}
-                    onChange={(task) => {
-                      const newLabels = state.options.map((e) => {
-                        if (e.id !== o.id) {
+                    const newLabels = newState.options.filter((e) => e.id !== o.id)
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: { ...state, options: newLabels },
+                    })
+                  }}
+                  onChange={(task) => {
+                    const newLabels = state.options.map((e) => {
+                      if (e.id !== o.id) {
+                        return e
+                      }
+                      return task
+                    })
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: { ...state, options: newLabels },
+                    })
+                  }}
+                />
+              </li>
+            ))}
+          </ol>
+
+          <NewButton
+            onClick={() => {
+              const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
+              if (typeof newState.options === "undefined") {
+                newState.options = []
+              }
+              newState.options.push({ name: "", value: 0, id: v4() })
+              setState({ view_type: "exercise-editor", private_spec: newState })
+            }}
+          >
+            Add Option
+          </NewButton>
+        </fieldset>
+
+        <fieldset>
+          <legend>Questions</legend>
+          <ol>
+            {state?.questions?.map((q) => {
+              if (q.questionLabel !== "info") {
+                questionIndex = questionIndex + 1
+              }
+              return (
+                <li
+                  key={q.id}
+                  value={q.questionLabel === "info" ? 9 : questionIndex}
+                  className={css`
+                    list-style-type: ${q.questionLabel === "info" ? "lower-latin" : ""};
+                  `}
+                >
+                  <QuestionEditor
+                    key={q.id}
+                    item={q}
+                    onChangeQuestion={(task) => {
+                      const newQuestions = state.questions.map((e) => {
+                        if (e.id !== q.id) {
                           return e
                         }
                         return task
                       })
                       setState({
                         view_type: "exercise-editor",
-                        private_spec: { ...state, options: newLabels },
+                        private_spec: { ...state, questions: newQuestions },
                       })
                     }}
                   />
                 </li>
-              ))}
-            </ol>
-
-            <NewButton
-              onClick={() => {
-                const newState: FactorialSurvey = { ...(state as FactorialSurvey) }
-                if (typeof newState.options === "undefined") {
-                  newState.options = []
-                }
-                newState.options.push({ name: "", value: 0, id: v4() })
-                setState({ view_type: "exercise-editor", private_spec: newState })
-              }}
-            >
-              Add Option
-            </NewButton>
-          </ButtonWrapper>
-        </fieldset>
-
-        <fieldset>
-          <legend>Questions</legend>
-          <ButtonWrapper>
-            <ol>
-              {state?.questions?.map((q) => {
-                if (q.questionLabel !== "info") {
-                  questionIndex = questionIndex + 1
-                }
-                return (
-                  <li
-                    key={q.id}
-                    value={q.questionLabel === "info" ? 9 : questionIndex}
-                    className={css`
-                      list-style-type: ${q.questionLabel === "info" ? "lower-latin" : ""};
-                    `}
-                  >
-                    <QuestionEditor
-                      key={q.id}
-                      item={q}
-                      onChangeQuestion={(task) => {
-                        const newQuestions = state.questions.map((e) => {
-                          if (e.id !== q.id) {
-                            return e
-                          }
-                          return task
-                        })
-                        setState({
-                          view_type: "exercise-editor",
-                          private_spec: { ...state, questions: newQuestions },
-                        })
-                      }}
-                    />
-                  </li>
-                )
-              })}
-            </ol>
-          </ButtonWrapper>
+              )
+            })}
+          </ol>
           Input questions as a list
           <ButtonWrapper>
             <ListInputEditor
@@ -155,19 +151,19 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
 
         {state && state.calculateFeedback && (
           <>
-            <CsvReader
-              id={state.id}
-              setFactors={(value) => {
-                const newFactors: Factor[] = [...value].map(([_label, factor]) => {
-                  return factor
-                })
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, factors: newFactors },
-                })
-              }}
-            />
             <fieldset>
+              <CsvReader
+                id={state.id}
+                setFactors={(value) => {
+                  const newFactors: Factor[] = [...value].map(([_label, factor]) => {
+                    return factor
+                  })
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: { ...state, factors: newFactors },
+                  })
+                }}
+              />
               <legend>Factors</legend>
               <div>
                 {state?.factors?.map((factor) => {
