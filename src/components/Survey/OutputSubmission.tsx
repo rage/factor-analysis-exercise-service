@@ -1,4 +1,3 @@
-import styled from "@emotion/styled"
 import React from "react"
 import useCollapse from "react-collapsed"
 
@@ -6,20 +5,13 @@ import { SurveyItem } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 import { InfoSection } from "../StyledComponents/InfoSection"
+import { InfoHeaderWrapper, ItemWrapper, Wrapper } from "../StyledComponents/Wrappers"
 
-import { InfoHeaderWrapper, ItemWrapper } from "./SurveyExercise"
 import SurveyExerciseItem from "./SurveyExerciseItem"
 
 interface Props {
   items: SurveyItem[]
 }
-
-const Wrapper = styled.div`
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5;
-`
 
 const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items }) => {
   const { getCollapseProps, getToggleProps, isExpanded } = useCollapse()

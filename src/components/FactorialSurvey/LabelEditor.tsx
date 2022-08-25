@@ -1,29 +1,13 @@
 import { css } from "@emotion/css"
-import styled from "@emotion/styled"
 
 import TextField from "../../shared-module/components/InputFields/TextField"
 import { FactorialOption } from "../../util/stateInterfaces"
+import { DeleteButton, StyledLabelEditor } from "../StyledComponents/Wrappers"
 interface Props {
   item: FactorialOption
   onDelete: () => void
   onChange: (item: FactorialOption) => void
 }
-
-const StyledLabelEditor = styled.div`
-  margin: 0 auto;
-  margin-bottom: 1rem;
-  width: 100%;
-  border: 1px solid black;
-  padding: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-apart;
-`
-
-const DeleteButton = styled.button`
-  width: 2rem;
-  height: 2rem;
-`
 
 const LabelEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onDelete, onChange }) => {
   return (

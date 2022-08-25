@@ -2,8 +2,8 @@ import { css } from "@emotion/css"
 
 import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 import { Factor } from "../../util/stateInterfaces"
+import { StyledInnerEditor, StyledOuterEditor } from "../StyledComponents/Wrappers"
 
-import { StyledInnerEditor, StyledOuterEditor } from "./QuestionEditor"
 interface Props {
   factor: Factor
   onChangeFactor: (factor: Factor) => void

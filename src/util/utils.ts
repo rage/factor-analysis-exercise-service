@@ -27,16 +27,14 @@ export const calculateFactors = (
     factor.score = 0
     ratedQuestions.map((item) => {
       if (!factor.weights[item.questionLabel]) {
-        console.log(item.questionLabel)
+        console.log("Did not find data for question:", item.questionLabel)
         return
       }
 
       factor.score = item.rate
         ? factor.score + factor.weights[item.questionLabel] * item.rate
         : factor.score
-      console.log(factor.score)
     })
-    console.log(factor.score)
   })
 
   return factors

@@ -1,8 +1,7 @@
-import styled from "@emotion/styled"
-
 import { FactorialOption, RatedQuestion } from "../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 import { CheckedRadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
+import { ItemWrapper } from "../StyledComponents/Wrappers"
 
 interface Props {
   question: RatedQuestion
@@ -10,13 +9,6 @@ interface Props {
   onClick: (questionId: string, rate: number | null, chosenOption: string) => void
   disabled?: boolean
 }
-
-const ItemWrapper = styled.div`
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5;
-`
 
 /* const withBorder = {
   border: true,

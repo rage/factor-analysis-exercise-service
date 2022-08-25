@@ -12,7 +12,7 @@ export const CheckedRadioGroupWrap = styled.div<DivProps>`
   display: flex;
   border: ${({ border }) => (border ? "2px solid #ebedee" : "none")};
   border-radius: 2px;
-  font-family: "Raleway";
+  font-family: "Lato";
   font-style: normal;
   font-weight: 500;
   font-size: 18px;

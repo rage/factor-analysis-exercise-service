@@ -1,41 +1,22 @@
 /* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
-import styled from "@emotion/styled"
 import { v4 } from "uuid"
 
 import { State } from "../../pages/iframe"
 import { Factor, FactorialSurvey, Question } from "../../util/stateInterfaces"
 import CsvReader from "../CsvReader"
 import ListInputEditor from "../ListInputEditor"
+import { ButtonWrapper, NewButton, StyledInnerEditor } from "../StyledComponents/Wrappers"
 
 import FactorEditor from "./FactorEditor"
 import LabelEditor from "./LabelEditor"
 import OutputMatrix from "./OutputMatrix"
-import QuestionEditor, { StyledInnerEditor } from "./QuestionEditor"
+import QuestionEditor from "./QuestionEditor"
 
 interface Props {
   state: FactorialSurvey
   setState: (newState: State) => void
 }
-
-const ButtonWrapper = styled.div`
-  padding: 1rem 0;
-`
-
-const NewButton = styled.button`
-  margin: 0 auto;
-  margin-bottom: 1rem;
-  width: 100%;
-  display: block;
-  padding: 0.5rem;
-  background-color: white;
-  border: 1px solid black;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: #f1f1f1;
-  }
-`
 
 const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState }) => {
   let questionIndex = 0

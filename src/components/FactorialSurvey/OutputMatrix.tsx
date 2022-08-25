@@ -2,7 +2,7 @@ import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 import React, { useState } from "react"
 
-import { FactorialSurvey } from "../../util/stateInterfaces"
+import { FactorialSurvey, Question } from "../../util/stateInterfaces"
 import { sanitizeQuestions } from "../../util/utils"
 
 interface Props {
@@ -31,7 +31,7 @@ const Tbody = styled.tbody`
 `
 
 const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
-  const sanitizedQuestions = sanitizeQuestions(state.questions)
+  const sanitizedQuestions = sanitizeQuestions(state.questions) as Question[]
 
   const [error, setError] = useState<string[]>([])
 
@@ -46,7 +46,7 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
       >
         {error.length > 0 &&
           error.map((e, idx) => {
-            if (state.questions.find((question) => question.questionLabel === e)) {
+            if (sanitizedQuestions.find((question) => question.questionLabel === e)) {
               return (
                 <p
                   key={idx}
@@ -63,7 +63,7 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
               return <Td key={f.id}>{f.name}</Td>
             })}
           </tr>
-          {state.questions.map((question, q_idx) => {
+          {sanitizedQuestions.map((question, q_idx) => {
             return (
               <tr key={question.id}>
                 <Td

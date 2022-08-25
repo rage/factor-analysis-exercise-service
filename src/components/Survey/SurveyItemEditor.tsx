@@ -1,12 +1,17 @@
 /* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
-import styled from "@emotion/styled"
 import { v4 } from "uuid"
 
 import TextArea from "../../shared-module/components/InputFields/TextAreaField"
 import { Answer, AnswerType, Survey, SurveyItem } from "../../util/stateInterfaces"
 import { parseLabelQuestion, reverseParseLabelQuestion } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
+import {
+  DeleteButton,
+  Input,
+  StyledInnerEditor,
+  StyledOuterEditor,
+} from "../StyledComponents/Wrappers"
 
 import SelectConditionForItem from "./SelectConditionForItem"
 interface Props {
@@ -16,39 +21,6 @@ interface Props {
   state: Survey
 }
 
-const StyledOuterEditor = styled.div`
-  margin: 0 auto;
-  margin-bottom: 1rem;
-  width: 100%;
-  border: 1px solid black;
-  padding: 1rem;
-  display: flex;
-  align-items: left;
-  justify-content: space-apart;
-  flex-direction: column;
-`
-
-const StyledInnerEditor = styled.div`
-  margin: 0 auto;
-  margin-bottom: 1rem;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-apart;
-`
-
-const DeleteButton = styled.button`
-  width: 2rem;
-  height: 2rem;
-`
-
-const Input = styled.input`
-  padding: 0.5rem;
-  width: 100%;
-  margin: 0 auto;
-  margin-right: 0.5rem;
-`
-
 const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
   item,
   onDelete,
@@ -56,7 +28,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
   state,
 }) => {
   return (
-    <StyledOuterEditor>
+    <StyledOuterEditor border>
       <legend>{item.question.questionLabel}</legend>
       <StyledInnerEditor>
         <div
