@@ -30,30 +30,29 @@ export interface FactorialOption {
 export interface FactorialSurvey {
   id: string
   type: SurveyType.Factorial
-  factorAmount: number
   calculateFeedback: boolean
   factors: Factor[]
   options: FactorialOption[]
   questions: Question[]
-  /**
-   *  Matrix for caculating factor scores for the factorial survey
-   *  weights to be multiplied with the evaluated question rates
-   *  row by question, col by factor: [question, factor] * question_rate
-   */
-  matrix: number[][]
 }
 
 export interface SubmittedForm {
   answeredQuestions: RatedQuestion[] | SurveyItem[]
 }
 
+/** Contains information for calculating factorial analysis
+ */
 export interface Factor {
   id: string
+  label: string
   name: string
-  score: number | null
+  description?: string
+  /** [QuestionLabel: weight] to be multiplied with the chosen option value for given question after form submission */
+  weights: { [key: string]: number }
+  score: number
 }
 
-/** PublicSpec for Factorial survey
+/** PublicSpec for Factorial survey contains only questions and options
  */
 export interface PublicFactorialSurveySpec {
   id: string
@@ -70,6 +69,8 @@ export interface SurveyItem {
   dependsOn?: SurveyItemCondition
 }
 
+/** Condition for whether to display the question or not
+ *  triggering questionLabel and option: if chosen by student will display the conditional SurveyItem */
 export interface SurveyItemCondition {
   questionLabel: string
   triggeringOption: string //one string for now, have to check with research group what they need

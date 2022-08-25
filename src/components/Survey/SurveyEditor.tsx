@@ -1,11 +1,11 @@
 /* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
-import styled from "@emotion/styled"
 import { v4 } from "uuid"
 
 import { State } from "../../pages/iframe"
 import { Answer, AnswerType, Survey, SurveyItem } from "../../util/stateInterfaces"
 import ListInputEditor from "../ListInputEditor"
+import { ButtonWrapper, NewButton } from "../StyledComponents/Wrappers"
 
 import SurveyItemEditor from "./SurveyItemEditor"
 
@@ -13,25 +13,6 @@ interface Props {
   state: Survey
   setState: (newState: State) => void
 }
-
-const ButtonWrapper = styled.div`
-  padding: 1rem 0;
-`
-
-const NewButton = styled.button`
-  margin: 0 auto;
-  margin-bottom: 1rem;
-  width: 100%;
-  display: block;
-  padding: 0.5rem;
-  background-color: white;
-  border: 1px solid black;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: #f1f1f1;
-  }
-`
 
 const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState }) => {
   return (

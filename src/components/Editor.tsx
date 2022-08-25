@@ -51,11 +51,9 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
                   private_spec: {
                     type: SurveyType.Factorial,
                     id: v4(),
-                    factorAmount: 0,
                     factors: [],
                     options: [],
                     questions: [],
-                    matrix: [],
                     calculateFeedback: false,
                   },
                 })

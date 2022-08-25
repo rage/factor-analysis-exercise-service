@@ -1,7 +1,8 @@
+import { css } from "@emotion/css"
 import styled from "@emotion/styled"
-import React from "react"
+import React, { useState } from "react"
 
-import { FactorialSurvey } from "../../util/stateInterfaces"
+import { FactorialSurvey, Question } from "../../util/stateInterfaces"
 import { sanitizeQuestions } from "../../util/utils"
 
 interface Props {
@@ -30,9 +31,30 @@ const Tbody = styled.tbody`
 `
 
 const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
-  const sanitizedQuestions = sanitizeQuestions(state.questions)
+  const sanitizedQuestions = sanitizeQuestions(state.questions) as Question[]
+
+  const [error, setError] = useState<string[]>([])
+
   return (
     <div>
+      <div
+        className={css`
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+          ${error && `color: red;`}
+        `}
+      >
+        {error.length > 0 &&
+          error.map((e, idx) => {
+            if (sanitizedQuestions.find((question) => question.questionLabel === e)) {
+              return (
+                <p
+                  key={idx}
+                >{`${e} : Could not match with any factor weights. Check that the spelling is identical`}</p>
+              )
+            }
+          })}
+      </div>
       <Table>
         <Tbody>
           <tr>
@@ -41,14 +63,25 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
               return <Td key={f.id}>{f.name}</Td>
             })}
           </tr>
-          {state.matrix.map((question, qidx) => {
+          {sanitizedQuestions.map((question, q_idx) => {
             return (
-              <tr key={qidx}>
-                <Td>
-                  {qidx + 1} {sanitizedQuestions[qidx]?.questionLabel}
+              <tr key={question.id}>
+                <Td
+                  className={css`
+                    ${error.indexOf(question.questionLabel) > -1 && `color: red;`}
+                  `}
+                >
+                  {q_idx + 1} {sanitizedQuestions[q_idx]?.questionLabel}
                 </Td>
-                {question.map((weight, idx) => {
-                  return <Td key={idx}>{weight}</Td>
+                {state.factors.map((factor) => {
+                  if (!factor.weights[question.questionLabel]) {
+                    if (error.indexOf(question.questionLabel) < 0) {
+                      const newError = error
+                      newError.push(question.questionLabel)
+                      setError(newError)
+                    }
+                  }
+                  return <Td key={factor.id}>{factor.weights[question.questionLabel]}</Td>
                 })}
               </tr>
             )
