@@ -2,16 +2,16 @@
 import { css } from "@emotion/css"
 import { v4 } from "uuid"
 
-import TextArea from "../../shared-module/components/InputFields/TextAreaField"
-import { Answer, AnswerType, Survey, SurveyItem } from "../../util/stateInterfaces"
-import { parseLabelQuestion, reverseParseLabelQuestion } from "../../util/utils"
-import MarkdownText from "../MarkdownText"
+import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
+import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/stateInterfaces"
+import { parseLabelQuestion, reverseParseLabelQuestion } from "../../../util/utils"
+import MarkdownText from "../../MarkdownText"
 import {
   DeleteButton,
   Input,
   StyledInnerEditor,
   StyledOuterEditor,
-} from "../StyledComponents/Wrappers"
+} from "../../StyledComponents/Wrappers"
 
 import SelectConditionForItem from "./SelectConditionForItem"
 interface Props {

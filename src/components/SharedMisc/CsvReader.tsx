@@ -5,7 +5,7 @@ import Papa, { parse, ParseResult } from "papaparse"
 import { useState } from "react"
 import { v4 } from "uuid"
 
-import { Factor } from "../util/stateInterfaces"
+import { Factor } from "../../util/stateInterfaces"
 
 interface Props {
   id: string

@@ -2,10 +2,10 @@
 import { css } from "@emotion/css"
 import { v4 } from "uuid"
 
-import { State } from "../../pages/iframe"
-import { Answer, AnswerType, Survey, SurveyItem } from "../../util/stateInterfaces"
-import ListInputEditor from "../ListInputEditor"
-import { ButtonWrapper, NewButton } from "../StyledComponents/Wrappers"
+import { State } from "../../../pages/iframe"
+import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/stateInterfaces"
+import ListInputEditor from "../../SharedMisc/ListInputEditor"
+import { ButtonWrapper, NewButton } from "../../StyledComponents/Wrappers"
 
 import SurveyItemEditor from "./SurveyItemEditor"
 

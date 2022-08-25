@@ -1,10 +1,10 @@
 import { css } from "@emotion/css"
 
-import TextArea from "../../shared-module/components/InputFields/TextAreaField"
-import { Question } from "../../util/stateInterfaces"
-import { parseLabelQuestion, reverseParseLabelQuestion } from "../../util/utils"
-import MarkdownText from "../MarkdownText"
-import { StyledInnerEditor, StyledOuterEditor } from "../StyledComponents/Wrappers"
+import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
+import { Question } from "../../../util/stateInterfaces"
+import { parseLabelQuestion, reverseParseLabelQuestion } from "../../../util/utils"
+import MarkdownText from "../../MarkdownText"
+import { StyledInnerEditor, StyledOuterEditor } from "../../StyledComponents/Wrappers"
 interface Props {
   item: Question
   onChangeQuestion: (item: Question) => void

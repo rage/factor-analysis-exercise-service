@@ -1,8 +1,8 @@
 import { css } from "@emotion/css"
 
-import TextField from "../../shared-module/components/InputFields/TextField"
-import { FactorialOption } from "../../util/stateInterfaces"
-import { DeleteButton, StyledLabelEditor } from "../StyledComponents/Wrappers"
+import TextField from "../../../shared-module/components/InputFields/TextField"
+import { FactorialOption } from "../../../util/stateInterfaces"
+import { DeleteButton, StyledLabelEditor } from "../../StyledComponents/Wrappers"
 interface Props {
   item: FactorialOption
   onDelete: () => void

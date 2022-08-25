@@ -2,15 +2,15 @@
 import { css } from "@emotion/css"
 import { v4 } from "uuid"
 
-import { State } from "../../pages/iframe"
-import { Factor, FactorialSurvey, Question } from "../../util/stateInterfaces"
-import CsvReader from "../CsvReader"
-import ListInputEditor from "../ListInputEditor"
-import { ButtonWrapper, NewButton, StyledInnerEditor } from "../StyledComponents/Wrappers"
+import { State } from "../../../pages/iframe"
+import { Factor, FactorialSurvey, Question } from "../../../util/stateInterfaces"
+import CsvReader from "../../SharedMisc/CsvReader"
+import ListInputEditor from "../../SharedMisc/ListInputEditor"
+import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
+import OutputMatrix from "../OutputMatrix"
 
 import FactorEditor from "./FactorEditor"
 import LabelEditor from "./LabelEditor"
-import OutputMatrix from "./OutputMatrix"
 import QuestionEditor from "./QuestionEditor"
 
 interface Props {
