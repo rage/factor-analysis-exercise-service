@@ -8,6 +8,8 @@ import { parseLabelQuestion, reverseParseLabelQuestion } from "../../../util/uti
 import MarkdownText from "../../MarkdownText"
 import {
   DeleteButton,
+  infoColor,
+  infoHeaderColor,
   Input,
   StyledInnerEditor,
   StyledOuterEditor,
@@ -21,26 +23,51 @@ interface Props {
   state: Survey
 }
 
+export const getBackgroundColor = (questionLabel: string) => {
+  switch (questionLabel) {
+    case "info":
+      return infoColor
+    case "info-header":
+      return infoHeaderColor
+    default:
+      return "inherit"
+  }
+}
+
 const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
   item,
   onDelete,
   onChangeSurveyItem,
   state,
 }) => {
+  //const infoColor = item.question.questionLabel === "info" ?
   return (
     <StyledOuterEditor>
-      <fieldset>
+      <fieldset
+        className={css`
+          background-color: ${getBackgroundColor(item.question.questionLabel)};
+          legend {
+            font-family: ${primaryFont};
+            font-style: normal;
+            font-weight: 500;
+            font-size: 18px;
+          }
+        `}
+      >
         <legend>{item.question.questionLabel}</legend>
         <StyledInnerEditor>
           <div
             className={css`
               font-family: ${primaryFont};
-              color: ${baseTheme.colors.grey[600]};
+              color: ${baseTheme.colors.grey[700]};
               font-style: normal;
               font-weight: 500;
               font-size: 20px;
               flex: 1;
-              background-color: ${baseTheme.colors.clear[100]};
+              background-color: ${item.question.questionLabel === "info" ||
+              item.question.questionLabel === "info-header"
+                ? "inherit"
+                : baseTheme.colors.clear[100]};
               width: 100%;
               margin: 0 auto;
               margin-right: 0.5rem;
@@ -118,7 +145,15 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                 )
               }
               return (
-                <option value={t} key={t}>
+                <option
+                  value={t}
+                  key={t}
+                  disabled={
+                    item.question.questionLabel === "info-header"
+                      ? t !== AnswerType.ConsentCheckbox
+                      : t === AnswerType.ConsentCheckbox
+                  }
+                >
                   {t}
                 </option>
               )

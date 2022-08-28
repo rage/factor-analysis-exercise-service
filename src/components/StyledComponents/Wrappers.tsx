@@ -1,5 +1,8 @@
 import styled from "@emotion/styled"
 
+export const infoHeaderColor = "rgba(85, 179, 245, 0.05)"
+export const infoColor = "#faf6e3"
+
 export const ItemWrapper = styled.div`
   margin-top: 1rem;
   margin-bottom: 2rem;
@@ -16,7 +19,7 @@ export const ItemWrapper = styled.div`
 `
 
 export const InfoWrapper = styled.div`
-  background: #faf6e3;
+  background: ${infoColor};
   width: 100%;
   padding: 15px;
 
@@ -35,7 +38,7 @@ export const InfoWrapper = styled.div`
 `
 
 export const InfoHeaderWrapper = styled.div`
-  background: rgba(85, 179, 245, 0.05);
+  background: ${infoHeaderColor};
   width: 100%;
   padding: 15px;
 
@@ -96,7 +99,7 @@ export const DeleteButton = styled.button`
 `
 
 export const StyledOuterEditor = styled.div<{ border?: boolean }>`
-  margin: 0 auto;
+  margin: 0.5rem auto;
   width: 100%;
   border: ${({ border }) => (border ? "1px solid black" : "none")};
   display: flex;
