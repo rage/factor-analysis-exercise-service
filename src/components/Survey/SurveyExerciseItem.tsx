@@ -180,7 +180,6 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
               name={item.answer.options[0]}
               checked={(item.answer.answer as string).length > 0}
               onChange={(e) => {
-                e.target.checked
                 const newAnswer = { ...item.answer, answer: e.target.checked ? "checked" : "" }
                 updateAnswer(item.id, newAnswer)
               }}

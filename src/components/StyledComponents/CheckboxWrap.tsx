@@ -1,8 +1,11 @@
 import styled from "@emotion/styled"
 
+import { baseTheme } from "../../shared-module/styles"
+
 interface DivProps {
   checkedCollor: string
   info?: boolean
+  disabled?: boolean
 }
 
 export const CheckboxWrap = styled.div<DivProps>`
@@ -11,6 +14,7 @@ export const CheckboxWrap = styled.div<DivProps>`
   justify-content: left;
   gap: 0.5em;
   grid-template-columns: ${({ info }) => (info ? "1.5em auto" : "2em auto")};
+  background-color: ${({ disabled }) => (disabled ? baseTheme.colors.grey[100] : "inherit")};
 
   input[type="checkbox"] {
     appearance: none;

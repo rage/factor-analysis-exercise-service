@@ -50,7 +50,6 @@ export const InfoHeaderWrapper = styled.div`
   align-items: flex-end;
   text-align: left;
 
-  color: black;
   gap: 1rem;
 `
 

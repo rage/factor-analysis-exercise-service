@@ -1,6 +1,5 @@
 /* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
-import { v4 } from "uuid"
 
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
 import { baseTheme, primaryFont } from "../../../shared-module/styles"
@@ -92,12 +91,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
         {item.question.questionLabel !== "info" && (
           <select
             onChange={(event) => {
-              const answer: Answer = item.answer ?? {
-                id: v4(),
-                type: AnswerType.None,
-                answer: "",
-                options: [],
-              }
+              const answer: Answer = item.answer
               const answerType: AnswerType = event.target.value as unknown as AnswerType
               if (!answerType) {
                 return
