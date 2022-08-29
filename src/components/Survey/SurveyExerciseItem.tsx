@@ -2,8 +2,8 @@ import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 
 import { Answer, AnswerType, SurveyItem } from "../../util/stateInterfaces"
-import BreedList from "../BreedList"
 import MarkdownText from "../MarkdownText"
+import BreedList from "../SharedMisc/BreedList"
 import { CheckboxWrap } from "../StyledComponents/CheckboxWrap"
 import { RadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
 
@@ -180,7 +180,6 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
               name={item.answer.options[0]}
               checked={(item.answer.answer as string).length > 0}
               onChange={(e) => {
-                e.target.checked
                 const newAnswer = { ...item.answer, answer: e.target.checked ? "checked" : "" }
                 updateAnswer(item.id, newAnswer)
               }}

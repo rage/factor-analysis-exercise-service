@@ -1,7 +1,8 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
+import { baseTheme, primaryFont } from "../../shared-module/styles"
 import { FactorialSurvey, Question } from "../../util/stateInterfaces"
 import { sanitizeQuestions } from "../../util/utils"
 
@@ -11,9 +12,9 @@ interface Props {
 
 const Table = styled.table`
   width: 100%;
-  max-width: 700px;
+  max-width: 100%;
   height: 240px;
-  margin: 0 auto;
+  margin: 1rem auto;
   display: block;
   overflow-x: auto;
   border-spacing: 0;
@@ -24,6 +25,8 @@ const Td = styled.td`
   padding: 5px 10px;
   border-top-width: 0;
   border-left-width: 0;
+  font-size: 12px;
+  font-family: ${primaryFont};
 `
 
 const Tbody = styled.tbody`
@@ -34,6 +37,9 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
   const sanitizedQuestions = sanitizeQuestions(state.questions) as Question[]
 
   const [error, setError] = useState<string[]>([])
+  useEffect(() => {
+    error.length = 0
+  })
 
   return (
     <div>
@@ -44,34 +50,46 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
           ${error && `color: red;`}
         `}
       >
-        {error.length > 0 &&
-          error.map((e, idx) => {
-            if (sanitizedQuestions.find((question) => question.questionLabel === e)) {
-              return (
-                <p
-                  key={idx}
-                >{`${e} : Could not match with any factor weights. Check that the spelling is identical`}</p>
-              )
-            }
-          })}
+        {error.map((e, idx) => {
+          return (
+            <p
+              key={idx}
+            >{`${e} : Could not match with any factor weights. Check that the spelling is identical`}</p>
+          )
+        })}
       </div>
       <Table>
-        <Tbody>
+        <thead
+          className={css`
+            position: sticky;
+            top: 0px;
+            z-index: 999;
+            background-color: ${baseTheme.colors.green[100]};
+          `}
+        >
           <tr>
             <Td>{""}</Td>
             {state.factors.map((f) => {
-              return <Td key={f.id}>{f.name}</Td>
+              return <Td key={f.id}>{f.label}</Td>
             })}
           </tr>
+        </thead>
+        <Tbody>
           {sanitizedQuestions.map((question, q_idx) => {
             return (
               <tr key={question.id}>
                 <Td
                   className={css`
                     ${error.indexOf(question.questionLabel) > -1 && `color: red;`}
+                    position: sticky;
+                    left: 0px;
+                    background-color: ${baseTheme.colors.blue[100]};
+                    max-width: 10rem;
+                    word-wrap: break-word;
+                    white-space: normal;
                   `}
                 >
-                  {q_idx + 1} {sanitizedQuestions[q_idx]?.questionLabel}
+                  {q_idx + 1} {sanitizedQuestions[q_idx].questionLabel}
                 </Td>
                 {state.factors.map((factor) => {
                   if (!factor.weights[question.questionLabel]) {

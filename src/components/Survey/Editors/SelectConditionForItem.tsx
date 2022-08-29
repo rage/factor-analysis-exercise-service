@@ -1,7 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
 import React from "react"
 
-import { Survey, SurveyItem, SurveyItemCondition } from "../../util/stateInterfaces"
+import { Survey, SurveyItem, SurveyItemCondition } from "../../../util/stateInterfaces"
 
 interface Props {
   item: SurveyItem
