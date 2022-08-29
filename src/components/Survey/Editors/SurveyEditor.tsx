@@ -48,6 +48,24 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
                     private_spec: { ...state, content: newContent },
                   })
                 }}
+                onDuplicate={(quest: SurveyItem) => {
+                  const additionalItem = {
+                    ...quest,
+                    id: v4(),
+                    question: { ...quest.question, id: v4() },
+                    answer: { ...quest.answer, id: v4() },
+                  }
+                  const currentIndex = state.content.indexOf(quest)
+                  console.log(currentIndex)
+                  const newContent = state.content
+                  newContent.splice(currentIndex + 1, 0, additionalItem)
+                  console.log(newContent)
+
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: { ...state, content: newContent },
+                  })
+                }}
                 state={state}
               />
             </li>
@@ -76,7 +94,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
             setState({ view_type: "exercise-editor", private_spec: newState })
           }}
         >
-          Add Survey Question
+          Add Survey Item
         </NewButton>
       </ButtonWrapper>
       <ButtonWrapper aria-disabled>

@@ -16,10 +16,12 @@ import {
 } from "../../StyledComponents/Wrappers"
 
 import SelectConditionForItem from "./SelectConditionForItem"
+
 interface Props {
   item: SurveyItem
   onDelete: () => void
   onChangeSurveyItem: (item: SurveyItem) => void
+  onDuplicate: (item: SurveyItem) => void
   state: Survey
 }
 
@@ -38,9 +40,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
   item,
   onDelete,
   onChangeSurveyItem,
+  onDuplicate,
   state,
 }) => {
-  //const infoColor = item.question.questionLabel === "info" ?
   return (
     <StyledOuterEditor>
       <fieldset
@@ -123,7 +125,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               if (!answerType) {
                 return
               }
-              onChangeSurveyItem({ ...item, answer: { ...answer, type: answerType } })
+              onChangeSurveyItem({ ...item, answer: { ...answer, options: [], type: answerType } })
             }}
             className={css`
               flex: 1;
@@ -227,18 +229,38 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
           />
         )}
         <StyledInnerEditor>
-          <legend>Conditional</legend>
-          <input
-            type="checkbox"
-            checked={item.conditional}
-            onChange={(e) => {
-              onChangeSurveyItem({
-                ...item,
-                conditional: e.target.checked,
-                dependsOn: undefined,
-              })
+          <div
+            className={css`
+              display: flex;
+              width: 85%;
+              align-items: center;
+              justify-content: space-apart;
+              margin-right 20px;
+            `}
+          >
+            <legend>Conditional</legend>
+            <input
+              type="checkbox"
+              checked={item.conditional}
+              onChange={(e) => {
+                onChangeSurveyItem({
+                  ...item,
+                  conditional: e.target.checked,
+                  dependsOn: undefined,
+                })
+              }}
+            />
+          </div>
+          <button
+            className={css`
+              flex: 1;
+            `}
+            onClick={() => {
+              onDuplicate(item)
             }}
-          />
+          >
+            duplicate item
+          </button>
         </StyledInnerEditor>
         {item.conditional && (
           <SelectConditionForItem
