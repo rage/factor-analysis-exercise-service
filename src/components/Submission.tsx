@@ -12,6 +12,7 @@ import {
   SurveyType,
 } from "../util/stateInterfaces"
 
+import { FactorialReport } from "./FactorialSurvey/FactorialReport"
 import FactorialSurveySubmission from "./FactorialSurvey/OutputSubmission"
 import SurveySubmission from "./Survey/OutputSubmission"
 
@@ -30,6 +31,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
   return (
     <div
       className={css`
+        width: 100%;
         display: flex;
         flex-direction: column;
       `}
@@ -37,10 +39,17 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
       <h2>Well done</h2>
       {gradingFeedback?.factorReport.map((f) => {
         return (
-          <fieldset key={f.id}>
-            <p>{f.name}</p>
-            <p>{f.score}</p>
-          </fieldset>
+          <div
+            key={f.id}
+            className={css`
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              margin-bottom: 4rem;
+            `}
+          >
+            <FactorialReport factor={f} />
+          </div>
         )
       })}
       {publicSpec.type === SurveyType.Factorial && (
