@@ -99,7 +99,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
         }
         return (
           <ItemWrapper key={item.id}>
-            <ExerciseItemHeader questionText={item.question.question} />
+            <ExerciseItemHeader titleText={item.question.question} />
             <SurveyExerciseItem item={item} updateAnswer={updateAnswer} />
           </ItemWrapper>
         )
