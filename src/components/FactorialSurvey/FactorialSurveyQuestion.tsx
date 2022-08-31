@@ -20,7 +20,7 @@ const noBorder = {
   checkedColor: "#32BEA6",
 }
 
-const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
+const FactorialSurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
   question,
   options,
   onClick,
@@ -30,7 +30,7 @@ const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
     <ItemWrapper>
       <form>
         <div className="radio">
-          <ExerciseItemHeader questionText={question.question} />
+          <ExerciseItemHeader titleText={question.question} />
           {options.map((option) => {
             return (
               <CheckedRadioGroupWrap key={option.id} {...noBorder}>
@@ -58,4 +58,4 @@ const SurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
   )
 }
 
-export default SurveyQuestion
+export default FactorialSurveyQuestion

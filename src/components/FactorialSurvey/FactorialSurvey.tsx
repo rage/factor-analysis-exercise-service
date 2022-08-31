@@ -4,7 +4,7 @@ import { CurrentStateMessage } from "../../shared-module/exercise-service-protoc
 import { PublicFactorialSurveySpec, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
 import { InfoSection } from "../StyledComponents/InfoSection"
 
-import SurveyQuestion from "./FactorialSurveyQuestion"
+import FactorialSurveyQuestion from "./FactorialSurveyQuestion"
 
 interface Props {
   state: PublicFactorialSurveySpec
@@ -70,7 +70,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({ port, state
           return <InfoSection content={question.question} />
         } else {
           return (
-            <SurveyQuestion
+            <FactorialSurveyQuestion
               key={question.questionId}
               question={question}
               options={state.options}

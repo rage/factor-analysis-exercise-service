@@ -5,7 +5,7 @@ import { FactorialOption, RatedQuestion } from "../../util/stateInterfaces"
 import { InfoSection } from "../StyledComponents/InfoSection"
 import { Wrapper } from "../StyledComponents/Wrappers"
 
-import SurveyQuestion from "./FactorialSurveyQuestion"
+import FactorialSurveyQuestion from "./FactorialSurveyQuestion"
 
 interface Props {
   options: FactorialOption[]
@@ -29,7 +29,7 @@ const FactorialSurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({
               return <InfoSection content={quest.question} />
             }
             return (
-              <SurveyQuestion
+              <FactorialSurveyQuestion
                 key={quest.questionId}
                 options={options}
                 question={quest}
