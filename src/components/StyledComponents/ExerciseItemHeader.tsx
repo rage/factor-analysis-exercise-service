@@ -5,7 +5,7 @@ import { baseTheme, primaryFont } from "../../shared-module/styles"
 import MarkdownText from "../MarkdownText"
 
 interface Props {
-  questionText: string
+  titleText: string
 }
 
 const Header = styled.div`
@@ -23,10 +23,10 @@ const Header = styled.div`
   align-items: flex-end;
 `
 
-export const ExerciseItemHeader: React.FC<React.PropsWithChildren<Props>> = ({ questionText }) => {
+export const ExerciseItemHeader: React.FC<React.PropsWithChildren<Props>> = ({ titleText }) => {
   return (
     <Header>
-      <MarkdownText text={questionText} />
+      <MarkdownText text={titleText} />
     </Header>
   )
 }

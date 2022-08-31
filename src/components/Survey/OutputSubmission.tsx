@@ -45,7 +45,7 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items }) =
             }
             return (
               <ItemWrapper key={item.id}>
-                <ExerciseItemHeader questionText={item.question.question} />
+                <ExerciseItemHeader titleText={item.question.question} />
                 <SurveyExerciseItem
                   key={item.id}
                   item={item}

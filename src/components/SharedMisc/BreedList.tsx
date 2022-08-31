@@ -2,7 +2,7 @@
 import { css } from "@emotion/css"
 import Select from "react-select"
 
-import Breeds from "../data/breeds_fin.json"
+import Breeds from "../../data/breeds_fin.json"
 
 interface Props {
   onClick: (breed: string) => void
