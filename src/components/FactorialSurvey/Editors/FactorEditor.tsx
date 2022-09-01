@@ -35,7 +35,10 @@ const FactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ factor, onChan
             placeholder="ranging from"
             value={factor.range?.min as unknown as string}
             onChange={(value) => {
-              onChangeFactor({ ...factor, range: { ...factor.range, min: parseFloat(value) } })
+              onChangeFactor({
+                ...factor,
+                range: { max: factor.range?.max ?? 0, min: parseFloat(value) },
+              })
             }}
             className={css`
               flex: 1;
@@ -48,7 +51,10 @@ const FactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ factor, onChan
             placeholder="ranging to"
             value={factor.range?.max as unknown as string}
             onChange={(value) => {
-              onChangeFactor({ ...factor, range: { ...factor.range, max: parseFloat(value) } })
+              onChangeFactor({
+                ...factor,
+                range: { min: factor.range?.min ?? 0, max: parseFloat(value) },
+              })
             }}
             className={css`
               flex: 1;

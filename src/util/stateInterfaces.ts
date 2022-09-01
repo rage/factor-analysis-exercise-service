@@ -50,8 +50,8 @@ export interface Factor {
   /** [QuestionLabel: weight] to be multiplied with the chosen option value for given question after form submission */
   weights: { [key: string]: number }
   range?: {
-    min?: number
-    max?: number
+    min: number
+    max: number
   }
   score: number
 }

@@ -38,8 +38,10 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
 
   const [error, setError] = useState<string[]>([])
   useEffect(() => {
-    error.length = 0
-  })
+    const newError: string[] = []
+    setError(newError)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state])
 
   return (
     <div>
@@ -92,7 +94,7 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
                   {q_idx + 1} {sanitizedQuestions[q_idx].questionLabel}
                 </Td>
                 {state.factors.map((factor) => {
-                  if (!factor.weights[question.questionLabel]) {
+                  if (typeof factor.weights[question.questionLabel] === "undefined") {
                     if (error.indexOf(question.questionLabel) < 0) {
                       const newError = error
                       newError.push(question.questionLabel)
