@@ -26,7 +26,7 @@ export const calculateFactors = (
   factors.map((factor) => {
     factor.score = 0
     ratedQuestions.map((item) => {
-      if (!factor.weights[item.questionLabel]) {
+      if (typeof factor.weights[item.questionLabel] === "undefined") {
         console.log("Did not find data for question:", item.questionLabel)
         return
       }

@@ -205,6 +205,35 @@ export interface CourseModule {
   ects_credits: number | null
 }
 
+export interface ModifiedModule {
+  id: string
+  name: string | null
+  order_number: number
+  uh_course_code: string | null
+  ects_credits: number | null
+  automatic_completion: boolean | null
+  automatic_completion_number_of_exercises_attempted_treshold: number | null
+  automatic_completion_number_of_points_treshold: number | null
+}
+
+export interface ModuleUpdates {
+  new_modules: Array<NewModule>
+  deleted_modules: Array<string>
+  modified_modules: Array<ModifiedModule>
+  moved_chapters: Array<[string, string]>
+}
+
+export interface NewModule {
+  name: string
+  order_number: number
+  chapters: Array<string>
+  uh_course_code: string | null
+  ects_credits: number | null
+  automatic_completion: boolean | null
+  automatic_completion_number_of_exercises_attempted_treshold: number | null
+  automatic_completion_number_of_points_treshold: number | null
+}
+
 export interface Course {
   id: string
   slug: string
@@ -359,6 +388,13 @@ export interface ExerciseServiceNewOrUpdate {
   public_url: string
   internal_url: string | null
   max_reprocessing_submissions_at_once: number
+}
+
+export interface ExerciseServiceIframeRenderingInfo {
+  id: string
+  name: string
+  slug: string
+  public_iframe_url: string
 }
 
 export interface CourseMaterialExerciseSlide {
@@ -539,6 +575,21 @@ export interface UserModuleCompletionStatus {
   name: string
   order_number: number
   prerequisite_modules_completed: boolean
+}
+
+export interface MaterialReference {
+  id: string
+  course_id: string
+  citation_key: string
+  reference: string
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
+}
+
+export interface NewMaterialReference {
+  citation_key: string
+  reference: string
 }
 
 export interface Organization {
@@ -877,6 +928,51 @@ export interface ExerciseSlideSubmissionInfo {
   exercise_slide_submission: ExerciseSlideSubmission
 }
 
+export interface ExerciseAnswersInCourseRequiringAttentionCount {
+  id: string
+  name: string
+  page_id: string
+  chapter_id: string | null
+  order_number: number
+  count: number | null
+}
+
+export interface AnswerRequiringAttention {
+  id: string
+  user_id: string
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
+  data_json: unknown | null
+  grading_progress: GradingProgress
+  score_given: number | null
+  submission_id: string
+  exercise_id: string
+}
+
+export interface TeacherGradingDecision {
+  id: string
+  user_exercise_state_id: string
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
+  score_given: number
+  teacher_decision: TeacherDecisionType
+}
+
+export type TeacherDecisionType =
+  | "FullPoints"
+  | "ZeroPoints"
+  | "CustomPoints"
+  | "SuspectedPlagiarism"
+
+export interface NewTeacherGradingDecision {
+  user_exercise_state_id: string
+  exercise_id: string
+  action: TeacherDecisionType
+  manual_points: number | null
+}
+
 export interface ExerciseTaskGrading {
   id: string
   created_at: Date
@@ -986,6 +1082,22 @@ export type ReviewingStage =
   | "WaitingForManualGrading"
   | "ReviewedAndLocked"
 
+export interface UserExerciseState {
+  id: string
+  user_id: string
+  exercise_id: string
+  course_instance_id: string | null
+  exam_id: string | null
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
+  score_given: number | null
+  grading_progress: GradingProgress
+  activity_progress: ActivityProgress
+  reviewing_stage: ReviewingStage
+  selected_exercise_slide_id: string | null
+}
+
 export interface User {
   id: string
   first_name: string | null
@@ -997,17 +1109,17 @@ export interface User {
   email: string
 }
 
-export interface ChaptersWithStatus {
-  is_previewable: boolean
-  modules: Array<CourseMaterialCourseModule>
+export type ErrorData = { block_id: string }
+
+export interface ErrorResponse {
+  title: string
+  message: string
+  source: string | null
+  data: ErrorData | null
 }
 
-export interface CourseMaterialCourseModule {
-  chapters: Array<ChapterWithStatus>
-  id: string
-  is_default: boolean
-  name: string | null
-  order_number: number
+export interface UploadResult {
+  url: string
 }
 
 export interface CreateAccountDetails {
@@ -1023,18 +1135,22 @@ export interface UserInfo {
   user_id: string
 }
 
-export interface RoleQuery {
-  global?: boolean
-  organization_id?: string
-  course_id?: string
-  course_instance_id?: string
-  exam_id?: string
+export interface Login {
+  email: string
+  password: string
 }
 
-export interface RoleInfo {
-  email: string
-  role: UserRole
-  domain: RoleDomain
+export interface ChaptersWithStatus {
+  is_previewable: boolean
+  modules: Array<CourseMaterialCourseModule>
+}
+
+export interface CourseMaterialCourseModule {
+  chapters: Array<ChapterWithStatus>
+  id: string
+  is_default: boolean
+  name: string | null
+  order_number: number
 }
 
 export interface ExamData {
@@ -1054,22 +1170,47 @@ export type ExamEnrollmentData =
   | { tag: "NotYetStarted" }
   | { tag: "StudentTimeUp" }
 
+export interface RoleQuery {
+  global?: boolean
+  organization_id?: string
+  course_id?: string
+  course_instance_id?: string
+  exam_id?: string
+}
+
+export interface RoleInfo {
+  email: string
+  role: UserRole
+  domain: RoleDomain
+}
+
 export interface ExamCourseInfo {
   course_id: string
-}
-
-export interface Login {
-  email: string
-  password: string
-}
-
-export interface UploadResult {
-  url: string
 }
 
 export interface ExerciseSubmissions {
   data: Array<ExerciseSlideSubmission>
   total_pages: number
+}
+
+export interface AnswersRequiringAttention {
+  exercise_max_points: number
+  data: Array<AnswerRequiringAttentionWithTasks>
+  total_pages: number
+}
+
+export interface AnswerRequiringAttentionWithTasks {
+  id: string
+  user_id: string
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
+  data_json: unknown | null
+  grading_progress: GradingProgress
+  score_given: number | null
+  submission_id: string
+  exercise_id: string
+  tasks: Array<CourseMaterialExerciseTask>
 }
 
 export interface MarkAsRead {
@@ -1088,15 +1229,6 @@ export interface GetEditProposalsQuery {
   limit: number | undefined
 }
 
-export interface ErrorResponse {
-  title: string
-  message: string
-  source: string | null
-  data: ErrorData | null
-}
-
-export type ErrorData = { block_id: string }
-
 export interface Pagination {
   page: number | undefined
   limit: number | undefined
@@ -1110,38 +1242,4 @@ export interface OEmbedResponse {
   provider_url: string
   title: string
   version: string
-}
-
-export interface MaterialReference {
-  id: string
-  course_id: string
-  citation_key: string
-  reference: string
-  created_at: Date
-  updated_at: Date
-  deleted_at: Date | null
-}
-
-export interface NewMaterialReference {
-  citation_key: string
-  reference: string
-}
-
-export interface ModifiedModule {
-  id: string
-  name: string | null
-  order_number: number
-}
-
-export interface ModuleUpdates {
-  new_modules: Array<NewModule>
-  deleted_modules: Array<string>
-  modified_modules: Array<ModifiedModule>
-  moved_chapters: Array<[string, string]>
-}
-
-export interface NewModule {
-  name: string
-  order_number: number
-  chapters: Array<string>
 }
