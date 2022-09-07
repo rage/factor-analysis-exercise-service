@@ -63,7 +63,10 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     const sanitizedAnswers = sanitizeQuestions(
       gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
     ) as RatedQuestion[]
-    const factors: Factor[] = calculateFactors(gradingRequest.exercise_spec, sanitizedAnswers)
+    const factors: Factor[] = calculateFactors(
+      gradingRequest.exercise_spec.factors,
+      sanitizedAnswers,
+    )
     return res.status(200).json({
       grading_progress: "FullyGraded",
       score_given: 1,

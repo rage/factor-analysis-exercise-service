@@ -1,13 +1,16 @@
-import { Factor, FactorialSurvey, Question, RatedQuestion } from "./stateInterfaces"
+import { Factor, Question, RatedQuestion } from "./stateInterfaces"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
 
-export const calculateFactors = (
-  survey: FactorialSurvey,
-  ratedQuestions: RatedQuestion[],
-): Factor[] => {
-  const factors: Factor[] = survey.factors
+/**
+ * Calculates the scores for factors
+ * @param factors
+ * @param ratedQuestions
+ * @returns factors with calculated score
+ */
+export const calculateFactors = (factors: Factor[], ratedQuestions: RatedQuestion[]): Factor[] => {
+  // If have to use number[][] as the weights matrix in some parts
   /* const matrix = survey.matrix
 
   factors.map((f, f_idx) => {
@@ -81,10 +84,10 @@ export const vectorMatrixMultiplication = (
 ): number[][] => {
   const middle = questionVector.length
   const mul = matrixMultiplication()(middle)
-  console.log(matrixMultiplication.error)
-  console.log(matrix)
+  if (matrixMultiplication.error.length) {
+    console.log(matrixMultiplication.error)
+  }
   const collapsedMatrix = matrix.flat()
-  console.log(collapsedMatrix)
   return mul(questionVector, collapsedMatrix)
 }
 

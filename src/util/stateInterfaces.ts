@@ -40,7 +40,7 @@ export interface SubmittedForm {
   answeredQuestions: RatedQuestion[] | SurveyItem[]
 }
 
-/** Contains information for calculating factorial analysis
+/** Contains information for calculating factorial analysis report
  */
 export interface Factor {
   id: string
