@@ -81,7 +81,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
           <DeleteButton onClick={onDelete}>x</DeleteButton>
         </StyledInnerEditor>
         <TextArea
-          label="Editor"
+          label={`Editor (special purpose labels: "info" & "info-header")`}
           autoResize
           placeholder="question_label; question text"
           onChange={(value) => {
@@ -89,14 +89,30 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             if (!parsedValue) {
               return
             }
-            onChangeSurveyItem({
+            const newItem = {
               ...item,
               question: {
                 ...item.question,
                 questionLabel: parsedValue[0],
                 question: parsedValue[1],
               },
-            })
+            }
+            if (newItem.question.questionLabel === "info") {
+              newItem.answer.type = AnswerType.None
+              newItem.answer.options = []
+            }
+            if (newItem.question.questionLabel === "info-header") {
+              newItem.answer.type = AnswerType.ConsentCheckbox
+              newItem.answer.options = []
+            }
+            if (
+              newItem.answer.type === AnswerType.ConsentCheckbox &&
+              newItem.question.questionLabel !== "info-header"
+            ) {
+              newItem.answer.type = AnswerType.None
+              newItem.answer.options = []
+            }
+            onChangeSurveyItem(newItem)
           }}
           defaultValue={reverseParseLabelQuestion(
             item.question.questionLabel,
@@ -115,9 +131,8 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             }
           `}
         />
-
         {/* eslint-disable-next-line i18next/no-literal-string */}
-        {item.question.questionLabel !== "info" && (
+        {item.question.questionLabel && item.question.questionLabel !== "info" && (
           <select
             onChange={(event) => {
               const answer: Answer = item.answer
