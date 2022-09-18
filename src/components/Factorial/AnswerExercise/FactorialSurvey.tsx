@@ -1,8 +1,12 @@
 import { useState } from "react"
 
-import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
-import { PublicFactorialSurveySpec, RatedQuestion, SubmittedForm } from "../../util/stateInterfaces"
-import { InfoSection } from "../StyledComponents/InfoSection"
+import { CurrentStateMessage } from "../../../shared-module/exercise-service-protocol-types"
+import {
+  PublicFactorialSurveySpec,
+  RatedQuestion,
+  SubmittedForm,
+} from "../../../util/stateInterfaces"
+import { InfoSection } from "../../StyledComponents/InfoSection"
 
 import FactorialSurveyQuestion from "./FactorialSurveyQuestion"
 

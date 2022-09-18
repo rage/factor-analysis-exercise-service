@@ -1,6 +1,6 @@
 import { PublicSpec, SurveyType } from "../util/stateInterfaces"
 
-import FactorialSurvey from "./FactorialSurvey/FactorialSurvey"
+import FactorialSurvey from "./Factorial/AnswerExercise/FactorialSurvey"
 import SurveyExercise from "./Survey/SurveyExercise"
 
 interface Props {

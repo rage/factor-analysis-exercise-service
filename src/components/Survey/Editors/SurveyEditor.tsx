@@ -1,5 +1,6 @@
 /* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
+import { useEffect, useState } from "react"
 import { v4 } from "uuid"
 
 import { State } from "../../../pages/iframe"
@@ -15,6 +16,19 @@ interface Props {
 }
 
 const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState }) => {
+  const [error, setError] = useState<string[]>([])
+  useEffect(() => {
+    const labels = state.content.map((item) => item.question.questionLabel)
+    const count = labels.reduce(
+      (result, value) => ({ ...result, [value]: (result[value as keyof typeof result] || 0) + 1 }),
+      {},
+    )
+    const duplicates = Object.keys(count).filter((value) => count[value as keyof typeof count] > 1)
+    const newError: string[] = [...duplicates]
+    setError(newError)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state])
+
   return (
     <div
       className={css`
@@ -52,7 +66,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
                   const additionalItem = {
                     ...quest,
                     id: v4(),
-                    question: { ...quest.question, id: v4() },
+                    question: { question: "", questionLabel: "", id: v4() },
                     answer: { ...quest.answer, id: v4() },
                   }
                   const currentIndex = state.content.indexOf(quest)
@@ -72,6 +86,19 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
           )
         })}
       </ol>
+      <div
+        className={css`
+          margin-top: 1rem;
+          margin-bottom: 1rem;
+          ${error && `color: red;`}
+        `}
+      >
+        {error.length > 0 && <p>{"Found duplicate question labels:"}</p>}
+        {error.map((label, idx) => {
+          return <p key={idx}>{label}</p>
+        })}
+      </div>
+
       <ButtonWrapper>
         <NewButton
           onClick={() => {
@@ -97,38 +124,40 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
           Add Survey Item
         </NewButton>
       </ButtonWrapper>
-      <ButtonWrapper aria-disabled>
-        Input questions as a list
-        <ListInputEditor
-          topic="question"
-          questions={state.content.map((item) => item.question)}
-          onChange={(value) => {
-            const newContent: SurveyItem[] = []
-            value.map((e) => {
-              if (!e) {
-                return
-              }
-              const answerObject: Answer = {
-                id: v4(),
-                type: AnswerType.None,
-                options: [],
-                answer: "",
-              }
-              newContent.push({
-                id: v4(),
-                question: { id: v4(), questionLabel: e[0], question: e[1] },
-                answer: answerObject,
-                conditional: false,
+      {state.content.length === 0 && (
+        <ButtonWrapper>
+          Paste list of questions (one time only)
+          <ListInputEditor
+            topic="question"
+            questions={state.content.map((item) => item.question)}
+            onChange={(value) => {
+              const newContent: SurveyItem[] = []
+              value.map((e) => {
+                if (!e) {
+                  return
+                }
+                const answerObject: Answer = {
+                  id: v4(),
+                  type: AnswerType.None,
+                  options: [],
+                  answer: "",
+                }
+                newContent.push({
+                  id: v4(),
+                  question: { id: v4(), questionLabel: e[0], question: e[1] },
+                  answer: answerObject,
+                  conditional: false,
+                })
               })
-            })
-            setState({
-              view_type: "exercise-editor",
-              private_spec: { ...state, content: newContent },
-            })
-          }}
-          disabled={state.content.length > 0}
-        />
-      </ButtonWrapper>
+              setState({
+                view_type: "exercise-editor",
+                private_spec: { ...state, content: newContent },
+              })
+            }}
+            disabled={state.content.length > 0}
+          />
+        </ButtonWrapper>
+      )}
     </div>
   )
 }

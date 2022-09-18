@@ -1,7 +1,7 @@
-import { FactorialOption, RatedQuestion } from "../../util/stateInterfaces"
-import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
-import { CheckedRadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
-import { ItemWrapper } from "../StyledComponents/Wrappers"
+import { FactorialOption, RatedQuestion } from "../../../util/stateInterfaces"
+import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
+import { CheckedRadioGroupWrap } from "../../StyledComponents/RadioGroupWrap"
+import { ItemWrapper } from "../../StyledComponents/Wrappers"
 
 interface Props {
   question: RatedQuestion
