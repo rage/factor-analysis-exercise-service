@@ -1,9 +1,9 @@
 import { css } from "@emotion/css"
 
-import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
-import TextField from "../../../shared-module/components/InputFields/TextField"
-import { Factor } from "../../../util/stateInterfaces"
-import { StyledInnerEditor, StyledOuterEditor } from "../../StyledComponents/Wrappers"
+import TextArea from "../../../../shared-module/components/InputFields/TextAreaField"
+import TextField from "../../../../shared-module/components/InputFields/TextField"
+import { Factor } from "../../../../util/stateInterfaces"
+import { StyledInnerEditor, StyledOuterEditor } from "../../../StyledComponents/Wrappers"
 
 interface Props {
   factor: Factor

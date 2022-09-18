@@ -1,11 +1,10 @@
 import React from "react"
 import useCollapse from "react-collapsed"
 
-import { FactorialOption, RatedQuestion } from "../../util/stateInterfaces"
-import { InfoSection } from "../StyledComponents/InfoSection"
-import { Wrapper } from "../StyledComponents/Wrappers"
-
-import FactorialSurveyQuestion from "./FactorialSurveyQuestion"
+import { FactorialOption, RatedQuestion } from "../../../util/stateInterfaces"
+import { InfoSection } from "../../StyledComponents/InfoSection"
+import { Wrapper } from "../../StyledComponents/Wrappers"
+import FactorialSurveyQuestion from "../AnswerExercise/FactorialSurveyQuestion"
 
 interface Props {
   options: FactorialOption[]
