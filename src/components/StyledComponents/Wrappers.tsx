@@ -29,11 +29,9 @@ export const InfoWrapper = styled.div`
   font-size: 17px;
   line-height: 100%;
 
-  /* or 17px */
   display: flex;
   align-items: flex-end;
   text-align: left;
-
   color: #494949;
 `
 
@@ -48,11 +46,9 @@ export const InfoHeaderWrapper = styled.div`
   font-size: 17px;
   line-height: 120%;
 
-  /* or 17px */
   display: grid;
   align-items: flex-end;
   text-align: left;
-
   gap: 1rem;
 `
 
