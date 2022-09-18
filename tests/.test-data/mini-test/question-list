@@ -1,5 +1,6 @@
+info; this is just an info element to provide some info for the coming section....
 question_one; This is the first question
 question_two;This is the second
-three;Questions should have unique question labels for identification
-four;otherwise they can contain anything
-five;exept for maybe newlines, should be avoided
+info;Questions should have unique question labels for identification
+three;otherwise they can contain anything
+five; newlines should be avoided
