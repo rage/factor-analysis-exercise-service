@@ -2,9 +2,9 @@ import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 import React, { useEffect, useState } from "react"
 
-import { baseTheme, primaryFont } from "../../shared-module/styles"
-import { FactorialSurvey, Question } from "../../util/stateInterfaces"
-import { sanitizeQuestions } from "../../util/utils"
+import { baseTheme, primaryFont } from "../../../shared-module/styles"
+import { FactorialSurvey, Question } from "../../../util/stateInterfaces"
+import { sanitizeQuestions } from "../../../util/utils"
 
 interface Props {
   state: FactorialSurvey

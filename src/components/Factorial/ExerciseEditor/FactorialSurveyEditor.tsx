@@ -7,11 +7,11 @@ import { Factor, FactorialSurvey, Question } from "../../../util/stateInterfaces
 import CsvReader from "../../SharedMisc/CsvReader"
 import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
-import OutputMatrix from "../OutputMatrix"
 
-import FactorEditor from "./FactorEditor"
-import LabelEditor from "./LabelEditor"
-import QuestionEditor from "./QuestionEditor"
+import FactorEditor from "./ComponentEditors/FactorEditor"
+import LabelEditor from "./ComponentEditors/LabelEditor"
+import QuestionEditor from "./ComponentEditors/QuestionEditor"
+import OutputMatrix from "./OutputMatrix"
 
 interface Props {
   state: FactorialSurvey

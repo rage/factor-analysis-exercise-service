@@ -77,6 +77,9 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
             (surveyItem) => surveyItem.question.questionLabel === item.dependsOn?.questionLabel,
           )?.answer.answer as string[]
           if (chosenOptions?.indexOf(item.dependsOn.triggeringOption) === -1) {
+            if (item.answer.answer !== "") {
+              updateAnswer(item.id, { ...item.answer, answer: "" })
+            }
             return
           }
         }

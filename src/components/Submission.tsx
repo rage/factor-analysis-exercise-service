@@ -12,8 +12,8 @@ import {
   SurveyType,
 } from "../util/stateInterfaces"
 
-import { FactorialReport } from "./FactorialSurvey/FactorialReport"
-import FactorialSurveySubmission from "./FactorialSurvey/OutputSubmission"
+import { FactorialReport } from "./Factorial/ViewSubmission/FactorialReport"
+import FactorialSurveySubmission from "./Factorial/ViewSubmission/OutputSubmission"
 import SurveySubmission from "./Survey/OutputSubmission"
 
 interface SubmissionProps {

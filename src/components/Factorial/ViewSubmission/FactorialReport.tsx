@@ -4,8 +4,8 @@ import React from "react"
 // eslint-disable-next-line import/order
 import { FaDog } from "react-icons/fa"
 //import { respondToOrLarger } from "../../shared-module/styles/respond"
-import { Factor } from "../../util/stateInterfaces"
-import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
+import { Factor } from "../../../util/stateInterfaces"
+import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
 
 export const barColors = [
   "#DAE6E5",
