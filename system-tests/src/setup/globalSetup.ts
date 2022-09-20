@@ -1,15 +1,15 @@
-import { chromium } from "@playwright/test"
+/* import { chromium } from "@playwright/test"
 import { spawnSync } from "child_process"
-import path from "path"
+import path from "path" */
 
 import playWrightPackageJson from "../../node_modules/playwright/package.json"
 import systemTestsPackageLockJson from "../../package-lock.json"
-import { login } from "../utils/login"
+//import { login } from "../utils/login"
 
 async function globalSetup(): Promise<void> {
   await makeSureNpmCiHasBeenRan()
-  await setupSystemTestDb()
-  await createLoginStates()
+  //await setupSystemTestDb()
+  //await createLoginStates()
 }
 
 async function makeSureNpmCiHasBeenRan() {
@@ -23,7 +23,7 @@ async function makeSureNpmCiHasBeenRan() {
     )
   }
 }
-
+/* 
 // Create session states for each user, state will be named as username, e.g. admin.json
 async function createLoginStates() {
   console.log("Creating login states for supported test users.")
@@ -50,5 +50,5 @@ async function setupSystemTestDb() {
   }
   console.log("System test db setup complete.")
 }
-
+ */
 export default globalSetup

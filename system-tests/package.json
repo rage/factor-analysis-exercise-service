@@ -18,7 +18,7 @@
     "test-video-firefox": "env RECORD_VIDEO=1 npm run test-firefox",
     "test-debug-firefox": "env PWDEBUG=1 npm run test-firefox",
     "help": "playwright --help",
-    "record-test": "npx playwright codegen project-331.local",
+    "record-test": "npx playwright codegen https://courses.mooc.fi/playground-views",
     "record-test-admin": "npm run create-login-states && npx playwright codegen --load-storage=src/states/admin@example.com.json project-331.local",
     "record-test-teacher": "npm run create-login-states && npx playwright codegen --load-storage=src/states/teacher@example.com.json project-331.local",
     "record-test-user": "npm run create-login-states && npx playwright codegen --load-storage=src/states/user@example.com.json project-331.local",
