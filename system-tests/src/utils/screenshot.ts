@@ -3,7 +3,7 @@ import { ElementHandle, expect, Frame, Page, PageScreenshotOptions } from "@play
 import {
   HIDE_TEXT_IN_SYSTEM_TESTS_EVENT,
   SHOW_TEXT_IN_SYSTEM_TESTS_EVENT,
-} from "../shared-module/utils/constants"
+} from "../../../src/shared-module/utils/constants"
 
 import accessibilityCheck from "./accessibilityCheck"
 
