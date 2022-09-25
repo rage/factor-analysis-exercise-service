@@ -1,0 +1,177 @@
+{
+  "type": "non-factorial",
+  "id": "6e854f85-477b-4012-b0c6-676d3fc8cf51",
+  "content": [
+    {
+      "id": "7e731f38-e012-4324-b9dd-727b67e19b8f",
+      "question": {
+        "id": "99bc39f6-82a0-4207-8188-f5be895191b5",
+        "question": " Koiran käyttäytymiseen vaikuttavat perimän lisäksi myös koiran kokemukset etenkin pentuaikana. Täytä huolellisesti seuraavat kysymykset koiran taustasta. Saatat joutua ottamaan yhteyttä koirasi kasvattajaan koirasi pentuaikaa koskevien kysymysten täyttämisessä.\\nTähdellä merkityt kysymykset ovat pakollisia.\\nTietosuoja *",
+        "questionLabel": "info-header"
+      },
+      "answer": {
+        "id": "05eea446-1e99-4a1c-aed9-63387fdd400c",
+        "type": "consent-checkbox",
+        "options": [
+          "Hyväksyn että henkilötietoni, koirani tiedot ja kaikki tällä lomakkeella kerätyt tiedot siirretään Helsingin yliopiston koirien geenitutkimusryhmän käyttöön tieteellisessä tutkimuksessa. Lisätietoja löydät Koirien geenitutkimusryhmän tietosuojaselosteesta."
+        ],
+        "answer": ""
+      },
+      "conditional": false
+    },
+    {
+      "id": "de439ca7-15cf-48fb-90ec-d8a7815a7efb",
+      "question": {
+        "id": "7e8b9af4-7c9a-42fa-b55a-fa049ac86b7a",
+        "question": " Asuuko koira luonasi? *",
+        "questionLabel": "ownership"
+      },
+      "answer": {
+        "id": "072864de-7680-40a2-bcb3-3023a74575fb",
+        "type": "radio-group",
+        "options": [
+          "Kyllä",
+          "Ei"
+        ],
+        "answer": ""
+      },
+      "conditional": false
+    },
+    {
+      "id": "37e7b6dc-9871-4821-b298-0569cb16d2b8",
+      "question": {
+        "question": " Onko koira kuollut? *",
+        "questionLabel": "death",
+        "id": "47fd4b33-874f-4ce5-8c4d-562271e9f0ef"
+      },
+      "answer": {
+        "id": "6e217e88-1a3c-4a27-a354-54adf71fcf13",
+        "type": "multiple-choice",
+        "options": [
+          "Kyllä",
+          "Ei"
+        ],
+        "answer": ""
+      },
+      "conditional": true,
+      "dependsOn": {
+        "questionLabel": "ownership",
+        "triggeringOption": "Ei"
+      }
+    },
+    {
+      "id": "b48df119-4fcd-453a-8e40-f19e566cd02c",
+      "question": {
+        "id": "a49895d6-521a-48a0-a93a-d1d1ca8e4193",
+        "question": " Koiran kuolinaika (PP.KK.VVVV)",
+        "questionLabel": "date_of_death"
+      },
+      "answer": {
+        "id": "a090d654-3592-458a-80f0-6d3b0107d419",
+        "type": "date",
+        "options": [],
+        "answer": ""
+      },
+      "conditional": true,
+      "dependsOn": {
+        "questionLabel": "death",
+        "triggeringOption": "Kyllä"
+      }
+    },
+    {
+      "id": "5fc07eb8-f3a4-4ff3-8fab-5b5d784e9092",
+      "question": {
+        "id": "935b3600-d619-43b8-82c3-547b03ac4bf3",
+        "question": " Minkä rotuinen koira on? *",
+        "questionLabel": "breed"
+      },
+      "answer": {
+        "id": "4fbf0df2-9de6-4c9e-a954-b0ce56d53e03",
+        "type": "breed-list",
+        "options": [],
+        "answer": ""
+      },
+      "conditional": false
+    },
+    {
+      "id": "92285017-56ca-4172-ac9c-87597aced5b4",
+      "question": {
+        "id": "0efb6b1f-ca78-438e-838b-0968198fc674",
+        "question": " Minkä ikäinen koira oli tullessaan teille? *",
+        "questionLabel": "obtained_age"
+      },
+      "answer": {
+        "id": "45b31699-ea2d-467a-a58f-58b17eb6099d",
+        "type": "dropdown-selection",
+        "options": [
+          "nuori",
+          "vanha",
+          "muu"
+        ],
+        "answer": ""
+      },
+      "conditional": false
+    },
+    {
+      "id": "52ef6986-0f01-475a-8ef3-519499d3f126",
+      "question": {
+        "question": " Missä iässä koira erotettiin emostaan tai sijaisemosta?",
+        "questionLabel": "weaning_age",
+        "id": "83e66bed-0607-4ee9-bcd7-9efba3a49ee9"
+      },
+      "answer": {
+        "id": "8bfb0708-8546-49b4-bdd3-74a1c9b38172",
+        "type": "multiple-choice",
+        "options": [
+          "nuori",
+          "vanha",
+          "muu"
+        ],
+        "answer": ""
+      },
+      "conditional": true,
+      "dependsOn": {
+        "questionLabel": "obtained_age",
+        "triggeringOption": "nuori"
+      }
+    },
+    {
+      "id": "016de1e6-b000-4fec-ac67-124fc593ba28",
+      "question": {
+        "id": "3c371d01-6f04-4cb2-9064-8b5edb97b8d7",
+        "question": " Sosiaalistamiskausi: 7 viikon - 4 kuukauden iässä, miten usein koira...",
+        "questionLabel": "info"
+      },
+      "answer": {
+        "id": "bd906f37-b7c3-4659-88a3-700d57ed6e52",
+        "type": "",
+        "options": [],
+        "answer": ""
+      },
+      "conditional": true,
+      "dependsOn": {
+        "questionLabel": "weaning_age",
+        "triggeringOption": "nuori"
+      }
+    },
+    {
+      "id": "692e5b64-3841-417a-a3f8-17a5a7d1b288",
+      "question": {
+        "id": "9456c1d5-9d8f-43c3-bbf7-cdb2a5d0b8db",
+        "question": " matkusti autolla? *",
+        "questionLabel": "socialization_car"
+      },
+      "answer": {
+        "id": "4a49ba38-9d5d-4d1c-899e-34d60efe8512",
+        "type": "number",
+        "options": [],
+        "answer": ""
+      },
+      "conditional": true,
+      "dependsOn": {
+        "questionLabel": "obtained_age",
+        "triggeringOption": "muu"
+      }
+    }
+  ]
+}

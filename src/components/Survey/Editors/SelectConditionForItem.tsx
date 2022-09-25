@@ -24,6 +24,7 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
         </p>
       </legend>
       <select
+        aria-label="triggering-option-selector"
         onChange={(e) => {
           const triggeringItemArray: string[] = e.target.value.split(",")
           const triggeringItem: SurveyItemCondition = {
@@ -38,11 +39,15 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
             : "default"
         }
       >
-        <option value="default" disabled selected>
+        <option value="default" aria-label="Set condition" disabled selected>
           Set condition
         </option>
         {state.content.map((sItem) => {
-          if (sItem.id === item.id) {
+          if (
+            sItem.id === item.id ||
+            sItem.question.questionLabel === "info-header" ||
+            sItem.question.questionLabel === "info"
+          ) {
             return
           }
           return (
