@@ -9,7 +9,7 @@ import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
 
 import FactorEditor from "./ComponentEditors/FactorEditor"
-import LabelEditor from "./ComponentEditors/LabelEditor"
+import OptionEditor from "./ComponentEditors/OptionEditor"
 import QuestionEditor from "./ComponentEditors/QuestionEditor"
 import OutputMatrix from "./OutputMatrix"
 
@@ -31,10 +31,10 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
       <fieldset>
         <legend>Options</legend>
         <ol>
-          {state?.options?.map((o) => (
+          {state?.options?.map((o, idx) => (
             <li key={o.id}>
-              <LabelEditor
-                key={o.id}
+              <OptionEditor
+                idx={idx + 1}
                 item={o}
                 onDelete={() => {
                   const newLabels = (state as FactorialSurvey).options.filter((e) => e.id !== o.id)
@@ -132,9 +132,10 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
         </ButtonWrapper>
       </fieldset>
       <StyledInnerEditor>
-        <legend>Provide factor report to student</legend>
+        <label htmlFor="calculate-feedback-checkbox">Provide factor report to student</label>
         <input
           type="checkbox"
+          id="calculate-feedback-checkbox"
           checked={state.calculateFeedback}
           onChange={(e) => {
             const newState: FactorialSurvey = {

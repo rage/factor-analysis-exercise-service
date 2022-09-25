@@ -4,16 +4,22 @@ import TextField from "../../../../shared-module/components/InputFields/TextFiel
 import { FactorialOption } from "../../../../util/stateInterfaces"
 import { DeleteButton, StyledLabelEditor } from "../../../StyledComponents/Wrappers"
 interface Props {
+  idx: number
   item: FactorialOption
   onDelete: () => void
   onChange: (item: FactorialOption) => void
 }
 
-const LabelEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onDelete, onChange }) => {
+const OptionEditor: React.FC<React.PropsWithChildren<Props>> = ({
+  idx,
+  item,
+  onDelete,
+  onChange,
+}) => {
   return (
     <StyledLabelEditor>
       <TextField
-        aria-label="rate-value"
+        id={`rate-value-${idx}`}
         label="value"
         type="number"
         value={(item.value as unknown as string) ?? ""}
@@ -32,7 +38,8 @@ const LabelEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onDelete,
         `}
       />
       <TextField
-        label="Label text"
+        id={`option-text-${idx}`}
+        label={`Option text`}
         value={item.name}
         onChange={(e) => {
           onChange({ ...item, name: e })
@@ -55,4 +62,4 @@ const LabelEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onDelete,
   )
 }
 
-export default LabelEditor
+export default OptionEditor
