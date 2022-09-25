@@ -24,17 +24,13 @@ interface CoordinateProps {
 }
 
 export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>> = ({ factor }) => {
-  console.log(factor.name)
-
   const species =
     (100 * -(factor.range?.min as number)) /
     ((factor.range?.max as number) - (factor.range?.min as number))
-  console.log(species)
 
   const userScore =
     (100 * (-(factor.range?.min as number) + factor.score)) /
     ((factor.range?.max as number) - (factor.range?.min as number))
-  console.log(userScore)
 
   return (
     <div>
@@ -62,7 +58,7 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
       >
         <label>{"Species average"}</label>
         <div
-          id="logo"
+          id={`${factor.label}-logo`}
           className={css`
             height: 37px;
             background-color: #d9d9d9;
