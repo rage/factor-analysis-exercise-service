@@ -1,5 +1,0 @@
-question_one; This is the first question
-question_two;This is the second
-three;Questions should have unique question labels for identification
-four;otherwise they can contain anything
-five;exept for maybe newlines, should be avoided

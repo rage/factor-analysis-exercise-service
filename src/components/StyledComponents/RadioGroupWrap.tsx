@@ -56,7 +56,7 @@ export const CheckedRadioGroupWrap = styled.div<DivProps>`
     transform: scale(1);
   }
 
-  span {
+  label {
     font-family: "Raleway";
     font-weight: 400;
     font-size: 18px;
@@ -98,7 +98,7 @@ export const RadioGroupWrap = styled.div<DivProps>`
     background-color: ${baseTheme.colors.green[600]};
   }
 
-  span {
+  label {
     font-family: "Raleway";
     font-weight: 400;
     font-size: 18px;

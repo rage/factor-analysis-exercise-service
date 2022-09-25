@@ -138,7 +138,7 @@ export const testAnswer: RatedQuestion[] = [
 ]
 
 describe("When all questions are rated propperly, thus not null", () => {
-  test("matrix multiplication is correct", () => {
+  test("factor weights matrix multiplication is correct small question set", () => {
     const sanitizedAnswers = sanitizeQuestions(testAnswer) as RatedQuestion[]
     sanitizedAnswers.map((a) => {
       expect(a.questionLabel).not.toBe("info")
@@ -149,6 +149,21 @@ describe("When all questions are rated propperly, thus not null", () => {
     })
 
     const scoredFactors = calculateFactors(testFactors, sanitizedAnswers)
+    const derivedScoreVector = vectorMatrixMultiplication(rateVector, weightsMatrix)
+    expect(scoredFactors.map((e) => e.score)).toEqual(derivedScoreVector)
+  })
+
+  test("factor weight matrix multiplication correct with random rates, small question set", () => {
+    const answeredQuestions = (sanitizeQuestions(testAnswer) as RatedQuestion[]).map((e) => {
+      return { ...e, rate: Math.floor(Math.random() * 10) }
+    })
+
+    const rateVector: number[] = answeredQuestions.map((e) => e.rate as number)
+    const weightsMatrix = answeredQuestions.map((e) => {
+      return testFactors.map((f) => f.weights[e.questionLabel])
+    })
+
+    const scoredFactors = calculateFactors(testFactors, answeredQuestions)
     const derivedScoreVector = vectorMatrixMultiplication(rateVector, weightsMatrix)
     expect(scoredFactors.map((e) => e.score)).toEqual(derivedScoreVector)
   })

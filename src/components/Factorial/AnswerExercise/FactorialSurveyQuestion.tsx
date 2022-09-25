@@ -31,11 +31,12 @@ const FactorialSurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
       <form>
         <div className="radio">
           <ExerciseItemHeader titleText={question.question} />
-          {options.map((option) => {
+          {options.map((option, idx) => {
             return (
               <CheckedRadioGroupWrap key={option.id} {...noBorder}>
                 <input
                   type="radio"
+                  id={`${question.questionLabel}-factorial-option-${idx + 1}`}
                   value={option.value ?? undefined}
                   onChange={(e) => {
                     onClick(
@@ -48,7 +49,9 @@ const FactorialSurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
                   required
                   disabled={disabled}
                 />
-                <label>{option.name}</label>
+                <label htmlFor={`${question.questionLabel}-factorial-option-${idx + 1}`}>
+                  {option.name}
+                </label>
               </CheckedRadioGroupWrap>
             )
           })}

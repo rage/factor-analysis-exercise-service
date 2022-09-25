@@ -134,13 +134,26 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
         {/* eslint-disable-next-line i18next/no-literal-string */}
         {item.question.questionLabel && item.question.questionLabel !== "info" && (
           <select
+            aria-label={`select-answer-type-${item.question.questionLabel}`}
             onChange={(event) => {
               const answer: Answer = item.answer
               const answerType: AnswerType = event.target.value as unknown as AnswerType
               if (!answerType) {
                 return
               }
-              onChangeSurveyItem({ ...item, answer: { ...answer, options: [], type: answerType } })
+              onChangeSurveyItem({
+                ...item,
+                answer: {
+                  ...answer,
+                  options:
+                    answerType === AnswerType.Dropdown ||
+                    answerType === AnswerType.MultiChoice ||
+                    answerType === AnswerType.RadioGroup
+                      ? [...answer.options]
+                      : [],
+                  type: answerType,
+                },
+              })
             }}
             className={css`
               flex: 1;
@@ -188,6 +201,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                   <li key={o_idx}>
                     <StyledInnerEditor>
                       <Input
+                        aria-label={`${o_idx}-option-text`}
                         value={o}
                         type="text"
                         onChange={(e) => {
@@ -253,8 +267,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               margin-right 20px;
             `}
           >
-            <legend>Conditional</legend>
+            <label htmlFor={item.id}>Conditional</label>
             <input
+              id={item.id}
               type="checkbox"
               checked={item.conditional}
               onChange={(e) => {

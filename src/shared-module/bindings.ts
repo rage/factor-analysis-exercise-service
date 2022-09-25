@@ -44,6 +44,15 @@ export type Resource =
   | { type: "exercise_service" }
   | { type: "material_reference" }
 
+export type ErrorData = { block_id: string }
+
+export interface ErrorResponse {
+  title: string
+  message: string
+  source: string | null
+  data: ErrorData | null
+}
+
 export interface Term {
   id: string
   term: string
@@ -60,6 +69,7 @@ export interface Chapter {
   created_at: Date
   updated_at: Date
   name: string
+  color: string | null
   course_id: string
   deleted_at: Date | null
   chapter_image_url: string | null
@@ -76,6 +86,7 @@ export interface DatabaseChapter {
   created_at: Date
   updated_at: Date
   name: string
+  color: string | null
   course_id: string
   deleted_at: Date | null
   chapter_image_path: string | null
@@ -91,6 +102,7 @@ export type ChapterStatus = "open" | "closed"
 
 export interface ChapterUpdate {
   name: string
+  color: string | null
   front_page_id: string | null
   deadline: Date | null
   opens_at: Date | null
@@ -102,6 +114,7 @@ export interface ChapterWithStatus {
   created_at: Date
   updated_at: Date
   name: string
+  color: string | null
   course_id: string
   deleted_at: Date | null
   chapter_number: number
@@ -114,6 +127,7 @@ export interface ChapterWithStatus {
 
 export interface NewChapter {
   name: string
+  color: string | null
   course_id: string
   chapter_number: number
   front_page_id: string | null
@@ -143,6 +157,7 @@ export interface ChapterScore {
   created_at: Date
   updated_at: Date
   name: string
+  color: string | null
   course_id: string
   deleted_at: Date | null
   chapter_image_path: string | null
@@ -358,6 +373,17 @@ export interface ExamInstructionsUpdate {
   instructions: unknown
 }
 
+export interface ExerciseRepository {
+  id: string
+  url: string
+  course_id: string | null
+  exam_id: string | null
+  status: ExerciseRepositoryStatus
+  error_message: string | null
+}
+
+export type ExerciseRepositoryStatus = "Pending" | "Success" | "Failure"
+
 export interface CourseMaterialExerciseServiceInfo {
   exercise_iframe_url: string
 }
@@ -434,7 +460,6 @@ export interface ExerciseTask {
   deleted_at: Date | null
   public_spec: unknown | null
   private_spec: unknown | null
-  spec_file_id: string | null
   model_solution_spec: unknown | null
   copied_from: string | null
   order_number: number
@@ -448,7 +473,7 @@ export interface CourseMaterialExercise {
   current_exercise_slide: CourseMaterialExerciseSlide
   exercise_status: ExerciseStatus | null
   exercise_slide_submission_counts: Record<string, number>
-  peer_review: PeerReview | null
+  peer_review_config: PeerReviewConfig | null
 }
 
 export interface Exercise {
@@ -468,6 +493,7 @@ export interface Exercise {
   max_tries_per_slide: number | null
   limit_number_of_tries: boolean
   needs_peer_review: boolean
+  use_course_default_peer_review_config: boolean
 }
 
 export interface ExerciseStatus {
@@ -534,7 +560,7 @@ export interface StudentExerciseTaskSubmissionResult {
 
 export interface CourseMaterialPeerReviewData {
   answer_to_review: CourseMaterialPeerReviewDataAnswerToReview | null
-  peer_review: PeerReview
+  peer_review_config: PeerReviewConfig
   peer_review_questions: Array<PeerReviewQuestion>
   num_peer_reviews_given: number
 }
@@ -552,12 +578,43 @@ export interface CourseMaterialPeerReviewQuestionAnswer {
 
 export interface CourseMaterialPeerReviewSubmission {
   exercise_slide_submission_id: string
-  peer_review_id: string
+  peer_review_config_id: string
   peer_review_question_answers: Array<CourseMaterialPeerReviewQuestionAnswer>
 }
 
 export interface CompletionRegistrationLink {
   url: string
+}
+
+export interface CourseInstanceCompletionSummary {
+  course_modules: Array<CourseModule>
+  users_with_course_module_completions: Array<UserWithModuleCompletions>
+}
+
+export interface ManualCompletionPreview {
+  already_completed_users: Array<ManualCompletionPreviewUser>
+  first_time_completing_users: Array<ManualCompletionPreviewUser>
+  non_enrolled_users: Array<ManualCompletionPreviewUser>
+}
+
+export interface ManualCompletionPreviewUser {
+  user_id: string
+  first_name: string | null
+  last_name: string | null
+  grade: number | null
+  passed: boolean
+}
+
+export interface TeacherManualCompletion {
+  user_id: string
+  grade: number | null
+  completion_date: Date | null
+}
+
+export interface TeacherManualCompletionRequest {
+  course_module_id: string
+  new_completions: Array<TeacherManualCompletion>
+  skip_duplicate_completions: boolean
 }
 
 export interface UserCompletionInformation {
@@ -568,6 +625,12 @@ export interface UserCompletionInformation {
   ects_credits: number | null
 }
 
+export interface UserCourseModuleCompletion {
+  course_module_id: string
+  grade: number | null
+  passed: boolean
+}
+
 export interface UserModuleCompletionStatus {
   completed: boolean
   default: boolean
@@ -575,6 +638,14 @@ export interface UserModuleCompletionStatus {
   name: string
   order_number: number
   prerequisite_modules_completed: boolean
+}
+
+export interface UserWithModuleCompletions {
+  completed_modules: Array<UserCourseModuleCompletion>
+  email: string
+  first_name: string | null
+  last_name: string | null
+  user_id: string
 }
 
 export interface MaterialReference {
@@ -624,6 +695,9 @@ export interface CmsPageExercise {
   limit_number_of_tries: boolean
   deadline: Date | null
   needs_peer_review: boolean
+  peer_review_config: CmsPeerReviewConfig | null
+  peer_review_questions: Array<CmsPeerReviewQuestion> | null
+  use_course_default_peer_review_config: boolean
 }
 
 export interface CmsPageExerciseSlide {
@@ -656,6 +730,8 @@ export interface ContentManagementPage {
   exercises: Array<CmsPageExercise>
   exercise_slides: Array<CmsPageExerciseSlide>
   exercise_tasks: Array<CmsPageExerciseTask>
+  peer_review_configs: Array<CmsPeerReviewConfig>
+  peer_review_questions: Array<CmsPeerReviewQuestion>
   organization_id: string
 }
 
@@ -780,7 +856,7 @@ export interface PageNavigationInformation {
   previous_page: PageRoutingData | null
 }
 
-export interface PeerReview {
+export interface PeerReviewConfig {
   id: string
   created_at: Date
   updated_at: Date
@@ -798,8 +874,24 @@ export type PeerReviewAcceptingStrategy =
   | "AutomaticallyAcceptOrManualReviewByAverage"
   | "ManualReviewEverything"
 
-export interface NewPeerReviewQuestion {
-  peer_review_id: string
+export interface CmsPeerReviewConfig {
+  id: string
+  course_id: string
+  exercise_id: string | null
+  peer_reviews_to_give: number
+  peer_reviews_to_receive: number
+  accepting_threshold: number
+  accepting_strategy: PeerReviewAcceptingStrategy
+}
+
+export interface CmsPeerReviewConfiguration {
+  peer_review_config: CmsPeerReviewConfig
+  peer_review_questions: Array<CmsPeerReviewQuestion>
+}
+
+export interface CmsPeerReviewQuestion {
+  id: string
+  peer_review_config_id: string
   order_number: number
   question: string
   question_type: PeerReviewQuestionType
@@ -811,7 +903,7 @@ export interface PeerReviewQuestion {
   created_at: Date
   updated_at: Date
   deleted_at: Date | null
-  peer_review_id: string
+  peer_review_config_id: string
   order_number: number
   question: string
   question_type: PeerReviewQuestionType
@@ -889,6 +981,43 @@ export interface PageProposal {
 export interface ProposalCount {
   pending: number
   handled: number
+}
+
+export interface RepositoryExercise {
+  id: string
+  repository_id: string
+  part: string
+  name: string
+  repository_url: string
+  checksum: Array<number>
+  download_url: string
+}
+
+export interface Regrading {
+  id: string
+  created_at: Date
+  updated_at: Date
+  regrading_started_at: Date | null
+  regrading_completed_at: Date | null
+  total_grading_progress: GradingProgress
+  user_points_update_strategy: UserPointsUpdateStrategy
+  user_id: string | null
+}
+
+export interface NewRegrading {
+  user_points_update_strategy: UserPointsUpdateStrategy
+  exercise_task_submission_ids: Array<string>
+}
+
+export interface RegradingInfo {
+  regrading: Regrading
+  submission_infos: Array<RegradingSubmissionInfo>
+}
+
+export interface RegradingSubmissionInfo {
+  exercise_task_submission_id: string
+  grading_before_regrading: ExerciseTaskGrading
+  grading_after_regrading: ExerciseTaskGrading | null
 }
 
 export interface ExerciseSlideSubmission {
@@ -1109,15 +1238,6 @@ export interface User {
   email: string
 }
 
-export type ErrorData = { block_id: string }
-
-export interface ErrorResponse {
-  title: string
-  message: string
-  source: string | null
-  data: ErrorData | null
-}
-
 export interface UploadResult {
   url: string
 }
@@ -1211,6 +1331,13 @@ export interface AnswerRequiringAttentionWithTasks {
   submission_id: string
   exercise_id: string
   tasks: Array<CourseMaterialExerciseTask>
+}
+
+export interface NewExerciseRepository {
+  course_id: string | null
+  exam_id: string | null
+  git_url: string
+  deploy_key: string | null
 }
 
 export interface MarkAsRead {

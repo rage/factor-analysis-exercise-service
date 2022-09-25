@@ -40,8 +40,10 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
       >
         <legend>Choose type of Survey</legend>
         <select
+          aria-label="select-survey-type"
           name="type-selection"
           id="survey-type"
+          value={undefined}
           onChange={(event) => {
             const surveyType = event.target.value
             switch (surveyType) {

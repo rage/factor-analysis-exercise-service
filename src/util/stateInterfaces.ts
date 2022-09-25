@@ -36,6 +36,9 @@ export interface FactorialSurvey {
   questions: Question[]
 }
 
+/**
+ * RatedQuesiton[] | SurveyItem[]
+ */
 export interface SubmittedForm {
   answeredQuestions: RatedQuestion[] | SurveyItem[]
 }
