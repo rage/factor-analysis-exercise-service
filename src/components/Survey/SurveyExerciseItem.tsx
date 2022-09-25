@@ -84,6 +84,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
             return (
               <CheckboxWrap key={o} checkedCollor={CHECKED}>
                 <input
+                  aria-label={o}
                   type="checkbox"
                   id={o}
                   name={o}
@@ -111,6 +112,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
               return (
                 <RadioGroupWrap key={option} checkedColor={CHECKED} border>
                   <input
+                    aria-label={option}
                     type="radio"
                     value={option}
                     onChange={(e) => {
@@ -120,7 +122,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
                     required
                     disabled={disabled}
                   />
-                  <span>{option}</span>
+                  <label>{option}</label>
                 </RadioGroupWrap>
               )
             })}
@@ -151,6 +153,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <>
           <select
+            aria-label={`${item.question.questionLabel}-dropdown-selection`}
             onChange={(e) => {
               updateAnswer(item.id, { ...item.answer, answer: e.target.value })
             }}
@@ -158,7 +161,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
             required
             disabled={disabled}
           >
-            <option value="default" disabled selected></option>
+            <option value="default" disabled selected label="--"></option>
             {item.answer.options.map((option) => {
               return (
                 <Option key={option} value={option}>
@@ -175,6 +178,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
         <div>
           <CheckboxWrap checkedCollor={"rgb(55, 188, 155)"} info>
             <input
+              aria-label="consent-checkbox"
               type="checkbox"
               id={item.id}
               name={item.answer.options[0]}

@@ -1,7 +1,7 @@
 // @ts-check
 import { test } from "@playwright/test"
 
-import privateSpec from "../../../../tests/.test-data/mini-test/private-spec.json"
+import privateSpec from "../../../../tests/.test-data/factorial/mini-test/private-spec.json"
 import expectScreenshotsToMatchSnapshots from "../../utils/screenshot"
 import waitForFunction from "../../utils/waitForFunction"
 
@@ -57,6 +57,7 @@ test("can fill out form in answer-exercise mini-spec with non-nan valued options
   if (!submission_frame) {
     throw new Error("Could not find frame")
   }
+  await submission_frame.waitForSelector("text=name of factor one")
   await expectScreenshotsToMatchSnapshots({
     axeSkip: ["heading-order", "scrollable-region-focusable"],
     headless,

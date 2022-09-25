@@ -42,6 +42,7 @@ const BreedList: React.FC<React.PropsWithChildren<Props>> = ({
       `}
     >
       <Select<SelectOption>
+        aria-label="breed-selector"
         options={sortedOptions}
         placeholder="Select breed"
         isSearchable={true}
@@ -49,6 +50,9 @@ const BreedList: React.FC<React.PropsWithChildren<Props>> = ({
         onChange={(e) => onClick(e?.value ?? "")}
         isDisabled={disabled}
         maxMenuHeight={400}
+        className={css`
+          aria-label: breed-selection;
+        `}
       />
     </div>
   )
