@@ -17,6 +17,8 @@ RUN npm ci
 
 COPY --chown=node . /app
 
+RUN rm -r /app/system-tests
+
 RUN npm run build
 
 FROM eu.gcr.io/moocfi-public/project-331-node-base:latest as runtime
