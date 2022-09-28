@@ -29,8 +29,8 @@ jobs:
         run: |
           npm ci
           npm test
-          npm build
-          npm start
+          npm run build
+          npm run start
 
       - name: Run system tests
         run: npm run test
