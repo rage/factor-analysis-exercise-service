@@ -35,7 +35,6 @@ jobs:
       - name: Run system tests
         run: npm run test
         working-directory: ./system-tests/
-        wait-on: http://localhost:3008
 
       - uses: actions/upload-artifact@v2
         if: failure()
