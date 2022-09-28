@@ -25,12 +25,10 @@ jobs:
         run: npm ci
         working-directory: ./system-tests/
 
-      - name: Install, test and build server
+      - name: Install and test repo 
         run: |
           npm ci
           npm test
-          npm run build
-          npm run start
 
       - name: Run system tests
         run: npm run test
