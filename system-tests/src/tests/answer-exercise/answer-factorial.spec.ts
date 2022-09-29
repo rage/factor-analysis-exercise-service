@@ -27,6 +27,7 @@ test("can fill out form in answer-exercise mini-spec with non-nan valued options
     throw new Error("Could not find frame")
   }
 
+  await frame.waitForSelector("text=This is the first question")
   // Check #question_one-factorial-option-2
   await frame.locator("#question_one-factorial-option-2").check()
   // Check #question_two-factorial-option-1
