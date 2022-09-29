@@ -183,11 +183,13 @@ test("can add factorial survey type wtih information elements and questions inte
   // Fill [aria-label="\32 -option-text"]
   await frame.locator('[aria-label="\\32 -option-text"]').fill("muu")
   // Click li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > div:nth-child(6) > .css-94rpl7-SurveyItemEditor
-  await frame
+  await frame.locator('button:has-text("duplicate item")').nth(5).click()
+
+  /* await frame
     .locator(
       "li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > div:nth-child(6) > .css-94rpl7-SurveyItemEditor",
     )
-    .click()
+    .click() */
   // Click [id="__next"] div:has-text("info-headerKoiran käyttäytymiseen vaikuttavat perimän lisäksi myös koiran kokemu") >> nth=0
   /*   await frame
       .locator(

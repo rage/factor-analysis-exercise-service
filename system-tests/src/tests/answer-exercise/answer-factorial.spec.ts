@@ -15,7 +15,7 @@ test("can fill out form in answer-exercise mini-spec with non-nan valued options
   await page.waitForSelector("text=Valid service info")
 
   await page.fill('[name="private_spec"]', JSON.stringify(privateSpec))
-  await page.waitForSelector("text=answer-exercise")
+  await (await page.waitForSelector("text=answer-exercise")).scrollIntoViewIfNeeded()
 
   await page.click('button:text("answer-exercise")')
   const frame = await waitForFunction(page, () =>
