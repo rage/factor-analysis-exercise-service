@@ -3,10 +3,10 @@ name: System tests and deploy
 on:
   push:
     branches:
-      - main
+      - staging
   pull_request:
     branches:
-      - main
+      - staging
 
 
 jobs:
@@ -25,11 +25,12 @@ jobs:
         run: npm ci
         working-directory: ./system-tests/
 
-      - name: Install and test repo 
+      - name: Install, test and build server 
         run: |
           npm ci
           npm test
-          npm run dev &
+          npm run build 
+          env PORT=3008 npm run start &
 
       - name: Run system tests
         run: npm run test
