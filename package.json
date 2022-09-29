@@ -1,11 +1,12 @@
 {
   "name": "factorial-analysis-survey-exercise",
   "version": "1.0.1",
+  "license": "MIT",
   "scripts": {
     "dev": "node server.js",
     "build": "NODE_ENV=production next build",
     "export": "next export",
-    "start": "NODE_ENV=production PORT=3002 node server.js",
+    "start": "NODE_ENV=production node server.js",
     "eslint": "eslint --fix .",
     "test": "jest"
   },

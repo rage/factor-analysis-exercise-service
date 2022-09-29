@@ -15,8 +15,7 @@ test("can fill out form in answer-exercise mini-spec with non-nan valued options
   await page.waitForSelector("text=Valid service info")
 
   await page.fill('[name="private_spec"]', JSON.stringify(privateSpec))
-  await page.waitForSelector("text=answer-exercise")
-
+  await page.locator("text=answer-exercise")
   await page.click('button:text("answer-exercise")')
   const frame = await waitForFunction(page, () =>
     page.frames().find((f) => {
@@ -26,7 +25,9 @@ test("can fill out form in answer-exercise mini-spec with non-nan valued options
   if (!frame) {
     throw new Error("Could not find frame")
   }
+  await page.locator('button:has-text("answer-exercise")').scrollIntoViewIfNeeded()
 
+  await frame.waitForSelector("text=This is the first question")
   // Check #question_one-factorial-option-2
   await frame.locator("#question_one-factorial-option-2").check()
   // Check #question_two-factorial-option-1

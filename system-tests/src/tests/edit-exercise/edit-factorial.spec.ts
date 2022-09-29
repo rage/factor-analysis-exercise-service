@@ -97,6 +97,7 @@ test("can add factorial survey type wtih information elements and questions inte
   // Click text=Set as private spec input
   await page.locator("text=Set as private spec input").click()
 
+  await (await page.waitForSelector('button:has-text("answer-exercise")')).scrollIntoViewIfNeeded()
   // Click button:has-text("answer-exercise")
   await page.locator('button:has-text("answer-exercise")').click()
 
