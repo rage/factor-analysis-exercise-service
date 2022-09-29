@@ -53,28 +53,15 @@ test("can add factorial survey type wtih information elements and questions inte
   await frame.locator('[aria-label="select-answer-type-ownership"]').selectOption("radio-group")
   // Click text=add option
   await frame.locator("text=add option").click()
-  /*   // Click input[type="text"]
-    await frame.locator('input[type="text"]').click() */
   // Fill input[type="text"]
   await frame.locator('input[type="text"]').fill("Kyllä")
   // Click text=add option
   await frame.locator("text=add option").click()
-  // Click input[type="text"] >> nth=1
-  /* await frame
-    .locator('input[type="text"]')
-    .nth(1)
-    .click({
-      modifiers: ["Shift"],
-    })
-  // Click input[type="text"] >> nth=1
-  await frame.locator('input[type="text"]').nth(1).click() */
   // Fill input[type="text"] >> nth=1
   await frame.locator('input[type="text"]').nth(1).fill("Ei")
 
   // Click text=duplicate item >> nth=1
   await frame.locator("text=duplicate item").nth(1).click()
-  /*   // Click textarea >> nth=3
-    await frame.locator("textarea").nth(3).click() */
   // Fill textarea >> nth=3
   await frame.locator("textarea").nth(3).fill("death; Onko koira kuollut? *")
   // Select multiple-choice
@@ -86,8 +73,6 @@ test("can add factorial survey type wtih information elements and questions inte
 
   // Click text=Add Survey Item
   await frame.locator("text=Add Survey Item").click()
-  /*   // Click textarea >> nth=4
-    await frame.locator("textarea").nth(4).click() */
   // Fill textarea >> nth=4
   await frame.locator("textarea").nth(4).fill("date_of_death; Koiran kuolinaika (PP.KK.VVVV)")
   // Select date
@@ -100,45 +85,14 @@ test("can add factorial survey type wtih information elements and questions inte
     .nth(1)
     .selectOption("death,Kyllä")
 
-  // from here on!!!
-
   // Click text=Add Survey Item
   await frame.locator("text=Add Survey Item").click()
-  // Click li:nth-child(5) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
-  /*   await frame
-      .locator(
-        "li:nth-child(5) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea",
-      )
-      .click({
-        modifiers: ["Control"],
-      }) */
   // Fill li:nth-child(5) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
   await frame.locator("textarea").nth(5).fill("breed; Minkä rotuinen koira on? *")
   // Select breed-list
   await frame.locator('[aria-label="select-answer-type-breed"]').selectOption("breed-list")
   // Click text=Add Survey Item
   await frame.locator("text=Add Survey Item").click()
-  // Click li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
-  /*   await frame
-      .locator(
-        "li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea",
-      )
-      .click({
-        modifiers: ["Control"],
-      }) */
-  // Click li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
-  /*   await frame
-    .locator("textarea")
-    .nth(6)
-    .click({
-      modifiers: ["Control"],
-    }) */
-  // Press Enter
-  /*   await frame
-    .locator(
-      "li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea",
-    )
-    .press("Enter") */
   // Fill li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
   await frame
     .locator("textarea")
@@ -150,12 +104,6 @@ test("can add factorial survey type wtih information elements and questions inte
     .selectOption("dropdown-selection")
   // Click text=add option >> nth=2
   await frame.locator("text=add option").nth(2).click()
-  // Click text=obtained_ageMinkä ikäinen koira oli tullessaan teille? * xEditor (special purpos >> [aria-label="\30 -option-text"]
-  /*   await frame
-      .locator(
-        'text=obtained_ageMinkä ikäinen koira oli tullessaan teille? * xEditor (special purpos >> [aria-label="\\30 -option-text"]',
-      )
-      .click() */
   // Fill text=obtained_ageMinkä ikäinen koira oli tullessaan teille? * xEditor (special purpos >> [aria-label="\30 -option-text"]
   await frame
     .locator(
@@ -164,12 +112,6 @@ test("can add factorial survey type wtih information elements and questions inte
     .fill("nuori")
   // Click text=add option >> nth=2
   await frame.locator("text=add option").nth(2).click()
-  // Click text=obtained_ageMinkä ikäinen koira oli tullessaan teille? * xEditor (special purpos >> [aria-label="\31 -option-text"]
-  /*   await frame
-      .locator(
-        'text=obtained_ageMinkä ikäinen koira oli tullessaan teille? * xEditor (special purpos >> [aria-label="\\31 -option-text"]',
-      )
-      .click() */
   // Fill text=obtained_ageMinkä ikäinen koira oli tullessaan teille? * xEditor (special purpos >> [aria-label="\31 -option-text"]
   await frame
     .locator(
@@ -178,27 +120,10 @@ test("can add factorial survey type wtih information elements and questions inte
     .fill("vanha")
   // Click text=add option >> nth=2
   await frame.locator("text=add option").nth(2).click()
-  /*  // Click [aria-label="\32 -option-text"]
-   await frame.locator('[aria-label="\\32 -option-text"]').click() */
   // Fill [aria-label="\32 -option-text"]
   await frame.locator('[aria-label="\\32 -option-text"]').fill("muu")
   // Click li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > div:nth-child(6) > .css-94rpl7-SurveyItemEditor
   await frame.locator('button:has-text("duplicate item")').nth(5).click()
-
-  /* await frame
-    .locator(
-      "li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > div:nth-child(6) > .css-94rpl7-SurveyItemEditor",
-    )
-    .click() */
-  // Click [id="__next"] div:has-text("info-headerKoiran käyttäytymiseen vaikuttavat perimän lisäksi myös koiran kokemu") >> nth=0
-  /*   await frame
-      .locator(
-        '[id="__next"] div:has-text("info-headerKoiran käyttäytymiseen vaikuttavat perimän lisäksi myös koiran kokemu")',
-      )
-      .first()
-      .click() */
-  // Click li:nth-child(7) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
-  //await frame.locator(//.click()
   // Fill li:nth-child(7) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
   await frame
     .locator("textarea")
@@ -222,19 +147,6 @@ test("can add factorial survey type wtih information elements and questions inte
     .selectOption("obtained_age,nuori")
   // Click text=Add Survey Item
   await frame.locator("text=Add Survey Item").click()
-  // Click [id="__next"] div:has-text("info-headerKoiran käyttäytymiseen vaikuttavat perimän lisäksi myös koiran kokemu") >> nth=0
-  /*   await frame
-      .locator(
-        '[id="__next"] div:has-text("info-headerKoiran käyttäytymiseen vaikuttavat perimän lisäksi myös koiran kokemu")',
-      )
-      .first()
-      .click() */
-  // Click li:nth-child(8) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
-  /*   await frame
-      .locator(
-        "li:nth-child(8) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea",
-      )
-      .click() */
   // Fill li:nth-child(8) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
   await frame
     .locator("textarea")
@@ -254,12 +166,6 @@ test("can add factorial survey type wtih information elements and questions inte
     .selectOption("weaning_age,nuori")
   // Click text=Add Survey Item
   await frame.locator("text=Add Survey Item").click()
-  // Click li:nth-child(9) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
-  /*   await frame
-    .locator(
-      "li:nth-child(9) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea",
-    )
-    .click() */
   // Fill li:nth-child(9) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
   await frame.locator("textarea").nth(9).fill("socialization_car; matkusti autolla? *")
   // Select number
