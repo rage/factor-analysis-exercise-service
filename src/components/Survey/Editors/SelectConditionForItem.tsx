@@ -1,4 +1,5 @@
 /* eslint-disable i18next/no-literal-string */
+import { css } from "@emotion/css"
 import React from "react"
 
 import { Survey, SurveyItem, SurveyItemCondition } from "../../../util/stateInterfaces"
@@ -18,7 +19,13 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
     <>
       <legend>
         This question will be shown based on chosen answer:{" "}
-        <p>
+        <p
+          className={css`
+            width: 45vw;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          `}
+        >
           Question: {item.dependsOn?.questionLabel} <br />
           chosen option: {item.dependsOn?.triggeringOption}
         </p>
@@ -38,6 +45,11 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
             ? item.dependsOn?.questionLabel + "," + item.dependsOn?.triggeringOption
             : "default"
         }
+        className={css`
+          width: 50vw;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        `}
       >
         <option value="default" aria-label="Set condition" disabled selected>
           Set condition
@@ -58,7 +70,13 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
             >
               {sItem.answer.options.map((option) => {
                 const triggeringItem: string[] = [sItem.question.questionLabel, option]
-                return <option key={option} value={triggeringItem as string[]} label={option} />
+                return (
+                  <option
+                    key={option}
+                    value={triggeringItem as string[]}
+                    label={option.length > 80 ? option.slice(0, 80) + "..." : option}
+                  />
+                )
               })}
             </optgroup>
           )
