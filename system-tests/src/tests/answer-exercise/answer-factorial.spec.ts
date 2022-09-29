@@ -11,22 +11,23 @@ test("can fill out form in answer-exercise mini-spec with non-nan valued options
 }) => {
   await page.goto("https://courses.mooc.fi/playground-views")
 
-  await page.fill('[name="url"]', "http://localhost:12345/api/service-info")
+  await page.fill('[name="url"]', "http://localhost:3008/api/service-info")
   await page.waitForSelector("text=Valid service info")
 
   await page.fill('[name="private_spec"]', JSON.stringify(privateSpec))
-  await page.waitForSelector("text=answer-exercise")
+  await (await page.waitForSelector("text=answer-exercise")).scrollIntoViewIfNeeded()
 
   await page.click('button:text("answer-exercise")')
   const frame = await waitForFunction(page, () =>
     page.frames().find((f) => {
-      return f.url().startsWith("http://localhost:12345/iframe")
+      return f.url().startsWith("http://localhost:3008/iframe")
     }),
   )
   if (!frame) {
     throw new Error("Could not find frame")
   }
 
+  await frame.waitForSelector("text=This is the first question")
   // Check #question_one-factorial-option-2
   await frame.locator("#question_one-factorial-option-2").check()
   // Check #question_two-factorial-option-1
@@ -51,7 +52,7 @@ test("can fill out form in answer-exercise mini-spec with non-nan valued options
   await page.locator("text=view-submission").click()
   const submission_frame = await waitForFunction(page, () =>
     page.frames().find((f) => {
-      return f.url().startsWith("http://localhost:12345/iframe")
+      return f.url().startsWith("http://localhost:3008/iframe")
     }),
   )
   if (!submission_frame) {

@@ -1,0 +1,68 @@
+name: System tests and deploy
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+
+
+jobs:
+  system-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+        # This would cause all other tests to be skipped
+      - name: Make sure we have no focused system-tests
+        run: |
+          test "$(grep -r 'test.only' ./system-tests/src/ | wc -l)" -eq 0
+
+      - name: Setup system test environment
+        run: npm ci
+        working-directory: ./system-tests/
+
+      - name: Install, test and build server 
+        run: |
+          npm ci
+          npm test
+          npm run build 
+          env PORT=3008 npm run start &
+
+      - name: Run system tests
+        run: npm run test
+        working-directory: ./system-tests/
+
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: test-results
+          path: ./system-tests/test-results/
+          if-no-files-found: ignore
+      
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: playwright-html-report
+          path: ./system-tests/playwright-report/index.html
+          if-no-files-found: ignore
+          
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+
+      - name: Run npm ci in repo root
+        run: npm ci
+
+      - name: Run npm ci system-tests
+        run: npm ci
+        working-directory: ./system-tests/
+
+      - name: Run tsc
+        run: npx tsc --noEmit
+        working-directory: ./system-tests/

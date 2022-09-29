@@ -10,12 +10,12 @@ test("can add factorial survey type wtih information elements and questions inte
 }) => {
   await page.goto("https://courses.mooc.fi/playground-views")
 
-  await page.fill('[name="url"]', "http://localhost:12345/api/service-info")
+  await page.fill('[name="url"]', "http://localhost:3008/api/service-info")
   await page.waitForSelector("text=Valid service info")
 
   const frame = await waitForFunction(page, () =>
     page.frames().find((f) => {
-      return f.url().startsWith("http://localhost:12345/iframe")
+      return f.url().startsWith("http://localhost:3008/iframe")
     }),
   )
   if (!frame) {
@@ -97,12 +97,13 @@ test("can add factorial survey type wtih information elements and questions inte
   // Click text=Set as private spec input
   await page.locator("text=Set as private spec input").click()
 
+  await (await page.waitForSelector('button:has-text("answer-exercise")')).scrollIntoViewIfNeeded()
   // Click button:has-text("answer-exercise")
   await page.locator('button:has-text("answer-exercise")').click()
 
   const answer_frame = await waitForFunction(page, () =>
     page.frames().find((f) => {
-      return f.url().startsWith("http://localhost:12345/iframe")
+      return f.url().startsWith("http://localhost:3008/iframe")
     }),
   )
   if (!answer_frame) {

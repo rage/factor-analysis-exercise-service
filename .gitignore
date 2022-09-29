@@ -36,7 +36,8 @@ yarn-error.log*
 # Shared module that has been copied to this project cannot be ignored anylonger
 # shared-module
 
-firebase-debug.log
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+*tsbuildinfo
