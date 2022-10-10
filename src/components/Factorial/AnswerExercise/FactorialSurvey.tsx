@@ -71,7 +71,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({ port, state
     <>
       {ratedQuestions.map((question) => {
         if (question.questionLabel === "info") {
-          return <InfoSection content={question.question} />
+          return <InfoSection key={question.questionId} content={question.question} />
         } else {
           return (
             <FactorialSurveyQuestion
