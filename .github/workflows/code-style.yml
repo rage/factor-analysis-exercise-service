@@ -10,9 +10,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+      - name: set npm version
+        run: npm install -g npm@8.3.1
       - name: Install npm dependencies
         run: npm ci
       - name: Eslint
         run: npm run eslint:ci
 #      - name: Stylelint
 #        run: npm run lint:css
+# styelelint is not working correctly

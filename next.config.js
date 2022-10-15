@@ -2,12 +2,12 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const externallyEmbeddableIFrameResponseHeaders =
   require("./src/shared-module/utils/responseHeaders").externallyEmbeddableIFrameResponseHeaders
+const svgoConfig = require("./src/shared-module/utils/svgoConfig")
 
 const config = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  output: "standalone",
   async headers() {
     return [
       {
@@ -21,6 +21,32 @@ const config = {
         headers: [{ key: "Access-Control-Allow-Origin", value: "*" }],
       },
     ]
+  },
+  output: "standalone",
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      loader: "@svgr/webpack",
+      options: {
+        svgoConfig: svgoConfig,
+      },
+    })
+
+    return config
+  },
+  compiler: {
+    emotion: {
+      autoLabel: "always",
+      labelFormat: "[dirname]--[filename]--[local]",
+    },
+  },
+  experimental: {
+    modularizeImports: {
+      lodash: {
+        transform: "lodash/{{member}}",
+      },
+    },
   },
 }
 
