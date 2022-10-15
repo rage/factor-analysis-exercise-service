@@ -18,3 +18,4 @@ jobs:
         run: npm run eslint:ci
 #      - name: Stylelint
 #        run: npm run lint:css
+# styelelint is not working correctly
