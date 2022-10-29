@@ -7,7 +7,9 @@ on:
   pull_request:
     branches:
       - staging
-
+    paths-ignore:
+      - "documentation/**"
+      - "README.md"
 
 jobs:
   system-tests:
@@ -25,7 +27,7 @@ jobs:
         run: npm ci
         working-directory: ./system-tests/
 
-      - name: Install, test and build server 
+      - name: Install, test and build server
         run: |
           npm ci
           npm test
@@ -42,14 +44,14 @@ jobs:
           name: test-results
           path: ./system-tests/test-results/
           if-no-files-found: ignore
-      
+
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
           name: playwright-html-report
           path: ./system-tests/playwright-report/index.html
           if-no-files-found: ignore
-          
+
   typecheck:
     runs-on: ubuntu-latest
     steps:

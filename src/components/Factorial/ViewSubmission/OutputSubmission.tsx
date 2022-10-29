@@ -25,7 +25,7 @@ const FactorialSurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({
         <div className="content">
           {userAnswer.map((quest) => {
             if (quest.questionLabel == "info") {
-              return <InfoSection content={quest.question} />
+              return <InfoSection key={quest.questionId} content={quest.question} />
             }
             return (
               <FactorialSurveyQuestion

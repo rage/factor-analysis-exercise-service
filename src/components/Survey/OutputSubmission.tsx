@@ -33,11 +33,11 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items }) =
               }
             }
             if (item.question.questionLabel === "info") {
-              return <InfoSection content={item.question.question} />
+              return <InfoSection key={item.id} content={item.question.question} />
             }
             if (item.question.questionLabel === "info-header") {
               return (
-                <InfoHeaderWrapper>
+                <InfoHeaderWrapper key={item.id}>
                   <MarkdownText text={item.question.question} />
                   <SurveyExerciseItem item={item} updateAnswer={() => null} disabled />
                 </InfoHeaderWrapper>

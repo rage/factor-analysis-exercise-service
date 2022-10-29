@@ -84,11 +84,11 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
           }
         }
         if (item.question.questionLabel === "info") {
-          return <InfoSection content={item.question.question} />
+          return <InfoSection key={item.id} content={item.question.question} />
         }
         if (item.question.questionLabel === "info-header") {
           return (
-            <InfoHeaderWrapper>
+            <InfoHeaderWrapper key={item.id}>
               <div
                 className={css`
                   color: ${baseTheme.colors.crimson[700]};
