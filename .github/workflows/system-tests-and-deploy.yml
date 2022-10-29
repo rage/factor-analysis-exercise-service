@@ -8,26 +8,29 @@ on:
     branches:
       - staging
     paths-ignore:
-      - 'documentation/**'
-      - 'README.md'
+      - "documentation/**"
+      - "README.md"
 
 jobs:
   system-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
         # This would cause all other tests to be skipped
       - name: Make sure we have no focused system-tests
         run: |
           test "$(grep -r 'test.only' ./system-tests/src/ | wc -l)" -eq 0
 
+      - name: set npm version
+        run: npm install -g npm@8.3.1
+
       - name: Setup system test environment
         run: npm ci
         working-directory: ./system-tests/
 
-      - name: Install, test and build server 
+      - name: Install, test and build server
         run: |
           npm ci
           npm test
@@ -44,19 +47,22 @@ jobs:
           name: test-results
           path: ./system-tests/test-results/
           if-no-files-found: ignore
-      
+
       - uses: actions/upload-artifact@v2
         if: failure()
         with:
           name: playwright-html-report
           path: ./system-tests/playwright-report/index.html
           if-no-files-found: ignore
-          
+
   typecheck:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: set npm version
+        run: npm install -g npm@8.3.1
 
       - name: Run npm ci in repo root
         run: npm ci
