@@ -42,8 +42,10 @@ import {
   CourseMaterialExerciseServiceInfo,
   CourseMaterialExerciseSlide,
   CourseMaterialExerciseTask,
+  CourseMaterialPeerReviewConfig,
   CourseMaterialPeerReviewData,
   CourseMaterialPeerReviewDataAnswerToReview,
+  CourseMaterialPeerReviewGivenData,
   CourseMaterialPeerReviewQuestionAnswer,
   CourseMaterialPeerReviewSubmission,
   CourseModule,
@@ -97,6 +99,7 @@ import {
   HistoryChangeReason,
   HistoryRestoreData,
   IsChapterFrontPage,
+  isPeerReviewQuestionSubmission,
   Login,
   ManualCompletionPreview,
   ManualCompletionPreviewUser,
@@ -166,7 +169,6 @@ import {
   UserCompletionInformation,
   UserCourseInstanceChapterExerciseProgress,
   UserCourseInstanceChapterProgress,
-  UserCourseInstanceExerciseServiceVariable,
   UserCourseInstanceProgress,
   UserCourseModuleCompletion,
   UserCourseSettings,
@@ -1012,14 +1014,7 @@ export function isExerciseTaskGradingResult(obj: unknown): obj is ExerciseTaskGr
     (isGradingProgress(typedObj["grading_progress"]) as boolean) &&
     typeof typedObj["score_given"] === "number" &&
     typeof typedObj["score_maximum"] === "number" &&
-    (typedObj["feedback_text"] === null || typeof typedObj["feedback_text"] === "string") &&
-    (typedObj["set_user_variables"] === null ||
-      (((typedObj["set_user_variables"] !== null &&
-        typeof typedObj["set_user_variables"] === "object") ||
-        typeof typedObj["set_user_variables"] === "function") &&
-        Object.entries<any>(typedObj["set_user_variables"]).every(
-          ([key, _value]) => typeof key === "string",
-        )))
+    (typedObj["feedback_text"] === null || typeof typedObj["feedback_text"] === "string")
   )
 }
 
@@ -1103,11 +1098,7 @@ export function isCourseMaterialExercise(obj: unknown): obj is CourseMaterialExe
       (isExerciseStatus(typedObj["exercise_status"]) as boolean)) &&
     (isPointMap(typedObj["exercise_slide_submission_counts"]) as boolean) &&
     (typedObj["peer_review_config"] === null ||
-      (isPeerReviewConfig(typedObj["peer_review_config"]) as boolean)) &&
-    Array.isArray(typedObj["user_course_instance_exercise_service_variables"]) &&
-    typedObj["user_course_instance_exercise_service_variables"].every(
-      (e: any) => isUserCourseInstanceExerciseServiceVariable(e) as boolean,
-    )
+      (isCourseMaterialPeerReviewConfig(typedObj["peer_review_config"]) as boolean))
   )
 }
 
@@ -1252,10 +1243,6 @@ export function isStudentExerciseSlideSubmissionResult(
     Array.isArray(typedObj["exercise_task_submission_results"]) &&
     typedObj["exercise_task_submission_results"].every(
       (e: any) => isStudentExerciseTaskSubmissionResult(e) as boolean,
-    ) &&
-    Array.isArray(typedObj["user_course_instance_exercise_service_variables"]) &&
-    typedObj["user_course_instance_exercise_service_variables"].every(
-      (e: any) => isUserCourseInstanceExerciseServiceVariable(e) as boolean,
     )
   )
 }
@@ -1277,8 +1264,7 @@ export function isStudentExerciseTaskSubmissionResult(
   return (
     ((typedObj !== null && typeof typedObj === "object") || typeof typedObj === "function") &&
     (isExerciseTaskSubmission(typedObj["submission"]) as boolean) &&
-    (typedObj["grading"] === null || (isExerciseTaskGrading(typedObj["grading"]) as boolean)) &&
-    typeof typedObj["exercise_task_exercise_service_slug"] === "string"
+    (typedObj["grading"] === null || (isExerciseTaskGrading(typedObj["grading"]) as boolean))
   )
 }
 
@@ -1292,6 +1278,21 @@ export function isCourseMaterialPeerReviewData(obj: unknown): obj is CourseMater
     Array.isArray(typedObj["peer_review_questions"]) &&
     typedObj["peer_review_questions"].every((e: any) => isPeerReviewQuestion(e) as boolean) &&
     typeof typedObj["num_peer_reviews_given"] === "number"
+  )
+}
+
+export function isCourseMaterialPeerReviewGivenData(
+  obj: any,
+  _argumentName?: string,
+): obj is CourseMaterialPeerReviewGivenData {
+  return (
+    ((obj !== null && typeof obj === "object") || typeof obj === "function") &&
+    Array.isArray(obj.peer_review_questions) &&
+    obj.peer_review_questions.every((e: any) => isPeerReviewQuestion(e) as boolean) &&
+    Array.isArray(obj.peer_review_question_submissions) &&
+    obj.peer_review_question_submissions.every(
+      (e: any) => isPeerReviewQuestionSubmission(e) as boolean,
+    )
   )
 }
 
@@ -1782,6 +1783,20 @@ export function isPageWithExercises(obj: unknown): obj is PageWithExercises {
   )
 }
 
+export function isCourseMaterialPeerReviewConfig(
+  obj: unknown,
+): obj is CourseMaterialPeerReviewConfig {
+  const typedObj = obj as CourseMaterialPeerReviewConfig
+  return (
+    ((typedObj !== null && typeof typedObj === "object") || typeof typedObj === "function") &&
+    typeof typedObj["id"] === "string" &&
+    typeof typedObj["course_id"] === "string" &&
+    (typedObj["exercise_id"] === null || typeof typedObj["exercise_id"] === "string") &&
+    typeof typedObj["peer_reviews_to_give"] === "number" &&
+    typeof typedObj["peer_reviews_to_receive"] === "number"
+  )
+}
+
 export function isCmsPeerReviewConfig(obj: unknown): obj is CmsPeerReviewConfig {
   const typedObj = obj as CmsPeerReviewConfig
   return (
@@ -2253,25 +2268,6 @@ export function isUser(obj: unknown): obj is User {
     (typedObj["deleted_at"] === null || typedObj["deleted_at"] instanceof Date) &&
     (typedObj["upstream_id"] === null || typeof typedObj["upstream_id"] === "number") &&
     typeof typedObj["email"] === "string"
-  )
-}
-
-export function isUserCourseInstanceExerciseServiceVariable(
-  obj: unknown,
-): obj is UserCourseInstanceExerciseServiceVariable {
-  const typedObj = obj as UserCourseInstanceExerciseServiceVariable
-  return (
-    ((typedObj !== null && typeof typedObj === "object") || typeof typedObj === "function") &&
-    typeof typedObj["id"] === "string" &&
-    typedObj["created_at"] instanceof Date &&
-    typedObj["updated_at"] instanceof Date &&
-    (typedObj["deleted_at"] === null || typedObj["deleted_at"] instanceof Date) &&
-    typeof typedObj["exercise_service_slug"] === "string" &&
-    typeof typedObj["user_id"] === "string" &&
-    (typedObj["course_instance_id"] === null ||
-      typeof typedObj["course_instance_id"] === "string") &&
-    (typedObj["exam_id"] === null || typeof typedObj["exam_id"] === "string") &&
-    typeof typedObj["variable_key"] === "string"
   )
 }
 
