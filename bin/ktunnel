@@ -1,6 +1,7 @@
-ktunnel expose factorial-analysis 80:3008
+#!/bin/bash
+set -euo pipefail
+source "$(dirname "$0")/.common"
 
-internal_url: http://factorial-analysis.default.svc.cluster.local:80/api/service-info
+run_command ktunnel expose factorial-analysis 80:3008
 
-bin/pods
-bin/shell > 
+# minikube internal_url: http://factorial-analysis.default.svc.cluster.local:80/api/service-info
