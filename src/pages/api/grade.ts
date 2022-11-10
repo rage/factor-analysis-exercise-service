@@ -1,6 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
 import type { NextApiRequest, NextApiResponse } from "next"
 
+import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
 import { cors, runMiddleware } from "../../util/cors"
 import {
   ClientErrorResponse,
@@ -8,9 +9,10 @@ import {
   PrivateSpec,
   RatedQuestion,
   SubmittedForm,
+  SurveyItem,
   SurveyType,
 } from "../../util/stateInterfaces"
-import { calculateFactors, sanitizeQuestions } from "../../util/utils"
+import { calculateFactors, getGlobalVariables, sanitizeQuestions } from "../../util/utils"
 
 export default async (
   req: NextApiRequest,
@@ -32,6 +34,7 @@ interface GradingResult {
   feedback_text: string | null
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   feedback_json: ExerciseFeedback | null
+  set_user_variables?: UserVariablesMap | null
 }
 
 export interface ExerciseFeedback {
@@ -76,11 +79,19 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     })
   }
 
+  const vars =
+    gradingRequest.exercise_spec?.type === SurveyType.NonFactorial
+      ? (getGlobalVariables(
+          gradingRequest.submission_data.answeredQuestions as SurveyItem[],
+        ) as UserVariablesMap)
+      : null
+
   res.status(200).json({
     grading_progress: "FullyGraded",
     score_given: 1,
     score_maximum: 1,
     feedback_text: "Good job!",
     feedback_json: null,
+    set_user_variables: vars,
   })
 }

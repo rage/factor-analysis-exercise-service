@@ -1,12 +1,14 @@
-import { Factor, Question, RatedQuestion } from "./stateInterfaces"
+import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
+
+import { Factor, Question, RatedQuestion, SurveyItem } from "./stateInterfaces"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
 
 /**
  * Calculates the scores for factors
- * @param factors
- * @param ratedQuestions
+ * @param factors contains the weight matrix to by multiplied with rated questions
+ * @param ratedQuestions used to create vector of scores for the matrix multiplication
  * @returns factors with calculated score
  */
 export const calculateFactors = (factors: Factor[], ratedQuestions: RatedQuestion[]): Factor[] => {
@@ -100,8 +102,18 @@ export const sanitizeQuestions = (questions: QuestionItem[]) => {
   const sanitizedForm = questions.filter(
     (item: Question | RatedQuestion) => item.questionLabel !== "info",
   )
-
   return sanitizedForm
 }
 
 type QuestionItem = RatedQuestion | Question
+
+export const getGlobalVariables = (answeredSurvey: SurveyItem[]): UserVariablesMap | undefined => {
+  const surveyItems: SurveyItem[] = answeredSurvey.filter((item) => item.globalVariable === true)
+  if (surveyItems.length > 0) {
+    const globalVariables: UserVariablesMap = {}
+    surveyItems.map((item) => {
+      globalVariables[item.question.questionLabel] = item.answer.answer
+    })
+    return globalVariables
+  }
+}

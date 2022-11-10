@@ -6,6 +6,7 @@ import ReactDOM from "react-dom"
 import Renderer from "../components/Renderer"
 import { ExerciseTaskGradingResult } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
+import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 import { isSetStateMessage } from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { PrivateSpec, PublicSpec, RatedQuestion, SubmittedForm } from "../util/stateInterfaces"
@@ -22,6 +23,7 @@ export type State =
   | {
       view_type: "answer-exercise"
       public_spec: PublicSpec
+      user_variables?: UserVariablesMap | null
     }
   | {
       view_type: "view-submission"
@@ -29,6 +31,7 @@ export type State =
       answer: SubmittedForm
       feedback_json: ExerciseFeedback | null
       grading: ExerciseTaskGradingResult | null
+      user_variables?: UserVariablesMap | null
     }
   | {
       view_type: "exercise-editor"
@@ -51,6 +54,7 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
           setState({
             view_type: messageData.view_type,
             public_spec: messageData.data.public_spec as PublicSpec,
+            user_variables: messageData.user_variables,
           })
         } else if (messageData.view_type === "exercise-editor") {
           setState({
@@ -65,6 +69,7 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
             answer: userAnswer,
             feedback_json: messageData.data.grading?.feedback_json as ExerciseFeedback | null,
             grading: messageData.data.grading,
+            user_variables: messageData.user_variables,
           })
         } else {
           // eslint-disable-next-line i18next/no-literal-string

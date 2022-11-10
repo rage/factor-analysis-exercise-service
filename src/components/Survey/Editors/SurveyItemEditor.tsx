@@ -1,4 +1,3 @@
-/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
@@ -78,7 +77,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
           >
             {item.question && <MarkdownText text={item.question.question} />}
           </div>
-          <DeleteButton onClick={onDelete}>x</DeleteButton>
+          <DeleteButton onClick={onDelete}>{"x"}</DeleteButton>
         </StyledInnerEditor>
         <TextArea
           label={`Editor (special purpose labels: "info" & "info-header")`}
@@ -169,6 +168,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             {Object.values(AnswerType).map((t) => {
               if (t === AnswerType.None) {
                 return (
+                  // eslint-disable-next-line i18next/no-literal-string
                   <option key={AnswerType.None} value={AnswerType.None}>
                     Select answer type
                   </option>
@@ -218,6 +218,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                           }
                           onChangeSurveyItem({ ...item, answer: newAnswer })
                         }}
+                        // eslint-disable-next-line i18next/no-literal-string
                       >
                         x
                       </DeleteButton>
@@ -233,6 +234,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                 newItem.answer.options.push("")
                 onChangeSurveyItem({ ...item, answer: newItem.answer })
               }}
+              // eslint-disable-next-line i18next/no-literal-string
             >
               add option
             </button>
@@ -267,7 +269,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               margin-right 20px;
             `}
           >
-            <label htmlFor={item.id}>Conditional</label>
+            <label htmlFor={item.id}>{"Conditional"}</label>
             <input
               id={item.id}
               type="checkbox"
@@ -281,6 +283,28 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               }}
             />
           </div>
+          <div
+            className={css`
+              display: flex;
+              width: 85%;
+              align-items: center;
+              justify-content: space-apart;
+              margin-right 20px;
+            `}
+          >
+            <label htmlFor={item.id}>{"Make global"}</label>
+            <input
+              id={item.id}
+              type="checkbox"
+              checked={item.globalVariable ? true : false}
+              onChange={(e) => {
+                onChangeSurveyItem({
+                  ...item,
+                  globalVariable: e.target.checked,
+                })
+              }}
+            />
+          </div>
           <button
             className={css`
               flex: 1;
@@ -288,6 +312,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             onClick={() => {
               onDuplicate(item)
             }}
+            // eslint-disable-next-line i18next/no-literal-string
           >
             duplicate item
           </button>

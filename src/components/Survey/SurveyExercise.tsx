@@ -1,7 +1,10 @@
 import { css } from "@emotion/css"
 import { useState } from "react"
 
-import { CurrentStateMessage } from "../../shared-module/exercise-service-protocol-types"
+import {
+  CurrentStateMessage,
+  UserVariablesMap,
+} from "../../shared-module/exercise-service-protocol-types"
 import { baseTheme } from "../../shared-module/styles"
 import { Answer, SubmittedForm, Survey, SurveyItem } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
@@ -14,9 +17,14 @@ import SurveyExerciseItem from "./SurveyExerciseItem"
 interface Props {
   state: Survey
   port: MessagePort
+  userVariables?: UserVariablesMap | null
 }
 
-const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state }) => {
+const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
+  port,
+  state,
+  userVariables,
+}) => {
   const INITIAL_ANSWERED = state.content.map((q) => {
     return {
       id: q.id,
@@ -24,6 +32,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
       answer: q.answer,
       conditional: q.conditional,
       dependsOn: q.dependsOn,
+      globalVariable: q.globalVariable,
     } as SurveyItem
   })
 
@@ -71,6 +80,15 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({ port, state 
 
   return (
     <>
+      {userVariables &&
+        Object.keys(userVariables as UserVariablesMap).map((k) => {
+          return (
+            <div key={k}>
+              <p>{k}</p>
+              <p>{userVariables[k] as string} </p>
+            </div>
+          )
+        })}
       {answeredItems.map((item) => {
         if (item.conditional && item.dependsOn) {
           const chosenOptions = answeredItems.find(

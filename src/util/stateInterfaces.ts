@@ -74,6 +74,8 @@ export interface SurveyItem {
   answer: Answer
   conditional: boolean
   dependsOn?: SurveyItemCondition
+  /** If marked as globalVariabel a <key: questionLabel, value: userAnswer> pair will be created upon submission and saved to the database, available in other exercises */
+  globalVariable?: boolean
 }
 
 /** Condition for whether to display the question or not
