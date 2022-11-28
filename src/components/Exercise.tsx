@@ -1,3 +1,4 @@
+import { Url } from "../pages/iframe"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 import { PublicSpec, SurveyType } from "../util/stateInterfaces"
 
@@ -8,9 +9,15 @@ interface Props {
   state: PublicSpec
   port: MessagePort
   userVariables?: UserVariablesMap | null
+  url: Url | null
 }
 
-const Exercise: React.FC<React.PropsWithChildren<Props>> = ({ state, port, userVariables }) => {
+const Exercise: React.FC<React.PropsWithChildren<Props>> = ({
+  state,
+  port,
+  userVariables,
+  url,
+}) => {
   switch (state.type) {
     case SurveyType.Factorial: {
       return (
@@ -22,7 +29,7 @@ const Exercise: React.FC<React.PropsWithChildren<Props>> = ({ state, port, userV
     case SurveyType.NonFactorial: {
       return (
         <>
-          <SurveyExercise state={state} port={port} userVariables={userVariables} />
+          <SurveyExercise state={state} port={port} userVariables={userVariables} url={url} />
         </>
       )
     }

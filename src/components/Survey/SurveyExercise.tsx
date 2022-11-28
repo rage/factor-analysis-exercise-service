@@ -1,12 +1,14 @@
 import { css } from "@emotion/css"
 import { useState } from "react"
 
+import { Url } from "../../pages/iframe"
 import {
   CurrentStateMessage,
+  FileUploadMessage,
   UserVariablesMap,
 } from "../../shared-module/exercise-service-protocol-types"
 import { baseTheme } from "../../shared-module/styles"
-import { Answer, SubmittedForm, Survey, SurveyItem } from "../../util/stateInterfaces"
+import { Answer, AnswerType, SubmittedForm, Survey, SurveyItem } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 import { InfoSection } from "../StyledComponents/InfoSection"
@@ -18,13 +20,18 @@ interface Props {
   state: Survey
   port: MessagePort
   userVariables?: UserVariablesMap | null
+  url: Url | null
 }
 
 const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
   port,
   state,
   userVariables,
+  url,
 }) => {
+  if (url) {
+    console.log("received url", url)
+  }
   const INITIAL_ANSWERED = state.content.map((q) => {
     return {
       id: q.id,
@@ -62,6 +69,34 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
     return res
   }
 
+  const [uploadFile, _setUploadFile] = useState<File>()
+
+  const setUploadFile: typeof _setUploadFile = (value) => {
+    const res = _setUploadFile(value)
+    if (!port) {
+      // eslint-disable-next-line i18next/no-literal-string
+      console.error("Cannot send current state to parent because I don't have a port")
+      return
+    }
+    // eslint-disable-next-line i18next/no-literal-string
+    console.info("Posting file upload to parent")
+    // the type should be the same one that is received as the initial selected id
+
+    const data: File = value as File
+    const files = new Map()
+    files.set(data.name, data as Blob)
+    console.log(data)
+
+    const message: FileUploadMessage = {
+      // eslint-disable-next-line i18next/no-literal-string
+      message: "file-upload",
+      files: files,
+    }
+    port.postMessage(message)
+    console.log(res)
+    return res
+  }
+
   const updateAnswer = (itemId: string, answer: Answer) => {
     if (!port) {
       // eslint-disable-next-line i18next/no-literal-string
@@ -76,6 +111,26 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
       return { ...quest, answer: answer }
     })
     setAnsweredItems(newAnsweredQ)
+  }
+
+  const updateFileUpload = (item: SurveyItem, file: File | null) => {
+    if (!port) {
+      // eslint-disable-next-line i18next/no-literal-string
+      console.error("Cannot send current state to parent because I don't have a port")
+      return
+    }
+    if (file) {
+      setUploadFile(file)
+    } else {
+      console.log(file)
+    }
+    if (url) {
+      const answer: Answer = {
+        ...item.answer,
+        answer: url.url,
+      }
+      updateAnswer(item.id, answer)
+    }
   }
 
   return (
@@ -116,6 +171,38 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
               </div>
               <SurveyExerciseItem item={item} updateAnswer={updateAnswer} />
             </InfoHeaderWrapper>
+          )
+        }
+        if (item.answer.type == AnswerType.FileUpload) {
+          return (
+            <div key={item.id}>
+              <input
+                id="pngInput"
+                name="file"
+                type="file"
+                accept="png"
+                onChange={(e) => {
+                  console.log("in file select", e.target)
+                  if (e.target.files) {
+                    console.log("clearly no null")
+                    updateFileUpload(item, e.target.files[0])
+                  }
+                }}
+              ></input>
+
+              <img
+                src={url ? `http://project-331.local/api/v0/files/${url.url}` : ""}
+                alt={"img-alt"}
+              ></img>
+              {/* {uploadFile && (
+                <img
+                  src={URL.createObjectURL(uploadFile)}
+                  alt={"imae-alt-what-to-display-on-chapter"}
+                >
+                  {" "}
+                </img>
+              )} */}
+            </div>
           )
         }
         return (
