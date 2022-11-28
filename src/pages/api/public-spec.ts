@@ -1,6 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
 import { NextApiRequest, NextApiResponse } from "next"
 
+import { SpecRequest } from "../../shared-module/bindings"
 import { cors, runMiddleware } from "../../util/cors"
 import {
   ClientErrorResponse,
@@ -25,7 +26,8 @@ function handlePost(
   req: NextApiRequest,
   res: NextApiResponse<PublicFactorialSurveySpec | Survey | ClientErrorResponse>,
 ) {
-  const form: PrivateSpec = req.body
+  const specRequest = req.body as SpecRequest
+  const form: PrivateSpec = specRequest.private_spec as PrivateSpec
 
   // Add a reasonable error checking here!
   if (!form) {
