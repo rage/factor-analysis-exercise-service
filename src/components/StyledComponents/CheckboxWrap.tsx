@@ -14,7 +14,7 @@ export const CheckboxWrap = styled.div<DivProps>`
   justify-content: left;
   gap: 0.5em;
   grid-template-columns: ${({ info }) => (info ? "1.5em auto" : "2em auto")};
-  background-color: ${({ disabled }) => (disabled ? baseTheme.colors.grey[100] : "inherit")};
+  background-color: ${({ disabled }) => (disabled ? baseTheme.colors.gray[100] : "inherit")};
 
   input[type="checkbox"] {
     appearance: none;

@@ -18,6 +18,7 @@ export type Action =
   | { type: "edit_role"; variant: UserRole }
   | { type: "create_courses_or_exams" }
   | { type: "usually_unacceptable_deletion" }
+  | { type: "upload_file" }
 
 export interface ActionOnResource {
   action: Action
@@ -52,6 +53,11 @@ export interface ErrorResponse {
   message: string
   source: string | null
   data: ErrorData | null
+}
+
+export interface SpecRequest {
+  private_spec: unknown | null
+  upload_url: string | null
 }
 
 export interface Chapter {
@@ -188,29 +194,44 @@ export interface CourseInstanceForm {
 
 export type PointMap = Record<string, number>
 
-export function isPeerReviewQuestionSubmission(
-  obj: any,
-  _argumentName?: string,
-): obj is PeerReviewQuestionSubmission {
-  return (
-    (((obj !== null && typeof obj === "object") || typeof obj === "function") &&
-      typeof obj.id === "string" &&
-      obj.created_at instanceof Date &&
-      obj.updated_at instanceof Date &&
-      (obj.deleted_at === null || obj.deleted_at instanceof Date) &&
-      typeof obj.peer_review_question_id === "string" &&
-      typeof obj.peer_review_submission_id === "string" &&
-      obj.text_data == null) ||
-    (typeof obj.text_data === "string" && obj.number_data == null) ||
-    typeof obj.number_data === "number"
-  )
-}
-
 export interface Points {
   chapter_points: Array<ChapterScore>
   users: Array<User>
   user_chapter_points: Record<string, PointMap>
 }
+
+export interface CourseBackgroundQuestionAnswer {
+  id: string
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
+  course_background_question_id: string
+  answer_value: string | null
+  user_id: string
+}
+
+export interface NewCourseBackgroundQuestionAnswer {
+  answer_value: string | null
+  course_background_question_id: string
+}
+
+export interface CourseBackgroundQuestionsAndAnswers {
+  background_questions: Array<CourseBackgroundQuestion>
+  answers: Array<CourseBackgroundQuestionAnswer>
+}
+
+export interface CourseBackgroundQuestion {
+  id: string
+  created_at: Date
+  updated_at: Date
+  deleted_at: Date | null
+  course_instance_id: string | null
+  course_id: string
+  question_text: string
+  question_type: CourseBackgroundQuestionType
+}
+
+export type CourseBackgroundQuestionType = "Checkbox" | "Text"
 
 export interface CourseModuleCompletionWithRegistrationInfo {
   completion_registration_attempt_date: Date | null
@@ -223,6 +244,17 @@ export interface CourseModuleCompletionWithRegistrationInfo {
   user_id: string
 }
 
+export interface AutomaticCompletionRequirements {
+  course_module_id: string
+  number_of_exercises_attempted_treshold: number | null
+  number_of_points_treshold: number | null
+  requires_exam: boolean
+}
+
+export type CompletionPolicy =
+  | ({ policy: "automatic" } & AutomaticCompletionRequirements)
+  | { policy: "manual" }
+
 export interface CourseModule {
   id: string
   created_at: Date
@@ -233,10 +265,19 @@ export interface CourseModule {
   order_number: number
   copied_from: string | null
   uh_course_code: string | null
-  automatic_completion: boolean
-  automatic_completion_number_of_exercises_attempted_treshold: number | null
-  automatic_completion_number_of_points_treshold: number | null
+  completion_policy: CompletionPolicy
+  completion_registration_link_override: string | null
   ects_credits: number | null
+}
+
+export interface NewCourseModule {
+  completion_policy: CompletionPolicy
+  completion_registration_link_override: string | null
+  course_id: string
+  ects_credits: number | null
+  name: string | null
+  order_number: number
+  uh_course_code: string | null
 }
 
 export interface ModifiedModule {
@@ -245,9 +286,8 @@ export interface ModifiedModule {
   order_number: number
   uh_course_code: string | null
   ects_credits: number | null
-  automatic_completion: boolean | null
-  automatic_completion_number_of_exercises_attempted_treshold: number | null
-  automatic_completion_number_of_points_treshold: number | null
+  completion_policy: CompletionPolicy
+  completion_registration_link_override: string | null
 }
 
 export interface ModuleUpdates {
@@ -263,9 +303,8 @@ export interface NewModule {
   chapters: Array<string>
   uh_course_code: string | null
   ects_credits: number | null
-  automatic_completion: boolean | null
-  automatic_completion_number_of_exercises_attempted_treshold: number | null
-  automatic_completion_number_of_points_treshold: number | null
+  completion_policy: CompletionPolicy
+  completion_registration_link_override: string | null
 }
 
 export interface Course {
@@ -357,6 +396,7 @@ export interface Exam {
   starts_at: Date | null
   ends_at: Date | null
   time_minutes: number
+  minimum_points_treshold: number
 }
 
 export interface ExamEnrollment {
@@ -380,6 +420,7 @@ export interface NewExam {
   ends_at: Date | null
   time_minutes: number
   organization_id: string
+  minimum_points_treshold: number
 }
 
 export interface OrgExam {
@@ -390,6 +431,7 @@ export interface OrgExam {
   ends_at: Date | null
   time_minutes: number
   organization_id: string
+  minimum_points_treshold: number
 }
 
 export interface ExerciseRepository {
@@ -561,6 +603,11 @@ export interface ExerciseTaskSubmission {
   metadata: unknown | null
 }
 
+export interface PeerReviewsRecieved {
+  peer_review_questions: Array<PeerReviewQuestion>
+  peer_review_question_submissions: Array<PeerReviewQuestionSubmission>
+}
+
 export interface CourseMaterialExerciseTask {
   id: string
   exercise_service_slug: string
@@ -702,11 +749,6 @@ export interface CourseMaterialPeerReviewData {
   num_peer_reviews_given: number
 }
 
-export interface CourseMaterialPeerReviewGivenData {
-  peer_review_questions: Array<PeerReviewQuestion>
-  peer_review_question_submissions: Array<PeerReviewQuestionSubmission>
-}
-
 export interface CourseMaterialPeerReviewDataAnswerToReview {
   exercise_slide_submission_id: string
   course_material_exercise_tasks: Array<CourseMaterialExerciseTask>
@@ -780,6 +822,8 @@ export interface UserModuleCompletionStatus {
   name: string
   order_number: number
   prerequisite_modules_completed: boolean
+  grade: number | null
+  passed: boolean | null
 }
 
 export interface UserWithModuleCompletions {
@@ -933,6 +977,7 @@ export interface Page {
   content: unknown
   order_number: number
   copied_from: string | null
+  hidden: boolean
 }
 
 export interface PageChapterAndCourseInformation {
@@ -995,6 +1040,7 @@ export interface PageWithExercises {
   content: unknown
   order_number: number
   copied_from: string | null
+  hidden: boolean
   exercises: Array<Exercise>
 }
 
@@ -1060,6 +1106,8 @@ export interface PeerReviewQuestion {
   answer_required: boolean
 }
 
+export type PeerReviewQuestionType = "Essay" | "Scale"
+
 export interface PeerReviewQuestionSubmission {
   id: string
   created_at: Date
@@ -1070,8 +1118,6 @@ export interface PeerReviewQuestionSubmission {
   text_data: string | null
   number_data: number | null
 }
-
-export type PeerReviewQuestionType = "Essay" | "Scale"
 
 export interface PendingRole {
   id: string
@@ -1361,9 +1407,13 @@ export interface ExamData {
 
 export type ExamEnrollmentData =
   | { tag: "EnrolledAndStarted"; page_id: string; page: Page; enrollment: ExamEnrollment }
-  | { tag: "NotEnrolled" }
+  | { tag: "NotEnrolled"; can_enroll: boolean }
   | { tag: "NotYetStarted" }
   | { tag: "StudentTimeUp" }
+
+export interface SaveCourseSettingsPayload {
+  background_question_answers: Array<NewCourseBackgroundQuestionAnswer>
+}
 
 export interface GetFeedbackQuery {
   read: boolean
