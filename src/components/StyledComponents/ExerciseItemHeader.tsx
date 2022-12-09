@@ -10,7 +10,7 @@ interface Props {
 
 const Header = styled.div`
   font-family: ${primaryFont};
-  color: ${baseTheme.colors.grey[600]};
+  color: ${baseTheme.colors.gray[600]};
   font-style: normal;
   font-weight: 500;
   font-size: 22px;

@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+         node-version: "18"
 
         # This would cause all other tests to be skipped
       - name: Make sure we have no focused system-tests
@@ -60,9 +63,9 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-
-      - name: set npm version
-        run: npm install -g npm@8.3.1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
 
       - name: Run npm ci in repo root
         run: npm ci
