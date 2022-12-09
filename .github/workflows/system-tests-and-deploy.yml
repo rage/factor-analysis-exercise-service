@@ -23,9 +23,6 @@ jobs:
         run: |
           test "$(grep -r 'test.only' ./system-tests/src/ | wc -l)" -eq 0
 
-      - name: set npm version
-        run: npm install -g npm@8.3.1
-
       - name: Setup system test environment
         run: npm ci
         working-directory: ./system-tests/
@@ -60,9 +57,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-
-      - name: set npm version
-        run: npm install -g npm@8.3.1
 
       - name: Run npm ci in repo root
         run: npm ci
