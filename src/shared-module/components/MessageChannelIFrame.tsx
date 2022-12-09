@@ -8,6 +8,7 @@ import {
   MessageFromIframe,
   SetLanguageMessage,
   SetStateMessage,
+  UploadResultMessage,
 } from "../exercise-service-protocol-types"
 import {
   isHeightChangedMessage,
@@ -201,7 +202,7 @@ const MessageChannelIFrame: React.FC<
         `}
       >
         <iframe
-          sandbox={disableSandbox ? undefined : "allow-scripts allow-forms"}
+          sandbox={disableSandbox ? undefined : "allow-scripts allow-forms allow-downloads"}
           className={css`
             overflow: hidden;
             width: 100%;

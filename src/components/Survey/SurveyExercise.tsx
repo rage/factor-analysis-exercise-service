@@ -85,7 +85,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
     const data: File = value as File
     const files = new Map()
     files.set(data.name, data as Blob)
-    console.log(data)
+    console.log("Tis me data:", files)
 
     const message: FileUploadMessage = {
       // eslint-disable-next-line i18next/no-literal-string

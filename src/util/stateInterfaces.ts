@@ -113,6 +113,7 @@ export enum AnswerType {
   Date = "date",
   Dropdown = "dropdown-selection",
   ConsentCheckbox = "consent-checkbox",
+  FileUpload = "file-upload",
 }
 
 export type PrivateSpec = FactorialSurvey | Survey | null

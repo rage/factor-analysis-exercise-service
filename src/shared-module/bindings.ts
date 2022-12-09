@@ -18,6 +18,7 @@ export type Action =
   | { type: "edit_role"; variant: UserRole }
   | { type: "create_courses_or_exams" }
   | { type: "usually_unacceptable_deletion" }
+  | { type: "upload_file" }
 
 export interface ActionOnResource {
   action: Action
@@ -52,6 +53,11 @@ export interface ErrorResponse {
   message: string
   source: string | null
   data: ErrorData | null
+}
+
+export interface SpecRequest {
+  private_spec: unknown | null
+  upload_url: string | null
 }
 
 export interface Chapter {
@@ -552,7 +558,6 @@ export interface ExerciseTaskGrading {
   feedback_json: unknown | null
   feedback_text: string | null
   deleted_at: Date | null
-  set_user_variables?: Record<string, unknown> | null
 }
 
 export interface ExerciseTaskGradingResult {
@@ -561,7 +566,7 @@ export interface ExerciseTaskGradingResult {
   score_maximum: number
   feedback_text: string | null
   feedback_json: unknown | null
-  set_user_variables?: Record<string, unknown> | null
+  set_user_variables: Record<string, unknown> | null
 }
 
 export type UserPointsUpdateStrategy =

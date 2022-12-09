@@ -15,8 +15,7 @@ export interface CurrentStateMessage {
 
 export interface FileUploadMessage {
   message: "file-upload"
-  url: string
-  data: unknown
+  files: Map<string, string | Blob>
 }
 
 export interface HeightChangedMessage {
@@ -41,7 +40,7 @@ export type UploadResultMessage =
   | {
       message: "upload-result"
       success: true
-      url: string
+      urls: Map<string, string>
     }
   | {
       message: "upload-result"
@@ -75,7 +74,7 @@ export type IframeState =
       exercise_task_id: string
       user_information: UserInformation
       /** Variables set from this exercise service's grade endpoint, visible only to this user on this course instance. */
-      user_variables?: UserVariablesMap
+      user_variables?: UserVariablesMap | null
       data: {
         grading: ExerciseTaskGradingResult | null
         user_answer: unknown
@@ -87,7 +86,8 @@ export type IframeState =
       view_type: "exercise-editor"
       exercise_task_id: string
       user_information: UserInformation
-      data: { private_spec: unknown; repository_exercise?: RepositoryExercise }
+      repository_exercises?: Array<RepositoryExercise>
+      data: { private_spec: unknown }
     }
 
 export type IframeViewType = IframeState["view_type"]
