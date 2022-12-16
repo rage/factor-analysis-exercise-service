@@ -61,7 +61,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
           <div
             className={css`
               font-family: ${primaryFont};
-              color: ${baseTheme.colors.grey[700]};
+              color: ${baseTheme.colors.gray[700]};
               font-style: normal;
               font-weight: 500;
               font-size: 20px;

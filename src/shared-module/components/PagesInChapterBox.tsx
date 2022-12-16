@@ -4,7 +4,7 @@ import Link from "next/link"
 import React from "react"
 
 import ArrowSVGIcon from "../img/blackArrow.svg"
-import { baseTheme, headingFont, monospaceFont } from "../styles"
+import { baseTheme, headingFont, secondaryFont } from "../styles"
 
 // eslint-disable-next-line i18next/no-literal-string
 const Wrapper = styled.div`
@@ -17,29 +17,18 @@ const Wrapper = styled.div`
   }
 `
 
-// eslint-disable-next-line i18next/no-literal-string
 const PageNumberBox = styled.div`
   position: relative;
   display: inline-block;
-  opacity: 0.8;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: ${baseTheme.colors.blue[200]};
-  margin-right: 8px;
-
-  span {
-    color: ${baseTheme.colors.grey[700]};
-    font-family: ${monospaceFont};
-    line-height: 1;
-    font-size: 12px !important;
-    text-align: center;
-    font-weight: 600;
-  }
+  font-family: ${secondaryFont};
+  opacity: 0.6;
+  margin: 0 0.8rem 0 0.4rem;
+  top: -3px;
 `
 
 // eslint-disable-next-line i18next/no-literal-string
 const ChapterParts = styled.div`
+  position: relative;
   margin-left: 0em;
   padding: 0.8em 1em;
   list-style-type: none;
@@ -48,8 +37,6 @@ const ChapterParts = styled.div`
   border-radius: 2px;
   margin-bottom: 0.4em;
   background: rgb(242, 245, 247);
-  display: flex;
-  align-items: center;
 
   ${({ selected }: PagesInChapterBoxExtraProps) =>
     selected &&
@@ -79,7 +66,7 @@ const ChapterParts = styled.div`
     font-family: ${headingFont};
     font-weight: 500;
     vertical-align: top;
-    font-size: clamp(16px, 1.2vw, 20px);
+    font-size: clamp(16px, 1vw, 18px);
     display: inline-block;
     width: 80%;
     margin: 0.4em 0 0.4em 0.2em;
@@ -103,33 +90,31 @@ const PagesInChapterBox: React.FC<
   return (
     <Wrapper>
       <>
-        <Link href={props.url} passHref>
-          <a
-            href="replace"
-            className={css`
-              color: #1c3b40;
-              box-shadow: none;
-              text-decoration: none;
-              &:focus-visible {
-                outline: 2px solid ${baseTheme.colors.green[500]};
-                outline-offset: 2px;
-              }
+        <Link
+          href={props.url}
+          className={css`
+            color: #1c3b40;
+            box-shadow: none;
+            text-decoration: none;
+            &:focus-visible {
+              outline: 2px solid ${baseTheme.colors.green[500]};
+              outline-offset: 2px;
+            }
 
-              :hover {
-                .chapter-part-arrow {
-                  visibility: visible;
-                }
+            :hover {
+              .chapter-part-arrow {
+                visibility: visible;
               }
-            `}
-          >
-            <ChapterParts {...props}>
-              <PageNumberBox>
-                <span>{props.chapterIndex}</span>
-              </PageNumberBox>
-              <span>{props.chapterTitle}</span>
-              <ArrowSVGIcon className="chapter-part-arrow" role="presentation" alt="" width="20" />
-            </ChapterParts>
-          </a>
+            }
+          `}
+        >
+          <ChapterParts {...props}>
+            <PageNumberBox>
+              <span>{props.chapterIndex}</span>
+            </PageNumberBox>
+            <span>{props.chapterTitle}</span>
+            <ArrowSVGIcon className="chapter-part-arrow" role="presentation" alt="" width="20" />
+          </ChapterParts>
         </Link>
       </>
     </Wrapper>

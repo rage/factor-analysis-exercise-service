@@ -30,7 +30,7 @@ const QuestionEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChan
         <StyledInnerEditor
           className={css`
             font-family: ${primaryFont};
-            color: ${baseTheme.colors.grey[600]};
+            color: ${baseTheme.colors.gray[600]};
             font-style: normal;
             font-weight: 500;
             font-size: 20px;
