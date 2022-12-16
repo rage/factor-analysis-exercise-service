@@ -1,7 +1,6 @@
 import { css } from "@emotion/css"
 import { useState } from "react"
 
-import { Url } from "../../pages/iframe"
 import {
   CurrentStateMessage,
   FileUploadMessage,
@@ -20,18 +19,13 @@ interface Props {
   state: Survey
   port: MessagePort
   userVariables?: UserVariablesMap | null
-  url: Url | null
 }
 
 const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
   port,
   state,
   userVariables,
-  url,
 }) => {
-  if (url) {
-    console.log("received url", url)
-  }
   const INITIAL_ANSWERED = state.content.map((q) => {
     return {
       id: q.id,
@@ -69,7 +63,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
     return res
   }
 
-  const [uploadFile, _setUploadFile] = useState<File>()
+  const [_uploadFile, _setUploadFile] = useState<File>()
 
   const setUploadFile: typeof _setUploadFile = (value) => {
     const res = _setUploadFile(value)
@@ -113,7 +107,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
     setAnsweredItems(newAnsweredQ)
   }
 
-  const updateFileUpload = (item: SurveyItem, file: File | null) => {
+  const updateFileUpload = (_item: SurveyItem, file: File | null) => {
     if (!port) {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Cannot send current state to parent because I don't have a port")
@@ -124,13 +118,13 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
     } else {
       console.log(file)
     }
-    if (url) {
+    /* if (url) {  // This will be the received url for file upload
       const answer: Answer = {
         ...item.answer,
         answer: url.url,
       }
       updateAnswer(item.id, answer)
-    }
+    } */
   }
 
   return (
@@ -157,7 +151,13 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
           }
         }
         if (item.question.questionLabel === "info") {
-          return <InfoSection key={item.id} content={item.question.question} />
+          return (
+            <InfoSection
+              key={item.id}
+              content={item.question.question}
+              userVariables={userVariables}
+            />
+          )
         }
         if (item.question.questionLabel === "info-header") {
           return (
@@ -189,19 +189,6 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
                   }
                 }}
               ></input>
-
-              <img
-                src={url ? `http://project-331.local/api/v0/files/${url.url}` : ""}
-                alt={"img-alt"}
-              ></img>
-              {/* {uploadFile && (
-                <img
-                  src={URL.createObjectURL(uploadFile)}
-                  alt={"imae-alt-what-to-display-on-chapter"}
-                >
-                  {" "}
-                </img>
-              )} */}
             </div>
           )
         }

@@ -5,7 +5,6 @@ import { baseTheme, primaryFont } from "../../../shared-module/styles"
 import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/stateInterfaces"
 import { parseLabelQuestion, reverseParseLabelQuestion } from "../../../util/utils"
 import MarkdownText from "../../MarkdownText"
-import GlobalVarsElement from "../../SharedMisc/GlobalVarsElement"
 import {
   DeleteButton,
   infoColor,
@@ -77,9 +76,6 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             `}
           >
             {item.question && <MarkdownText text={item.question.question} />}
-            {item.question && (
-              <GlobalVarsElement title={"gg"} text={item.question.question}></GlobalVarsElement>
-            )}
           </div>
           <DeleteButton onClick={onDelete}>{"x"}</DeleteButton>
         </StyledInnerEditor>

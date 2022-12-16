@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction } from "react"
 import { useTranslation } from "react-i18next"
 
 import { ExerciseFeedback } from "../pages/api/grade"
-import { State, Url } from "../pages/iframe"
+import { State } from "../pages/iframe"
 import withNoSsr from "../shared-module/utils/withNoSsr"
 
 import Editor from "./Editor"
@@ -13,15 +13,9 @@ interface RendererProps {
   state: State | null
   setState: Dispatch<SetStateAction<State | null>>
   port: MessagePort | null
-  url: Url | null
 }
 
-const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({
-  state,
-  setState,
-  port,
-  url,
-}) => {
+const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({ state, setState, port }) => {
   const { t } = useTranslation()
 
   if (!port) {
@@ -33,14 +27,7 @@ const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({
   }
 
   if (state.view_type === "answer-exercise") {
-    return (
-      <Exercise
-        port={port}
-        state={state.public_spec}
-        userVariables={state.user_variables}
-        url={url}
-      />
-    )
+    return <Exercise port={port} state={state.public_spec} userVariables={state.user_variables} />
   } else if (state.view_type === "view-submission") {
     const feedbackJson: unknown | null = state.grading?.feedback_json
     const exerciseFeedback = feedbackJson ? (feedbackJson as ExerciseFeedback) : null

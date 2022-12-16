@@ -7,10 +7,7 @@ import Renderer from "../components/Renderer"
 import { ExerciseTaskGradingResult } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
-import {
-  isSetStateMessage,
-  isUploadResultMessage,
-} from "../shared-module/exercise-service-protocol-types.guard"
+import { isSetStateMessage } from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { PrivateSpec, PublicSpec, RatedQuestion, SubmittedForm } from "../util/stateInterfaces"
 
@@ -47,7 +44,6 @@ export type Url = {
 
 const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [state, setState] = useState<State | null>(null)
-  const [url, setUrl] = useState<Url | null>(null)
 
   const router = useRouter()
   const rawMaxWidth = router?.query?.width
@@ -85,13 +81,6 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
           console.error("Unknown view type received from parent")
         }
       })
-    } else if (isUploadResultMessage(messageData)) {
-      console.log("here is the state", state)
-      if (messageData.success) {
-        const newUrl = { url: messageData.urls }
-        console.log(newUrl)
-        // setUrl(newUrl)
-      }
     } else {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Frame received an unknown message from message port")
@@ -110,7 +99,7 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
           margin: 0 auto;
         `}
       >
-        <Renderer port={port} setState={setState} state={state} url={url} />
+        <Renderer port={port} setState={setState} state={state} />
       </div>
     </HeightTrackingContainer>
   )
