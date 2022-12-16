@@ -8,7 +8,6 @@ import {
   MessageFromIframe,
   SetLanguageMessage,
   SetStateMessage,
-  UploadResultMessage,
 } from "../exercise-service-protocol-types"
 import {
   isHeightChangedMessage,
