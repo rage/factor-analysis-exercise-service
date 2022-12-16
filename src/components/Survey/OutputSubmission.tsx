@@ -15,7 +15,6 @@ interface Props {
 }
 
 const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items, userVariables }) => {
-  console.log("these are the prorps", userVariables)
   return (
     <Wrapper>
       {userVariables &&
