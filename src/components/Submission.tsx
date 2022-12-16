@@ -3,6 +3,7 @@ import { css } from "@emotion/css"
 import React from "react"
 
 import { ExerciseFeedback } from "../pages/api/grade"
+import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 //import { baseTheme } from "../shared-module/styles"
 import {
   PublicSpec,
@@ -21,12 +22,14 @@ interface SubmissionProps {
   publicSpec: PublicSpec
   answer: SubmittedForm
   gradingFeedback: ExerciseFeedback | null
+  userVariables?: UserVariablesMap | null
 }
 
 const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
   publicSpec,
   answer,
   gradingFeedback,
+  userVariables,
 }) => {
   return (
     <div
@@ -59,7 +62,10 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
         />
       )}
       {publicSpec.type === SurveyType.NonFactorial && (
-        <SurveySubmission items={answer.answeredQuestions as SurveyItem[]} />
+        <SurveySubmission
+          items={answer.answeredQuestions as SurveyItem[]}
+          userVariables={userVariables}
+        />
       )}
     </div>
   )

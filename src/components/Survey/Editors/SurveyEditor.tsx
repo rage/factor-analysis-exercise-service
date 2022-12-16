@@ -70,10 +70,8 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
                     answer: { ...quest.answer, id: v4() },
                   }
                   const currentIndex = state.content.indexOf(quest)
-                  console.log(currentIndex)
                   const newContent = state.content
                   newContent.splice(currentIndex + 1, 0, additionalItem)
-                  console.log(newContent)
 
                   setState({
                     view_type: "exercise-editor",

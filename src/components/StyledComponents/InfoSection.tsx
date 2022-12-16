@@ -16,7 +16,6 @@ export const InfoSection: React.FC<React.PropsWithChildren<Props>> = ({
   userVariables,
 }) => {
   const parsedContent = insertVariablesToText(content, userVariables)
-  console.log(parsedContent)
 
   return (
     <InfoWrapper>

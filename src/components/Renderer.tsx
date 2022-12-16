@@ -37,6 +37,7 @@ const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({ state, set
         publicSpec={state.public_spec}
         answer={state.answer}
         gradingFeedback={exerciseFeedback}
+        userVariables={state.user_variables}
       />
     )
   } else if (state.view_type === "exercise-editor") {

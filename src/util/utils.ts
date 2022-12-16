@@ -124,7 +124,8 @@ interface LabelValuePair {
 }
 
 /**
- * prossesses text replacing the referrences to global variables with user's variables, or default values
+ * prossesses text replacing the referrences to global variables with user's
+ * variables, or default values
  *
  * @param textItem text to process, string
  * @param userVaiablesMap Map or null
@@ -135,23 +136,25 @@ export const insertVariablesToText = (
   userVaiablesMap?: UserVariablesMap | null,
 ): string => {
   // format of variable is ${question_label=default_value}
-  const regexp = /\$\{\w+=.*\}/
-  const matches = textItem.match(regexp)
+  const regexp = /\$\{[\w\s-]*=[\w\s-]*\}/g
+  const matches = [...textItem.matchAll(regexp)]
   const values = new Map<string, LabelValuePair>()
-  matches?.map((l) => {
-    const strippedString = l.replace("${", "").replace("}", "")
-    const pair = strippedString.split("=")
-    values.set(l, {
-      label: pair[0],
-      val: userVaiablesMap ? userVaiablesMap[pair[0]] ?? pair[1] : pair[1],
-    } as LabelValuePair)
-    return pair
+  matches?.map((match) => {
+    match.map((l) => {
+      const strippedString = l.replace("${", "").replace("}", "")
+      const pair = strippedString.split("=")
+      values.set(l, {
+        label: pair[0],
+        val: userVaiablesMap ? userVaiablesMap[pair[0]] ?? pair[1] : pair[1],
+      } as LabelValuePair)
+      return pair
+    })
   })
-
   let newContent = textItem
-  matches?.map((m) => {
-    newContent = textItem.replace(m, (values.get(m) as LabelValuePair).val)
+  matches?.map((match) => {
+    match.map((m) => {
+      newContent = newContent.replace(m, (values.get(m) as LabelValuePair).val)
+    })
   })
-  console.log("we found something", newContent)
   return newContent
 }
