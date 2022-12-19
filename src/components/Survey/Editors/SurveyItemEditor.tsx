@@ -3,7 +3,11 @@ import { css } from "@emotion/css"
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
 import { baseTheme, primaryFont } from "../../../shared-module/styles"
 import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/stateInterfaces"
-import { parseLabelQuestion, reverseParseLabelQuestion } from "../../../util/utils"
+import {
+  insertVariablesToText,
+  parseLabelQuestion,
+  reverseParseLabelQuestion,
+} from "../../../util/utils"
 import MarkdownText from "../../MarkdownText"
 import {
   DeleteButton,
@@ -75,7 +79,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               padding: 0.5rem;
             `}
           >
-            {item.question && <MarkdownText text={item.question.question} />}
+            {item.question && <MarkdownText text={insertVariablesToText(item.question.question)} />}
           </div>
           <DeleteButton onClick={onDelete}>{"x"}</DeleteButton>
         </StyledInnerEditor>
@@ -179,9 +183,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                   value={t}
                   key={t}
                   disabled={
-                    item.question.questionLabel === "info-header"
+                    (item.question.questionLabel === "info-header"
                       ? t !== AnswerType.ConsentCheckbox
-                      : t === AnswerType.ConsentCheckbox
+                      : t === AnswerType.ConsentCheckbox) || t === AnswerType.FileUpload
                   }
                 >
                   {t}
@@ -283,28 +287,31 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               }}
             />
           </div>
-          <div
-            className={css`
+          {item.question.questionLabel !== "info" &&
+            item.question.questionLabel !== "info-header" && (
+              <div
+                className={css`
               display: flex;
               width: 85%;
               align-items: center;
               justify-content: space-apart;
               margin-right 20px;
             `}
-          >
-            <label htmlFor={item.id}>{"Make global"}</label>
-            <input
-              id={item.id}
-              type="checkbox"
-              checked={item.globalVariable ? true : false}
-              onChange={(e) => {
-                onChangeSurveyItem({
-                  ...item,
-                  globalVariable: e.target.checked,
-                })
-              }}
-            />
-          </div>
+              >
+                <label htmlFor={item.id}>{"Make global"}</label>
+                <input
+                  id={item.id}
+                  type="checkbox"
+                  checked={item.globalVariable ? true : false}
+                  onChange={(e) => {
+                    onChangeSurveyItem({
+                      ...item,
+                      globalVariable: e.target.checked,
+                    })
+                  }}
+                />
+              </div>
+            )}
           <button
             className={css`
               flex: 1;

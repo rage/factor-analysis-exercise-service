@@ -59,6 +59,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
         <FactorialSurveySubmission
           options={publicSpec.options}
           userAnswer={answer.answeredQuestions as RatedQuestion[]}
+          userVariables={userVariables}
         />
       )}
       {publicSpec.type === SurveyType.NonFactorial && (

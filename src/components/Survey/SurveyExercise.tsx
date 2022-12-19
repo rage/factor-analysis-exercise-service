@@ -8,6 +8,7 @@ import {
 } from "../../shared-module/exercise-service-protocol-types"
 import { baseTheme } from "../../shared-module/styles"
 import { Answer, AnswerType, SubmittedForm, Survey, SurveyItem } from "../../util/stateInterfaces"
+import { insertVariablesToText } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 import { InfoSection } from "../StyledComponents/InfoSection"
@@ -148,14 +149,9 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
             return
           }
         }
+        const content: string = insertVariablesToText(item.question.question, userVariables)
         if (item.question.questionLabel === "info") {
-          return (
-            <InfoSection
-              key={item.id}
-              content={item.question.question}
-              userVariables={userVariables}
-            />
-          )
+          return <InfoSection key={item.id} content={content} />
         }
         if (item.question.questionLabel === "info-header") {
           return (
@@ -165,7 +161,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
                   color: ${baseTheme.colors.crimson[700]};
                 `}
               >
-                <MarkdownText text={item.question.question} />
+                <MarkdownText text={content} />
               </div>
               <SurveyExerciseItem item={item} updateAnswer={updateAnswer} />
             </InfoHeaderWrapper>
@@ -192,7 +188,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
         }
         return (
           <ItemWrapper key={item.id}>
-            <ExerciseItemHeader titleText={item.question.question} />
+            <ExerciseItemHeader titleText={content} />
             <SurveyExerciseItem item={item} updateAnswer={updateAnswer} />
           </ItemWrapper>
         )

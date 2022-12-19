@@ -15,7 +15,7 @@ const Exercise: React.FC<React.PropsWithChildren<Props>> = ({ state, port, userV
     case SurveyType.Factorial: {
       return (
         <>
-          <FactorialSurvey state={state} port={port} />
+          <FactorialSurvey state={state} port={port} userVariables={userVariables} />
         </>
       )
     }

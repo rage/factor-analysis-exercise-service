@@ -2,6 +2,7 @@ import React from "react"
 
 import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
 import { SurveyItem } from "../../util/stateInterfaces"
+import { insertVariablesToText } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 import { InfoSection } from "../StyledComponents/InfoSection"
@@ -36,26 +37,21 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items, use
               return
             }
           }
+          const content = insertVariablesToText(item.question.question, userVariables)
           if (item.question.questionLabel === "info") {
-            return (
-              <InfoSection
-                key={item.id}
-                content={item.question.question}
-                userVariables={userVariables}
-              />
-            )
+            return <InfoSection key={item.id} content={content} />
           }
           if (item.question.questionLabel === "info-header") {
             return (
               <InfoHeaderWrapper key={item.id}>
-                <MarkdownText text={item.question.question} />
+                <MarkdownText text={content} />
                 <SurveyExerciseItem item={item} updateAnswer={() => null} disabled />
               </InfoHeaderWrapper>
             )
           }
           return (
             <ItemWrapper key={item.id}>
-              <ExerciseItemHeader titleText={item.question.question} />
+              <ExerciseItemHeader titleText={content} />
               <SurveyExerciseItem
                 key={item.id}
                 item={item}
