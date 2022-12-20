@@ -35,7 +35,7 @@ const FactorialSurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
           <ExerciseItemHeader titleText={questionText} />
           {options.map((option, idx) => {
             return (
-              <CheckedRadioGroupWrap key={option.id} {...noBorder}>
+              <CheckedRadioGroupWrap key={option.id} {...noBorder} disabled={disabled}>
                 <input
                   type="radio"
                   id={`${question.questionLabel}-factorial-option-${idx + 1}`}

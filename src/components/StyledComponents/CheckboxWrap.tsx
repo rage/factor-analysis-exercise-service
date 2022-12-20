@@ -14,7 +14,7 @@ export const CheckboxWrap = styled.div<DivProps>`
   justify-content: left;
   gap: 0.5em;
   grid-template-columns: ${({ info }) => (info ? "1.5em auto" : "2em auto")};
-  background-color: ${({ disabled }) => (disabled ? baseTheme.colors.gray[100] : "inherit")};
+  background-color: "inherit";
 
   input[type="checkbox"] {
     appearance: none;
@@ -40,8 +40,10 @@ export const CheckboxWrap = styled.div<DivProps>`
   }
 
   input[type="checkbox"]:checked {
-    border-color: ${({ checkedCollor }) => checkedCollor};
-    background: ${({ checkedCollor }) => checkedCollor};
+    border-color: ${({ disabled, checkedCollor }) =>
+      disabled ? baseTheme.colors.gray[200] : checkedCollor};
+    background: ${({ disabled, checkedCollor }) =>
+      disabled ? baseTheme.colors.gray[200] : checkedCollor};
   }
 
   input[type="checkbox"]:checked::before {

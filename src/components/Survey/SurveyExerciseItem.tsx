@@ -82,7 +82,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
         <div>
           {item.answer.options.map((o) => {
             return (
-              <CheckboxWrap key={o} checkedCollor={CHECKED}>
+              <CheckboxWrap key={o} checkedCollor={CHECKED} disabled={disabled}>
                 <input
                   aria-label={o}
                   type="checkbox"
@@ -110,7 +110,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
           <div className="radio">
             {item.answer.options.map((option) => {
               return (
-                <RadioGroupWrap key={option} checkedColor={CHECKED} border>
+                <RadioGroupWrap key={option} checkedColor={CHECKED} disabled={disabled}>
                   <input
                     aria-label={option}
                     type="radio"
