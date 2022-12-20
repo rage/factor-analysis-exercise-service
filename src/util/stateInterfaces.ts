@@ -34,6 +34,19 @@ export interface FactorialSurvey {
   factors: Factor[]
   options: FactorialOption[]
   questions: Question[]
+  meansVector?: NormalizationValues
+  allowedNans?: number
+}
+
+/**
+ * Normalization vectors [mean] [std] for each question used to normalize question rates in
+ * report calculations
+ */
+export interface NormalizationValues {
+  /** [QuestionLabel: mean] also used for nan-value imputation */
+  means: { [key: string]: number }
+  /** [QuestionLabel: std] for normalization of the variable */
+  stds: { [key: string]: number }
 }
 
 /**
