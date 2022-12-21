@@ -108,5 +108,19 @@
       "question": " newlines should be avoided"
     }
   ],
-  "calculateFeedback": true
+  "calculateFeedback": true,
+  "meansAndStandardDeviations": {
+    "means": {
+      "question_one": 1.7654,
+      "question_two": -0.545,
+      "three": -1.36,
+      "five": 4.8234765
+    },
+    "standardDeviations": {
+      "question_one": 0.7,
+      "question_two": 1.324,
+      "three": 0.987,
+      "five": 1.789
+    }
+  }
 }

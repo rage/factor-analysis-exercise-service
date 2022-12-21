@@ -12,7 +12,12 @@ import {
   SurveyItem,
   SurveyType,
 } from "../../util/stateInterfaces"
-import { calculateFactors, getGlobalVariables, sanitizeQuestions } from "../../util/utils"
+import {
+  calculateFactors,
+  getGlobalVariables,
+  sanitizeQuestions,
+  scaleRatedQuestions,
+} from "../../util/utils"
 
 export default async (
   req: NextApiRequest,
@@ -66,16 +71,25 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     const sanitizedAnswers = sanitizeQuestions(
       gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
     ) as RatedQuestion[]
-    const factors: Factor[] = calculateFactors(
-      gradingRequest.exercise_spec.factors,
-      sanitizedAnswers,
-    )
+    const scaledAnswers =
+      gradingRequest.exercise_spec.meansAndStandardDeviations &&
+      gradingRequest.exercise_spec.allowedNans
+        ? scaleRatedQuestions(
+            sanitizedAnswers,
+            gradingRequest.exercise_spec.meansAndStandardDeviations,
+            gradingRequest.exercise_spec.allowedNans,
+          )
+        : sanitizedAnswers
+    const factors: Factor[] | null = scaledAnswers
+      ? calculateFactors(gradingRequest.exercise_spec.factors, scaledAnswers)
+      : null
+
     return res.status(200).json({
       grading_progress: "FullyGraded",
       score_given: 1,
       score_maximum: 1,
-      feedback_text: "Good job!",
-      feedback_json: { factorReport: factors },
+      feedback_text: "Thank you for you submission!",
+      feedback_json: factors ? { factorReport: factors } : null, //TODO instead of returning null, return message from teachers that factor report could not be provided because of nan exceeds
     })
   }
 
@@ -90,7 +104,7 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     grading_progress: "FullyGraded",
     score_given: 1,
     score_maximum: 1,
-    feedback_text: "Good job!",
+    feedback_text: "Thank you for you submission!",
     feedback_json: null,
     set_user_variables: vars,
   })

@@ -100,15 +100,17 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
                     background-color: ${baseTheme.colors.clear[200]};
                   `}
                 >
-                  {state.meansVector ? state.meansVector.means[question.questionLabel] : "-"}
+                  {state.meansAndStandardDeviations
+                    ? state.meansAndStandardDeviations.means[question.questionLabel]
+                    : "-"}
                 </Td>
                 <Td
                   className={css`
                     background-color: ${baseTheme.colors.clear[200]};
                   `}
                 >
-                  {state.meansVector
-                    ? state.meansVector.standardDeviations[question.questionLabel]
+                  {state.meansAndStandardDeviations
+                    ? state.meansAndStandardDeviations.standardDeviations[question.questionLabel]
                     : "-"}
                 </Td>
                 {state.factors.map((factor) => {

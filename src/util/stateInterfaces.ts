@@ -34,7 +34,7 @@ export interface FactorialSurvey {
   factors: Factor[]
   options: FactorialOption[]
   questions: Question[]
-  meansVector?: NormalizationValues
+  meansAndStandardDeviations?: NormalizationValues
   allowedNans?: number
 }
 
