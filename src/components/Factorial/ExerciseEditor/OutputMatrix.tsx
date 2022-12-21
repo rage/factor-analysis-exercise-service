@@ -107,7 +107,9 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
                     background-color: ${baseTheme.colors.clear[200]};
                   `}
                 >
-                  {state.meansVector ? state.meansVector.stds[question.questionLabel] : "-"}
+                  {state.meansVector
+                    ? state.meansVector.standardDeviations[question.questionLabel]
+                    : "-"}
                 </Td>
                 {state.factors.map((factor) => {
                   if (typeof factor.weights[question.questionLabel] === "undefined") {

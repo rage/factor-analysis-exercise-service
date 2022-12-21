@@ -46,7 +46,7 @@ export interface NormalizationValues {
   /** [QuestionLabel: mean] also used for nan-value imputation */
   means: { [key: string]: number }
   /** [QuestionLabel: std] for normalization of the variable */
-  stds: { [key: string]: number }
+  standardDeviations: { [key: string]: number }
 }
 
 /**

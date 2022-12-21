@@ -206,16 +206,19 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
           <fieldset>
             <legend>{"Other documents"}</legend>
             <CsvReader
-              title="Upload means and stds for answer normalization CSV File"
+              title="Upload means and standardDeviations for answer normalization CSV File"
               parseUsingHeaders={(value) => {
-                const normalVec: NormalizationValues = { means: { "": 0 }, stds: { "": 0 } }
+                const normalVec: NormalizationValues = {
+                  means: { "": 0 },
+                  standardDeviations: { "": 0 },
+                }
                 Object.keys(value).forEach((header) => {
                   if (header === "means") {
                     const means = { ...(value[header] as { [key: string]: number }) }
                     normalVec.means = means
                   } else {
-                    const stds = { ...(value[header] as { [key: string]: number }) }
-                    normalVec.stds = stds
+                    const standardDeviations = { ...(value[header] as { [key: string]: number }) }
+                    normalVec.standardDeviations = standardDeviations
                   }
                 })
                 console.log(normalVec)
