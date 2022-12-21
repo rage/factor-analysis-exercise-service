@@ -1,6 +1,6 @@
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
-import { Factor, Question, RatedQuestion, SurveyItem } from "./stateInterfaces"
+import { Factor, NormalizationValues, Question, RatedQuestion, SurveyItem } from "./stateInterfaces"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
@@ -157,4 +157,36 @@ export const insertVariablesToText = (
     })
   })
   return newContent
+}
+
+/**
+ *
+ * @param ratedQuestions used to create vector of scores for the matrix multiplication
+ * @param meansAndStandardDeviations used to scale the answers before adding up the factors,
+ * means also used to impute nan-answers
+ * @param maxNanAllowed allowed limit amount of nan-answers, beyond which report is not calculated
+ * @returns scaled ratedQuestions or null if max nan exceeded
+ */
+export const scaleRatedQuestions = (
+  ratedQuestions: RatedQuestion[],
+  meansAndStandardDeviations: NormalizationValues,
+  maxNanAllowed: number,
+): RatedQuestion[] | null => {
+  let amount = 0
+  const questions: RatedQuestion[] = ratedQuestions.map((q) => {
+    if (!q.rate) {
+      amount++
+    }
+    const rate = q.rate
+      ? (q.rate - meansAndStandardDeviations.means[q.questionLabel]) /
+        meansAndStandardDeviations.standardDeviations[q.questionLabel]
+      : meansAndStandardDeviations.means[q.questionLabel]
+    const scaledQuestion = { ...q, rate: rate }
+    return scaledQuestion
+  })
+  if (amount > maxNanAllowed) {
+    console.log(amount, maxNanAllowed, amount > maxNanAllowed)
+    return null
+  }
+  return questions
 }

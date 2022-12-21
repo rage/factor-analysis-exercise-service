@@ -1,7 +1,13 @@
-import { Factor, Question, RatedQuestion } from "../../src/util/stateInterfaces"
+import {
+  Factor,
+  NormalizationValues,
+  Question,
+  RatedQuestion,
+} from "../../src/util/stateInterfaces"
 import {
   calculateFactors,
   sanitizeQuestions,
+  scaleRatedQuestions,
   vectorMatrixMultiplication,
 } from "../../src/util/utils"
 
@@ -137,6 +143,21 @@ export const testAnswer: RatedQuestion[] = [
   },
 ]
 
+export const meansAndStandardDeviations: NormalizationValues = {
+  means: {
+    question_one: 1.7654,
+    question_two: -0.545,
+    three: -1.36,
+    five: 4.8234765,
+  },
+  standardDeviations: {
+    question_one: 0.7,
+    question_two: 1.324,
+    three: 0.987,
+    five: 1.789,
+  },
+}
+
 describe("When all questions are rated propperly, thus not null", () => {
   test("factor weights matrix multiplication is correct small question set", () => {
     const sanitizedAnswers = sanitizeQuestions(testAnswer) as RatedQuestion[]
@@ -166,5 +187,57 @@ describe("When all questions are rated propperly, thus not null", () => {
     const scoredFactors = calculateFactors(testFactors, answeredQuestions)
     const derivedScoreVector = vectorMatrixMultiplication(rateVector, weightsMatrix)
     expect(scoredFactors.map((e) => e.score)).toEqual(derivedScoreVector)
+  })
+})
+
+describe("Scaling rated questions", () => {
+  test("scale rated questions scales correctly", () => {
+    const answeredQuestions = sanitizeQuestions(testAnswer) as RatedQuestion[]
+    const scaledAnswers = scaleRatedQuestions(answeredQuestions, meansAndStandardDeviations, 0)
+    const expected = answeredQuestions.map((q) => {
+      return {
+        ...q,
+        rate:
+          ((q.rate as number) - meansAndStandardDeviations.means[q.questionLabel]) /
+          meansAndStandardDeviations.standardDeviations[q.questionLabel],
+      }
+    })
+    expect(scaledAnswers).toEqual(expected)
+  })
+
+  test("scale rated questions scales correctly when some rates are nan", () => {
+    const answeredQuestions = sanitizeQuestions(testAnswer) as RatedQuestion[]
+    let p = 0
+    const newAnswered = answeredQuestions.map((q) => {
+      p++
+      return { ...q, rate: p > 3 ? null : q.rate }
+    })
+    expect(scaleRatedQuestions(newAnswered, meansAndStandardDeviations, 0)).toBeNull()
+    expect(scaleRatedQuestions(newAnswered, meansAndStandardDeviations, 1)).not.toBeNull()
+  })
+
+  test("scale rated questions scales correctly with random means and sds", () => {
+    const answeredQuestions = sanitizeQuestions(testAnswer) as RatedQuestion[]
+    const means: { [id: string]: number } = {}
+    const standardDeviations: { [id: string]: number } = {}
+    answeredQuestions.map((q) => {
+      means[q.questionLabel] = Math.random() * 10
+      standardDeviations[q.questionLabel] = Math.random() + 1
+    })
+    const randomMeansAndStandardDeviations: NormalizationValues = { means, standardDeviations }
+    const scaledAnswers = scaleRatedQuestions(
+      answeredQuestions,
+      randomMeansAndStandardDeviations,
+      0,
+    )
+    const expected = answeredQuestions.map((q) => {
+      return {
+        ...q,
+        rate:
+          ((q.rate as number) - randomMeansAndStandardDeviations.means[q.questionLabel]) /
+          randomMeansAndStandardDeviations.standardDeviations[q.questionLabel],
+      }
+    })
+    expect(scaledAnswers).toEqual(expected)
   })
 })

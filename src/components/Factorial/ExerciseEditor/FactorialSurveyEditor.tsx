@@ -224,7 +224,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 console.log(normalVec)
                 setState({
                   view_type: "exercise-editor",
-                  private_spec: { ...state, meansVector: normalVec },
+                  private_spec: { ...state, meansAndStandardDeviations: normalVec },
                 })
               }}
               parseNoHeaders={() => null}
