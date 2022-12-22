@@ -31,6 +31,18 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
   gradingFeedback,
   userVariables,
 }) => {
+  let name = "NAME NOT PROVIDED"
+  let breed = "BREED NOT PROVIDED"
+  if (userVariables) {
+    Object.keys(userVariables).map((ob) => {
+      if (ob.indexOf("name") !== -1) {
+        name = userVariables[ob] as string
+      }
+      if (ob.indexOf("breed") !== -1) {
+        breed = userVariables[ob] as string
+      }
+    })
+  }
   return (
     <div
       className={css`
@@ -51,7 +63,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
               margin: 2rem auto;
             `}
           >
-            <FactorialReport factor={f} />
+            <FactorialReport factor={f} name={name} breed={breed} />
           </div>
         )
       })}

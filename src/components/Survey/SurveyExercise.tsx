@@ -128,15 +128,6 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
 
   return (
     <>
-      {userVariables &&
-        Object.keys(userVariables as UserVariablesMap).map((k) => {
-          return (
-            <div key={k}>
-              <p>{k}</p>
-              <p>{userVariables[k] as string} </p>
-            </div>
-          )
-        })}
       {answeredItems.map((item) => {
         if (item.conditional && item.dependsOn) {
           const chosenOptions = answeredItems.find(
