@@ -27,7 +27,7 @@ const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({ state, set
   }
 
   if (state.view_type === "answer-exercise") {
-    return <Exercise port={port} state={state.public_spec} />
+    return <Exercise port={port} state={state.public_spec} userVariables={state.user_variables} />
   } else if (state.view_type === "view-submission") {
     const feedbackJson: unknown | null = state.grading?.feedback_json
     const exerciseFeedback = feedbackJson ? (feedbackJson as ExerciseFeedback) : null
@@ -37,6 +37,7 @@ const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({ state, set
         publicSpec={state.public_spec}
         answer={state.answer}
         gradingFeedback={exerciseFeedback}
+        userVariables={state.user_variables}
       />
     )
   } else if (state.view_type === "exercise-editor") {

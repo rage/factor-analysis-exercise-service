@@ -1,11 +1,15 @@
 import { useState } from "react"
 
-import { CurrentStateMessage } from "../../../shared-module/exercise-service-protocol-types"
+import {
+  CurrentStateMessage,
+  UserVariablesMap,
+} from "../../../shared-module/exercise-service-protocol-types"
 import {
   PublicFactorialSurveySpec,
   RatedQuestion,
   SubmittedForm,
 } from "../../../util/stateInterfaces"
+import { insertVariablesToText } from "../../../util/utils"
 import { InfoSection } from "../../StyledComponents/InfoSection"
 
 import FactorialSurveyQuestion from "./FactorialSurveyQuestion"
@@ -13,9 +17,14 @@ import FactorialSurveyQuestion from "./FactorialSurveyQuestion"
 interface Props {
   state: PublicFactorialSurveySpec
   port: MessagePort
+  userVariables?: UserVariablesMap | null
 }
 
-const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({ port, state }) => {
+const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
+  port,
+  state,
+  userVariables,
+}) => {
   const INITIAL_R = state.questions.map((q) => {
     return {
       questionId: q.id,
@@ -70,13 +79,15 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({ port, state
   return (
     <>
       {ratedQuestions.map((question) => {
+        const questionText = insertVariablesToText(question.question, userVariables)
         if (question.questionLabel === "info") {
-          return <InfoSection key={question.questionId} content={question.question} />
+          return <InfoSection key={question.questionId} content={questionText} />
         } else {
           return (
             <FactorialSurveyQuestion
               key={question.questionId}
               question={question}
+              questionText={questionText}
               options={state.options}
               onClick={(id, rate, chosenOption) => updateRate(id, rate, chosenOption)}
             />

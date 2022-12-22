@@ -1,10 +1,13 @@
-/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
 import { baseTheme, primaryFont } from "../../../shared-module/styles"
 import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/stateInterfaces"
-import { parseLabelQuestion, reverseParseLabelQuestion } from "../../../util/utils"
+import {
+  insertVariablesToText,
+  parseLabelQuestion,
+  reverseParseLabelQuestion,
+} from "../../../util/utils"
 import MarkdownText from "../../MarkdownText"
 import {
   DeleteButton,
@@ -76,9 +79,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               padding: 0.5rem;
             `}
           >
-            {item.question && <MarkdownText text={item.question.question} />}
+            {item.question && <MarkdownText text={insertVariablesToText(item.question.question)} />}
           </div>
-          <DeleteButton onClick={onDelete}>x</DeleteButton>
+          <DeleteButton onClick={onDelete}>{"x"}</DeleteButton>
         </StyledInnerEditor>
         <TextArea
           label={`Editor (special purpose labels: "info" & "info-header")`}
@@ -169,6 +172,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             {Object.values(AnswerType).map((t) => {
               if (t === AnswerType.None) {
                 return (
+                  // eslint-disable-next-line i18next/no-literal-string
                   <option key={AnswerType.None} value={AnswerType.None}>
                     Select answer type
                   </option>
@@ -179,9 +183,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                   value={t}
                   key={t}
                   disabled={
-                    item.question.questionLabel === "info-header"
+                    (item.question.questionLabel === "info-header"
                       ? t !== AnswerType.ConsentCheckbox
-                      : t === AnswerType.ConsentCheckbox
+                      : t === AnswerType.ConsentCheckbox) || t === AnswerType.FileUpload
                   }
                 >
                   {t}
@@ -218,6 +222,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                           }
                           onChangeSurveyItem({ ...item, answer: newAnswer })
                         }}
+                        // eslint-disable-next-line i18next/no-literal-string
                       >
                         x
                       </DeleteButton>
@@ -226,13 +231,13 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                 )
               })}
             </ol>
-
             <button
               onClick={() => {
                 const newItem = item as SurveyItem
                 newItem.answer.options.push("")
                 onChangeSurveyItem({ ...item, answer: newItem.answer })
               }}
+              // eslint-disable-next-line i18next/no-literal-string
             >
               add option
             </button>
@@ -267,9 +272,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               margin-right 20px;
             `}
           >
-            <label htmlFor={item.id}>Conditional</label>
+            <label htmlFor={`mark-conditional-${item.id}`}>{"Conditional"}</label>
             <input
-              id={item.id}
+              id={`mark-conditional-${item.id}`}
               type="checkbox"
               checked={item.conditional}
               onChange={(e) => {
@@ -281,6 +286,31 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               }}
             />
           </div>
+          {item.question.questionLabel !== "info" &&
+            item.question.questionLabel !== "info-header" && (
+              <div
+                className={css`
+              display: flex;
+              width: 85%;
+              align-items: center;
+              justify-content: space-apart;
+              margin-right 20px;
+            `}
+              >
+                <label htmlFor={`mark-global-variable-${item.id}`}>{"Make global"}</label>
+                <input
+                  id={`mark-global-variable-${item.id}`}
+                  type="checkbox"
+                  checked={item.globalVariable ? true : false}
+                  onChange={(e) => {
+                    onChangeSurveyItem({
+                      ...item,
+                      globalVariable: e.target.checked,
+                    })
+                  }}
+                />
+              </div>
+            )}
           <button
             className={css`
               flex: 1;
@@ -288,6 +318,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             onClick={() => {
               onDuplicate(item)
             }}
+            // eslint-disable-next-line i18next/no-literal-string
           >
             duplicate item
           </button>

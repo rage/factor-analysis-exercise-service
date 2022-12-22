@@ -21,9 +21,15 @@ export const barColors = [
 
 interface CoordinateProps {
   factor: Factor
+  name: string
+  breed: string
 }
 
-export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>> = ({ factor }) => {
+export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>> = ({
+  factor,
+  name,
+  breed,
+}) => {
   const species =
     (100 * -(factor.range?.min as number)) /
     ((factor.range?.max as number) - (factor.range?.min as number))
@@ -32,6 +38,7 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
     (100 * (-(factor.range?.min as number) + factor.score)) /
     ((factor.range?.max as number) - (factor.range?.min as number))
 
+  console.log(breed)
   return (
     <div>
       <ExerciseItemHeader titleText={factor.name} />
@@ -79,7 +86,7 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
             `}
           />
         </div>
-        <label>{"DOG NAME"}</label>
+        <label>{name}</label>
         <div
           className={css`
             height: 37px;

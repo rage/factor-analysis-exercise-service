@@ -5,6 +5,7 @@ import { ItemWrapper } from "../../StyledComponents/Wrappers"
 
 interface Props {
   question: RatedQuestion
+  questionText: string
   options: FactorialOption[]
   onClick: (questionId: string, rate: number | null, chosenOption: string) => void
   disabled?: boolean
@@ -22,6 +23,7 @@ const noBorder = {
 
 const FactorialSurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
   question,
+  questionText,
   options,
   onClick,
   disabled,
@@ -30,10 +32,10 @@ const FactorialSurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
     <ItemWrapper>
       <form>
         <div className="radio">
-          <ExerciseItemHeader titleText={question.question} />
+          <ExerciseItemHeader titleText={questionText} />
           {options.map((option, idx) => {
             return (
-              <CheckedRadioGroupWrap key={option.id} {...noBorder}>
+              <CheckedRadioGroupWrap key={option.id} {...noBorder} disabled={disabled}>
                 <input
                   type="radio"
                   id={`${question.questionLabel}-factorial-option-${idx + 1}`}

@@ -1,6 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
 import type { NextApiRequest, NextApiResponse } from "next"
 
+import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
 import { cors, runMiddleware } from "../../util/cors"
 import {
   ClientErrorResponse,
@@ -8,9 +9,15 @@ import {
   PrivateSpec,
   RatedQuestion,
   SubmittedForm,
+  SurveyItem,
   SurveyType,
 } from "../../util/stateInterfaces"
-import { calculateFactors, sanitizeQuestions } from "../../util/utils"
+import {
+  calculateFactors,
+  getGlobalVariables,
+  sanitizeQuestions,
+  scaleRatedQuestions,
+} from "../../util/utils"
 
 export default async (
   req: NextApiRequest,
@@ -32,6 +39,7 @@ interface GradingResult {
   feedback_text: string | null
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   feedback_json: ExerciseFeedback | null
+  set_user_variables?: UserVariablesMap | null
 }
 
 export interface ExerciseFeedback {
@@ -63,24 +71,41 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     const sanitizedAnswers = sanitizeQuestions(
       gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
     ) as RatedQuestion[]
-    const factors: Factor[] = calculateFactors(
-      gradingRequest.exercise_spec.factors,
-      sanitizedAnswers,
-    )
+    const scaledAnswers =
+      gradingRequest.exercise_spec.meansAndStandardDeviations &&
+      gradingRequest.exercise_spec.allowedNans
+        ? scaleRatedQuestions(
+            sanitizedAnswers,
+            gradingRequest.exercise_spec.meansAndStandardDeviations,
+            gradingRequest.exercise_spec.allowedNans,
+          )
+        : sanitizedAnswers
+    const factors: Factor[] | null = scaledAnswers
+      ? calculateFactors(gradingRequest.exercise_spec.factors, scaledAnswers)
+      : null
+
     return res.status(200).json({
       grading_progress: "FullyGraded",
       score_given: 1,
       score_maximum: 1,
-      feedback_text: "Good job!",
-      feedback_json: { factorReport: factors },
+      feedback_text: "Thank you for you submission!",
+      feedback_json: factors ? { factorReport: factors } : null, //TODO instead of returning null, return message from teachers that factor report could not be provided because of nan exceeds
     })
   }
+
+  const vars =
+    gradingRequest.exercise_spec?.type === SurveyType.NonFactorial
+      ? (getGlobalVariables(
+          gradingRequest.submission_data.answeredQuestions as SurveyItem[],
+        ) as UserVariablesMap)
+      : null
 
   res.status(200).json({
     grading_progress: "FullyGraded",
     score_given: 1,
     score_maximum: 1,
-    feedback_text: "Good job!",
+    feedback_text: "Thank you for you submission!",
     feedback_json: null,
+    set_user_variables: vars,
   })
 }
