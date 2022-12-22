@@ -180,7 +180,7 @@ export const scaleRatedQuestions = (
     const rate = q.rate
       ? (q.rate - meansAndStandardDeviations.means[q.questionLabel]) /
         meansAndStandardDeviations.standardDeviations[q.questionLabel]
-      : meansAndStandardDeviations.means[q.questionLabel]
+      : 0
     const scaledQuestion = { ...q, rate: rate }
     return scaledQuestion
   })

@@ -212,8 +212,19 @@ describe("Scaling rated questions", () => {
       p++
       return { ...q, rate: p > 3 ? null : q.rate }
     })
+    const expected = newAnswered.map((q) => {
+      return {
+        ...q,
+        rate: q.rate
+          ? (q.rate - meansAndStandardDeviations.means[q.questionLabel]) /
+            meansAndStandardDeviations.standardDeviations[q.questionLabel]
+          : 0,
+      }
+    })
     expect(scaleRatedQuestions(newAnswered, meansAndStandardDeviations, 0)).toBeNull()
+    expect(scaleRatedQuestions(newAnswered, meansAndStandardDeviations, 0)).not.toBe(expected)
     expect(scaleRatedQuestions(newAnswered, meansAndStandardDeviations, 1)).not.toBeNull()
+    expect(scaleRatedQuestions(newAnswered, meansAndStandardDeviations, 1)).toEqual(expected)
   })
 
   test("scale rated questions scales correctly with random means and sds", () => {
