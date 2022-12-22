@@ -231,7 +231,6 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                 )
               })}
             </ol>
-
             <button
               onClick={() => {
                 const newItem = item as SurveyItem
@@ -273,9 +272,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               margin-right 20px;
             `}
           >
-            <label htmlFor={item.id}>{"Conditional"}</label>
+            <label htmlFor={`mark-conditional-${item.id}`}>{"Conditional"}</label>
             <input
-              id={item.id}
+              id={`mark-conditional-${item.id}`}
               type="checkbox"
               checked={item.conditional}
               onChange={(e) => {
@@ -298,9 +297,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               margin-right 20px;
             `}
               >
-                <label htmlFor={item.id}>{"Make global"}</label>
+                <label htmlFor={`mark-global-variable-${item.id}`}>{"Make global"}</label>
                 <input
-                  id={item.id}
+                  id={`mark-global-variable-${item.id}`}
                   type="checkbox"
                   checked={item.globalVariable ? true : false}
                   onChange={(e) => {

@@ -67,9 +67,10 @@ test("can add non-factorial survey type wtih information elements and questions 
   // Select multiple-choice
   await frame.locator('[aria-label="select-answer-type-death"]').selectOption("multiple-choice")
   // Check input[type="checkbox"] >> nth=2
-  await frame.locator('input[type="checkbox"]').nth(2).check()
+  await frame.locator('input[type="checkbox"]').nth(3).check()
+  await (await frame.waitForSelector("text=Add Survey Item")).scrollIntoViewIfNeeded()
   // Select ownership,Ei
-  await frame.locator("select").nth(3).selectOption("ownership,Ei")
+  await frame.locator('[aria-label="triggering-option-selector"]').selectOption("ownership,Ei")
 
   // Click text=Add Survey Item
   await frame.locator("text=Add Survey Item").click()
@@ -78,7 +79,7 @@ test("can add non-factorial survey type wtih information elements and questions 
   // Select date
   await frame.locator('[aria-label="select-answer-type-date_of_death"]').selectOption("date")
   // Check input[type="checkbox"] >> nth=3
-  await frame.locator('input[type="checkbox"]').nth(3).check()
+  await frame.locator('input[type="checkbox"]').nth(5).check()
   // Select death,Kyllä
   await frame
     .locator('[aria-label="triggering-option-selector"]')
@@ -133,18 +134,15 @@ test("can add non-factorial survey type wtih information elements and questions 
   await frame
     .locator('[aria-label="select-answer-type-weaning_age"]')
     .selectOption("multiple-choice")
-  // Check text=weaning_ageMissä iässä koira erotettiin emostaan tai sijaisemosta? xEditor (spec >> input[type="checkbox"]
+
+  await (await frame.waitForSelector("text=Add Survey Item")).scrollIntoViewIfNeeded()
+
+  await frame.locator('input[type="checkbox"]').nth(11).check()
   await frame
-    .locator(
-      'text=weaning_ageMissä iässä koira erotettiin emostaan tai sijaisemosta? xEditor (spec >> input[type="checkbox"]',
-    )
-    .check()
-  // Select obtained_age,nuori
-  await frame
-    .locator(
-      'text=weaning_ageMissä iässä koira erotettiin emostaan tai sijaisemosta? xEditor (spec >> [aria-label="triggering-option-selector"]',
-    )
+    .locator('[aria-label="triggering-option-selector"]')
+    .nth(2)
     .selectOption("obtained_age,nuori")
+
   // Click text=Add Survey Item
   await frame.locator("text=Add Survey Item").click()
   // Fill li:nth-child(8) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
@@ -171,14 +169,20 @@ test("can add non-factorial survey type wtih information elements and questions 
   // Select number
   await frame.locator('[aria-label="select-answer-type-socialization_car"]').selectOption("number")
 
-  // Check text=infoSosiaalistamiskausi: 7 viikon - 4 kuukauden iässä, miten usein koira... xEdi >> input[type="checkbox"]
+  await frame.locator('input[type="checkbox"]').nth(14).check()
+  await frame
+    .locator('[aria-label="triggering-option-selector"]')
+    .nth(4)
+    .selectOption("obtained_age,muu")
+
+  /*   // Check text=infoSosiaalistamiskausi: 7 viikon - 4 kuukauden iässä, miten usein koira... xEdi >> input[type="checkbox"]
   await frame.locator('text=socialization_carmatkusti autolla? * >> input[type="checkbox"]').check()
   // Select obtained_age,muu
   await frame
     .locator('[aria-label="triggering-option-selector"]')
     .nth(4)
     .selectOption("obtained_age,muu")
-
+ */
   await expectScreenshotsToMatchSnapshots({
     axeSkip: ["heading-order", "scrollable-region-focusable"],
     headless,
