@@ -1,9 +1,14 @@
-/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import { v4 } from "uuid"
 
 import { State } from "../../../pages/iframe"
-import { Factor, FactorialSurvey, Question } from "../../../util/stateInterfaces"
+import TextField from "../../../shared-module/components/InputFields/TextField"
+import {
+  Factor,
+  FactorialSurvey,
+  NormalizationValues,
+  Question,
+} from "../../../util/stateInterfaces"
 import CsvReader from "../../SharedMisc/CsvReader"
 import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
@@ -29,7 +34,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
       `}
     >
       <fieldset>
-        <legend>Options</legend>
+        <legend>{"Options"}</legend>
         <ol>
           {state?.options?.map((o, idx) => (
             <li key={o.id}>
@@ -70,12 +75,12 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
             setState({ view_type: "exercise-editor", private_spec: newState })
           }}
         >
-          Add Option
+          {"Add Option"}
         </NewButton>
       </fieldset>
 
       <fieldset>
-        <legend>Questions</legend>
+        <legend>{"Questions"}</legend>
         <ol>
           {state?.questions?.map((q) => {
             if (q.questionLabel !== "info") {
@@ -109,7 +114,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
             )
           })}
         </ol>
-        Input questions as a list
+        {"Input questions as a list"}
         <ButtonWrapper>
           <ListInputEditor
             topic="question"
@@ -132,7 +137,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
         </ButtonWrapper>
       </fieldset>
       <StyledInnerEditor>
-        <label htmlFor="calculate-feedback-checkbox">Provide factor report to student</label>
+        <label htmlFor="calculate-feedback-checkbox">{"Provide factor report to student"}</label>
         <input
           type="checkbox"
           id="calculate-feedback-checkbox"
@@ -150,9 +155,9 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
       {state && state.calculateFeedback && (
         <>
           <fieldset>
-            <legend>Factors</legend>
+            <legend>{"Factors"}</legend>
             <CsvReader
-              title="Enter Factor weights CSV File"
+              title="Upload Factor weights CSV File"
               parseUsingHeaders={(value) => {
                 const factors: Factor[] = []
                 Object.keys(value).forEach((header) => {
@@ -197,6 +202,50 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 )
               })}
             </div>
+          </fieldset>
+          <fieldset>
+            <legend>{"Other documents"}</legend>
+            <CsvReader
+              title="Upload means and standardDeviations for answer normalization CSV File"
+              parseUsingHeaders={(value) => {
+                const normalVec: NormalizationValues = {
+                  means: { "": 0 },
+                  standardDeviations: { "": 0 },
+                }
+                Object.keys(value).forEach((header) => {
+                  if (header === "means") {
+                    const means = { ...(value[header] as { [key: string]: number }) }
+                    normalVec.means = means
+                  } else {
+                    const standardDeviations = { ...(value[header] as { [key: string]: number }) }
+                    normalVec.standardDeviations = standardDeviations
+                  }
+                })
+                console.log(normalVec)
+                setState({
+                  view_type: "exercise-editor",
+                  private_spec: { ...state, meansAndStandardDeviations: normalVec },
+                })
+              }}
+              parseNoHeaders={() => null}
+              disableHeaderOption={true}
+              applyMsg="set normalization values"
+            />
+            <TextField
+              label="max nan-answers allowed"
+              type="number"
+              value={state.allowedNans ? (state.allowedNans as unknown as string) : "0"}
+              onChange={(value) => {
+                setState({
+                  view_type: "exercise-editor",
+                  private_spec: { ...state, allowedNans: parseInt(value) },
+                })
+              }}
+              className={css`
+                flex: 1;
+                padding: 0 0.2rem 0 1rem;
+              `}
+            />
           </fieldset>
           <OutputMatrix state={state} />
         </>

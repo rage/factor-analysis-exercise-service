@@ -1,12 +1,14 @@
-import { Factor, Question, RatedQuestion } from "./stateInterfaces"
+import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
+
+import { Factor, NormalizationValues, Question, RatedQuestion, SurveyItem } from "./stateInterfaces"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
 
 /**
  * Calculates the scores for factors
- * @param factors
- * @param ratedQuestions
+ * @param factors contains the weight matrix to by multiplied with rated questions
+ * @param ratedQuestions used to create vector of scores for the matrix multiplication
  * @returns factors with calculated score
  */
 export const calculateFactors = (factors: Factor[], ratedQuestions: RatedQuestion[]): Factor[] => {
@@ -100,8 +102,91 @@ export const sanitizeQuestions = (questions: QuestionItem[]) => {
   const sanitizedForm = questions.filter(
     (item: Question | RatedQuestion) => item.questionLabel !== "info",
   )
-
   return sanitizedForm
 }
 
 type QuestionItem = RatedQuestion | Question
+
+export const getGlobalVariables = (answeredSurvey: SurveyItem[]): UserVariablesMap | undefined => {
+  const surveyItems: SurveyItem[] = answeredSurvey.filter((item) => item.globalVariable === true)
+  if (surveyItems.length > 0) {
+    const globalVariables: UserVariablesMap = {}
+    surveyItems.map((item) => {
+      globalVariables[item.question.questionLabel] = item.answer.answer
+    })
+    return globalVariables
+  }
+}
+
+interface LabelValuePair {
+  label: string
+  val: string
+}
+
+/**
+ * prossesses text replacing the referrences to global variables with user's
+ * variables, or default values
+ *
+ * @param textItem text to process, string
+ * @param userVaiablesMap Map or null
+ * @returns processed text
+ */
+export const insertVariablesToText = (
+  textItem: string,
+  userVaiablesMap?: UserVariablesMap | null,
+): string => {
+  // format of variable is ${question_label=default_value}
+  const regexp = /\$\{[\w\s-]*=[\w\s-]*\}/g
+  const matches = [...textItem.matchAll(regexp)]
+  const values = new Map<string, LabelValuePair>()
+  matches?.map((match) => {
+    match.map((l) => {
+      const strippedString = l.replace("${", "").replace("}", "")
+      const pair = strippedString.split("=")
+      values.set(l, {
+        label: pair[0],
+        val: userVaiablesMap ? userVaiablesMap[pair[0]] ?? pair[1] : pair[1],
+      } as LabelValuePair)
+      return pair
+    })
+  })
+  let newContent = textItem
+  matches?.map((match) => {
+    match.map((m) => {
+      newContent = newContent.replace(m, (values.get(m) as LabelValuePair).val)
+    })
+  })
+  return newContent
+}
+
+/**
+ *
+ * @param ratedQuestions used to create vector of scores for the matrix multiplication
+ * @param meansAndStandardDeviations used to scale the answers before adding up the factors,
+ * means also used to impute nan-answers
+ * @param maxNanAllowed allowed limit amount of nan-answers, beyond which report is not calculated
+ * @returns scaled ratedQuestions or null if max nan exceeded
+ */
+export const scaleRatedQuestions = (
+  ratedQuestions: RatedQuestion[],
+  meansAndStandardDeviations: NormalizationValues,
+  maxNanAllowed: number,
+): RatedQuestion[] | null => {
+  let amount = 0
+  const questions: RatedQuestion[] = ratedQuestions.map((q) => {
+    if (!q.rate) {
+      amount++
+    }
+    const rate = q.rate
+      ? (q.rate - meansAndStandardDeviations.means[q.questionLabel]) /
+        meansAndStandardDeviations.standardDeviations[q.questionLabel]
+      : 0
+    const scaledQuestion = { ...q, rate: rate }
+    return scaledQuestion
+  })
+  if (amount > maxNanAllowed) {
+    console.log(amount, maxNanAllowed, amount > maxNanAllowed)
+    return null
+  }
+  return questions
+}

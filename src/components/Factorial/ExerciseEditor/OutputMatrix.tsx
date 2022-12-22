@@ -71,6 +71,8 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
         >
           <tr>
             <Td>{""}</Td>
+            <Td>{"mean"}</Td>
+            <Td>{"scale"}</Td>
             {state.factors.map((f) => {
               return <Td key={f.id}>{f.label}</Td>
             })}
@@ -92,6 +94,24 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
                   `}
                 >
                   {q_idx + 1} {sanitizedQuestions[q_idx].questionLabel}
+                </Td>
+                <Td
+                  className={css`
+                    background-color: ${baseTheme.colors.clear[200]};
+                  `}
+                >
+                  {state.meansAndStandardDeviations
+                    ? state.meansAndStandardDeviations.means[question.questionLabel]
+                    : "-"}
+                </Td>
+                <Td
+                  className={css`
+                    background-color: ${baseTheme.colors.clear[200]};
+                  `}
+                >
+                  {state.meansAndStandardDeviations
+                    ? state.meansAndStandardDeviations.standardDeviations[question.questionLabel]
+                    : "-"}
                 </Td>
                 {state.factors.map((factor) => {
                   if (typeof factor.weights[question.questionLabel] === "undefined") {

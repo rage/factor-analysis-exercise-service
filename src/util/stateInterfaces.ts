@@ -34,6 +34,19 @@ export interface FactorialSurvey {
   factors: Factor[]
   options: FactorialOption[]
   questions: Question[]
+  meansAndStandardDeviations?: NormalizationValues
+  allowedNans?: number
+}
+
+/**
+ * Normalization vectors [mean] [std] for each question used to normalize question rates in
+ * report calculations
+ */
+export interface NormalizationValues {
+  /** [QuestionLabel: mean] also used for nan-value imputation */
+  means: { [key: string]: number }
+  /** [QuestionLabel: std] for normalization of the variable */
+  standardDeviations: { [key: string]: number }
 }
 
 /**
@@ -74,6 +87,8 @@ export interface SurveyItem {
   answer: Answer
   conditional: boolean
   dependsOn?: SurveyItemCondition
+  /** If marked as globalVariabel a <key: questionLabel, value: userAnswer> pair will be created upon submission and saved to the database, available in other exercises */
+  globalVariable?: boolean
 }
 
 /** Condition for whether to display the question or not
@@ -111,6 +126,7 @@ export enum AnswerType {
   Date = "date",
   Dropdown = "dropdown-selection",
   ConsentCheckbox = "consent-checkbox",
+  FileUpload = "file-upload",
 }
 
 export type PrivateSpec = FactorialSurvey | Survey | null

@@ -5,6 +5,7 @@ import { baseTheme } from "../../shared-module/styles"
 interface DivProps {
   checkedColor: string
   border?: boolean
+  disabled?: boolean
 }
 
 export const CheckedRadioGroupWrap = styled.div<DivProps>`
@@ -48,8 +49,10 @@ export const CheckedRadioGroupWrap = styled.div<DivProps>`
   }
 
   input[type="radio"]:checked {
-    border-color: ${({ checkedColor }) => checkedColor};
-    background: ${({ checkedColor }) => checkedColor};
+    border-color: ${({ disabled, checkedColor }) =>
+      disabled ? baseTheme.colors.gray[200] : checkedColor};
+    background: ${({ disabled, checkedColor }) =>
+      disabled ? baseTheme.colors.gray[200] : checkedColor};
   }
 
   input[type="radio"]:checked::before {
@@ -95,7 +98,7 @@ export const RadioGroupWrap = styled.div<DivProps>`
     border-radius: 50%;
     transform: scale(0);
     transition: 120ms transform ease-in-out;
-    background-color: ${baseTheme.colors.green[600]};
+    background-color: inherit;
   }
 
   label {
@@ -106,6 +109,7 @@ export const RadioGroupWrap = styled.div<DivProps>`
 
   input[type="radio"]:checked::before {
     transform: scale(1);
-    background: #1f6964;
+    background: ${({ disabled, checkedColor }) =>
+      disabled ? baseTheme.colors.gray[200] : checkedColor};
   }
 `

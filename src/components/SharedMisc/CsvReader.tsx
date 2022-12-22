@@ -52,7 +52,6 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
   const checkedCollor = disableHeaderOption ? "grey" : "rgb(55, 188, 155)"
   const parseByHeaders = () => {
     const structToReturn: StructToReturn = {}
-    console.log(columnIdentifier)
     headers.map((header) => {
       if (header === columnIdentifier) {
         return
@@ -67,7 +66,6 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
         structToReturn[header][(row[columnIdentifier] as string) ?? idx] = row[header]
       })
     })
-    console.log(structToReturn)
     parseUsingHeaders(structToReturn)
   }
 

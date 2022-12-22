@@ -33,7 +33,7 @@ const FactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ factor, onChan
             label="min"
             type="number"
             placeholder="ranging from"
-            value={factor.range?.min as unknown as string}
+            value={factor.range?.min ? (factor.range?.min as unknown as string) : "0"}
             onChange={(value) => {
               onChangeFactor({
                 ...factor,
@@ -49,7 +49,7 @@ const FactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ factor, onChan
             label="max"
             type="number"
             placeholder="ranging to"
-            value={factor.range?.max as unknown as string}
+            value={factor.range?.max ? (factor.range?.max as unknown as string) : "0"}
             onChange={(value) => {
               onChangeFactor({
                 ...factor,
