@@ -30,12 +30,17 @@ export interface FactorialOption {
 export interface FactorialSurvey {
   id: string
   type: SurveyType.Factorial
-  calculateFeedback: boolean
-  factors: Factor[]
   options: FactorialOption[]
   questions: Question[]
+  calculateFeedback: boolean
+  factors: Factor[]
   meansAndStandardDeviations?: NormalizationValues
   allowedNans?: number
+  reportVariables?: {
+    titleText: string
+    name: string
+    breed: string
+  }
 }
 
 /**
@@ -70,6 +75,8 @@ export interface Factor {
     max: number
   }
   score: number
+  /** [breed: avg-score] to be compared to in the factor report */
+  breedAvgs?: { [key: string]: number }
 }
 
 /** PublicSpec for Factorial survey contains only questions and options

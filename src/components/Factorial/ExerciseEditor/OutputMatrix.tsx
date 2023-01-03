@@ -28,6 +28,14 @@ const Td = styled.td`
   font-size: 12px;
   font-family: ${primaryFont};
 `
+const Th = styled.th`
+  border: 1px solid;
+  padding: 5px 10px;
+  text-align: left;
+  border-top-width: 0;
+  border-left-width: 0;
+  font-family: ${primaryFont};
+`
 
 const Tbody = styled.tbody`
   white-space: nowrap;
@@ -61,6 +69,11 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
         })}
       </div>
       <Table>
+        <colgroup>
+          <col />
+          <col span={state.factors.length} className="factors" />
+          <col span={2} className="scaling" />
+        </colgroup>
         <thead
           className={css`
             position: sticky;
@@ -70,19 +83,28 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
           `}
         >
           <tr>
-            <Td>{""}</Td>
-            <Td>{"mean"}</Td>
-            <Td>{"scale"}</Td>
+            <Th id={""}>{""}</Th>
             {state.factors.map((f) => {
-              return <Td key={f.id}>{f.label}</Td>
+              return (
+                <Th scope="col" key={f.label} id={f.label}>
+                  {f.label}
+                </Th>
+              )
             })}
+            <Th scope="col" id="mean">
+              {"mean"}
+            </Th>
+            <Th scope="col" id="scale">
+              {"scale"}
+            </Th>
           </tr>
         </thead>
         <Tbody>
           {sanitizedQuestions.map((question, q_idx) => {
             return (
               <tr key={question.id}>
-                <Td
+                <Th
+                  scope="row"
                   className={css`
                     ${error.indexOf(question.questionLabel) > -1 && `color: red;`}
                     position: sticky;
@@ -94,25 +116,7 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
                   `}
                 >
                   {q_idx + 1} {sanitizedQuestions[q_idx].questionLabel}
-                </Td>
-                <Td
-                  className={css`
-                    background-color: ${baseTheme.colors.clear[200]};
-                  `}
-                >
-                  {state.meansAndStandardDeviations
-                    ? state.meansAndStandardDeviations.means[question.questionLabel]
-                    : "-"}
-                </Td>
-                <Td
-                  className={css`
-                    background-color: ${baseTheme.colors.clear[200]};
-                  `}
-                >
-                  {state.meansAndStandardDeviations
-                    ? state.meansAndStandardDeviations.standardDeviations[question.questionLabel]
-                    : "-"}
-                </Td>
+                </Th>
                 {state.factors.map((factor) => {
                   if (typeof factor.weights[question.questionLabel] === "undefined") {
                     if (error.indexOf(question.questionLabel) < 0) {
@@ -123,9 +127,74 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
                   }
                   return <Td key={factor.id}>{factor.weights[question.questionLabel]}</Td>
                 })}
+                <Td
+                  headers="means"
+                  className={css`
+                    background-color: ${baseTheme.colors.clear[200]};
+                  `}
+                >
+                  {state.meansAndStandardDeviations
+                    ? state.meansAndStandardDeviations.means[question.questionLabel]
+                    : "-"}
+                </Td>
+                <Td
+                  headers="scale"
+                  className={css`
+                    background-color: ${baseTheme.colors.clear[200]};
+                  `}
+                >
+                  {state.meansAndStandardDeviations
+                    ? state.meansAndStandardDeviations.standardDeviations[question.questionLabel]
+                    : "-"}
+                </Td>
               </tr>
             )
           })}
+        </Tbody>
+        <thead>
+          <tr>
+            <Th
+              colSpan={state.factors.length + 1}
+              className={css`
+                align: center;
+                background-color: ${baseTheme.colors.clear[200]};
+              `}
+            >
+              {"Breed Averages"}
+            </Th>
+          </tr>
+        </thead>
+        <Tbody>
+          {state.factors[0].breedAvgs &&
+            Object.keys(state.factors[0].breedAvgs).map((e, idx) => {
+              return (
+                <tr key={idx}>
+                  <Th
+                    id={e}
+                    scope="row"
+                    className={css`
+                      position: sticky;
+                      left: 0px;
+                      background-color: ${baseTheme.colors.crimson[100]};
+                      max-width: 10rem;
+                      word-wrap: break-word;
+                      white-space: normal;
+                    `}
+                  >
+                    {e}
+                  </Th>
+                  {state.factors.map((f) => {
+                    if (f.breedAvgs) {
+                      return (
+                        <Td headers={f.label} key={f.id}>
+                          {f.breedAvgs[e] ?? ""}
+                        </Td>
+                      )
+                    }
+                  })}
+                </tr>
+              )
+            })}
         </Tbody>
       </Table>
     </div>

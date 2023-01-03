@@ -7,6 +7,7 @@ import { useState } from "react"
 
 import { baseTheme } from "../../shared-module/styles"
 import { CheckboxWrap } from "../StyledComponents/CheckboxWrap"
+import { StyledInnerEditor } from "../StyledComponents/Wrappers"
 
 interface Props {
   parseUsingHeaders: (data: StructToReturn) => void
@@ -86,26 +87,35 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
         gap: 0.5em;
       `}
     >
-      <CheckboxWrap checkedCollor={checkedCollor} info disabled={disableHeaderOption}>
-        <input
-          type="checkbox"
-          name="apply headers"
-          checked={applyHeaders}
-          onChange={(e) => {
-            setApplyHeaders(e.target.checked)
-          }}
-          disabled={disableHeaderOption}
-        />
-        <label>{checkboxLabel}</label>
-      </CheckboxWrap>
-      <label
-        htmlFor="csvInput"
-        className={css`
-          display: block;
-        `}
-      >
-        {title}
-      </label>
+      <StyledInnerEditor>
+        <label
+          htmlFor="csvInput"
+          className={css`
+            display: flex;
+            width: 79%;
+          `}
+        >
+          {title}
+        </label>
+        <CheckboxWrap checkedCollor={checkedCollor} info disabled={disableHeaderOption}>
+          <input
+            type="checkbox"
+            name="apply headers"
+            checked={applyHeaders}
+            onChange={(e) => {
+              setApplyHeaders(e.target.checked)
+            }}
+            disabled={disableHeaderOption}
+          />
+          <label
+            className={css`
+              color: ${disableHeaderOption ? baseTheme.colors.gray[400] : "inherit"};
+            `}
+          >
+            {checkboxLabel}
+          </label>
+        </CheckboxWrap>
+      </StyledInnerEditor>
       <input
         id="csvInput"
         name="file"
@@ -165,7 +175,7 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
               transform: (value) => {
                 return value.trim()
               },
-              delimitersToGuess: [",", "\t", "|", ";", " ", Papa.RECORD_SEP, Papa.UNIT_SEP],
+              delimitersToGuess: [",", "\t", "|", ";", Papa.RECORD_SEP, Papa.UNIT_SEP],
             })
           }
         }}

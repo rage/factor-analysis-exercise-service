@@ -167,6 +167,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                     name: "",
                     weights: { ...(value[header] as { [key: string]: number }) },
                     score: 0,
+                    breedAvgs: { "": 0 },
                   }
                   factors.push(factor)
                 })
@@ -205,32 +206,61 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
           </fieldset>
           <fieldset>
             <legend>{"Other documents"}</legend>
-            <CsvReader
-              title="Upload means and standardDeviations for answer normalization CSV File"
-              parseUsingHeaders={(value) => {
-                const normalVec: NormalizationValues = {
-                  means: { "": 0 },
-                  standardDeviations: { "": 0 },
-                }
-                Object.keys(value).forEach((header) => {
-                  if (header === "means") {
-                    const means = { ...(value[header] as { [key: string]: number }) }
-                    normalVec.means = means
-                  } else {
-                    const standardDeviations = { ...(value[header] as { [key: string]: number }) }
-                    normalVec.standardDeviations = standardDeviations
+            <fieldset>
+              <CsvReader
+                title="Upload breeds average scores CSV File"
+                parseUsingHeaders={(value) => {
+                  const newFactors = state.factors
+                  Object.keys(value).forEach((header) => {
+                    const factor = newFactors.find((f) => f.label === header)
+                    if (factor) {
+                      factor.breedAvgs = { ...(value[header] as { [key: string]: number }) }
+                      newFactors.map((f) => {
+                        if (f.label === header) {
+                          f.breedAvgs = { ...(value[header] as { [key: string]: number }) }
+                        }
+                      })
+                    }
+                  })
+                  console.log(newFactors)
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: { ...state, factors: newFactors },
+                  })
+                }}
+                parseNoHeaders={() => null}
+                disableHeaderOption={true}
+                applyMsg="set breed average values"
+              />
+            </fieldset>
+            <fieldset>
+              <CsvReader
+                title="Upload means and SDs CSV File for answer normalization"
+                parseUsingHeaders={(value) => {
+                  const normalVec: NormalizationValues = {
+                    means: { "": 0 },
+                    standardDeviations: { "": 0 },
                   }
-                })
-                console.log(normalVec)
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, meansAndStandardDeviations: normalVec },
-                })
-              }}
-              parseNoHeaders={() => null}
-              disableHeaderOption={true}
-              applyMsg="set normalization values"
-            />
+                  Object.keys(value).forEach((header) => {
+                    if (header === "means") {
+                      const means = { ...(value[header] as { [key: string]: number }) }
+                      normalVec.means = means
+                    } else {
+                      const standardDeviations = { ...(value[header] as { [key: string]: number }) }
+                      normalVec.standardDeviations = standardDeviations
+                    }
+                  })
+                  console.log(normalVec)
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: { ...state, meansAndStandardDeviations: normalVec },
+                  })
+                }}
+                parseNoHeaders={() => null}
+                disableHeaderOption={true}
+                applyMsg="set normalization values"
+              />
+            </fieldset>
             <TextField
               label="max nan-answers allowed"
               type="number"
