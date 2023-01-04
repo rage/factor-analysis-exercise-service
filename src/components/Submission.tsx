@@ -60,7 +60,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
               width: 100%;
               display: flex;
               flex-direction: column;
-              margin: 2rem auto;
+              margin: 4rem auto;
             `}
           >
             <FactorialReport factor={f} name={name} breed={breed} />

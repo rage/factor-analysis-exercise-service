@@ -2,7 +2,9 @@
 import { css } from "@emotion/css"
 import React from "react"
 // eslint-disable-next-line import/order
-import { FaDog } from "react-icons/fa"
+import { FaCaretDown, FaDog, FaPaw } from "react-icons/fa"
+import { baseTheme } from "../../../shared-module/styles"
+import { respondToOrLarger } from "../../../shared-module/styles/respond"
 //import { respondToOrLarger } from "../../shared-module/styles/respond"
 import { Factor } from "../../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
@@ -21,8 +23,8 @@ export const barColors = [
 
 interface CoordinateProps {
   factor: Factor
-  name: string
-  breed: string
+  name: string | null
+  breed: string | null
 }
 
 export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>> = ({
@@ -38,83 +40,138 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
     (100 * (-(factor.range?.min as number) + factor.score)) /
     ((factor.range?.max as number) - (factor.range?.min as number))
 
+  let breedAvg = 0 //species + Math.random() * 4
+  if (factor.breedAvgs && breed && factor.breedAvgs[breed]) {
+    breedAvg =
+      (100 * (-(factor.range?.min as number) + factor.breedAvgs[breed])) /
+      ((factor.range?.max as number) - (factor.range?.min as number))
+  }
+
   console.log(breed)
   return (
-    <div>
+    <div
+      className={css`
+        display: flex;
+        flex-direction: column;
+      `}
+    >
       <ExerciseItemHeader titleText={factor.name} />
       <div
         className={css`
           display: flex;
-          height: 37px;
+          flex-direction: column;
+          justify-content: space-between;
+          ${respondToOrLarger.sm} {
+            flex-direction: row;
+          }
+          height: 100%;
+          width: 100%;
           place-content: left;
           gap: 0.5rem;
           margin-bottom: 3rem;
-          label {
-            font-family: "Raleway";
-            font-style: normal;
-            font-weight: 500;
-            font-size: 15px;
-            line-height: 250%;
+          div[id="container"] {
             display: flex;
-            align-items: flex-end;
-          }
-          div[id="logo"] {
-            margin-right: 1rem;
+            flex-direction: column;
+            ${respondToOrLarger.sm} {
+              flex-direction: row;
+            }
+            label {
+              font-family: "Raleway";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 15px;
+              line-height: 250%;
+              display: flex;
+              align-items: flex-end;
+            }
           }
         `}
       >
-        <label>{"Species average"}</label>
-        <div
-          id={`${factor.label}-logo`}
-          className={css`
-            height: 37px;
-            background-color: #d9d9d9;
-            width: 37px;
-            border-radius: 37px;
-            display: grid;
-            place-content: center;
-            div {
-              height: 14px;
-              width: 14px;
-              background-color: black;
-            }
-          `}
-        >
+        <div id="container">
           <div
+            id={`${factor.label}-species-logo`}
             className={css`
-              border-radius: 10px;
-            `}
-          />
-        </div>
-        <label>{name}</label>
-        <div
-          className={css`
-            height: 37px;
-            background-color: #d9d9d9;
-            width: 37px;
-            border-radius: 37px;
-            display: grid;
-            place-content: center;
-            div {
-              height: 20px;
-              width: 20px;
-              background-color: pink;
-              border-radius: 10px;
-            }
-          `}
-        >
-          <div
-            className={css`
+              height: 37px;
+              width: 37px;
+              border-radius: 37px;
               display: grid;
               place-content: center;
+              div {
+                height: 20px;
+                width: 20px;
+              }
             `}
           >
-            <FaDog
+            <div
               className={css`
-                height: 100%;
+                display: grid;
+                place-content: center;
+              `}
+            >
+              <FaPaw
+                className={css`
+                  height: 100%;
+                `}
+              />
+            </div>
+          </div>
+          <label>{"Dogs average"}</label>
+        </div>
+        <div id="container">
+          <div
+            id={`${factor.label}-ownpet-logo`}
+            className={css`
+              height: 37px;
+              width: 37px;
+              border-radius: 37px;
+              display: grid;
+              place-content: center;
+              div {
+                height: 26px;
+                width: 26px;
+                background-color: ${baseTheme.colors.purple[100]};
+                border-radius: 20px;
+              }
+            `}
+          >
+            <div
+              className={css`
+                display: grid;
+                place-content: center;
+              `}
+            >
+              <FaDog
+                className={css`
+                  height: 100%;
+                `}
+              />
+            </div>
+          </div>
+          <label>{name ?? "Your Score"}</label>
+        </div>
+        <div id="container">
+          <div
+            id={`${factor.label}-breed-logo`}
+            className={css`
+              height: 37px;
+              width: 37px;
+              border-radius: 37px;
+              display: grid;
+              place-content: center;
+              div {
+                height: 14px;
+                width: 14px;
+                background-color: black;
+              }
+            `}
+          >
+            <div
+              className={css`
+                border-radius: 50px;
               `}
             />
           </div>
+          <label>{`${breed} average`}</label>
         </div>
       </div>
       <div
@@ -126,56 +183,127 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
       >
         <div
           className={css`
-            height: 37px;
-            background-color: #d9d9d9;
-            width: 37px;
-            border-radius: 37px;
             position: absolute;
             left: ${`${species}%`};
             transform: translate(-50%, 0);
             display: grid;
             place-content: center;
-            div {
-              height: 14px;
-              width: 14px;
-              background-color: black;
-            }
           `}
         >
           <div
             className={css`
-              border-radius: 10px;
+              height: 28px;
+              width: 28px;
+              background-color: ${baseTheme.colors.blue[200]};
+              border-radius: 30px;
+              display: grid;
+              place-content: center;
             `}
-          />
+          >
+            <FaPaw
+              className={css`
+                height: 100%;
+              `}
+            />
+          </div>
+          <div
+            className={css`
+              display: grid;
+              height: 12px;
+              place-content: center;
+            `}
+          >
+            <FaCaretDown
+              className={css`
+                color: ${baseTheme.colors.blue[400]};
+                height: 100%;
+                margin-top: -1px;
+              `}
+            />
+          </div>
         </div>
+        {breed && factor.breedAvgs && factor.breedAvgs[breed] && (
+          <div
+            className={css`
+              position: absolute;
+              left: ${`${breedAvg}%`};
+              transform: translate(-50%, 0);
+              display: grid;
+              place-content: center;
+            `}
+          >
+            <div
+              className={css`
+                height: 28px;
+                width: 28px;
+                background-color: ${baseTheme.colors.red[200]};
+                border-radius: 30px;
+                display: grid;
+                place-content: center;
+              `}
+            >
+              <div
+                className={css`
+                  height: 14px;
+                  width: 14px;
+                  background-color: black;
+                  border-radius: 50px;
+                `}
+              />
+            </div>
+            <div
+              className={css`
+                display: grid;
+                height: 12px;
+                place-content: center;
+              `}
+            >
+              <FaCaretDown
+                className={css`
+                  color: ${baseTheme.colors.red[400]};
+                  height: 100%;
+                  margin-top: 11px;
+                `}
+              />
+            </div>
+          </div>
+        )}
         <div
           className={css`
-            height: 37px;
-            background-color: #d9d9d9;
-            width: 37px;
-            border-radius: 37px;
             position: absolute;
             left: ${`${userScore}%`};
             transform: translate(-50%, 0);
             display: grid;
-            place-content: center;
-            div {
-              height: 20px;
-              width: 20px;
-              background-color: pink;
-              border-radius: 10px;
-            }
           `}
         >
           <div
             className={css`
               display: grid;
               place-content: center;
+              background-color: ${baseTheme.colors.purple[100]};
+              height: 28px;
+              width: 28px;
+              border-radius: 30px;
             `}
           >
             <FaDog
               className={css`
                 height: 100%;
+              `}
+            />
+          </div>
+          <div
+            className={css`
+              display: grid;
+              height: 12px;
+              place-content: center;
+            `}
+          >
+            <FaCaretDown
+              className={css`
+                color: ${baseTheme.colors.purple[400]};
+                height: 100%;
+                margin-top: 5px;
               `}
             />
           </div>
