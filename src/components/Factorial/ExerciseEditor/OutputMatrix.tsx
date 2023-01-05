@@ -165,7 +165,7 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
           </tr>
         </thead>
         <Tbody>
-          {state.factors[0].breedAvgs &&
+          {state.factors[0]?.breedAvgs &&
             Object.keys(state.factors[0].breedAvgs).map((e, idx) => {
               return (
                 <tr key={idx}>

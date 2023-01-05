@@ -167,11 +167,10 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                     name: "",
                     weights: { ...(value[header] as { [key: string]: number }) },
                     score: 0,
-                    breedAvgs: { "": 0 },
+                    breedAvgs: {},
                   }
                   factors.push(factor)
                 })
-                console.log(factors)
                 setState({
                   view_type: "exercise-editor",
                   private_spec: { ...state, factors: factors },
@@ -222,7 +221,6 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                       })
                     }
                   })
-                  console.log(newFactors)
                   setState({
                     view_type: "exercise-editor",
                     private_spec: { ...state, factors: newFactors },
@@ -238,8 +236,8 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 title="Upload means and SDs CSV File for answer normalization"
                 parseUsingHeaders={(value) => {
                   const normalVec: NormalizationValues = {
-                    means: { "": 0 },
-                    standardDeviations: { "": 0 },
+                    means: {},
+                    standardDeviations: {},
                   }
                   Object.keys(value).forEach((header) => {
                     if (header === "means") {
@@ -250,7 +248,6 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                       normalVec.standardDeviations = standardDeviations
                     }
                   })
-                  console.log(normalVec)
                   setState({
                     view_type: "exercise-editor",
                     private_spec: { ...state, meansAndStandardDeviations: normalVec },
@@ -261,21 +258,57 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 applyMsg="set normalization values"
               />
             </fieldset>
-            <TextField
-              label="max nan-answers allowed"
-              type="number"
-              value={state.allowedNans ? (state.allowedNans as unknown as string) : "0"}
-              onChange={(value) => {
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, allowedNans: parseInt(value) },
-                })
-              }}
-              className={css`
-                flex: 1;
-                padding: 0 0.2rem 0 1rem;
-              `}
-            />
+            <StyledInnerEditor>
+              <TextField
+                label="Global variable key for name"
+                type="text"
+                value={state.reportVariables ? state.reportVariables.name : ""}
+                onChange={(value) => {
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: {
+                      ...state,
+                      reportVariables: { ...state.reportVariables, name: value },
+                    },
+                  })
+                }}
+                className={css`
+                  flex: 3;
+                `}
+              />
+              <TextField
+                label="Global variable key for breed"
+                type="text"
+                value={state.reportVariables ? state.reportVariables.breed : ""}
+                onChange={(value) => {
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: {
+                      ...state,
+                      reportVariables: { ...state.reportVariables, breed: value },
+                    },
+                  })
+                }}
+                className={css`
+                  flex: 3;
+                  padding: 0 0.5rem 0 0.5rem;
+                `}
+              />
+              <TextField
+                label="max nan-answers allowed"
+                type="number"
+                value={state.allowedNans ? (state.allowedNans as unknown as string) : "0"}
+                onChange={(value) => {
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: { ...state, allowedNans: parseInt(value) },
+                  })
+                }}
+                className={css`
+                  flex: 2;
+                `}
+              />
+            </StyledInnerEditor>
           </fieldset>
           <OutputMatrix state={state} />
         </>

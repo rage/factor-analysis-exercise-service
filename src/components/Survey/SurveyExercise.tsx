@@ -167,9 +167,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
                 type="file"
                 accept="png"
                 onChange={(e) => {
-                  console.log("in file select", e.target)
                   if (e.target.files) {
-                    console.log("clearly no null")
                     updateFileUpload(item, e.target.files[0])
                   }
                 }}

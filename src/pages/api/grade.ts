@@ -5,7 +5,7 @@ import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-
 import { cors, runMiddleware } from "../../util/cors"
 import {
   ClientErrorResponse,
-  Factor,
+  FactorReport,
   PrivateSpec,
   RatedQuestion,
   SubmittedForm,
@@ -43,7 +43,9 @@ interface GradingResult {
 }
 
 export interface ExerciseFeedback {
-  factorReport: Factor[]
+  nameKey?: string
+  breedKey?: string
+  factorReport: FactorReport[]
 }
 
 interface GradingRequest {
@@ -80,16 +82,20 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
             gradingRequest.exercise_spec.allowedNans,
           )
         : sanitizedAnswers
-    const factors: Factor[] | null = scaledAnswers
+    const factorReports: FactorReport[] | null = scaledAnswers
       ? calculateFactors(gradingRequest.exercise_spec.factors, scaledAnswers)
       : null
+    const nameKey = gradingRequest.exercise_spec.reportVariables?.name
+    const breedKey = gradingRequest.exercise_spec.reportVariables?.breed
 
     return res.status(200).json({
       grading_progress: "FullyGraded",
       score_given: 1,
       score_maximum: 1,
       feedback_text: "Thank you for you submission!",
-      feedback_json: factors ? { factorReport: factors } : null, //TODO instead of returning null, return message from teachers that factor report could not be provided because of nan exceeds
+      feedback_json: factorReports
+        ? { nameKey: nameKey, breedKey: breedKey, factorReport: factorReports }
+        : null, //TODO instead of returning null, return message from teachers that factor report could not be provided because of nan exceeds
     })
   }
 

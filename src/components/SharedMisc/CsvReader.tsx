@@ -137,8 +137,8 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
             parse(inputFile, {
               delimiter: "", // auto-detect
               newline: "", // auto-detect
-              quoteChar: "",
-              escapeChar: "",
+              quoteChar: '"',
+              escapeChar: '"',
               header: applyHeaders,
               transformHeader: (header) => {
                 const newHeaders = headers

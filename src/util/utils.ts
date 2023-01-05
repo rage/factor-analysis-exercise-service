@@ -1,6 +1,13 @@
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
-import { Factor, NormalizationValues, Question, RatedQuestion, SurveyItem } from "./stateInterfaces"
+import {
+  Factor,
+  FactorReport,
+  NormalizationValues,
+  Question,
+  RatedQuestion,
+  SurveyItem,
+} from "./stateInterfaces"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
@@ -9,9 +16,12 @@ const matrixMultiplication = require("matrix-multiplication")
  * Calculates the scores for factors
  * @param factors contains the weight matrix to by multiplied with rated questions
  * @param ratedQuestions used to create vector of scores for the matrix multiplication
- * @returns factors with calculated score
+ * @returns FactorReports with calculated score
  */
-export const calculateFactors = (factors: Factor[], ratedQuestions: RatedQuestion[]): Factor[] => {
+export const calculateFactors = (
+  factors: Factor[],
+  ratedQuestions: RatedQuestion[],
+): FactorReport[] => {
   // If have to use number[][] as the weights matrix in some parts
   /* const matrix = survey.matrix
 
@@ -40,6 +50,7 @@ export const calculateFactors = (factors: Factor[], ratedQuestions: RatedQuestio
         ? factor.score + factor.weights[item.questionLabel] * item.rate
         : factor.score
     })
+    return factor as FactorReport
   })
 
   return factors
@@ -185,7 +196,6 @@ export const scaleRatedQuestions = (
     return scaledQuestion
   })
   if (amount > maxNanAllowed) {
-    console.log(amount, maxNanAllowed, amount > maxNanAllowed)
     return null
   }
   return questions

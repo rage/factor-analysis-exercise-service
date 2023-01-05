@@ -6,7 +6,7 @@ import { FaCaretDown, FaDog, FaPaw } from "react-icons/fa"
 import { baseTheme } from "../../../shared-module/styles"
 import { respondToOrLarger } from "../../../shared-module/styles/respond"
 //import { respondToOrLarger } from "../../shared-module/styles/respond"
-import { Factor } from "../../../util/stateInterfaces"
+import { FactorReport } from "../../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
 
 export const barColors = [
@@ -22,7 +22,7 @@ export const barColors = [
 ]
 
 interface CoordinateProps {
-  factor: Factor
+  factor: FactorReport
   name: string | null
   breed: string | null
 }
@@ -40,14 +40,13 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
     (100 * (-(factor.range?.min as number) + factor.score)) /
     ((factor.range?.max as number) - (factor.range?.min as number))
 
-  let breedAvg = 0 //species + Math.random() * 4
-  if (factor.breedAvgs && breed && factor.breedAvgs[breed]) {
+  let breedAvg = null //species + Math.random() * 4
+  if (factor.breedAvgs && breed && factor.breedAvgs[breed] !== undefined) {
     breedAvg =
       (100 * (-(factor.range?.min as number) + factor.breedAvgs[breed])) /
       ((factor.range?.max as number) - (factor.range?.min as number))
   }
 
-  console.log(breed)
   return (
     <div
       className={css`
@@ -97,17 +96,16 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
               display: grid;
               place-content: center;
               div {
-                height: 20px;
-                width: 20px;
+                height: 26px;
+                width: 26px;
+                background-color: ${baseTheme.colors.blue[200]};
+                border-radius: 20px;
+                display: grid;
+                place-content: center;
               }
             `}
           >
-            <div
-              className={css`
-                display: grid;
-                place-content: center;
-              `}
-            >
+            <div>
               <FaPaw
                 className={css`
                   height: 100%;
@@ -131,15 +129,12 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
                 width: 26px;
                 background-color: ${baseTheme.colors.purple[100]};
                 border-radius: 20px;
+                display: grid;
+                place-content: center;
               }
             `}
           >
-            <div
-              className={css`
-                display: grid;
-                place-content: center;
-              `}
-            >
+            <div>
               <FaDog
                 className={css`
                   height: 100%;
@@ -149,30 +144,39 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           </div>
           <label>{name ?? "Your Score"}</label>
         </div>
-        <div id="container">
-          <div
-            id={`${factor.label}-breed-logo`}
-            className={css`
-              height: 37px;
-              width: 37px;
-              border-radius: 37px;
-              display: grid;
-              place-content: center;
-              div {
-                height: 14px;
-                width: 14px;
-                background-color: black;
-              }
-            `}
-          >
+        {breed && (
+          <div id="container">
             <div
+              id={`${factor.label}-breed-logo`}
               className={css`
-                border-radius: 50px;
+                height: 37px;
+                width: 37px;
+                border-radius: 37px;
+                display: grid;
+                place-content: center;
+                div {
+                  height: 26px;
+                  width: 26px;
+                  background-color: ${baseTheme.colors.red[200]};
+                  border-radius: 20px;
+                  display: grid;
+                  place-content: center;
+                  div {
+                    height: 14px;
+                    width: 14px;
+                    background-color: black;
+                    border-radius: 14px;
+                  }
+                }
               `}
-            />
+            >
+              <div>
+                <div />
+              </div>
+            </div>
+            <label>{`${breed} average`}</label>
           </div>
-          <label>{`${breed} average`}</label>
-        </div>
+        )}
       </div>
       <div
         className={css`
@@ -222,7 +226,7 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
             />
           </div>
         </div>
-        {breed && factor.breedAvgs && factor.breedAvgs[breed] && (
+        {breed && factor.breedAvgs && factor.breedAvgs[breed] !== undefined && (
           <div
             className={css`
               position: absolute;
@@ -247,7 +251,7 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
                   height: 14px;
                   width: 14px;
                   background-color: black;
-                  border-radius: 50px;
+                  border-radius: 14px;
                 `}
               />
             </div>

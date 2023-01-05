@@ -37,9 +37,9 @@ export interface FactorialSurvey {
   meansAndStandardDeviations?: NormalizationValues
   allowedNans?: number
   reportVariables?: {
-    titleText: string
-    name: string
-    breed: string
+    titleText?: string
+    name?: string
+    breed?: string
   }
 }
 
@@ -78,6 +78,8 @@ export interface Factor {
   /** [breed: avg-score] to be compared to in the factor report */
   breedAvgs?: { [key: string]: number }
 }
+
+export type FactorReport = Omit<Factor, "weights">
 
 /** PublicSpec for Factorial survey contains only questions and options
  */
