@@ -45,7 +45,9 @@ interface GradingResult {
 export interface ExerciseFeedback {
   nameKey?: string
   breedKey?: string
-  factorReport: FactorReport[]
+  titleText?: string
+  noReportMessage?: string
+  factorReport: FactorReport[] | null
 }
 
 interface GradingRequest {
@@ -93,9 +95,13 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
       score_given: 1,
       score_maximum: 1,
       feedback_text: "Thank you for you submission!",
-      feedback_json: factorReports
-        ? { nameKey: nameKey, breedKey: breedKey, factorReport: factorReports }
-        : null, //TODO instead of returning null, return message from teachers that factor report could not be provided because of nan exceeds
+      feedback_json: {
+        nameKey: nameKey,
+        breedKey: breedKey,
+        factorReport: factorReports,
+        titleText: gradingRequest.exercise_spec.reportVariables?.titleText,
+        noReportMessage: gradingRequest.exercise_spec.reportVariables?.noReportMessage,
+      }, //TODO instead of returning null, return message from teachers that factor report could not be provided because of nan exceeds
     })
   }
 

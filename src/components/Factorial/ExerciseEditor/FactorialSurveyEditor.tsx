@@ -309,6 +309,36 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 `}
               />
             </StyledInnerEditor>
+            <TextField
+              label="Title text for submission view"
+              type="text"
+              value={state.reportVariables?.titleText ? state.reportVariables.titleText : ""}
+              onChange={(value) => {
+                setState({
+                  view_type: "exercise-editor",
+                  private_spec: {
+                    ...state,
+                    reportVariables: { ...state.reportVariables, titleText: value },
+                  },
+                })
+              }}
+            />
+            <TextField
+              label="Message for no report (too many nan-valued answers)"
+              type="text"
+              value={
+                state.reportVariables?.noReportMessage ? state.reportVariables.noReportMessage : ""
+              }
+              onChange={(value) => {
+                setState({
+                  view_type: "exercise-editor",
+                  private_spec: {
+                    ...state,
+                    reportVariables: { ...state.reportVariables, noReportMessage: value },
+                  },
+                })
+              }}
+            />
           </fieldset>
           <OutputMatrix state={state} />
         </>

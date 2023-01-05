@@ -40,6 +40,7 @@ export interface FactorialSurvey {
     titleText?: string
     name?: string
     breed?: string
+    noReportMessage?: string
   }
 }
 

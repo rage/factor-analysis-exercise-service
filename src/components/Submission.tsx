@@ -39,30 +39,34 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
         flex-direction: column;
       `}
     >
-      <h2>Well done</h2>
-      {gradingFeedback?.factorReport.map((f) => {
-        const name: string | null =
-          userVariables && gradingFeedback.nameKey && userVariables[gradingFeedback.nameKey]
-            ? (userVariables[gradingFeedback.nameKey] as string)
-            : null
-        const breed: string | null =
-          userVariables && gradingFeedback.breedKey && userVariables[gradingFeedback.breedKey]
-            ? (userVariables[gradingFeedback.breedKey] as string)
-            : null
-        return (
-          <div
-            key={f.id}
-            className={css`
-              width: 100%;
-              display: flex;
-              flex-direction: column;
-              margin: 4rem auto;
-            `}
-          >
-            <FactorialReport factor={f} name={name} breed={breed} />
-          </div>
-        )
-      })}
+      <h2>{gradingFeedback?.titleText}</h2>
+      {gradingFeedback?.factorReport ? (
+        gradingFeedback?.factorReport.map((f) => {
+          const name: string | null =
+            userVariables && gradingFeedback.nameKey && userVariables[gradingFeedback.nameKey]
+              ? (userVariables[gradingFeedback.nameKey] as string)
+              : null
+          const breed: string | null =
+            userVariables && gradingFeedback.breedKey && userVariables[gradingFeedback.breedKey]
+              ? (userVariables[gradingFeedback.breedKey] as string)
+              : null
+          return (
+            <div
+              key={f.id}
+              className={css`
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                margin: 4rem auto;
+              `}
+            >
+              <FactorialReport factor={f} name={name} breed={breed} />
+            </div>
+          )
+        })
+      ) : (
+        <p>{gradingFeedback?.noReportMessage}</p>
+      )}
       {publicSpec.type === SurveyType.Factorial && (
         <FactorialSurveySubmission
           options={publicSpec.options}
