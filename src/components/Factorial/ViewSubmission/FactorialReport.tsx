@@ -1,13 +1,13 @@
 /* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import React from "react"
-// eslint-disable-next-line import/order
-import { FaCaretDown, FaDog, FaPaw } from "react-icons/fa"
+
 import { baseTheme } from "../../../shared-module/styles"
 import { respondToOrLarger } from "../../../shared-module/styles/respond"
-//import { respondToOrLarger } from "../../shared-module/styles/respond"
 import { FactorReport } from "../../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
+
+import { CircleLogo, DogLogo, PawLogo } from "./ReportLogos"
 
 export const barColors = [
   "#DAE6E5",
@@ -87,93 +87,22 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
         `}
       >
         <div id="container">
-          <div
-            id={`${factor.label}-species-logo`}
-            className={css`
-              height: 37px;
-              width: 37px;
-              border-radius: 37px;
-              display: grid;
-              place-content: center;
-              div {
-                height: 26px;
-                width: 26px;
-                background-color: ${baseTheme.colors.blue[200]};
-                border-radius: 20px;
-                display: grid;
-                place-content: center;
-              }
-            `}
-          >
-            <div>
-              <FaPaw
-                className={css`
-                  height: 100%;
-                `}
-              />
-            </div>
-          </div>
+          <PawLogo id={`${factor.label}-paw-logo`} backgroundColor={baseTheme.colors.blue[200]} />
           <label>{"Dogs average"}</label>
         </div>
         <div id="container">
-          <div
+          <DogLogo
             id={`${factor.label}-ownpet-logo`}
-            className={css`
-              height: 37px;
-              width: 37px;
-              border-radius: 37px;
-              display: grid;
-              place-content: center;
-              div {
-                height: 26px;
-                width: 26px;
-                background-color: ${baseTheme.colors.purple[100]};
-                border-radius: 20px;
-                display: grid;
-                place-content: center;
-              }
-            `}
-          >
-            <div>
-              <FaDog
-                className={css`
-                  height: 100%;
-                `}
-              />
-            </div>
-          </div>
+            backgroundColor={baseTheme.colors.purple[200]}
+          />
           <label>{name ?? "Your Score"}</label>
         </div>
         {breed && (
           <div id="container">
-            <div
-              id={`${factor.label}-breed-logo`}
-              className={css`
-                height: 37px;
-                width: 37px;
-                border-radius: 37px;
-                display: grid;
-                place-content: center;
-                div {
-                  height: 26px;
-                  width: 26px;
-                  background-color: ${baseTheme.colors.red[200]};
-                  border-radius: 20px;
-                  display: grid;
-                  place-content: center;
-                  div {
-                    height: 14px;
-                    width: 14px;
-                    background-color: black;
-                    border-radius: 14px;
-                  }
-                }
-              `}
-            >
-              <div>
-                <div />
-              </div>
-            </div>
+            <CircleLogo
+              id={`${factor.label}-circle-logo`}
+              backgroundColor={baseTheme.colors.red[200]}
+            />
             <label>{`${breed} average`}</label>
           </div>
         )}
@@ -185,133 +114,15 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           height: 50px;
         `}
       >
-        <div
-          className={css`
-            position: absolute;
-            left: ${`${species}%`};
-            transform: translate(-50%, 0);
-            display: grid;
-            place-content: center;
-          `}
-        >
-          <div
-            className={css`
-              height: 28px;
-              width: 28px;
-              background-color: ${baseTheme.colors.blue[200]};
-              border-radius: 30px;
-              display: grid;
-              place-content: center;
-            `}
-          >
-            <FaPaw
-              className={css`
-                height: 100%;
-              `}
-            />
-          </div>
-          <div
-            className={css`
-              display: grid;
-              height: 12px;
-              place-content: center;
-            `}
-          >
-            <FaCaretDown
-              className={css`
-                color: ${baseTheme.colors.blue[400]};
-                height: 100%;
-                margin-top: -1px;
-              `}
-            />
-          </div>
-        </div>
-        {breed && factor.breedAvgs && factor.breedAvgs[breed] !== undefined && (
-          <div
-            className={css`
-              position: absolute;
-              left: ${`${breedAvg}%`};
-              transform: translate(-50%, 0);
-              display: grid;
-              place-content: center;
-            `}
-          >
-            <div
-              className={css`
-                height: 28px;
-                width: 28px;
-                background-color: ${baseTheme.colors.red[200]};
-                border-radius: 30px;
-                display: grid;
-                place-content: center;
-              `}
-            >
-              <div
-                className={css`
-                  height: 14px;
-                  width: 14px;
-                  background-color: black;
-                  border-radius: 14px;
-                `}
-              />
-            </div>
-            <div
-              className={css`
-                display: grid;
-                height: 12px;
-                place-content: center;
-              `}
-            >
-              <FaCaretDown
-                className={css`
-                  color: ${baseTheme.colors.red[400]};
-                  height: 100%;
-                  margin-top: 11px;
-                `}
-              />
-            </div>
-          </div>
+        <PawLogo
+          backgroundColor={baseTheme.colors.blue[200]}
+          position={species}
+          withCarret={true}
+        />
+        {breed && factor.breedAvgs && factor.breedAvgs[breed] !== undefined && breedAvg && (
+          <CircleLogo backgroundColor={baseTheme.colors.red[200]} position={breedAvg} withCarret />
         )}
-        <div
-          className={css`
-            position: absolute;
-            left: ${`${userScore}%`};
-            transform: translate(-50%, 0);
-            display: grid;
-          `}
-        >
-          <div
-            className={css`
-              display: grid;
-              place-content: center;
-              background-color: ${baseTheme.colors.purple[100]};
-              height: 28px;
-              width: 28px;
-              border-radius: 30px;
-            `}
-          >
-            <FaDog
-              className={css`
-                height: 100%;
-              `}
-            />
-          </div>
-          <div
-            className={css`
-              display: grid;
-              height: 12px;
-              place-content: center;
-            `}
-          >
-            <FaCaretDown
-              className={css`
-                color: ${baseTheme.colors.purple[400]};
-                height: 100%;
-                margin-top: 5px;
-              `}
-            />
-          </div>
-        </div>
+        <DogLogo backgroundColor={baseTheme.colors.purple[200]} position={userScore} withCarret />
       </div>
 
       <div
