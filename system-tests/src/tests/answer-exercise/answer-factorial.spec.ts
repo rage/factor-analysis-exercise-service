@@ -1,7 +1,7 @@
 // @ts-check
 import { test } from "@playwright/test"
 
-import privateSpec from "../../../../tests/.test-data/factorial/mini-test/private-spec.json"
+import privateSpec from "../../../../tests/test-data/factorial/mini-test/private-spec.json"
 import expectScreenshotsToMatchSnapshots from "../../utils/screenshot"
 import waitForFunction from "../../utils/waitForFunction"
 

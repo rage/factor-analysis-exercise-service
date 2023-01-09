@@ -39,7 +39,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
         flex-direction: column;
       `}
     >
-      <h2>{gradingFeedback?.titleText}</h2>
+      {gradingFeedback?.titleText && <h2>{gradingFeedback?.titleText}</h2>}
       {gradingFeedback?.factorReport ? (
         gradingFeedback?.factorReport.map((f) => {
           const name: string | null =
