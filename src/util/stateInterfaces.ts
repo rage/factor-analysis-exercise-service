@@ -38,10 +38,16 @@ export interface FactorialSurvey {
   allowedNans?: number
   reportVariables?: {
     titleText?: string
-    name?: string
-    breed?: string
     noReportMessage?: string
+    userVariable?: ReportVariable
+    breed?: string
   }
+}
+
+export interface ReportVariable {
+  label?: string
+  globalKey?: string
+  logo?: string
 }
 
 /**

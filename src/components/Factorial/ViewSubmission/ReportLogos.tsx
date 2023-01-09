@@ -3,9 +3,11 @@ import styled from "@emotion/styled"
 import React from "react"
 import { FaCaretDown, FaDog, FaPaw } from "react-icons/fa"
 
+import { baseTheme } from "../../../shared-module/styles"
+
 interface LogoProps {
   id?: string
-  backgroundColor: string
+  backgroundColor?: string
   withCarret?: boolean
   position?: number
 }
@@ -22,14 +24,14 @@ const LogoWrapper = styled.div<LogoProps>`
   left: ${position}%;
   transform: translate(-50%, 0);`
       : ""}
-  div[id="logo"] {
+  .div-logo {
     height: 26px;
     width: 26px;
     background-color: ${({ backgroundColor }) => backgroundColor};
     border-radius: 20px;
     display: grid;
     place-content: center;
-    div[id="content"] {
+    .div-content {
       height: 12px;
       width: 12px;
       background-color: black;
@@ -39,14 +41,13 @@ const LogoWrapper = styled.div<LogoProps>`
 `
 export const CircleLogo: React.FC<React.PropsWithChildren<LogoProps>> = ({
   id,
-  backgroundColor,
   position,
   withCarret,
 }) => {
   return (
-    <LogoWrapper id={id} backgroundColor={backgroundColor} position={position}>
-      <div id="logo">
-        <div id="content" />
+    <LogoWrapper id={id} backgroundColor={baseTheme.colors.red[200]} position={position}>
+      <div className="div-logo">
+        <div className="div-content" />
       </div>
       {withCarret && (
         <div
@@ -58,7 +59,7 @@ export const CircleLogo: React.FC<React.PropsWithChildren<LogoProps>> = ({
         >
           <FaCaretDown
             className={css`
-              color: ${backgroundColor};
+              color: ${baseTheme.colors.red[400]};
               height: 100%;
               margin-top: 11px;
             `}
@@ -71,13 +72,12 @@ export const CircleLogo: React.FC<React.PropsWithChildren<LogoProps>> = ({
 
 export const DogLogo: React.FC<React.PropsWithChildren<LogoProps>> = ({
   id,
-  backgroundColor,
   position,
   withCarret,
 }) => {
   return (
-    <LogoWrapper id={id} backgroundColor={backgroundColor} position={position}>
-      <div id="logo">
+    <LogoWrapper id={id} backgroundColor={baseTheme.colors.purple[100]} position={position}>
+      <div className="div-logo">
         <FaDog
           className={css`
             height: 100%;
@@ -94,7 +94,7 @@ export const DogLogo: React.FC<React.PropsWithChildren<LogoProps>> = ({
         >
           <FaCaretDown
             className={css`
-              color: ${backgroundColor};
+              color: ${baseTheme.colors.purple[300]};
               height: 100%;
               margin-top: 5px;
             `}
@@ -107,13 +107,12 @@ export const DogLogo: React.FC<React.PropsWithChildren<LogoProps>> = ({
 
 export const PawLogo: React.FC<React.PropsWithChildren<LogoProps>> = ({
   id,
-  backgroundColor,
   withCarret,
   position,
 }) => {
   return (
-    <LogoWrapper id={id} backgroundColor={backgroundColor} position={position}>
-      <div id="logo">
+    <LogoWrapper id={id} backgroundColor={baseTheme.colors.blue[200]} position={position}>
+      <div className="div-logo">
         <FaPaw
           className={css`
             height: 100%;
@@ -130,13 +129,21 @@ export const PawLogo: React.FC<React.PropsWithChildren<LogoProps>> = ({
         >
           <FaCaretDown
             className={css`
-              color: ${backgroundColor};
+              color: ${baseTheme.colors.blue[400]};
               height: 100%;
               margin-top: -1px;
             `}
           />
         </div>
       )}
+    </LogoWrapper>
+  )
+}
+
+export const EmptyLogo: React.FC<React.PropsWithChildren<LogoProps>> = ({ id }) => {
+  return (
+    <LogoWrapper id={id} backgroundColor={baseTheme.colors.primary[100]}>
+      <div className="div-logo" />
     </LogoWrapper>
   )
 }

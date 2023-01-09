@@ -2,7 +2,6 @@
 import { css } from "@emotion/css"
 import React from "react"
 
-import { baseTheme } from "../../../shared-module/styles"
 import { respondToOrLarger } from "../../../shared-module/styles/respond"
 import { FactorReport } from "../../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
@@ -68,7 +67,7 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           place-content: left;
           gap: 0.5rem;
           margin-bottom: 3rem;
-          div[id="container"] {
+          .div-container {
             display: flex;
             flex-direction: column;
             ${respondToOrLarger.sm} {
@@ -86,23 +85,17 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           }
         `}
       >
-        <div id="container">
-          <PawLogo id={`${factor.label}-paw-logo`} backgroundColor={baseTheme.colors.blue[200]} />
+        <div className="div-container">
+          <PawLogo id={`${factor.label}-paw-logo`} />
           <label>{"Dogs average"}</label>
         </div>
-        <div id="container">
-          <DogLogo
-            id={`${factor.label}-ownpet-logo`}
-            backgroundColor={baseTheme.colors.purple[200]}
-          />
+        <div className="div-container">
+          <DogLogo id={`${factor.label}-ownpet-logo`} />
           <label>{name ?? "Your Score"}</label>
         </div>
         {breed && (
-          <div id="container">
-            <CircleLogo
-              id={`${factor.label}-circle-logo`}
-              backgroundColor={baseTheme.colors.red[200]}
-            />
+          <div className="div-container">
+            <CircleLogo id={`${factor.label}-circle-logo`} />
             <label>{`${breed} average`}</label>
           </div>
         )}
@@ -114,15 +107,11 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           height: 50px;
         `}
       >
-        <PawLogo
-          backgroundColor={baseTheme.colors.blue[200]}
-          position={species}
-          withCarret={true}
-        />
+        <PawLogo position={species} withCarret={true} />
         {breed && factor.breedAvgs && factor.breedAvgs[breed] !== undefined && breedAvg && (
-          <CircleLogo backgroundColor={baseTheme.colors.red[200]} position={breedAvg} withCarret />
+          <CircleLogo position={breedAvg} withCarret />
         )}
-        <DogLogo backgroundColor={baseTheme.colors.purple[200]} position={userScore} withCarret />
+        <DogLogo position={userScore} withCarret />
       </div>
 
       <div

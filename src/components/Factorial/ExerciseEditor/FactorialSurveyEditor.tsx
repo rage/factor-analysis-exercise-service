@@ -14,6 +14,7 @@ import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
 
 import FactorEditor from "./ComponentEditors/FactorEditor"
+import { LogoSelection } from "./ComponentEditors/LogoSelector"
 import OptionEditor from "./ComponentEditors/OptionEditor"
 import QuestionEditor from "./ComponentEditors/QuestionEditor"
 import OutputMatrix from "./OutputMatrix"
@@ -204,33 +205,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
             </div>
           </fieldset>
           <fieldset>
-            <legend>{"Other documents"}</legend>
-            <fieldset>
-              <CsvReader
-                title="Upload breeds average scores CSV File"
-                parseUsingHeaders={(value) => {
-                  const newFactors = state.factors
-                  Object.keys(value).forEach((header) => {
-                    const factor = newFactors.find((f) => f.label === header)
-                    if (factor) {
-                      factor.breedAvgs = { ...(value[header] as { [key: string]: number }) }
-                      newFactors.map((f) => {
-                        if (f.label === header) {
-                          f.breedAvgs = { ...(value[header] as { [key: string]: number }) }
-                        }
-                      })
-                    }
-                  })
-                  setState({
-                    view_type: "exercise-editor",
-                    private_spec: { ...state, factors: newFactors },
-                  })
-                }}
-                parseNoHeaders={() => null}
-                disableHeaderOption={true}
-                applyMsg="set breed average values"
-              />
-            </fieldset>
+            <legend>{"Other documents and report variables"}</legend>
             <fieldset>
               <CsvReader
                 title="Upload means and SDs CSV File for answer normalization"
@@ -257,25 +232,108 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 disableHeaderOption={true}
                 applyMsg="set normalization values"
               />
+              <StyledInnerEditor>
+                <TextField
+                  label="Default label for user score icon"
+                  type="text"
+                  value={
+                    state.reportVariables?.userVariable?.label
+                      ? state.reportVariables.userVariable.label
+                      : ""
+                  }
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          userVariable: {
+                            ...state.reportVariables?.userVariable,
+                            label: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                  className={css`
+                    flex: 3;
+                  `}
+                />
+                <TextField
+                  label="Global variable key for user icon label"
+                  type="text"
+                  value={
+                    state.reportVariables?.userVariable?.globalKey
+                      ? state.reportVariables.userVariable.globalKey
+                      : ""
+                  }
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          userVariable: {
+                            ...state.reportVariables?.userVariable,
+                            globalKey: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                  className={css`
+                    flex: 3;
+                    padding: 0 0.5rem 0 0.5rem;
+                  `}
+                />
+                <LogoSelection
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          userVariable: {
+                            ...state.reportVariables?.userVariable,
+                            logo: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                />
+              </StyledInnerEditor>
             </fieldset>
-            <StyledInnerEditor>
-              <TextField
-                label="Global variable key for name"
-                type="text"
-                value={state.reportVariables ? state.reportVariables.name : ""}
-                onChange={(value) => {
+            <fieldset>
+              <CsvReader
+                title="Upload breeds average scores CSV File"
+                parseUsingHeaders={(value) => {
+                  const newFactors = state.factors
+                  Object.keys(value).forEach((header) => {
+                    const factor = newFactors.find((f) => f.label === header)
+                    if (factor) {
+                      factor.breedAvgs = { ...(value[header] as { [key: string]: number }) }
+                      newFactors.map((f) => {
+                        if (f.label === header) {
+                          f.breedAvgs = { ...(value[header] as { [key: string]: number }) }
+                        }
+                      })
+                    }
+                  })
                   setState({
                     view_type: "exercise-editor",
-                    private_spec: {
-                      ...state,
-                      reportVariables: { ...state.reportVariables, name: value },
-                    },
+                    private_spec: { ...state, factors: newFactors },
                   })
                 }}
-                className={css`
-                  flex: 3;
-                `}
+                parseNoHeaders={() => null}
+                disableHeaderOption={true}
+                applyMsg="set breed average values"
               />
+            </fieldset>
+            <StyledInnerEditor>
               <TextField
                 label="Global variable key for breed"
                 type="text"

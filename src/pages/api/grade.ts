@@ -87,7 +87,7 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     const factorReports: FactorReport[] | null = scaledAnswers
       ? calculateFactors(gradingRequest.exercise_spec.factors, scaledAnswers)
       : null
-    const nameKey = gradingRequest.exercise_spec.reportVariables?.name
+    const nameKey = gradingRequest.exercise_spec.reportVariables?.userVariable?.globalKey
     const breedKey = gradingRequest.exercise_spec.reportVariables?.breed
 
     return res.status(200).json({
