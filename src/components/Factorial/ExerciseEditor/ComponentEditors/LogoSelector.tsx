@@ -7,9 +7,13 @@ import { CircleLogo, DogLogo, EmptyLogo, PawLogo } from "../../ViewSubmission/Re
 
 interface SelectorProps {
   onChange: (logoLabel: string) => void
+  label: string
 }
 
-export const LogoSelection: React.FC<React.PropsWithChildren<SelectorProps>> = ({ onChange }) => {
+export const LogoSelection: React.FC<React.PropsWithChildren<SelectorProps>> = ({
+  onChange,
+  label,
+}) => {
   const logos = [
     { value: "circle", label: "circle", logo: <CircleLogo /> },
     { value: "paw", label: "paw", logo: <PawLogo /> },
@@ -20,6 +24,7 @@ export const LogoSelection: React.FC<React.PropsWithChildren<SelectorProps>> = (
     <div
       className={css`
         margin-bottom: 1.1rem;
+        width: 10rem;
       `}
     >
       <label
@@ -33,7 +38,7 @@ export const LogoSelection: React.FC<React.PropsWithChildren<SelectorProps>> = (
           margin-bottom: 2px;
         `}
       >
-        {"Select icon for user score"}
+        {label}
         <Select
           id="logo-selector"
           options={logos}

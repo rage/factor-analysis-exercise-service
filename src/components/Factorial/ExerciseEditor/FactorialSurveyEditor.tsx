@@ -168,7 +168,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                     name: "",
                     weights: { ...(value[header] as { [key: string]: number }) },
                     score: 0,
-                    breedAvgs: {},
+                    comparingVariable: {},
                   }
                   factors.push(factor)
                 })
@@ -289,6 +289,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                   `}
                 />
                 <LogoSelection
+                  label={"Select icon for user score"}
                   onChange={(value) => {
                     setState({
                       view_type: "exercise-editor",
@@ -308,50 +309,94 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
               </StyledInnerEditor>
             </fieldset>
             <fieldset>
-              <CsvReader
-                title="Upload breeds average scores CSV File"
-                parseUsingHeaders={(value) => {
-                  const newFactors = state.factors
-                  Object.keys(value).forEach((header) => {
-                    const factor = newFactors.find((f) => f.label === header)
-                    if (factor) {
-                      factor.breedAvgs = { ...(value[header] as { [key: string]: number }) }
-                      newFactors.map((f) => {
-                        if (f.label === header) {
-                          f.breedAvgs = { ...(value[header] as { [key: string]: number }) }
+              <legend>{"Define a variable to compare to"}</legend>
+              <StyledInnerEditor>
+                <TextField
+                  label="Global variable key"
+                  type="text"
+                  value={
+                    state.reportVariables ? state.reportVariables.comparingVariable?.globalKey : ""
+                  }
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          comparingVariable: {
+                            ...state.reportVariables?.comparingVariable,
+                            globalKey: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                  className={css`
+                    flex: 3;
+                    padding: 0 0.5rem 0 0rem;
+                  `}
+                />
+                <LogoSelection
+                  label={"Select icon for variable"}
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          comparingVariable: {
+                            ...state.reportVariables?.comparingVariable,
+                            logo: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                />
+              </StyledInnerEditor>
+              {state.reportVariables?.comparingVariable?.globalKey &&
+                state.reportVariables?.comparingVariable?.globalKey?.length > 0 && (
+                  <CsvReader
+                    title={`Upload average values for ${state.reportVariables.comparingVariable.globalKey} csv file`}
+                    parseUsingHeaders={(value) => {
+                      const newFactors = state.factors
+                      Object.keys(value).forEach((header) => {
+                        const factor = newFactors.find((f) => f.label === header)
+                        if (
+                          factor &&
+                          state.reportVariables?.comparingVariable?.globalKey &&
+                          factor.comparingVariable
+                        ) {
+                          factor.comparingVariable[
+                            state.reportVariables.comparingVariable.globalKey
+                          ] = { ...(value[header] as { [key: string]: number }) }
+                          newFactors.map((f) => {
+                            if (
+                              f.label === header &&
+                              state.reportVariables?.comparingVariable?.globalKey
+                            ) {
+                              f.comparingVariable = {}
+                              f.comparingVariable[
+                                state.reportVariables.comparingVariable.globalKey
+                              ] = { ...(value[header] as { [key: string]: number }) }
+                            }
+                          })
                         }
                       })
-                    }
-                  })
-                  setState({
-                    view_type: "exercise-editor",
-                    private_spec: { ...state, factors: newFactors },
-                  })
-                }}
-                parseNoHeaders={() => null}
-                disableHeaderOption={true}
-                applyMsg="set breed average values"
-              />
+                      setState({
+                        view_type: "exercise-editor",
+                        private_spec: { ...state, factors: newFactors },
+                      })
+                    }}
+                    parseNoHeaders={() => null}
+                    disableHeaderOption={true}
+                    applyMsg={`set average values for ${state.reportVariables.comparingVariable.globalKey}`}
+                  />
+                )}
             </fieldset>
             <StyledInnerEditor>
-              <TextField
-                label="Global variable key for breed"
-                type="text"
-                value={state.reportVariables ? state.reportVariables.breed : ""}
-                onChange={(value) => {
-                  setState({
-                    view_type: "exercise-editor",
-                    private_spec: {
-                      ...state,
-                      reportVariables: { ...state.reportVariables, breed: value },
-                    },
-                  })
-                }}
-                className={css`
-                  flex: 3;
-                  padding: 0 0.5rem 0 0.5rem;
-                `}
-              />
               <TextField
                 label="max nan-answers allowed"
                 type="number"
@@ -382,7 +427,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
               }}
             />
             <TextField
-              label="Message for no report (too many nan-valued answers)"
+              label="Message for no report (when too many nan-valued answers)"
               type="text"
               value={
                 state.reportVariables?.noReportMessage ? state.reportVariables.noReportMessage : ""

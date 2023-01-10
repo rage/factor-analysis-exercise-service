@@ -88,7 +88,7 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
       ? calculateFactors(gradingRequest.exercise_spec.factors, scaledAnswers)
       : null
     const nameKey = gradingRequest.exercise_spec.reportVariables?.userVariable?.globalKey
-    const breedKey = gradingRequest.exercise_spec.reportVariables?.breed
+    const breedKey = gradingRequest.exercise_spec.reportVariables?.comparingVariable?.globalKey
 
     return res.status(200).json({
       grading_progress: "FullyGraded",

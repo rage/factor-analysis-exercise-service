@@ -51,6 +51,12 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
 
+  const comparingVariableFactor = Object.values(state.factors).find(
+    (e) => e.comparingVariable && Object.keys(e.comparingVariable).length > 0,
+  )
+  const variableKey = comparingVariableFactor?.comparingVariable
+    ? Object.keys(comparingVariableFactor?.comparingVariable)[0]
+    : ""
   return (
     <div>
       <div
@@ -152,21 +158,24 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
           })}
         </Tbody>
         <thead>
-          <tr>
-            <Th
-              colSpan={state.factors.length + 1}
-              className={css`
-                align: center;
-                background-color: ${baseTheme.colors.clear[200]};
-              `}
-            >
-              {"Breed Averages"}
-            </Th>
-          </tr>
+          {variableKey.length > 0 && (
+            <tr>
+              <Th
+                colSpan={state.factors.length + 1}
+                className={css`
+                  align: center;
+                  background-color: ${baseTheme.colors.red[200]};
+                `}
+              >
+                {variableKey}
+              </Th>
+            </tr>
+          )}
         </thead>
         <Tbody>
-          {state.factors[0]?.breedAvgs &&
-            Object.keys(state.factors[0].breedAvgs).map((e, idx) => {
+          {variableKey.length > 0 &&
+            comparingVariableFactor?.comparingVariable &&
+            Object.keys(comparingVariableFactor?.comparingVariable[variableKey]).map((e, idx) => {
               return (
                 <tr key={idx}>
                   <Th
@@ -175,7 +184,7 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
                     className={css`
                       position: sticky;
                       left: 0px;
-                      background-color: ${baseTheme.colors.crimson[100]};
+                      background-color: ${baseTheme.colors.yellow[100]};
                       max-width: 10rem;
                       word-wrap: break-word;
                       white-space: normal;
@@ -184,10 +193,10 @@ const OutputMatrix: React.FC<React.PropsWithChildren<Props>> = ({ state }) => {
                     {e}
                   </Th>
                   {state.factors.map((f) => {
-                    if (f.breedAvgs) {
+                    if (f.comparingVariable && f.comparingVariable[variableKey]) {
                       return (
                         <Td headers={f.label} key={f.id}>
-                          {f.breedAvgs[e] ?? ""}
+                          {f.comparingVariable[variableKey][e] ?? ""}
                         </Td>
                       )
                     }

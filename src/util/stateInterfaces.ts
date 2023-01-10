@@ -40,7 +40,7 @@ export interface FactorialSurvey {
     titleText?: string
     noReportMessage?: string
     userVariable?: ReportVariable
-    breed?: string
+    comparingVariable?: ReportVariable
   }
 }
 
@@ -83,7 +83,7 @@ export interface Factor {
   }
   score: number
   /** [breed: avg-score] to be compared to in the factor report */
-  breedAvgs?: { [key: string]: number }
+  comparingVariable?: { [key: string]: { [key: string]: number } }
 }
 
 export type FactorReport = Omit<Factor, "weights">
