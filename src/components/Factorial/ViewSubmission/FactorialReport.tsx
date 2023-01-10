@@ -3,10 +3,10 @@ import { css } from "@emotion/css"
 import React from "react"
 
 import { respondToOrLarger } from "../../../shared-module/styles/respond"
-import { FactorReport } from "../../../util/stateInterfaces"
+import { FactorReport, ReportVariable } from "../../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
 
-import { CircleLogo, DogLogo, PawLogo } from "./ReportLogos"
+import { GetLogo } from "./ReportLogos"
 
 export const barColors = [
   "#DAE6E5",
@@ -22,14 +22,20 @@ export const barColors = [
 
 interface CoordinateProps {
   factor: FactorReport
-  name: string | null
-  breed: string | null
+  userName: string | null
+  userCompVar: string | null
+  comparingVar: ReportVariable | null
+  userVar: ReportVariable | null
+  zeroVar: ReportVariable | null
 }
 
 export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>> = ({
   factor,
-  name,
-  breed,
+  userName,
+  userCompVar,
+  comparingVar,
+  userVar,
+  zeroVar,
 }) => {
   const species =
     (100 * -(factor.range?.min as number)) /
@@ -40,9 +46,17 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
     ((factor.range?.max as number) - (factor.range?.min as number))
 
   let breedAvg = null //species + Math.random() * 4
-  if (factor.breedAvgs && breed && factor.breedAvgs[breed] !== undefined) {
+  if (
+    factor.comparingVariable &&
+    userCompVar &&
+    comparingVar?.globalKey &&
+    factor.comparingVariable[comparingVar.globalKey] &&
+    factor.comparingVariable[comparingVar.globalKey][userCompVar] !== undefined
+  ) {
     breedAvg =
-      (100 * (-(factor.range?.min as number) + factor.breedAvgs[breed])) /
+      (100 *
+        (-(factor.range?.min as number) +
+          factor.comparingVariable[comparingVar.globalKey][userCompVar])) /
       ((factor.range?.max as number) - (factor.range?.min as number))
   }
 
@@ -86,17 +100,17 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
         `}
       >
         <div className="div-container">
-          <PawLogo id={`${factor.label}-paw-logo`} />
-          <label>{"Dogs average"}</label>
+          <GetLogo logo={zeroVar?.logo ?? "paw"} id={`${factor.label}-zero-logo`} />
+          <label>{zeroVar?.label ?? "Dogs average"}</label>
         </div>
         <div className="div-container">
-          <DogLogo id={`${factor.label}-ownpet-logo`} />
-          <label>{name ?? "Your Score"}</label>
+          <GetLogo logo={userVar?.logo ?? "dog"} id={`${factor.label}-ownpet-logo`} />
+          <label>{userName ?? userVar?.label ?? "Your Score"}</label>
         </div>
-        {breed && (
+        {userCompVar && (
           <div className="div-container">
-            <CircleLogo id={`${factor.label}-circle-logo`} />
-            <label>{`${breed} average`}</label>
+            <GetLogo logo={comparingVar?.logo ?? "circle"} id={`${factor.label}-compareTo-logo`} />
+            <label>{`${userCompVar}`}</label>
           </div>
         )}
       </div>
@@ -107,11 +121,16 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           height: 50px;
         `}
       >
-        <PawLogo position={species} withCarret={true} />
-        {breed && factor.breedAvgs && factor.breedAvgs[breed] !== undefined && breedAvg && (
-          <CircleLogo position={breedAvg} withCarret />
-        )}
-        <DogLogo position={userScore} withCarret />
+        <GetLogo logo={zeroVar?.logo ?? "paw"} position={species} withCarret={true} />
+        {userCompVar &&
+          factor.comparingVariable &&
+          comparingVar?.globalKey &&
+          factor.comparingVariable[comparingVar.globalKey] &&
+          factor.comparingVariable[comparingVar.globalKey][userCompVar] !== undefined &&
+          breedAvg && (
+            <GetLogo logo={comparingVar.logo ?? "circle"} position={breedAvg} withCarret />
+          )}
+        <GetLogo logo={userVar?.logo ?? "dog"} position={userScore} withCarret />
       </div>
 
       <div

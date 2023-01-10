@@ -8,6 +8,7 @@ import {
   FactorReport,
   PrivateSpec,
   RatedQuestion,
+  ReportVariable,
   SubmittedForm,
   SurveyItem,
   SurveyType,
@@ -43,8 +44,9 @@ interface GradingResult {
 }
 
 export interface ExerciseFeedback {
-  nameKey?: string
-  breedKey?: string
+  userVar?: ReportVariable
+  comparingVar?: ReportVariable
+  zeroVar?: ReportVariable
   titleText?: string
   noReportMessage?: string
   factorReport: FactorReport[] | null
@@ -87,8 +89,9 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     const factorReports: FactorReport[] | null = scaledAnswers
       ? calculateFactors(gradingRequest.exercise_spec.factors, scaledAnswers)
       : null
-    const nameKey = gradingRequest.exercise_spec.reportVariables?.userVariable?.globalKey
-    const breedKey = gradingRequest.exercise_spec.reportVariables?.comparingVariable?.globalKey
+    const userVar = gradingRequest.exercise_spec.reportVariables?.userVariable
+    const comparingVar = gradingRequest.exercise_spec.reportVariables?.comparingVariable
+    const zeroVar = gradingRequest.exercise_spec.reportVariables?.zeroVariable
 
     return res.status(200).json({
       grading_progress: "FullyGraded",
@@ -96,12 +99,13 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
       score_maximum: 1,
       feedback_text: "Thank you for you submission!",
       feedback_json: {
-        nameKey: nameKey,
-        breedKey: breedKey,
+        userVar: userVar,
+        comparingVar: comparingVar,
+        zeroVar: zeroVar,
         factorReport: factorReports,
         titleText: gradingRequest.exercise_spec.reportVariables?.titleText,
         noReportMessage: gradingRequest.exercise_spec.reportVariables?.noReportMessage,
-      }, //TODO instead of returning null, return message from teachers that factor report could not be provided because of nan exceeds
+      },
     })
   }
 

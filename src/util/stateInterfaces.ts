@@ -41,6 +41,7 @@ export interface FactorialSurvey {
     noReportMessage?: string
     userVariable?: ReportVariable
     comparingVariable?: ReportVariable
+    zeroVariable?: ReportVariable
   }
 }
 

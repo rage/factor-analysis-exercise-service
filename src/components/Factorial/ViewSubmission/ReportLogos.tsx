@@ -12,6 +12,10 @@ interface LogoProps {
   position?: number
 }
 
+interface GetLogoProps extends LogoProps {
+  logo: string
+}
+
 const LogoWrapper = styled.div<LogoProps>`
   height: 37px;
   width: 37px;
@@ -146,4 +150,21 @@ export const EmptyLogo: React.FC<React.PropsWithChildren<LogoProps>> = ({ id }) 
       <div className="div-logo" />
     </LogoWrapper>
   )
+}
+
+export const GetLogo: React.FC<React.PropsWithChildren<GetLogoProps>> = ({ logo, ...props }) => {
+  switch (logo) {
+    case "circle": {
+      return <CircleLogo {...(props as LogoProps)} />
+    }
+    case "paw": {
+      return <PawLogo {...(props as LogoProps)} />
+    }
+    case "dog": {
+      return <DogLogo {...(props as LogoProps)} />
+    }
+    default: {
+      return <EmptyLogo />
+    }
+  }
 }

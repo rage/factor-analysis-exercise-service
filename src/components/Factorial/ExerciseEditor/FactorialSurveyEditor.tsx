@@ -309,6 +309,53 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
               </StyledInnerEditor>
             </fieldset>
             <fieldset>
+              <legend>{"Define the zero-mean variable"}</legend>
+              <StyledInnerEditor>
+                <TextField
+                  label={`Label for zero mean (e.g. "Dogs average")`}
+                  type="text"
+                  value={state.reportVariables ? state.reportVariables.zeroVariable?.label : ""}
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          zeroVariable: {
+                            ...state.reportVariables?.zeroVariable,
+                            label: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                  className={css`
+                    flex: 3;
+                    padding: 0 0.5rem 0 0rem;
+                  `}
+                />
+                <LogoSelection
+                  label={"Select icon for zero-mean"}
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          zeroVariable: {
+                            ...state.reportVariables?.zeroVariable,
+                            logo: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                />
+              </StyledInnerEditor>
+            </fieldset>
+            <fieldset>
               <legend>{"Define a variable to compare to"}</legend>
               <StyledInnerEditor>
                 <TextField

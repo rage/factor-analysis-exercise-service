@@ -4,7 +4,6 @@ import React from "react"
 
 import { ExerciseFeedback } from "../pages/api/grade"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
-//import { baseTheme } from "../shared-module/styles"
 import {
   PublicSpec,
   RatedQuestion,
@@ -42,13 +41,17 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
       {gradingFeedback?.titleText && <h2>{gradingFeedback?.titleText}</h2>}
       {gradingFeedback?.factorReport ? (
         gradingFeedback?.factorReport.map((f) => {
-          const name: string | null =
-            userVariables && gradingFeedback.nameKey && userVariables[gradingFeedback.nameKey]
-              ? (userVariables[gradingFeedback.nameKey] as string)
+          const userName: string | null =
+            userVariables &&
+            gradingFeedback.userVar?.globalKey &&
+            userVariables[gradingFeedback.userVar.globalKey]
+              ? (userVariables[gradingFeedback.userVar.globalKey] as string)
               : null
-          const breed: string | null =
-            userVariables && gradingFeedback.breedKey && userVariables[gradingFeedback.breedKey]
-              ? (userVariables[gradingFeedback.breedKey] as string)
+          const userCompVar: string | null =
+            userVariables &&
+            gradingFeedback.comparingVar?.globalKey &&
+            userVariables[gradingFeedback.comparingVar?.globalKey]
+              ? (userVariables[gradingFeedback.comparingVar?.globalKey] as string)
               : null
           return (
             <div
@@ -60,7 +63,14 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
                 margin: 4rem auto;
               `}
             >
-              <FactorialReport factor={f} name={name} breed={breed} />
+              <FactorialReport
+                factor={f}
+                userName={userName}
+                userCompVar={userCompVar}
+                comparingVar={gradingFeedback.comparingVar ?? null}
+                userVar={gradingFeedback.userVar ?? null}
+                zeroVar={gradingFeedback.zeroVar ?? null}
+              />
             </div>
           )
         })
