@@ -137,6 +137,59 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
           />
         </ButtonWrapper>
       </fieldset>
+      <fieldset>
+        <legend>{"Submission view"}</legend>
+        <TextField
+          label="Title text for submission view"
+          type="text"
+          value={state.reportVariables?.titleText ? state.reportVariables.titleText : ""}
+          onChange={(value) => {
+            setState({
+              view_type: "exercise-editor",
+              private_spec: {
+                ...state,
+                reportVariables: { ...state.reportVariables, titleText: value },
+              },
+            })
+          }}
+        />
+        <TextField
+          label="Feedback message for the case of successfull submission"
+          type="text"
+          value={
+            state.reportVariables?.reportSuccessMessage
+              ? state.reportVariables.reportSuccessMessage
+              : ""
+          }
+          onChange={(value) => {
+            setState({
+              view_type: "exercise-editor",
+              private_spec: {
+                ...state,
+                reportVariables: { ...state.reportVariables, reportSuccessMessage: value },
+              },
+            })
+          }}
+        />
+        <TextField
+          label="Feedback message for the case of failure (e.g. could not calculate factor report: too many nan-valued answers)"
+          type="text"
+          value={
+            state.reportVariables?.reportFailureMessage
+              ? state.reportVariables.reportFailureMessage
+              : ""
+          }
+          onChange={(value) => {
+            setState({
+              view_type: "exercise-editor",
+              private_spec: {
+                ...state,
+                reportVariables: { ...state.reportVariables, reportFailureMessage: value },
+              },
+            })
+          }}
+        />
+      </fieldset>
       <StyledInnerEditor>
         <label htmlFor="calculate-feedback-checkbox">{"Provide factor report to student"}</label>
         <input
@@ -459,36 +512,6 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 `}
               />
             </StyledInnerEditor>
-            <TextField
-              label="Title text for submission view"
-              type="text"
-              value={state.reportVariables?.titleText ? state.reportVariables.titleText : ""}
-              onChange={(value) => {
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: {
-                    ...state,
-                    reportVariables: { ...state.reportVariables, titleText: value },
-                  },
-                })
-              }}
-            />
-            <TextField
-              label="Message for no report (when too many nan-valued answers)"
-              type="text"
-              value={
-                state.reportVariables?.noReportMessage ? state.reportVariables.noReportMessage : ""
-              }
-              onChange={(value) => {
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: {
-                    ...state,
-                    reportVariables: { ...state.reportVariables, noReportMessage: value },
-                  },
-                })
-              }}
-            />
           </fieldset>
           <OutputMatrix state={state} />
         </>

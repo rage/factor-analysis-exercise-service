@@ -39,7 +39,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
       `}
     >
       {gradingFeedback?.titleText && <h2>{gradingFeedback?.titleText}</h2>}
-      {gradingFeedback?.factorReport ? (
+      {gradingFeedback?.factorReport &&
         gradingFeedback?.factorReport.map((f) => {
           const userName: string | null =
             userVariables &&
@@ -73,10 +73,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
               />
             </div>
           )
-        })
-      ) : (
-        <p>{gradingFeedback?.noReportMessage}</p>
-      )}
+        })}
       {publicSpec.type === SurveyType.Factorial && (
         <FactorialSurveySubmission
           options={publicSpec.options}

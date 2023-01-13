@@ -38,7 +38,8 @@ export interface FactorialSurvey {
   allowedNans?: number
   reportVariables?: {
     titleText?: string
-    noReportMessage?: string
+    reportFailureMessage?: string
+    reportSuccessMessage?: string | null
     userVariable?: ReportVariable
     comparingVariable?: ReportVariable
     zeroVariable?: ReportVariable

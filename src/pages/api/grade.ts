@@ -92,14 +92,15 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
       grading_progress: "FullyGraded",
       score_given: 1,
       score_maximum: 1,
-      feedback_text: "Thank you for you submission!",
+      feedback_text: factorReports
+        ? gradingRequest.exercise_spec.reportVariables?.reportSuccessMessage ?? null
+        : gradingRequest.exercise_spec.reportVariables?.reportFailureMessage ?? null,
       feedback_json: {
         userVar: userVar,
         comparingVar: comparingVar,
         zeroVar: zeroVar,
         factorReport: factorReports,
         titleText: gradingRequest.exercise_spec.reportVariables?.titleText,
-        noReportMessage: gradingRequest.exercise_spec.reportVariables?.noReportMessage,
       },
     })
   }
