@@ -7,7 +7,7 @@ import {
 import {
   calculateFactors,
   sanitizeQuestions,
-  scaleRatedQuestions,
+  scaleAndImputRatedQuestions,
   vectorMatrixMultiplication,
 } from "../../src/util/utils"
 
@@ -193,7 +193,11 @@ describe("When all questions are rated propperly, thus not null", () => {
 describe("Scaling rated questions", () => {
   test("scale rated questions scales correctly", () => {
     const answeredQuestions = sanitizeQuestions(testAnswer) as RatedQuestion[]
-    const scaledAnswers = scaleRatedQuestions(answeredQuestions, meansAndStandardDeviations, 0)
+    const scaledAnswers = scaleAndImputRatedQuestions(
+      answeredQuestions,
+      meansAndStandardDeviations,
+      0,
+    )
     const expected = answeredQuestions.map((q) => {
       return {
         ...q,
@@ -221,10 +225,14 @@ describe("Scaling rated questions", () => {
           : 0,
       }
     })
-    expect(scaleRatedQuestions(newAnswered, meansAndStandardDeviations, 0)).toBeNull()
-    expect(scaleRatedQuestions(newAnswered, meansAndStandardDeviations, 0)).not.toBe(expected)
-    expect(scaleRatedQuestions(newAnswered, meansAndStandardDeviations, 1)).not.toBeNull()
-    expect(scaleRatedQuestions(newAnswered, meansAndStandardDeviations, 1)).toEqual(expected)
+    expect(scaleAndImputRatedQuestions(newAnswered, meansAndStandardDeviations, 0)).toBeNull()
+    expect(scaleAndImputRatedQuestions(newAnswered, meansAndStandardDeviations, 0)).not.toBe(
+      expected,
+    )
+    expect(scaleAndImputRatedQuestions(newAnswered, meansAndStandardDeviations, 1)).not.toBeNull()
+    expect(scaleAndImputRatedQuestions(newAnswered, meansAndStandardDeviations, 1)).toEqual(
+      expected,
+    )
   })
 
   test("scale rated questions scales correctly with random means and sds", () => {
@@ -236,7 +244,7 @@ describe("Scaling rated questions", () => {
       standardDeviations[q.questionLabel] = Math.random() + 1
     })
     const randomMeansAndStandardDeviations: NormalizationValues = { means, standardDeviations }
-    const scaledAnswers = scaleRatedQuestions(
+    const scaledAnswers = scaleAndImputRatedQuestions(
       answeredQuestions,
       randomMeansAndStandardDeviations,
       0,

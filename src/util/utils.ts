@@ -178,9 +178,9 @@ export const insertVariablesToText = (
  * @param maxNanAllowed allowed limit amount of nan-answers, beyond which report is not calculated
  * @returns scaled ratedQuestions or null if max nan exceeded
  */
-export const scaleRatedQuestions = (
+export const scaleAndImputRatedQuestions = (
   ratedQuestions: RatedQuestion[],
-  meansAndStandardDeviations: NormalizationValues,
+  meansAndStandardDeviations: NormalizationValues | null,
   maxNanAllowed: number,
 ): RatedQuestion[] | null => {
   let amount = 0
@@ -188,10 +188,11 @@ export const scaleRatedQuestions = (
     if (!q.rate) {
       amount++
     }
-    const rate = q.rate
-      ? (q.rate - meansAndStandardDeviations.means[q.questionLabel]) /
-        meansAndStandardDeviations.standardDeviations[q.questionLabel]
-      : 0
+    const rate =
+      q.rate && meansAndStandardDeviations
+        ? (q.rate - meansAndStandardDeviations.means[q.questionLabel]) /
+          meansAndStandardDeviations.standardDeviations[q.questionLabel]
+        : q.rate ?? 0
     const scaledQuestion = { ...q, rate: rate }
     return scaledQuestion
   })

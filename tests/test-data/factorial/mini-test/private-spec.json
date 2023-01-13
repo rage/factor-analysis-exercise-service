@@ -51,7 +51,7 @@
         "min": -2.5,
         "max": 15
       },
-      "description": "this is not a great factor, should be avoided\n\nask for help"
+      "description": "this is not a great factor, should be avoided, ask for help"
     }
   ],
   "options": [

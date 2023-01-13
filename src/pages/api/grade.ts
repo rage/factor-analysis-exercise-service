@@ -17,7 +17,7 @@ import {
   calculateFactors,
   getGlobalVariables,
   sanitizeQuestions,
-  scaleRatedQuestions,
+  scaleAndImputRatedQuestions,
 } from "../../util/utils"
 
 export default async (
@@ -74,18 +74,13 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     gradingRequest.exercise_spec?.type === SurveyType.Factorial &&
     gradingRequest.exercise_spec.calculateFeedback
   ) {
-    const sanitizedAnswers = sanitizeQuestions(
-      gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
-    ) as RatedQuestion[]
-    const scaledAnswers =
-      gradingRequest.exercise_spec.meansAndStandardDeviations &&
-      gradingRequest.exercise_spec.allowedNans
-        ? scaleRatedQuestions(
-            sanitizedAnswers,
-            gradingRequest.exercise_spec.meansAndStandardDeviations,
-            gradingRequest.exercise_spec.allowedNans,
-          )
-        : sanitizedAnswers
+    const scaledAnswers = scaleAndImputRatedQuestions(
+      sanitizeQuestions(
+        gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
+      ) as RatedQuestion[],
+      gradingRequest.exercise_spec.meansAndStandardDeviations ?? null,
+      gradingRequest.exercise_spec.allowedNans ?? 0,
+    )
     const factorReports: FactorReport[] | null = scaledAnswers
       ? calculateFactors(gradingRequest.exercise_spec.factors, scaledAnswers)
       : null
