@@ -29,10 +29,7 @@
       "answer": {
         "id": "072864de-7680-40a2-bcb3-3023a74575fb",
         "type": "radio-group",
-        "options": [
-          "Kyllä",
-          "Ei"
-        ],
+        "options": ["Kyllä", "Ei"],
         "answer": ""
       },
       "conditional": false
@@ -47,10 +44,7 @@
       "answer": {
         "id": "6e217e88-1a3c-4a27-a354-54adf71fcf13",
         "type": "multiple-choice",
-        "options": [
-          "Kyllä",
-          "Ei"
-        ],
+        "options": ["Kyllä", "Ei"],
         "answer": ""
       },
       "conditional": true,
@@ -103,11 +97,7 @@
       "answer": {
         "id": "45b31699-ea2d-467a-a58f-58b17eb6099d",
         "type": "dropdown-selection",
-        "options": [
-          "nuori",
-          "vanha",
-          "muu"
-        ],
+        "options": ["nuori", "vanha", "muu"],
         "answer": ""
       },
       "conditional": false
@@ -122,11 +112,7 @@
       "answer": {
         "id": "8bfb0708-8546-49b4-bdd3-74a1c9b38172",
         "type": "multiple-choice",
-        "options": [
-          "nuori",
-          "vanha",
-          "muu"
-        ],
+        "options": ["nuori", "vanha", "muu"],
         "answer": ""
       },
       "conditional": true,

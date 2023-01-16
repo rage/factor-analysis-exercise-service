@@ -54,7 +54,7 @@ test("can add non-factorial survey type wtih information elements and questions 
   // Click text=add option
   await frame.locator("text=add option").click()
   // Fill input[type="text"]
-  await frame.locator('input[type="text"]').fill("Kyllä")
+  await frame.locator('input[type="text"]').nth(0).fill("Kyllä")
   // Click text=add option
   await frame.locator("text=add option").click()
   // Fill input[type="text"] >> nth=1

@@ -30,12 +30,26 @@ export interface FactorialOption {
 export interface FactorialSurvey {
   id: string
   type: SurveyType.Factorial
-  calculateFeedback: boolean
-  factors: Factor[]
   options: FactorialOption[]
   questions: Question[]
+  calculateFeedback: boolean
+  factors: Factor[]
   meansAndStandardDeviations?: NormalizationValues
   allowedNans?: number
+  reportVariables?: {
+    titleText?: string
+    reportFailureMessage?: string
+    reportSuccessMessage?: string | null
+    userVariable?: ReportVariable
+    comparingVariable?: ReportVariable
+    zeroVariable?: ReportVariable
+  }
+}
+
+export interface ReportVariable {
+  label?: string
+  globalKey?: string
+  logo?: string
 }
 
 /**
@@ -70,7 +84,11 @@ export interface Factor {
     max: number
   }
   score: number
+  /** [variableKey: [variableItem: avg-score] ]to be compared to in the factor report */
+  comparingVariable?: { [key: string]: { [key: string]: number } }
 }
+
+export type FactorReport = Omit<Factor, "weights">
 
 /** PublicSpec for Factorial survey contains only questions and options
  */
@@ -109,6 +127,8 @@ export interface Survey {
   id: string
   type: SurveyType.NonFactorial
   content: SurveyItem[]
+  titleText?: string
+  reportSuccessMessage?: string | null
 }
 
 export enum SurveyType {

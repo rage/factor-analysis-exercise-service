@@ -5,10 +5,12 @@ import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-
 import { cors, runMiddleware } from "../../util/cors"
 import {
   ClientErrorResponse,
-  Factor,
+  FactorReport,
   PrivateSpec,
   RatedQuestion,
+  ReportVariable,
   SubmittedForm,
+  Survey,
   SurveyItem,
   SurveyType,
 } from "../../util/stateInterfaces"
@@ -16,7 +18,7 @@ import {
   calculateFactors,
   getGlobalVariables,
   sanitizeQuestions,
-  scaleRatedQuestions,
+  scaleAndImputRatedQuestions,
 } from "../../util/utils"
 
 export default async (
@@ -43,7 +45,12 @@ interface GradingResult {
 }
 
 export interface ExerciseFeedback {
-  factorReport: Factor[]
+  userVar?: ReportVariable
+  comparingVar?: ReportVariable
+  zeroVar?: ReportVariable
+  titleText?: string
+  noReportMessage?: string
+  factorReport: FactorReport[] | null
 }
 
 interface GradingRequest {
@@ -68,28 +75,34 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     gradingRequest.exercise_spec?.type === SurveyType.Factorial &&
     gradingRequest.exercise_spec.calculateFeedback
   ) {
-    const sanitizedAnswers = sanitizeQuestions(
-      gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
-    ) as RatedQuestion[]
-    const scaledAnswers =
-      gradingRequest.exercise_spec.meansAndStandardDeviations &&
-      gradingRequest.exercise_spec.allowedNans
-        ? scaleRatedQuestions(
-            sanitizedAnswers,
-            gradingRequest.exercise_spec.meansAndStandardDeviations,
-            gradingRequest.exercise_spec.allowedNans,
-          )
-        : sanitizedAnswers
-    const factors: Factor[] | null = scaledAnswers
+    const scaledAnswers = scaleAndImputRatedQuestions(
+      sanitizeQuestions(
+        gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
+      ) as RatedQuestion[],
+      gradingRequest.exercise_spec.meansAndStandardDeviations ?? null,
+      gradingRequest.exercise_spec.allowedNans ?? 0,
+    )
+    const factorReports: FactorReport[] | null = scaledAnswers
       ? calculateFactors(gradingRequest.exercise_spec.factors, scaledAnswers)
       : null
+    const userVar = gradingRequest.exercise_spec.reportVariables?.userVariable
+    const comparingVar = gradingRequest.exercise_spec.reportVariables?.comparingVariable
+    const zeroVar = gradingRequest.exercise_spec.reportVariables?.zeroVariable
 
     return res.status(200).json({
       grading_progress: "FullyGraded",
       score_given: 1,
       score_maximum: 1,
-      feedback_text: "Thank you for you submission!",
-      feedback_json: factors ? { factorReport: factors } : null, //TODO instead of returning null, return message from teachers that factor report could not be provided because of nan exceeds
+      feedback_text: factorReports
+        ? gradingRequest.exercise_spec.reportVariables?.reportSuccessMessage ?? null
+        : gradingRequest.exercise_spec.reportVariables?.reportFailureMessage ?? null,
+      feedback_json: {
+        userVar: userVar,
+        comparingVar: comparingVar,
+        zeroVar: zeroVar,
+        factorReport: factorReports,
+        titleText: gradingRequest.exercise_spec.reportVariables?.titleText,
+      },
     })
   }
 
@@ -104,7 +117,7 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     grading_progress: "FullyGraded",
     score_given: 1,
     score_maximum: 1,
-    feedback_text: "Thank you for you submission!",
+    feedback_text: (gradingRequest.exercise_spec as Survey).reportSuccessMessage ?? null,
     feedback_json: null,
     set_user_variables: vars,
   })

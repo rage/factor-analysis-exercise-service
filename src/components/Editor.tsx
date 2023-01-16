@@ -1,4 +1,3 @@
-/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import { useEffect } from "react"
 import { v4 } from "uuid"
@@ -38,7 +37,7 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
           flex-direction: column;
         `}
       >
-        <legend>Choose type of Survey</legend>
+        <legend>{"Choose type of Survey"}</legend>
         <select
           aria-label="select-survey-type"
           name="type-selection"
@@ -78,7 +77,7 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
           }}
         >
           <option value={undefined} disabled selected>
-            --
+            {"--"}
           </option>
           <option value={SurveyType.Factorial}>{SurveyType.Factorial}</option>
           <option value={SurveyType.NonFactorial}>{SurveyType.NonFactorial}</option>

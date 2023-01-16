@@ -1,4 +1,3 @@
-/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import React from "react"
 
@@ -18,7 +17,7 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
   return (
     <>
       <legend>
-        This question will be shown based on chosen answer:{" "}
+        {"This question will be shown based on chosen answer: "}
         <p
           className={css`
             width: 45vw;
@@ -26,8 +25,9 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
             overflow: hidden;
           `}
         >
-          Question: {item.dependsOn?.questionLabel} <br />
-          chosen option: {item.dependsOn?.triggeringOption}
+          {`Question: ${item.dependsOn?.questionLabel} `}
+          <br />
+          {`chosen option: ${item.dependsOn?.triggeringOption}`}
         </p>
       </legend>
       <select
@@ -52,7 +52,7 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
         `}
       >
         <option value="default" aria-label="Set condition" disabled selected>
-          Set condition
+          {"Set condition"}
         </option>
         {state.content.map((sItem) => {
           if (

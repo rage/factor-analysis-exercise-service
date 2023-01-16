@@ -1,6 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
+kubectl delete Deployment/factorial-analysis
+# kubectl describe ReplicaSet/factorial-analysis # is this needed?
+
 ktunnel expose factorial-analysis 80:3008
 
 # minikube internal_url: http://factorial-analysis.default.svc.cluster.local:80/api/service-info

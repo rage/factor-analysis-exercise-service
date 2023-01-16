@@ -22,6 +22,7 @@ export const CheckedRadioGroupWrap = styled.div<DivProps>`
   align-items: left;
 
   input[type="radio"] {
+    flex-shrink: 0;
     appearance: none;
     background-color: #fff;
     margin-right: 10px;
@@ -29,10 +30,10 @@ export const CheckedRadioGroupWrap = styled.div<DivProps>`
     margin-left: 20px;
     font: inherit;
     color: currentColor;
-    width: 1.15em;
+    width: 1.1em;
     height: 1.1em;
     border: 1px solid #c1c1c1;
-    border-radius: 1em;
+    border-radius: 2em;
     transform: translateY(-0.075em);
     display: grid;
     place-content: center;
@@ -78,6 +79,7 @@ export const RadioGroupWrap = styled.div<DivProps>`
   gap: 0.5em;
 
   input[type="radio"] {
+    flex-shrink: 0;
     appearance: none;
     background-color: #fff;
     margin: 0;

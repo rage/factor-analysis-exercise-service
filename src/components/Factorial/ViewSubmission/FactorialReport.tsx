@@ -1,11 +1,12 @@
 /* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import React from "react"
-// eslint-disable-next-line import/order
-import { FaDog } from "react-icons/fa"
-//import { respondToOrLarger } from "../../shared-module/styles/respond"
-import { Factor } from "../../../util/stateInterfaces"
+
+import { respondToOrLarger } from "../../../shared-module/styles/respond"
+import { FactorReport, ReportVariable } from "../../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
+
+import { GetLogo } from "./ReportLogos"
 
 export const barColors = [
   "#DAE6E5",
@@ -20,15 +21,21 @@ export const barColors = [
 ]
 
 interface CoordinateProps {
-  factor: Factor
-  name: string
-  breed: string
+  factor: FactorReport
+  userName: string | null
+  userCompVar: string | null
+  comparingVar: ReportVariable | null
+  userVar: ReportVariable | null
+  zeroVar: ReportVariable | null
 }
 
 export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>> = ({
   factor,
-  name,
-  breed,
+  userName,
+  userCompVar,
+  comparingVar,
+  userVar,
+  zeroVar,
 }) => {
   const species =
     (100 * -(factor.range?.min as number)) /
@@ -38,84 +45,74 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
     (100 * (-(factor.range?.min as number) + factor.score)) /
     ((factor.range?.max as number) - (factor.range?.min as number))
 
-  console.log(breed)
+  let breedAvg = null //species + Math.random() * 4
+  if (
+    factor.comparingVariable &&
+    userCompVar &&
+    comparingVar?.globalKey &&
+    factor.comparingVariable[comparingVar.globalKey] &&
+    factor.comparingVariable[comparingVar.globalKey][userCompVar] !== undefined
+  ) {
+    breedAvg =
+      (100 *
+        (-(factor.range?.min as number) +
+          factor.comparingVariable[comparingVar.globalKey][userCompVar])) /
+      ((factor.range?.max as number) - (factor.range?.min as number))
+  }
+
   return (
-    <div>
+    <div
+      className={css`
+        display: flex;
+        flex-direction: column;
+      `}
+    >
       <ExerciseItemHeader titleText={factor.name} />
       <div
         className={css`
           display: flex;
-          height: 37px;
+          flex-direction: column;
+          justify-content: space-between;
+          ${respondToOrLarger.sm} {
+            flex-direction: row;
+          }
+          height: 100%;
+          width: 100%;
           place-content: left;
           gap: 0.5rem;
           margin-bottom: 3rem;
-          label {
-            font-family: "Raleway";
-            font-style: normal;
-            font-weight: 500;
-            font-size: 15px;
-            line-height: 250%;
+          .div-container {
             display: flex;
-            align-items: flex-end;
-          }
-          div[id="logo"] {
-            margin-right: 1rem;
+            flex-direction: column;
+            ${respondToOrLarger.sm} {
+              flex-direction: row;
+            }
+            label {
+              font-family: "Raleway";
+              font-style: normal;
+              font-weight: 500;
+              font-size: 15px;
+              line-height: 250%;
+              display: flex;
+              align-items: flex-end;
+            }
           }
         `}
       >
-        <label>{"Species average"}</label>
-        <div
-          id={`${factor.label}-logo`}
-          className={css`
-            height: 37px;
-            background-color: #d9d9d9;
-            width: 37px;
-            border-radius: 37px;
-            display: grid;
-            place-content: center;
-            div {
-              height: 14px;
-              width: 14px;
-              background-color: black;
-            }
-          `}
-        >
-          <div
-            className={css`
-              border-radius: 10px;
-            `}
-          />
+        <div className="div-container">
+          <GetLogo logo={zeroVar?.logo ?? "paw"} id={`${factor.label}-zero-logo`} />
+          <label>{zeroVar?.label ?? "Dogs average"}</label>
         </div>
-        <label>{name}</label>
-        <div
-          className={css`
-            height: 37px;
-            background-color: #d9d9d9;
-            width: 37px;
-            border-radius: 37px;
-            display: grid;
-            place-content: center;
-            div {
-              height: 20px;
-              width: 20px;
-              background-color: pink;
-              border-radius: 10px;
-            }
-          `}
-        >
-          <div
-            className={css`
-              display: grid;
-              place-content: center;
-            `}
-          >
-            <FaDog
-              className={css`
-                height: 100%;
-              `}
-            />
+        <div className="div-container">
+          <GetLogo logo={userVar?.logo ?? "dog"} id={`${factor.label}-ownpet-logo`} />
+          <label>{userName ?? userVar?.label ?? "Your Score"}</label>
+        </div>
+        {userCompVar && (
+          <div className="div-container">
+            <GetLogo logo={comparingVar?.logo ?? "circle"} id={`${factor.label}-compareTo-logo`} />
+            <label>{`${userCompVar}`}</label>
           </div>
-        </div>
+        )}
       </div>
       <div
         className={css`
@@ -124,62 +121,16 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           height: 50px;
         `}
       >
-        <div
-          className={css`
-            height: 37px;
-            background-color: #d9d9d9;
-            width: 37px;
-            border-radius: 37px;
-            position: absolute;
-            left: ${`${species}%`};
-            transform: translate(-50%, 0);
-            display: grid;
-            place-content: center;
-            div {
-              height: 14px;
-              width: 14px;
-              background-color: black;
-            }
-          `}
-        >
-          <div
-            className={css`
-              border-radius: 10px;
-            `}
-          />
-        </div>
-        <div
-          className={css`
-            height: 37px;
-            background-color: #d9d9d9;
-            width: 37px;
-            border-radius: 37px;
-            position: absolute;
-            left: ${`${userScore}%`};
-            transform: translate(-50%, 0);
-            display: grid;
-            place-content: center;
-            div {
-              height: 20px;
-              width: 20px;
-              background-color: pink;
-              border-radius: 10px;
-            }
-          `}
-        >
-          <div
-            className={css`
-              display: grid;
-              place-content: center;
-            `}
-          >
-            <FaDog
-              className={css`
-                height: 100%;
-              `}
-            />
-          </div>
-        </div>
+        <GetLogo logo={zeroVar?.logo ?? "paw"} position={species} withCarret={true} />
+        {userCompVar &&
+          factor.comparingVariable &&
+          comparingVar?.globalKey &&
+          factor.comparingVariable[comparingVar.globalKey] &&
+          factor.comparingVariable[comparingVar.globalKey][userCompVar] !== undefined &&
+          breedAvg && (
+            <GetLogo logo={comparingVar.logo ?? "circle"} position={breedAvg} withCarret />
+          )}
+        <GetLogo logo={userVar?.logo ?? "dog"} position={userScore} withCarret />
       </div>
 
       <div

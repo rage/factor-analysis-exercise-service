@@ -1,6 +1,13 @@
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
-import { Factor, NormalizationValues, Question, RatedQuestion, SurveyItem } from "./stateInterfaces"
+import {
+  Factor,
+  FactorReport,
+  NormalizationValues,
+  Question,
+  RatedQuestion,
+  SurveyItem,
+} from "./stateInterfaces"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
@@ -9,9 +16,12 @@ const matrixMultiplication = require("matrix-multiplication")
  * Calculates the scores for factors
  * @param factors contains the weight matrix to by multiplied with rated questions
  * @param ratedQuestions used to create vector of scores for the matrix multiplication
- * @returns factors with calculated score
+ * @returns FactorReports with calculated score
  */
-export const calculateFactors = (factors: Factor[], ratedQuestions: RatedQuestion[]): Factor[] => {
+export const calculateFactors = (
+  factors: Factor[],
+  ratedQuestions: RatedQuestion[],
+): FactorReport[] => {
   // If have to use number[][] as the weights matrix in some parts
   /* const matrix = survey.matrix
 
@@ -40,6 +50,7 @@ export const calculateFactors = (factors: Factor[], ratedQuestions: RatedQuestio
         ? factor.score + factor.weights[item.questionLabel] * item.rate
         : factor.score
     })
+    return factor as FactorReport
   })
 
   return factors
@@ -167,9 +178,9 @@ export const insertVariablesToText = (
  * @param maxNanAllowed allowed limit amount of nan-answers, beyond which report is not calculated
  * @returns scaled ratedQuestions or null if max nan exceeded
  */
-export const scaleRatedQuestions = (
+export const scaleAndImputRatedQuestions = (
   ratedQuestions: RatedQuestion[],
-  meansAndStandardDeviations: NormalizationValues,
+  meansAndStandardDeviations: NormalizationValues | null,
   maxNanAllowed: number,
 ): RatedQuestion[] | null => {
   let amount = 0
@@ -177,15 +188,15 @@ export const scaleRatedQuestions = (
     if (!q.rate) {
       amount++
     }
-    const rate = q.rate
-      ? (q.rate - meansAndStandardDeviations.means[q.questionLabel]) /
-        meansAndStandardDeviations.standardDeviations[q.questionLabel]
-      : 0
+    const rate =
+      q.rate && meansAndStandardDeviations
+        ? (q.rate - meansAndStandardDeviations.means[q.questionLabel]) /
+          meansAndStandardDeviations.standardDeviations[q.questionLabel]
+        : q.rate ?? 0
     const scaledQuestion = { ...q, rate: rate }
     return scaledQuestion
   })
   if (amount > maxNanAllowed) {
-    console.log(amount, maxNanAllowed, amount > maxNanAllowed)
     return null
   }
   return questions
