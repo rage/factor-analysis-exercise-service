@@ -1,0 +1,821 @@
+{
+  "type": "factorial",
+  "id": "b851f005-57ee-4550-bd8a-b4f2cccb446f",
+  "factors": [
+    {
+      "id": "b4d76d71-022c-4d99-84fc-4b130f9447a1",
+      "label": "insecurity",
+      "name": "insecure",
+      "weights": {
+        "Willing_to_learn": -0.00241642400045262,
+        "Playful_dogs": 0.0150641544519835,
+        "Predictable": -0.0000956578020871079,
+        "Obedient": 0.00926778787969596,
+        "Boisterous": 0.00708920675941515,
+        "Sensitive_touch": 0.079338108749052,
+        "Anxious": 0.142343283285815,
+        "Independent": -0.0392946220841957,
+        "Lazy": 0.024085311376013,
+        "Intelligent": 0.0244331608587845,
+        "Reliable": 0.0120950922323898,
+        "Human_dependent": 0.0389101642043292,
+        "Wary": 0.0516818628298789,
+        "Erratic": 0.0705972431599867,
+        "Stubborn": -0.0286146141229352,
+        "Fearful_people": 0.228317677697985,
+        "Playful_people": -0.00776705477835323,
+        "Playful_alone": 0.0194064927044835,
+        "Curious": -0.0657064921608569,
+        "Fearful_dogs": 0.116287456015701,
+        "Impulsive": -0.0166934405144526,
+        "Affectionate_people": 0.0364492269379383,
+        "Decisive": -0.0165060808327973,
+        "Persevering": -0.00646283719125678,
+        "Distractible": 0.0120582883166194,
+        "Submissive": 0.0457408453855044,
+        "Cautious": 0.120785185524135,
+        "Restless": 0.0306893577413028,
+        "Confident": -0.108052236110672,
+        "Easygoing": -0.0534144751818961,
+        "Dominant": -0.0165825730133824,
+        "Patient": 0.00735191733149407,
+        "Sociable_dogs_samegender": 0.022810864517879,
+        "Slow": 0.000627539321976198,
+        "Sociable_dogs_oppositegender": 0.00223647196633838,
+        "Calm": -0.00686947570249372,
+        "Provocative": 0.00302304467583206,
+        "Excitable": 0.021124817764148,
+        "Human_oriented": 0.0081455085474774,
+        "Focused": 0.00767693401229789,
+        "Empathic": 0.0150145473571623,
+        "Aggressive_dogs_samegender": -0.0153403267667911,
+        "Attention_seeking": 0.0248670461146365,
+        "Indifferent": -0.0119563340259695,
+        "Aggressive_people": 0.099901108457855,
+        "Affectionate_dogs": 0.0158433144342584,
+        "Calming": 0.019872742806444,
+        "Solitary": 0.00298531400376397,
+        "Aggressive_dogs_oppositegender": 0.022587617304701,
+        "Territorial": 0.0129518206847633,
+        "Flexible": -0.0150599023824806,
+        "Easily_recovered": -0.0679146906357718,
+        "Bold": -0.112594723073933,
+        "Active": -0.00267950005024662,
+        "Energetic": -0.0106654067787369,
+        "Insecure": 0.132332193360888,
+        "Attentive": 0.0236594118797521,
+        "Sociable_people": -0.00559973674405815
+      },
+      "score": 0,
+      "range": {
+        "min": -7,
+        "max": 17
+      }
+    },
+    {
+      "id": "31843004-ff6a-40f3-8586-df6e34e6ddb5",
+      "label": "training_focus",
+      "name": "focused on training",
+      "weights": {
+        "Willing_to_learn": 0.127323030409148,
+        "Playful_dogs": 0.00496055008490296,
+        "Predictable": 0.0706215647075889,
+        "Obedient": 0.163430351123876,
+        "Boisterous": -0.0517975322291059,
+        "Sensitive_touch": 0.000354681939696117,
+        "Anxious": 0.00551323639653805,
+        "Independent": 0.0257984107106497,
+        "Lazy": -0.0733007648099996,
+        "Intelligent": 0.111002326733436,
+        "Reliable": 0.0288165315002007,
+        "Human_dependent": -0.00511614746704008,
+        "Wary": 0.0260549965875213,
+        "Erratic": -0.140672123983705,
+        "Stubborn": -0.0957737190887101,
+        "Fearful_people": 0.0254539326323177,
+        "Playful_people": -0.00517552947932191,
+        "Playful_alone": 0.0330972963413953,
+        "Curious": -0.00227162380031258,
+        "Fearful_dogs": -0.00411336450254682,
+        "Impulsive": -0.0837755850595619,
+        "Affectionate_people": 0.00269412794361656,
+        "Decisive": 0.0552388271939501,
+        "Persevering": 0.0216086775771913,
+        "Distractible": -0.162846951613297,
+        "Submissive": -0.0260012139019013,
+        "Cautious": 0.0323522812423083,
+        "Restless": -0.102345140936135,
+        "Confident": -0.041118232779739,
+        "Easygoing": 0.0147724253500886,
+        "Dominant": 0.00964709757998279,
+        "Patient": 0.0922115743535178,
+        "Sociable_dogs_samegender": -0.00607223309505318,
+        "Slow": 0.00691594516281918,
+        "Sociable_dogs_oppositegender": 0.00590628886421206,
+        "Calm": 0.0805791085185364,
+        "Provocative": -0.0497423903891651,
+        "Excitable": -0.058516738641397,
+        "Human_oriented": -0.021240721068681,
+        "Focused": 0.148397246277478,
+        "Empathic": 0.0481480395675267,
+        "Aggressive_dogs_samegender": 0.056065560639088,
+        "Attention_seeking": -0.0463895834362767,
+        "Indifferent": 0.0470401830530122,
+        "Aggressive_people": -0.0563680980789871,
+        "Affectionate_dogs": 0.00638880488148555,
+        "Calming": 0.0165323274016756,
+        "Solitary": 0.00745322773876146,
+        "Aggressive_dogs_oppositegender": -0.00634956789901416,
+        "Territorial": 0.0571602889045428,
+        "Flexible": 0.0618689248681203,
+        "Easily_recovered": 0.0728243475121821,
+        "Bold": -0.0147351646186353,
+        "Active": 0.0211951601545183,
+        "Energetic": 0.0270281992575278,
+        "Insecure": 0.040800365399368,
+        "Attentive": 0.108237692522251,
+        "Sociable_people": -0.0413920492975572
+      },
+      "score": 0,
+      "range": {
+        "min": -5,
+        "max": 8
+      }
+    },
+    {
+      "id": "bd191510-a3e4-4efe-bf5e-4b1f90356ee4",
+      "label": "activity_playfulness",
+      "name": "playfull",
+      "weights": {
+        "Willing_to_learn": 0.109758232605109,
+        "Playful_dogs": 0.0217613664916698,
+        "Predictable": -0.0454122935762743,
+        "Obedient": 0.0631845819673789,
+        "Boisterous": 0.070887063727649,
+        "Sensitive_touch": 0.036857623633268,
+        "Anxious": 0.0171413001780294,
+        "Independent": -0.0152159403430314,
+        "Lazy": -0.285101236677988,
+        "Intelligent": 0.0383902094399756,
+        "Reliable": 0.00774805483878527,
+        "Human_dependent": -0.00554394192624492,
+        "Wary": -0.0321359701483504,
+        "Erratic": 0.00458818345836219,
+        "Stubborn": -0.0443791821125571,
+        "Fearful_people": 0.0201348712974726,
+        "Playful_people": 0.0661289897849693,
+        "Playful_alone": 0.0248502326808924,
+        "Curious": 0.0545396599348096,
+        "Fearful_dogs": 0.0165032408207039,
+        "Impulsive": 0.0541680869826062,
+        "Affectionate_people": -0.00464914721777035,
+        "Decisive": -0.0170057960256871,
+        "Persevering": 0.0136006141188834,
+        "Distractible": -0.0205341852303177,
+        "Submissive": 0.00696757070669674,
+        "Cautious": -0.0264655089387149,
+        "Restless": 0.155658916411304,
+        "Confident": -0.0134458680911677,
+        "Easygoing": -0.0148767424215394,
+        "Dominant": -0.00951049001262377,
+        "Patient": -0.0430252035096365,
+        "Sociable_dogs_samegender": -0.029362960844541,
+        "Slow": -0.147803457697128,
+        "Sociable_dogs_oppositegender": -0.0266181459229378,
+        "Calm": -0.102833596598713,
+        "Provocative": 0.00360612816080623,
+        "Excitable": 0.0895049316029334,
+        "Human_oriented": -0.00337530693130182,
+        "Focused": 0.0331611224642182,
+        "Empathic": -0.032770590405368,
+        "Aggressive_dogs_samegender": -0.0286948071360636,
+        "Attention_seeking": -0.00150627946005515,
+        "Indifferent": 0.0104242136937423,
+        "Aggressive_people": 0.0202958679339445,
+        "Affectionate_dogs": -0.0333425620537922,
+        "Calming": -0.0215303003839587,
+        "Solitary": -0.0266670599254038,
+        "Aggressive_dogs_oppositegender": 0.00120607905142612,
+        "Territorial": -0.00490760257860457,
+        "Flexible": -0.025229654800445,
+        "Easily_recovered": -0.00709582234556755,
+        "Bold": 0.0190917797488561,
+        "Active": 0.122570564881383,
+        "Energetic": 0.215971893161774,
+        "Insecure": -0.0236119157736951,
+        "Attentive": 0.0548493289016666,
+        "Sociable_people": 0.00936188518402483
+      },
+      "score": 0,
+      "range": {
+        "min": -6,
+        "max": 12
+      }
+    },
+    {
+      "id": "cc1f9995-3be1-4f04-aff5-a7e4c9122cae",
+      "label": "aggressiveness_dominance",
+      "name": "aggressive",
+      "weights": {
+        "Willing_to_learn": 0.00721392530187845,
+        "Playful_dogs": -0.0266693442299395,
+        "Predictable": 0.0135880452097864,
+        "Obedient": -0.00209463950011356,
+        "Boisterous": 0.0493357339628112,
+        "Sensitive_touch": 0.00337058467597184,
+        "Anxious": -0.0188385061334331,
+        "Independent": -0.024599069039238,
+        "Lazy": -0.00214895913863164,
+        "Intelligent": -0.00161192538445321,
+        "Reliable": -0.0151518705209907,
+        "Human_dependent": -0.00368069865569635,
+        "Wary": -0.00680919706484522,
+        "Erratic": 0.0356492631427263,
+        "Stubborn": -0.0242183145199452,
+        "Fearful_people": 0.0121269314141273,
+        "Playful_people": -0.000278558026983492,
+        "Playful_alone": -0.00112546900342496,
+        "Curious": -0.010070053489547,
+        "Fearful_dogs": 0.0570227184642703,
+        "Impulsive": 0.010902732145421,
+        "Affectionate_people": -0.00682410497189683,
+        "Decisive": 0.0061389289736657,
+        "Persevering": -0.0137867705343811,
+        "Distractible": 0.00281167795494175,
+        "Submissive": -0.17522758228838,
+        "Cautious": -0.0144671562617948,
+        "Restless": -0.036440488471053,
+        "Confident": 0.0505588957954394,
+        "Easygoing": 0.00363409159180804,
+        "Dominant": 0.160568748790827,
+        "Patient": 0.00535772955315497,
+        "Sociable_dogs_samegender": -0.145807207238542,
+        "Slow": -0.0146377046074885,
+        "Sociable_dogs_oppositegender": 0.0292042968663219,
+        "Calm": -0.062373722461568,
+        "Provocative": 0.0466216766147882,
+        "Excitable": 0.0076156637705459,
+        "Human_oriented": 0.0150224590806027,
+        "Focused": 0.00710357032856233,
+        "Empathic": 0.0144498363208708,
+        "Aggressive_dogs_samegender": 0.295371228700775,
+        "Attention_seeking": -0.00314309831698946,
+        "Indifferent": -0.0401347280341366,
+        "Aggressive_people": 0.204786675880933,
+        "Affectionate_dogs": 0.0051195964911616,
+        "Calming": -0.0163772663210247,
+        "Solitary": -0.00753318259138288,
+        "Aggressive_dogs_oppositegender": 0.269539847295426,
+        "Territorial": 0.0506434959851848,
+        "Flexible": 0.00462621897471146,
+        "Easily_recovered": -0.0162511467209433,
+        "Bold": 0.0377085369891033,
+        "Active": -0.0226048024912022,
+        "Energetic": -0.0216834438101527,
+        "Insecure": -0.00380018628358152,
+        "Attentive": 0.0135172277445424,
+        "Sociable_people": 0.000450968952926168
+      },
+      "score": 0,
+      "range": {
+        "min": -10,
+        "max": 12
+      }
+    },
+    {
+      "id": "1c65dc83-7900-4c51-92bb-4869fcc21dc4",
+      "label": "dog_sociability",
+      "name": "sociable with dogs",
+      "weights": {
+        "Willing_to_learn": -0.0326660317820178,
+        "Playful_dogs": 0.260850504084895,
+        "Predictable": 0.00947031313592032,
+        "Obedient": -0.025091034118658,
+        "Boisterous": 0.0381295324683188,
+        "Sensitive_touch": -0.0161683688867028,
+        "Anxious": 0.00270455932859768,
+        "Independent": -0.0294684523015186,
+        "Lazy": -0.0899513607982471,
+        "Intelligent": 0.01126896144759,
+        "Reliable": -0.0664887954525281,
+        "Human_dependent": -0.0156545342096234,
+        "Wary": 0.0242133078224578,
+        "Erratic": -0.0298167071471049,
+        "Stubborn": -0.0101649540555548,
+        "Fearful_people": 0.0164664889184857,
+        "Playful_people": 0.0500549163086139,
+        "Playful_alone": 0.0511874455405776,
+        "Curious": 0.109402382560258,
+        "Fearful_dogs": -0.0839723644484335,
+        "Impulsive": 0.0229929050042828,
+        "Affectionate_people": -0.00487314138253665,
+        "Decisive": 0.00594731537167597,
+        "Persevering": -0.0313760620802794,
+        "Distractible": 0.00954447844381407,
+        "Submissive": -0.043553617887221,
+        "Cautious": 0.0189242490236515,
+        "Restless": -0.0306048422490848,
+        "Confident": -0.0170360175650363,
+        "Easygoing": 0.0210912063093807,
+        "Dominant": 0.0303519802231676,
+        "Patient": 0.0650827542901593,
+        "Sociable_dogs_samegender": 0.143952259055876,
+        "Slow": 0.0372639935752264,
+        "Sociable_dogs_oppositegender": 0.213228526922659,
+        "Calm": -0.00221640775002792,
+        "Provocative": 0.053611129430138,
+        "Excitable": -0.0174664162353838,
+        "Human_oriented": -0.260693442224954,
+        "Focused": -0.047110384380653,
+        "Empathic": -0.000982509969547825,
+        "Aggressive_dogs_samegender": 0.0746373950679342,
+        "Attention_seeking": -0.0107005486732943,
+        "Indifferent": -0.251449315652382,
+        "Aggressive_people": -0.0112627285471931,
+        "Affectionate_dogs": 0.101054612471776,
+        "Calming": 0.0198456288145978,
+        "Solitary": -0.0693954655942315,
+        "Aggressive_dogs_oppositegender": -0.0696514472221312,
+        "Territorial": 0.0400987715456426,
+        "Flexible": -0.0125828800874227,
+        "Easily_recovered": 0.047229371689336,
+        "Bold": -0.0270279185163772,
+        "Active": -0.039589677216975,
+        "Energetic": -0.0177034844169138,
+        "Insecure": 0.0379010321035385,
+        "Attentive": -0.00374913780870432,
+        "Sociable_people": 0.0119828511458309
+      },
+      "score": 0,
+      "range": {
+        "min": -9,
+        "max": 8
+      }
+    },
+    {
+      "id": "f3c2af42-1745-4101-a9c0-c787efd34fc7",
+      "label": "human_sociability",
+      "name": "sociable with humans",
+      "weights": {
+        "Willing_to_learn": 0.00162248282268945,
+        "Playful_dogs": 0.00605281436982054,
+        "Predictable": 0.0222443130583114,
+        "Obedient": 0.00884892955202177,
+        "Boisterous": 0.0466472400342739,
+        "Sensitive_touch": -0.129645509934564,
+        "Anxious": 0.0283388446233882,
+        "Independent": -0.0378636024882026,
+        "Lazy": 0.00822371298142768,
+        "Intelligent": 0.0210725542720788,
+        "Reliable": 0.0132647364481971,
+        "Human_dependent": 0.0723241746170914,
+        "Wary": 0.00763079958908268,
+        "Erratic": -0.0167814312966396,
+        "Stubborn": 0.00110103858736352,
+        "Fearful_people": -0.0958822548476888,
+        "Playful_people": 0.105635193893909,
+        "Playful_alone": 0.0191849585683655,
+        "Curious": 0.0493621178765034,
+        "Fearful_dogs": 0.0539892082011002,
+        "Impulsive": 0.00735446326851674,
+        "Affectionate_people": 0.252864901003867,
+        "Decisive": 0.0168121963671262,
+        "Persevering": 0.0132333397818594,
+        "Distractible": 0.0350266683420298,
+        "Submissive": 0.0283791097880603,
+        "Cautious": 0.0123961671899834,
+        "Restless": -0.00034138434208252,
+        "Confident": -0.024640076296464,
+        "Easygoing": 0.0102896375851011,
+        "Dominant": 0.00979903510177977,
+        "Patient": 0.000154123256843848,
+        "Sociable_dogs_samegender": 0.0186427478799549,
+        "Slow": 0.0424011635784942,
+        "Sociable_dogs_oppositegender": 0.0181491118530053,
+        "Calm": -0.0000222914482972806,
+        "Provocative": -0.00604113341998206,
+        "Excitable": 0.02854797188027,
+        "Human_oriented": 0.227927463239091,
+        "Focused": -0.0342187575062832,
+        "Empathic": 0.0907831512474629,
+        "Aggressive_dogs_samegender": 0.0372342268818537,
+        "Attention_seeking": 0.0860887639419641,
+        "Indifferent": -0.0225036675067391,
+        "Aggressive_people": -0.128806113593648,
+        "Affectionate_dogs": 0.0527596436929873,
+        "Calming": 0.00335800443951913,
+        "Solitary": -0.0872812377144793,
+        "Aggressive_dogs_oppositegender": 0.0314276658888813,
+        "Territorial": -0.02024999414668,
+        "Flexible": 0.0205260557353591,
+        "Easily_recovered": 0.0162511996782393,
+        "Bold": -0.0321672036821992,
+        "Active": -0.0311418436611178,
+        "Energetic": -0.0025581748722971,
+        "Insecure": 0.0190484609250624,
+        "Attentive": 0.0748336941790861,
+        "Sociable_people": 0.414990583650414
+      },
+      "score": 0,
+      "range": {
+        "min": -11,
+        "max": 12
+      }
+    },
+    {
+      "id": "b1c4357d-9c2f-4e04-be7c-ecb9533b845d",
+      "label": "perseverance",
+      "name": "perseverance",
+      "weights": {
+        "Willing_to_learn": 0.0237567794650663,
+        "Playful_dogs": 0.00265906918215224,
+        "Predictable": 0.00319291934966291,
+        "Obedient": -0.0886746055923857,
+        "Boisterous": 0.0495197583111135,
+        "Sensitive_touch": 0.0634547057184511,
+        "Anxious": 0.0675836267531743,
+        "Independent": 0.107701632958626,
+        "Lazy": 0.0964295876603061,
+        "Intelligent": 0.0980278870261094,
+        "Reliable": 0.00793475434341925,
+        "Human_dependent": -0.0377891908958105,
+        "Wary": 0.0906594145351672,
+        "Erratic": 0.0819542868086467,
+        "Stubborn": 0.294305110719109,
+        "Fearful_people": 0.0470351338768742,
+        "Playful_people": -0.00022980392526992,
+        "Playful_alone": 0.0351495687660896,
+        "Curious": 0.0836609286154246,
+        "Fearful_dogs": -0.00435427464077077,
+        "Impulsive": 0.0709545425904978,
+        "Affectionate_people": 0.0353950394620747,
+        "Decisive": 0.260525584411626,
+        "Persevering": 0.256047272171575,
+        "Distractible": -0.0175213353212561,
+        "Submissive": 0.0194830360245325,
+        "Cautious": 0.0475353985706036,
+        "Restless": 0.0494237614625022,
+        "Confident": 0.124496586679302,
+        "Easygoing": 0.0444496594998523,
+        "Dominant": 0.0546058437612549,
+        "Patient": 0.00719382244004244,
+        "Sociable_dogs_samegender": 0.112097819943207,
+        "Slow": 0.058464263747413,
+        "Sociable_dogs_oppositegender": 0.0362959354901589,
+        "Calm": 0.0684635075925384,
+        "Provocative": 0.142218512271513,
+        "Excitable": 0.0443855562579314,
+        "Human_oriented": 0.0288671682468171,
+        "Focused": 0.0944662835332811,
+        "Empathic": 0.0307343504063691,
+        "Aggressive_dogs_samegender": -0.0638944180977394,
+        "Attention_seeking": 0.0969410162941308,
+        "Indifferent": 0.0971348017173311,
+        "Aggressive_people": 0.144400254573317,
+        "Affectionate_dogs": 0.0183274289317861,
+        "Calming": 0.0561029812502722,
+        "Solitary": 0.0647228887584641,
+        "Aggressive_dogs_oppositegender": -0.00385819020318003,
+        "Territorial": 0.102702715212537,
+        "Flexible": 0.0254123803869234,
+        "Easily_recovered": 0.0469100744850734,
+        "Bold": 0.0979052569990833,
+        "Active": 0.0185862144284663,
+        "Energetic": 0.0606161547013246,
+        "Insecure": 0.0522736120000805,
+        "Attentive": 0.0512522396748653,
+        "Sociable_people": -0.0300760738128704
+      },
+      "score": 0,
+      "range": {
+        "min": -7,
+        "max": 15
+      }
+    }
+  ],
+  "options": [
+    {
+      "name": "en osaa sanoa",
+      "value": null,
+      "id": "4b482d60-4cb0-4e3f-a3d8-b8c62035d370"
+    },
+    {
+      "name": "täysin eri mieltä",
+      "value": 1,
+      "id": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "name": "jokseenkin eri mieltä",
+      "value": 2,
+      "id": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "name": "ei samaa eikä eri mieltä",
+      "value": 3,
+      "id": "b4dba5ec-2913-4c26-8d48-bce1c0a96114"
+    },
+    {
+      "name": "jokseenkin samaa mieltä",
+      "value": 4,
+      "id": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "name": "täysin samaa mieltä",
+      "value": 5,
+      "id": "e55d1a10-c84a-467b-8baf-d5897cfc624a"
+    }
+  ],
+  "questions": [
+    {
+      "id": "7d9a14c2-5f73-4492-a5ad-63016c5dde4c",
+      "questionLabel": "Willing_to_learn",
+      "question": " Halukas oppimaan: Helposti motivoitavissa, pitää haasteista, innostuu koulutustilanteista. *"
+    },
+    {
+      "id": "431f8cfb-5c42-44a7-9e24-dc04141dd268",
+      "questionLabel": "Playful_dogs",
+      "question": " Leikkisä (muiden koirien kanssa): Aloittaa ja osallistuu leikkiin muiden koirien kanssa. *"
+    },
+    {
+      "id": "b03eee75-2d24-4d50-8ddc-c04717b15106",
+      "questionLabel": "Predictable",
+      "question": " Ennustettava: Käytös johdonmukaista ja tasaista pitkilläkin ajanjaksoilla. Tekee vain vähän odottamattomia asioita ja poikkeaa harvoin toimintarutiineistaan. *"
+    },
+    {
+      "id": "4ed2993f-eff4-4950-b377-4d627b84f822",
+      "questionLabel": "Obedient",
+      "question": " Tottelevainen: Kuuliainen, toimii halukkaasti, kun pyydetään tekemään jotakin. *"
+    },
+    {
+      "id": "8276eadb-df13-4e16-814b-3043ae1327b2",
+      "questionLabel": "Boisterous",
+      "question": " Riehakas: Raju leikeissään, saattaa hyppiä tervehtiessä. *"
+    },
+    {
+      "id": "a1aba3b9-02a9-4a9b-bc2f-30114ea51a92",
+      "questionLabel": "Sensitive_touch",
+      "question": " Kosketusherkkä: Ei pidä koskettamisesta (esim. silityksestä) ja reagoi kosketukseen voimakkaasti, esim. väistämällä tai säpsähtämällä. *"
+    },
+    {
+      "id": "b81014ee-fe80-44ca-b285-9cce95560cf7",
+      "questionLabel": "Anxious",
+      "question": " Hermostunut: Epäröivä, epäluuloinen, hermostunut. Pelästyy helposti, yleisesti “hermoheikko” ja pelokas. Ei halua lähestyä pelottavia asioita tai ihmisiä. *"
+    },
+    {
+      "id": "678fd4cf-6811-422d-9f75-0cd535d8415d",
+      "questionLabel": "Independent",
+      "question": " Itsenäinen: Muut koirat tai ihmiset eivät vaikuta koiran käyttäytymiseen tai rajoita sitä. Ei tarvitse jatkuvaa ohjausta. *"
+    },
+    {
+      "id": "d6ff2325-015b-47a3-8056-cd99d724386f",
+      "questionLabel": "Lazy",
+      "question": " Laiska: Haluton liikkumaan tai rasittamaan itseään. *"
+    },
+    {
+      "id": "136cac12-d708-45d0-8382-07576b8783cf",
+      "questionLabel": "Intelligent",
+      "question": " Älykäs: Oppii nopeasti yhdistämään tiettyjä tapahtumia ja näyttää muistavan asioita pitkään. *"
+    },
+    {
+      "id": "49c04051-f547-458a-afd8-c6aa48473aa2",
+      "questionLabel": "Reliable",
+      "question": " Luotettava: Koiraan voi luottaa missä tahansa tilanteessa. *"
+    },
+    {
+      "id": "caae7ca6-db1a-4606-a50b-bb06f347946a",
+      "questionLabel": "Human_dependent",
+      "question": " Ihmiseen tukeutuva: Pyytää helposti apua ihmiseltä ongelmanratkaisutilanteissa sen sijaan että yrittäisi ratkaista ongelman itsenäisesti ilman ihmisen apua. *"
+    },
+    {
+      "id": "160f662d-4015-490e-9b39-f1a6c7b6c840",
+      "questionLabel": "Wary",
+      "question": " Varuillaan: Tarkkailee huolestuneesti ympäristöään, pyrkii havaitsemaan itseensä kohdistuvat uhat. *"
+    },
+    {
+      "id": "de405b06-3418-4c42-a96a-2a6be1e1acae",
+      "questionLabel": "Erratic",
+      "question": " Ailahteleva: Mieliala ja käytös vaihtelevaa, epäjohdonmukaista ja hyvin epätasaista. *"
+    },
+    {
+      "id": "b2f6ab03-7dd5-4990-90c6-385deb6b8bf9",
+      "questionLabel": "Stubborn",
+      "question": " Itsepäinen: Tekee sinnikkäästi mitä haluaa ja jatkaa käyttäytymistä ikävistä seurauksista tai uhkauksista huolimatta. *"
+    },
+    {
+      "id": "f6bd8e44-2df7-40fc-ae42-857daaca8c01",
+      "questionLabel": "Fearful_people",
+      "question": " Pelokas (ihmisiä kohtaan): Pelkää ihmisiä, puolustautuu, piiloutuu tai pakenee. *"
+    },
+    {
+      "id": "fd261ce0-adfd-4b07-8de5-952c2de9000a",
+      "questionLabel": "Playful_people",
+      "question": " Leikkisä (ihmisten kanssa): Aloittaa ja osallistuu leikkiin ihmisten kanssa. *"
+    },
+    {
+      "id": "fa4fa55d-f1d5-495f-b83e-ab1bc78c5c17",
+      "questionLabel": "Playful_alone",
+      "question": " Leikkisä (itsekseen): Leikkii paljon ja mielellään itsekseen. *"
+    },
+    {
+      "id": "65c70bc3-8194-4c67-b32f-92ddcafc730a",
+      "questionLabel": "Curious",
+      "question": " Utelias: Tutkii mielellään ja on kiinnostunut uusista tilanteista, esineistä ja eläimistä. *"
+    },
+    {
+      "id": "f0802ead-aafd-4fbb-ab14-4382ba1e8898",
+      "questionLabel": "Fearful_dogs",
+      "question": " Pelokas (koiria kohtaan): Pelkää muita koiria, puolustautuu, piiloutuu tai pakenee. *"
+    },
+    {
+      "id": "ed1a451a-2e96-4013-b0bf-de0624384c3a",
+      "questionLabel": "Impulsive",
+      "question": " Impulsiivinen: Käytös usein spontaania tai äkillistä, käytöstä ei mahdollista ennakoida. Käyttäytyy harkitsemattomasti ja hätäisesti. *"
+    },
+    {
+      "id": "75b1a87a-b8b3-4f61-8b0a-cb442d90a4ab",
+      "questionLabel": "Affectionate_people",
+      "question": " Hellyydenkipeä (ihmisiä kohtaan): Hakeutuu mielellään fyysiseen kosketukseen ihmisten kanssa. Esimerkiksi nukkuu tai lepäilee ihmisen sylissä/vierellä, kerjää rapsutuksia. *"
+    },
+    {
+      "id": "2368428e-bbf4-45c0-a6b0-f30b1836e40f",
+      "questionLabel": "Decisive",
+      "question": " Päättäväinen: Tarkoituksellinen ja määrätietoinen käytöksessään. *"
+    },
+    {
+      "id": "49c6c91b-42fb-4d5d-9fbc-5d2e9aac1a5a",
+      "questionLabel": "Persevering",
+      "question": " Sinnikäs: Jatkaa aloittamaansa toimintaa pitkään, ei anna periksi. *"
+    },
+    {
+      "id": "440c3504-443a-4044-b564-185ecb94c3df",
+      "questionLabel": "Distractible",
+      "question": " Keskittymiskyvytön: Häiriintyy helposti ulkoisista ärsykkeistä (esim. koulutustilanteessa), ei pysty keskittymään tehtävään. *"
+    },
+    {
+      "id": "c4921f68-c2a1-4d97-894b-4ec00b094474",
+      "questionLabel": "Submissive",
+      "question": " Alistuva: Lepyttelevä tai alistuvainen muita koiria kohtaan. Antaa helposti periksi muille eikä haasta riitaa. *"
+    },
+    {
+      "id": "6b2fc006-4160-427b-8e40-e697cedc7e6a",
+      "questionLabel": "Cautious",
+      "question": " Varovainen: Käyttäytyy ja tutkii asioita varovaisesti ja harkitsevaisesti. *"
+    },
+    {
+      "id": "d2aa0442-ae25-493e-b20d-f493b5928e3f",
+      "questionLabel": "Restless",
+      "question": " Rauhaton: Levoton, ei jaksa olla paikoillaan. Ei asetu helposti aloilleen. *"
+    },
+    {
+      "id": "040d0203-5aea-46d4-b691-bf8c11e207b9",
+      "questionLabel": "Confident",
+      "question": " Itsevarma: Varma. Ei epäröi toimia, ei pelästy helposti, ei ole pelokas. *"
+    },
+    {
+      "id": "6aad971e-15cb-4d30-8915-14e9c01146d2",
+      "questionLabel": "Easygoing",
+      "question": " Huoleton: Ei vaikuta huolestuneelta tai ahdistuneelta ympärillään tapahtuvista asioista. Käyttäytyy, liikkuu ja oleilee rennosti. *"
+    },
+    {
+      "id": "c6ee29a4-d280-4e46-9200-0050603763ba",
+      "questionLabel": "Dominant",
+      "question": " Hallitseva: Määräilevä ja/tai uhkaava toisia koiria kohtaan. *"
+    },
+    {
+      "id": "1af0edb5-fc73-4ee6-be28-e3fe400a4dba",
+      "questionLabel": "Patient",
+      "question": " Kärsivällinen: Ei hermostu nopeasti, ei turhaudu, jaksaa odottaa pitkänkin aikaa. *"
+    },
+    {
+      "id": "355b79c1-0f15-46b4-b532-b928a7991d92",
+      "questionLabel": "Sociable_dogs_samegender",
+      "question": " Sosiaalinen (samaa sukupuolta olevien koirien kanssa): Näyttää nauttivan muiden samaa sukupuolta olevien koirien seurasta. Hakeutuu muiden samansukupuolisten koirien seuraan, ja haluaa olla niiden kanssa. *"
+    },
+    {
+      "id": "1451704d-c29f-4534-8b0f-c226307a385a",
+      "questionLabel": "Slow",
+      "question": " Verkkainen: Liikkuu verkkaisesti ja hätäilemättä, ei kiirehdi. *"
+    },
+    {
+      "id": "8f6a1690-c31e-4599-8e6f-715f08e1a222",
+      "questionLabel": "Sociable_dogs_oppositegender",
+      "question": " Sosiaalinen (vastakkaista sukupuolta olevien koirien kanssa): Näyttää nauttivan eri sukupuolta olevien koirien seurasta. Hakeutuu erisukupuolisten koirien seuraan, ja haluaa olla niiden kanssa. *"
+    },
+    {
+      "id": "6fc4aa2f-9a11-4406-b0b8-3b4ceb06b5ea",
+      "questionLabel": "Calm",
+      "question": " Rauhallinen: Tasainen, rauhallinen. Reagoi toisiin vakaasti ja rauhallisesti. Ei häiriinny tai kiihdy helposti. *"
+    },
+    {
+      "id": "c114def7-12d0-461b-9770-e27572266eb2",
+      "questionLabel": "Provocative",
+      "question": " Provosoiva: Testaa ja kokeilee ihmisiä tai muita eläimiä nähdäkseen, mistä selviytyy seuraamuksitta. *"
+    },
+    {
+      "id": "db2e7718-6ef7-47fb-bb6f-1ea131e43cea",
+      "questionLabel": "Excitable",
+      "question": " Yli-innokas: Reagoi voimakkaasti ympäristön muutoksiin, kiihtyy helposti, reagoi nopeasti ärsykkeisiin. *"
+    },
+    {
+      "id": "f89419ff-28d3-4666-a996-fae2cfe5e4e6",
+      "questionLabel": "Human_oriented",
+      "question": " Ihmiskeskeinen: Viihtyy enemmän ihmisten kuin toisten koirien seurassa. *"
+    },
+    {
+      "id": "dcbf4b69-e0f6-4da9-b4e6-dd4c85b13b07",
+      "questionLabel": "Focused",
+      "question": " Keskittymiskykyinen: Keskittyy siihen mitä on tekemässä ulkoisista ärsykkeistä huolimatta. *"
+    },
+    {
+      "id": "831fb077-0150-4415-99b4-4fbd26b223e4",
+      "questionLabel": "Empathic",
+      "question": " Empaattinen: Ymmärtää ja tulkitsee ihmisen mielialaa hienovaraisten ja pienten vihjeiden perusteella ja käyttäytyy kuin haluaisi lohduttaa ihmistä (esim. hakeutuu lähelle, painaa pään syliin). *"
+    },
+    {
+      "id": "de2586b0-1010-4521-b35f-f334a89f52aa",
+      "questionLabel": "Aggressive_dogs_samegender",
+      "question": " Aggressiivinen (samaa sukupuolta olevia koiria kohtaan): Vahingoittaa tai uhkaa vahingoittaa samaa sukupuolta olevia koiria, reagoi usein vihamielisesti, puolustaa resurssejaan aggressiivisesti. Esim. murisee, yrittää purra/näykätä. *"
+    },
+    {
+      "id": "c7f05c69-a582-4c53-b453-15dd6e321e0e",
+      "questionLabel": "Attention_seeking",
+      "question": " Huomionhakuinen: Ääntelee tai yrittää muuten kiinnittää ihmisen huomion itseensä saadakseen huomiota. *"
+    },
+    {
+      "id": "e618efbc-2fa1-424b-bb8a-353f9eb81ddf",
+      "questionLabel": "Indifferent",
+      "question": " Välinpitämätön; Suhtautuu muihin koiriin välinpitämättömästi, ei hakeudu muiden koirien seuraan, mutta sietää niitä. *"
+    },
+    {
+      "id": "56388903-9dd5-438b-b19f-da09ee031fd7",
+      "questionLabel": "Aggressive_people",
+      "question": " Aggressiivinen (ihmisiä kohtaan): Vahingoittaa tai uhkaa vahingoittaa ihmisiä, reagoi usein vihamielisesti, puolustaa resurssejaan aggressiivisesti. Esim. murisee, yrittää purra/näykätä. *"
+    },
+    {
+      "id": "3f63721e-0c1d-4896-975c-19552fed912b",
+      "questionLabel": "Affectionate_dogs",
+      "question": " Hellyydenkipeä (koiria kohtaan): Hakeutuu mielellään fyysiseen kosketukseen tuttujen koirien kanssa. Esim. nukkuu kiinni toisessa koirassa tai pesee toista koiraa. *"
+    },
+    {
+      "id": "9a150e5a-2a5e-496b-825a-9d6d0073dfb5",
+      "questionLabel": "Calming",
+      "question": " Rauhoitteleva: Vaistoaa toisen koiran mielialan ja osaa tyynnytellä toista koiraa rauhoittavilla signaaleilla. Saattaa esim. haukotella, kääntää katseen pois toisesta koirasta tai haistella maata. *"
+    },
+    {
+      "id": "bcf3dbba-edb9-4522-a7ca-522f26a2a728",
+      "questionLabel": "Solitary",
+      "question": " Syrjäänvetäytyvä: Haluaa viettää aikaa yksin, on mieluummin omissa oloissaan, ei hakeudu toisten seuraan. *"
+    },
+    {
+      "id": "44a3b3e9-b325-406e-a15e-c58f2a59447e",
+      "questionLabel": "Aggressive_dogs_oppositegender",
+      "question": " Aggressiivinen (vastakkaista sukupuolta olevat koirat): Vahingoittaa tai uhkaa vahingoittaa eri sukupuolta olevia koiria, reagoi usein vihamielisesti, puolustaa resurssejaan aggressiivisesti. Esim. murisee, yrittää purra/näykätä. *"
+    },
+    {
+      "id": "02b66263-f6dd-4e6f-9e9f-98220a1dc69e",
+      "questionLabel": "Territorial",
+      "question": " Reviiriä puolustava: Tarkka omasta reviiristään, ei päästä ihmisiä tai koiria tontille/kotiin ellei omistaja ole paikalla. *"
+    },
+    {
+      "id": "93b9f103-631a-4876-8eb3-6d6d35bd9b25",
+      "questionLabel": "Flexible",
+      "question": " Sopeutuva: Sopeutuu erilaisiin tilanteisiin ja pystyy mukauttamaan käytöstään niiden mukaan. *"
+    },
+    {
+      "id": "83fa86fa-36de-4be6-bb3b-69498bca4bfd",
+      "questionLabel": "Easily_recovered",
+      "question": " Nopeasti palautuva: Säikähtämisen tai kiihtymisen jälkeen koiran käyttäytyminen ja mieliala palautuu nopeasti. *"
+    },
+    {
+      "id": "9aa72f3a-8cde-4d18-9e1e-29b7fca0ad72",
+      "questionLabel": "Bold",
+      "question": " Rohkea: Käyttäytyy rohkeasti ja itsevarmasti. Ei pelkää uusissa tai oudoissa tilanteissa. *"
+    },
+    {
+      "id": "cff79a86-c325-46f9-a6cd-4e3e026c3922",
+      "questionLabel": "Active",
+      "question": " Aktiivinen: Ei vietä paljon aikaa paikallaan, liikuskelee paljon. *"
+    },
+    {
+      "id": "735918e0-0bb9-4b03-bdab-c555c982b4f1",
+      "questionLabel": "Energetic",
+      "question": " Energinen: Aina valmis toimimaan, näyttää siltä että sillä on paljon energiaa. *"
+    },
+    {
+      "id": "f2538f89-906b-46e3-acdb-fb1de68779c5",
+      "questionLabel": "Insecure",
+      "question": " Epävarma: Kiinnostunut, mutta pelokas ja levoton uusia asioita kohtaan, häilyy lähestymisen ja vetäytymisen välillä. Saattaa tarvita rohkaisua ihmiseltä. *"
+    },
+    {
+      "id": "f84b6dfa-08d2-4900-bdd1-8402b927a049",
+      "questionLabel": "Attentive",
+      "question": " Tarkkaavainen: Vaikuttaa kuuntelevan ja huomioivan tarkasti kaiken mitä sanot tai teet. *"
+    },
+    {
+      "id": "c0a3c9f8-2d2e-41c9-893d-f8d87dddb70c",
+      "questionLabel": "Sociable_people",
+      "question": " Sosiaalinen (ihmisten kanssa): Näyttää nauttivan ihmisten seurasta. Hakeutuu ihmisten seuraan, ja haluaa viettää aikaa ihmisten kanssa. *"
+    }
+  ],
+  "calculateFeedback": true
+}

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { v4 } from "uuid"
 
 import { State } from "../../../pages/iframe"
+import TextField from "../../../shared-module/components/InputFields/TextField"
 import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/stateInterfaces"
 import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton } from "../../StyledComponents/Wrappers"
@@ -156,6 +157,37 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
           />
         </ButtonWrapper>
       )}
+      <fieldset>
+        <legend>{"Submission view"}</legend>
+        <TextField
+          label="Title text for submission view"
+          type="text"
+          value={state.titleText ? state.titleText : ""}
+          onChange={(value) => {
+            setState({
+              view_type: "exercise-editor",
+              private_spec: {
+                ...state,
+                titleText: value,
+              },
+            })
+          }}
+        />
+        <TextField
+          label="Feedback message for the case of successfull submission"
+          type="text"
+          value={state.reportSuccessMessage ? state.reportSuccessMessage : ""}
+          onChange={(value) => {
+            setState({
+              view_type: "exercise-editor",
+              private_spec: {
+                ...state,
+                reportSuccessMessage: value,
+              },
+            })
+          }}
+        />
+      </fieldset>
     </div>
   )
 }

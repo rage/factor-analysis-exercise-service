@@ -26,8 +26,8 @@ export const InfoWrapper = styled.div`
   font-family: "Raleway";
   font-style: normal;
   font-weight: 500;
-  font-size: 17px;
-  line-height: 100%;
+  font-size: 20px;
+  line-height: 110%;
 
   display: flex;
   align-items: flex-end;

@@ -14,6 +14,7 @@ import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
 
 import FactorEditor from "./ComponentEditors/FactorEditor"
+import { LogoSelection } from "./ComponentEditors/LogoSelector"
 import OptionEditor from "./ComponentEditors/OptionEditor"
 import QuestionEditor from "./ComponentEditors/QuestionEditor"
 import OutputMatrix from "./OutputMatrix"
@@ -136,6 +137,59 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
           />
         </ButtonWrapper>
       </fieldset>
+      <fieldset>
+        <legend>{"Submission view"}</legend>
+        <TextField
+          label="Title text for submission view"
+          type="text"
+          value={state.reportVariables?.titleText ? state.reportVariables.titleText : ""}
+          onChange={(value) => {
+            setState({
+              view_type: "exercise-editor",
+              private_spec: {
+                ...state,
+                reportVariables: { ...state.reportVariables, titleText: value },
+              },
+            })
+          }}
+        />
+        <TextField
+          label="Feedback message for the case of successfull submission"
+          type="text"
+          value={
+            state.reportVariables?.reportSuccessMessage
+              ? state.reportVariables.reportSuccessMessage
+              : ""
+          }
+          onChange={(value) => {
+            setState({
+              view_type: "exercise-editor",
+              private_spec: {
+                ...state,
+                reportVariables: { ...state.reportVariables, reportSuccessMessage: value },
+              },
+            })
+          }}
+        />
+        <TextField
+          label="Feedback message for the case of failure (e.g. could not calculate factor report: too many nan-valued answers)"
+          type="text"
+          value={
+            state.reportVariables?.reportFailureMessage
+              ? state.reportVariables.reportFailureMessage
+              : ""
+          }
+          onChange={(value) => {
+            setState({
+              view_type: "exercise-editor",
+              private_spec: {
+                ...state,
+                reportVariables: { ...state.reportVariables, reportFailureMessage: value },
+              },
+            })
+          }}
+        />
+      </fieldset>
       <StyledInnerEditor>
         <label htmlFor="calculate-feedback-checkbox">{"Provide factor report to student"}</label>
         <input
@@ -167,10 +221,10 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                     name: "",
                     weights: { ...(value[header] as { [key: string]: number }) },
                     score: 0,
+                    comparingVariable: {},
                   }
                   factors.push(factor)
                 })
-                console.log(factors)
                 setState({
                   view_type: "exercise-editor",
                   private_spec: { ...state, factors: factors },
@@ -204,48 +258,260 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
             </div>
           </fieldset>
           <fieldset>
-            <legend>{"Other documents"}</legend>
-            <CsvReader
-              title="Upload means and standardDeviations for answer normalization CSV File"
-              parseUsingHeaders={(value) => {
-                const normalVec: NormalizationValues = {
-                  means: { "": 0 },
-                  standardDeviations: { "": 0 },
-                }
-                Object.keys(value).forEach((header) => {
-                  if (header === "means") {
-                    const means = { ...(value[header] as { [key: string]: number }) }
-                    normalVec.means = means
-                  } else {
-                    const standardDeviations = { ...(value[header] as { [key: string]: number }) }
-                    normalVec.standardDeviations = standardDeviations
+            <legend>{"Other documents and report variables"}</legend>
+            <fieldset>
+              <CsvReader
+                title="Upload means and SDs CSV File for answer normalization"
+                parseUsingHeaders={(value) => {
+                  const normalVec: NormalizationValues = {
+                    means: {},
+                    standardDeviations: {},
                   }
-                })
-                console.log(normalVec)
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, meansAndStandardDeviations: normalVec },
-                })
-              }}
-              parseNoHeaders={() => null}
-              disableHeaderOption={true}
-              applyMsg="set normalization values"
-            />
-            <TextField
-              label="max nan-answers allowed"
-              type="number"
-              value={state.allowedNans ? (state.allowedNans as unknown as string) : "0"}
-              onChange={(value) => {
-                setState({
-                  view_type: "exercise-editor",
-                  private_spec: { ...state, allowedNans: parseInt(value) },
-                })
-              }}
-              className={css`
-                flex: 1;
-                padding: 0 0.2rem 0 1rem;
-              `}
-            />
+                  Object.keys(value).forEach((header) => {
+                    if (header === "means") {
+                      const means = { ...(value[header] as { [key: string]: number }) }
+                      normalVec.means = means
+                    } else {
+                      const standardDeviations = { ...(value[header] as { [key: string]: number }) }
+                      normalVec.standardDeviations = standardDeviations
+                    }
+                  })
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: { ...state, meansAndStandardDeviations: normalVec },
+                  })
+                }}
+                parseNoHeaders={() => null}
+                disableHeaderOption={true}
+                applyMsg="set normalization values"
+              />
+              <StyledInnerEditor>
+                <TextField
+                  label="Default label for user score icon"
+                  type="text"
+                  value={
+                    state.reportVariables?.userVariable?.label
+                      ? state.reportVariables.userVariable.label
+                      : ""
+                  }
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          userVariable: {
+                            ...state.reportVariables?.userVariable,
+                            label: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                  className={css`
+                    flex: 3;
+                  `}
+                />
+                <TextField
+                  label="Global variable key for user icon label"
+                  type="text"
+                  value={
+                    state.reportVariables?.userVariable?.globalKey
+                      ? state.reportVariables.userVariable.globalKey
+                      : ""
+                  }
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          userVariable: {
+                            ...state.reportVariables?.userVariable,
+                            globalKey: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                  className={css`
+                    flex: 3;
+                    padding: 0 0.5rem 0 0.5rem;
+                  `}
+                />
+                <LogoSelection
+                  label={"Select icon for user score"}
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          userVariable: {
+                            ...state.reportVariables?.userVariable,
+                            logo: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                />
+              </StyledInnerEditor>
+            </fieldset>
+            <fieldset>
+              <legend>{"Define the zero-mean variable"}</legend>
+              <StyledInnerEditor>
+                <TextField
+                  label={`Label for zero mean (e.g. "Dogs average")`}
+                  type="text"
+                  value={state.reportVariables ? state.reportVariables.zeroVariable?.label : ""}
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          zeroVariable: {
+                            ...state.reportVariables?.zeroVariable,
+                            label: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                  className={css`
+                    flex: 3;
+                    padding: 0 0.5rem 0 0rem;
+                  `}
+                />
+                <LogoSelection
+                  label={"Select icon for zero-mean"}
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          zeroVariable: {
+                            ...state.reportVariables?.zeroVariable,
+                            logo: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                />
+              </StyledInnerEditor>
+            </fieldset>
+            <fieldset>
+              <legend>{"Define a variable to compare to"}</legend>
+              <StyledInnerEditor>
+                <TextField
+                  label="Global variable key"
+                  type="text"
+                  value={
+                    state.reportVariables ? state.reportVariables.comparingVariable?.globalKey : ""
+                  }
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          comparingVariable: {
+                            ...state.reportVariables?.comparingVariable,
+                            globalKey: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                  className={css`
+                    flex: 3;
+                    padding: 0 0.5rem 0 0rem;
+                  `}
+                />
+                <LogoSelection
+                  label={"Select icon for variable"}
+                  onChange={(value) => {
+                    setState({
+                      view_type: "exercise-editor",
+                      private_spec: {
+                        ...state,
+                        reportVariables: {
+                          ...state.reportVariables,
+                          comparingVariable: {
+                            ...state.reportVariables?.comparingVariable,
+                            logo: value,
+                          },
+                        },
+                      },
+                    })
+                  }}
+                />
+              </StyledInnerEditor>
+              {state.reportVariables?.comparingVariable?.globalKey &&
+                state.reportVariables?.comparingVariable?.globalKey?.length > 0 && (
+                  <CsvReader
+                    title={`Upload average values for ${state.reportVariables.comparingVariable.globalKey} csv file`}
+                    parseUsingHeaders={(value) => {
+                      const newFactors = state.factors
+                      Object.keys(value).forEach((header) => {
+                        const factor = newFactors.find((f) => f.label === header)
+                        if (
+                          factor &&
+                          state.reportVariables?.comparingVariable?.globalKey &&
+                          factor.comparingVariable
+                        ) {
+                          factor.comparingVariable[
+                            state.reportVariables.comparingVariable.globalKey
+                          ] = { ...(value[header] as { [key: string]: number }) }
+                          newFactors.map((f) => {
+                            if (
+                              f.label === header &&
+                              state.reportVariables?.comparingVariable?.globalKey
+                            ) {
+                              f.comparingVariable = {}
+                              f.comparingVariable[
+                                state.reportVariables.comparingVariable.globalKey
+                              ] = { ...(value[header] as { [key: string]: number }) }
+                            }
+                          })
+                        }
+                      })
+                      setState({
+                        view_type: "exercise-editor",
+                        private_spec: { ...state, factors: newFactors },
+                      })
+                    }}
+                    parseNoHeaders={() => null}
+                    disableHeaderOption={true}
+                    applyMsg={`set average values for ${state.reportVariables.comparingVariable.globalKey}`}
+                  />
+                )}
+            </fieldset>
+            <StyledInnerEditor>
+              <TextField
+                label="max nan-answers allowed"
+                type="number"
+                value={state.allowedNans ? (state.allowedNans as unknown as string) : "0"}
+                onChange={(value) => {
+                  setState({
+                    view_type: "exercise-editor",
+                    private_spec: { ...state, allowedNans: parseInt(value) },
+                  })
+                }}
+                className={css`
+                  flex: 2;
+                `}
+              />
+            </StyledInnerEditor>
           </fieldset>
           <OutputMatrix state={state} />
         </>
