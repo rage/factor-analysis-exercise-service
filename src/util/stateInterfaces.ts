@@ -84,7 +84,7 @@ export interface Factor {
     max: number
   }
   score: number
-  /** [breed: avg-score] to be compared to in the factor report */
+  /** [variableKey: [variableItem: avg-score] ]to be compared to in the factor report */
   comparingVariable?: { [key: string]: { [key: string]: number } }
 }
 
@@ -127,6 +127,8 @@ export interface Survey {
   id: string
   type: SurveyType.NonFactorial
   content: SurveyItem[]
+  titleText?: string
+  reportSuccessMessage?: string | null
 }
 
 export enum SurveyType {

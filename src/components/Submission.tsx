@@ -38,6 +38,9 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
         flex-direction: column;
       `}
     >
+      {publicSpec.type === SurveyType.NonFactorial && publicSpec.titleText && (
+        <h2>{publicSpec.titleText}</h2>
+      )}
       {gradingFeedback?.titleText && <h2>{gradingFeedback?.titleText}</h2>}
       {gradingFeedback?.factorReport &&
         gradingFeedback?.factorReport.map((f) => {

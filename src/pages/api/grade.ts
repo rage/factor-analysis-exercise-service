@@ -10,6 +10,7 @@ import {
   RatedQuestion,
   ReportVariable,
   SubmittedForm,
+  Survey,
   SurveyItem,
   SurveyType,
 } from "../../util/stateInterfaces"
@@ -116,7 +117,7 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     grading_progress: "FullyGraded",
     score_given: 1,
     score_maximum: 1,
-    feedback_text: "Thank you for you submission!",
+    feedback_text: (gradingRequest.exercise_spec as Survey).reportSuccessMessage ?? null,
     feedback_json: null,
     set_user_variables: vars,
   })
