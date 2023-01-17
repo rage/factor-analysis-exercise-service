@@ -142,11 +142,11 @@ export enum AnswerType {
   Number = "number",
   MultiChoice = "multiple-choice",
   RadioGroup = "radio-group",
-  BreedList = "breed-list",
   Date = "date",
   Dropdown = "dropdown-selection",
   ConsentCheckbox = "consent-checkbox",
   FileUpload = "file-upload",
+  AdvancedDropdown = "advanced-dropdown",
 }
 
 export type PrivateSpec = FactorialSurvey | Survey | null

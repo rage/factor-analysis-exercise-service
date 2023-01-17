@@ -9,6 +9,7 @@ import {
   reverseParseLabelQuestion,
 } from "../../../util/utils"
 import MarkdownText from "../../MarkdownText"
+import CsvReader from "../../SharedMisc/CsvReader"
 import {
   DeleteButton,
   infoColor,
@@ -197,50 +198,81 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
 
         {(item.answer?.type === AnswerType.MultiChoice ||
           item.answer?.type === AnswerType.RadioGroup ||
-          item.answer?.type === AnswerType.Dropdown) && (
+          item.answer?.type === AnswerType.Dropdown ||
+          item.answer?.type === AnswerType.AdvancedDropdown) && (
           <div>
-            <ol>
-              {item.answer.options.map((o, o_idx) => {
-                return (
-                  <li key={o_idx}>
-                    <StyledInnerEditor>
-                      <Input
-                        aria-label={`${o_idx}-option-text`}
-                        value={o}
-                        type="text"
-                        onChange={(e) => {
-                          const newAnswer = item.answer
-                          newAnswer.options[o_idx] = e.target.value
-                          onChangeSurveyItem({ ...item, answer: newAnswer })
-                        }}
-                      />
-                      <DeleteButton
-                        onClick={() => {
-                          const newAnswer = {
-                            ...item.answer,
-                            options: item.answer.options.filter((e) => o !== e),
-                          }
-                          onChangeSurveyItem({ ...item, answer: newAnswer })
-                        }}
-                        // eslint-disable-next-line i18next/no-literal-string
-                      >
-                        x
-                      </DeleteButton>
-                    </StyledInnerEditor>
-                  </li>
-                )
-              })}
-            </ol>
+            {item.answer.options.length > 0 && (
+              <ol
+                className={css`
+                  width: 100%;
+                  max-width: 100%;
+                  max-height: 20em;
+                  margin: 1rem auto;
+                  display: block;
+                  overflow-x: auto;
+                  border-spacing: 0;
+                `}
+              >
+                {item.answer.options.map((o, o_idx) => {
+                  return (
+                    <li key={o_idx}>
+                      <StyledInnerEditor>
+                        <Input
+                          aria-label={`${o_idx}-option-text`}
+                          value={o}
+                          type="text"
+                          onChange={(e) => {
+                            const newAnswer = item.answer
+                            newAnswer.options[o_idx] = e.target.value
+                            onChangeSurveyItem({ ...item, answer: newAnswer })
+                          }}
+                        />
+                        <DeleteButton
+                          onClick={() => {
+                            const newAnswer = {
+                              ...item.answer,
+                              options: item.answer.options.filter((e) => o !== e),
+                            }
+                            onChangeSurveyItem({ ...item, answer: newAnswer })
+                          }}
+                        >
+                          {"x"}
+                        </DeleteButton>
+                      </StyledInnerEditor>
+                    </li>
+                  )
+                })}
+              </ol>
+            )}
             <button
               onClick={() => {
                 const newItem = item as SurveyItem
                 newItem.answer.options.push("")
                 onChangeSurveyItem({ ...item, answer: newItem.answer })
               }}
-              // eslint-disable-next-line i18next/no-literal-string
+              className={css`
+                flex: 1;
+                width: 100%;
+                background-color: ${baseTheme.colors.blue[200]};
+              `}
             >
-              add option
+              {"add option"}
             </button>
+            <CsvReader
+              parseNoHeaders={(value) => {
+                console.log("parsed this in the thingie", value)
+                const newOptions = value.flat()
+                const newAnswer = item.answer
+                newAnswer.options = newOptions
+                onChangeSurveyItem({ ...item, answer: newAnswer })
+              }}
+              parseUsingHeaders={() => null}
+              title={"or upload a csv file"}
+              applyMsg={"Apply"}
+              disableHeaderOption
+              checked={false}
+              id={`${item.question.questionLabel}-csv-file-input`}
+            />
           </div>
         )}
         {item.answer?.type === AnswerType.ConsentCheckbox && (
@@ -318,9 +350,8 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             onClick={() => {
               onDuplicate(item)
             }}
-            // eslint-disable-next-line i18next/no-literal-string
           >
-            duplicate item
+            {"duplicate item"}
           </button>
         </StyledInnerEditor>
         {item.conditional && (

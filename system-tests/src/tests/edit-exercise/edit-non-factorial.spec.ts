@@ -91,7 +91,7 @@ test("can add non-factorial survey type wtih information elements and questions 
   // Fill li:nth-child(5) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
   await frame.locator("textarea").nth(5).fill("breed; Minkä rotuinen koira on? *")
   // Select breed-list
-  await frame.locator('[aria-label="select-answer-type-breed"]').selectOption("breed-list")
+  await frame.locator('[aria-label="select-answer-type-breed"]').selectOption("advanced-dropdown")
   // Click text=Add Survey Item
   await frame.locator("text=Add Survey Item").click()
   // Fill li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > .css-1sntlgu-TextAreaField-SurveyItemEditor > label > textarea
@@ -104,7 +104,7 @@ test("can add non-factorial survey type wtih information elements and questions 
     .locator('[aria-label="select-answer-type-obtained_age"]')
     .selectOption("dropdown-selection")
   // Click text=add option >> nth=2
-  await frame.locator("text=add option").nth(2).click()
+  await frame.locator("text=add option").nth(3).click()
   // Fill text=obtained_ageMinkä ikäinen koira oli tullessaan teille? * xEditor (special purpos >> [aria-label="\30 -option-text"]
   await frame
     .locator(
@@ -112,7 +112,7 @@ test("can add non-factorial survey type wtih information elements and questions 
     )
     .fill("nuori")
   // Click text=add option >> nth=2
-  await frame.locator("text=add option").nth(2).click()
+  await frame.locator("text=add option").nth(3).click()
   // Fill text=obtained_ageMinkä ikäinen koira oli tullessaan teille? * xEditor (special purpos >> [aria-label="\31 -option-text"]
   await frame
     .locator(
@@ -120,7 +120,7 @@ test("can add non-factorial survey type wtih information elements and questions 
     )
     .fill("vanha")
   // Click text=add option >> nth=2
-  await frame.locator("text=add option").nth(2).click()
+  await frame.locator("text=add option").nth(3).click()
   // Fill [aria-label="\32 -option-text"]
   await frame.locator('[aria-label="\\32 -option-text"]').fill("muu")
   // Click li:nth-child(6) > .css-fgfehr-StyledOuterEditor > .css-ck76l7-SurveyItemEditor > div:nth-child(6) > .css-94rpl7-SurveyItemEditor
@@ -175,14 +175,6 @@ test("can add non-factorial survey type wtih information elements and questions 
     .nth(4)
     .selectOption("obtained_age,muu")
 
-  /*   // Check text=infoSosiaalistamiskausi: 7 viikon - 4 kuukauden iässä, miten usein koira... xEdi >> input[type="checkbox"]
-  await frame.locator('text=socialization_carmatkusti autolla? * >> input[type="checkbox"]').check()
-  // Select obtained_age,muu
-  await frame
-    .locator('[aria-label="triggering-option-selector"]')
-    .nth(4)
-    .selectOption("obtained_age,muu")
- */
   await expectScreenshotsToMatchSnapshots({
     axeSkip: ["heading-order", "scrollable-region-focusable"],
     headless,

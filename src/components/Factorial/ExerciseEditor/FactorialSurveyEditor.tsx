@@ -233,6 +233,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
               parseNoHeaders={() => null}
               disableHeaderOption={true}
               applyMsg="set factors"
+              id={`factor-weights-csv-file-input`}
             />
             <div>
               {state?.factors?.map((factor) => {
@@ -284,6 +285,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 parseNoHeaders={() => null}
                 disableHeaderOption={true}
                 applyMsg="set normalization values"
+                id={`scaling-values-csv-file-input`}
               />
               <StyledInnerEditor>
                 <TextField
@@ -493,6 +495,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                     parseNoHeaders={() => null}
                     disableHeaderOption={true}
                     applyMsg={`set average values for ${state.reportVariables.comparingVariable.globalKey}`}
+                    id={`${state.reportVariables.comparingVariable.globalKey}-avgs-csv-file-input`}
                   />
                 )}
             </fieldset>
