@@ -3,7 +3,7 @@ import styled from "@emotion/styled"
 
 import { Answer, AnswerType, SurveyItem } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
-import BreedList from "../SharedMisc/BreedList"
+import AdvancedDropdown from "../SharedMisc/AdvancedDropdown"
 import { CheckboxWrap } from "../StyledComponents/CheckboxWrap"
 import { RadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
 
@@ -25,15 +25,22 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
   disabled,
 }) => {
   switch (item.answer.type) {
-    case AnswerType.BreedList: {
+    case AnswerType.AdvancedDropdown: {
       return (
-        <div>
-          <BreedList
-            onClick={(breed) => {
-              updateAnswer(item.id, { ...item.answer, answer: breed })
+        <div
+          className={css`
+            display: grid;
+            margin-bottom: 5em;
+            gap: 0.5em;
+          `}
+        >
+          <AdvancedDropdown
+            onClick={(option) => {
+              updateAnswer(item.id, { ...item.answer, answer: option })
             }}
-            chosenBreed={item.answer.answer as string}
+            chosenOption={item.answer.answer as string}
             disabled={disabled}
+            options={item.answer.options}
           />
         </div>
       )

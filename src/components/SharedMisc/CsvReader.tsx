@@ -15,6 +15,8 @@ interface Props {
   parseNoHeaders: (data: []) => void
   disableHeaderOption?: boolean
   applyMsg: string
+  checked?: boolean
+  id: string
 }
 
 interface StructToReturn {
@@ -31,7 +33,6 @@ const CuteButton = styled.button`
     background-color: ${baseTheme.colors.green[100]};
   }
 `
-
 /**
  *
  * @param param0
@@ -43,11 +44,13 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
   parseNoHeaders,
   disableHeaderOption,
   applyMsg,
+  checked,
+  id,
 }) => {
   const [data, setData] = useState<Record<string, unknown>[]>()
   const [error, setError] = useState("")
   const [headers, setHeaders] = useState<string[]>([])
-  const [applyHeaders, setApplyHeaders] = useState<boolean>(true)
+  const [applyHeaders, setApplyHeaders] = useState<boolean>(checked !== undefined ? checked : true)
   const [columnIdentifier, setColumnIdentifier] = useState("")
 
   const checkedCollor = disableHeaderOption ? "grey" : "rgb(55, 188, 155)"
@@ -89,35 +92,39 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
     >
       <StyledInnerEditor>
         <label
-          htmlFor="csvInput"
+          htmlFor={id}
           className={css`
             display: flex;
             width: 79%;
+            font-size: 18px;
           `}
         >
           {title}
         </label>
-        <CheckboxWrap checkedCollor={checkedCollor} info disabled={disableHeaderOption}>
-          <input
-            type="checkbox"
-            name="apply headers"
-            checked={applyHeaders}
-            onChange={(e) => {
-              setApplyHeaders(e.target.checked)
-            }}
-            disabled={disableHeaderOption}
-          />
-          <label
-            className={css`
-              color: ${disableHeaderOption ? baseTheme.colors.gray[400] : "inherit"};
-            `}
-          >
-            {checkboxLabel}
-          </label>
-        </CheckboxWrap>
+        {!disableHeaderOption ||
+          (disableHeaderOption && applyHeaders && (
+            <CheckboxWrap checkedCollor={checkedCollor} info disabled={disableHeaderOption}>
+              <input
+                type="checkbox"
+                name="apply headers"
+                checked={applyHeaders}
+                onChange={(e) => {
+                  setApplyHeaders(e.target.checked)
+                }}
+                disabled={disableHeaderOption}
+              />
+              <label
+                className={css`
+                  color: ${disableHeaderOption ? baseTheme.colors.gray[400] : "inherit"};
+                `}
+              >
+                {checkboxLabel}
+              </label>
+            </CheckboxWrap>
+          ))}
       </StyledInnerEditor>
       <input
-        id="csvInput"
+        id={id}
         name="file"
         type="File"
         accept="csv"
@@ -135,7 +142,7 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
             }
             // @ts-ignore: this is needed because inputFile throws a No overload matches this call that doesn't get fixed
             parse(inputFile, {
-              delimiter: "", // auto-detect
+              delimiter: ",",
               newline: "", // auto-detect
               quoteChar: '"',
               escapeChar: '"',
@@ -189,7 +196,9 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
         >
           {error
             ? error
-            : `Detected ${headers.length} valid header items with ${data?.length} rows`}
+            : applyHeaders
+            ? `Detected ${headers.length} valid header items with ${data?.length} rows`
+            : `Detected ${data?.length} rows`}
         </div>
       )}
       {data && !error && applyHeaders && (
@@ -215,8 +224,7 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
                 background-color: ${baseTheme.colors.green[200]};
               `}
             >
-              {" "}
-              {applyMsg}{" "}
+              {applyMsg}
             </CuteButton>
           )}
         </>
@@ -228,8 +236,7 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
             background-color: ${baseTheme.colors.green[200]};
           `}
         >
-          {" "}
-          parse without headers{" "}
+          {applyMsg}
         </button>
       )}
     </div>
