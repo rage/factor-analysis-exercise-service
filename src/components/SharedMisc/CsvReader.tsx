@@ -142,7 +142,7 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
             }
             // @ts-ignore: this is needed because inputFile throws a No overload matches this call that doesn't get fixed
             parse(inputFile, {
-              delimiter: "",
+              delimiter: ",",
               newline: "", // auto-detect
               quoteChar: '"',
               escapeChar: '"',
