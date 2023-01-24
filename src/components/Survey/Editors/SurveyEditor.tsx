@@ -38,7 +38,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
       `}
     >
       <ol>
-        {state?.content?.map((item) => {
+        {state.content.map((item) => {
           return (
             <li key={item.id}>
               <SurveyItemEditor

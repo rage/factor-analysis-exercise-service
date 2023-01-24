@@ -1,8 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-kubectl delete Deployment/factorial-analysis
+# kubectl delete Deployment/factorial-analysis
 # kubectl describe ReplicaSet/factorial-analysis # is this needed?
+# kubectl delete service factorial-analysis
 
 ktunnel expose factorial-analysis 80:3008
 
