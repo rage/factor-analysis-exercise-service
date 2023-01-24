@@ -269,7 +269,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                     standardDeviations: {},
                   }
                   Object.keys(value).forEach((header) => {
-                    if (header === "means") {
+                    if (header.includes("mean")) {
                       const means = { ...(value[header] as { [key: string]: number }) }
                       normalVec.means = means
                     } else {
@@ -293,7 +293,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                   type="text"
                   value={
                     state.reportVariables?.userVariable?.label
-                      ? state.reportVariables.userVariable.label
+                      ? state.reportVariables?.userVariable?.label
                       : ""
                   }
                   onChange={(value) => {
@@ -316,7 +316,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                   `}
                 />
                 <TextField
-                  label="Global variable key for user icon label"
+                  label="Global variable key for user icon"
                   type="text"
                   value={
                     state.reportVariables?.userVariable?.globalKey
@@ -345,6 +345,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 />
                 <LogoSelection
                   label={"Select icon for user score"}
+                  chosenLogo={state.reportVariables?.userVariable?.logo}
                   onChange={(value) => {
                     setState({
                       view_type: "exercise-editor",
@@ -369,7 +370,11 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 <TextField
                   label={`Label for zero mean (e.g. "Dogs average")`}
                   type="text"
-                  value={state.reportVariables ? state.reportVariables.zeroVariable?.label : ""}
+                  value={
+                    state.reportVariables?.zeroVariable?.label
+                      ? state.reportVariables.zeroVariable?.label
+                      : ""
+                  }
                   onChange={(value) => {
                     setState({
                       view_type: "exercise-editor",
@@ -392,6 +397,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 />
                 <LogoSelection
                   label={"Select icon for zero-mean"}
+                  chosenLogo={state.reportVariables?.zeroVariable?.logo}
                   onChange={(value) => {
                     setState({
                       view_type: "exercise-editor",
@@ -417,7 +423,9 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                   label="Global variable key"
                   type="text"
                   value={
-                    state.reportVariables ? state.reportVariables.comparingVariable?.globalKey : ""
+                    state.reportVariables?.comparingVariable?.globalKey
+                      ? state.reportVariables.comparingVariable?.globalKey
+                      : ""
                   }
                   onChange={(value) => {
                     setState({
@@ -441,6 +449,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 />
                 <LogoSelection
                   label={"Select icon for variable"}
+                  chosenLogo={state.reportVariables?.comparingVariable?.logo}
                   onChange={(value) => {
                     setState({
                       view_type: "exercise-editor",
@@ -465,27 +474,16 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                     parseUsingHeaders={(value) => {
                       const newFactors = state.factors
                       Object.keys(value).forEach((header) => {
-                        const factor = newFactors.find((f) => f.label === header)
-                        if (
-                          factor &&
-                          state.reportVariables?.comparingVariable?.globalKey &&
-                          factor.comparingVariable
-                        ) {
-                          factor.comparingVariable[
-                            state.reportVariables.comparingVariable.globalKey
-                          ] = { ...(value[header] as { [key: string]: number }) }
-                          newFactors.map((f) => {
-                            if (
-                              f.label === header &&
-                              state.reportVariables?.comparingVariable?.globalKey
-                            ) {
-                              f.comparingVariable = {}
-                              f.comparingVariable[
-                                state.reportVariables.comparingVariable.globalKey
-                              ] = { ...(value[header] as { [key: string]: number }) }
-                            }
-                          })
-                        }
+                        newFactors.map((f) => {
+                          if (
+                            f.label === header &&
+                            state.reportVariables?.comparingVariable?.globalKey
+                          ) {
+                            f.comparingVariable = {}
+                            f.comparingVariable[state.reportVariables.comparingVariable.globalKey] =
+                              { ...(value[header] as { [key: string]: number }) }
+                          }
+                        })
                       })
                       setState({
                         view_type: "exercise-editor",

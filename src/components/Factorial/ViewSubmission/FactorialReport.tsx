@@ -45,15 +45,15 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
     (100 * (-(factor.range?.min as number) + factor.score)) /
     ((factor.range?.max as number) - (factor.range?.min as number))
 
-  let breedAvg = null //species + Math.random() * 4
+  let comparingVarAvg = null //species + Math.random() * 4
   if (
     factor.comparingVariable &&
     userCompVar &&
     comparingVar?.globalKey &&
     factor.comparingVariable[comparingVar.globalKey] &&
-    factor.comparingVariable[comparingVar.globalKey][userCompVar] !== undefined
+    !isNaN(factor.comparingVariable[comparingVar.globalKey][userCompVar])
   ) {
-    breedAvg =
+    comparingVarAvg =
       (100 *
         (-(factor.range?.min as number) +
           factor.comparingVariable[comparingVar.globalKey][userCompVar])) /
@@ -107,7 +107,7 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           <GetLogo logo={userVar?.logo ?? "dog"} id={`${factor.label}-ownpet-logo`} />
           <label>{userName ?? userVar?.label ?? "Your Score"}</label>
         </div>
-        {userCompVar && (
+        {userCompVar && comparingVarAvg && (
           <div className="div-container">
             <GetLogo logo={comparingVar?.logo ?? "circle"} id={`${factor.label}-compareTo-logo`} />
             <label>{`${userCompVar}`}</label>
@@ -122,14 +122,9 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
         `}
       >
         <GetLogo logo={zeroVar?.logo ?? "paw"} position={species} withCarret={true} />
-        {userCompVar &&
-          factor.comparingVariable &&
-          comparingVar?.globalKey &&
-          factor.comparingVariable[comparingVar.globalKey] &&
-          factor.comparingVariable[comparingVar.globalKey][userCompVar] !== undefined &&
-          breedAvg && (
-            <GetLogo logo={comparingVar.logo ?? "circle"} position={breedAvg} withCarret />
-          )}
+        {userCompVar && factor.comparingVariable && comparingVar?.globalKey && comparingVarAvg && (
+          <GetLogo logo={comparingVar.logo ?? "circle"} position={comparingVarAvg} withCarret />
+        )}
         <GetLogo logo={userVar?.logo ?? "dog"} position={userScore} withCarret />
       </div>
 

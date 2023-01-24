@@ -2,7 +2,7 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 import _ from "lodash"
-import Papa, { parse, ParseResult } from "papaparse"
+import { parse, ParseResult } from "papaparse"
 import { useState } from "react"
 
 import { baseTheme } from "../../shared-module/styles"
@@ -182,7 +182,7 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
               transform: (value) => {
                 return value.trim()
               },
-              delimitersToGuess: [",", "\t", "|", ";", Papa.RECORD_SEP, Papa.UNIT_SEP],
+              delimitersToGuess: [",", ";"],
             })
           }
         }}
