@@ -260,8 +260,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             </button>
             <CsvReader
               parseNoHeaders={(value) => {
-                console.log("parsed this in the thingie", value)
-                const newOptions = value.flat()
+                const newOptions = value.flat().filter((n) => n === 0 || n)
                 const newAnswer = item.answer
                 newAnswer.options = newOptions
                 onChangeSurveyItem({ ...item, answer: newAnswer })

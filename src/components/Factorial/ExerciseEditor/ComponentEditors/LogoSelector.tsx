@@ -8,11 +8,13 @@ import { CircleLogo, DogLogo, EmptyLogo, PawLogo } from "../../ViewSubmission/Re
 interface SelectorProps {
   onChange: (logoLabel: string) => void
   label: string
+  chosenLogo?: string
 }
 
 export const LogoSelection: React.FC<React.PropsWithChildren<SelectorProps>> = ({
   onChange,
   label,
+  chosenLogo,
 }) => {
   const logos = [
     { value: "circle", label: "circle", logo: <CircleLogo /> },
@@ -42,7 +44,9 @@ export const LogoSelection: React.FC<React.PropsWithChildren<SelectorProps>> = (
         <Select
           id="logo-selector"
           options={logos}
-          defaultValue={emptyLogo}
+          defaultValue={
+            chosenLogo ? logos.find((l) => l.label === chosenLogo) ?? emptyLogo : emptyLogo
+          }
           onChange={(e) => onChange(e?.label ?? "")}
           formatOptionLabel={(logo) => {
             return <>{logo.logo}</>
