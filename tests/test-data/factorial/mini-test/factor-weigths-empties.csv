@@ -1,0 +1,5 @@
+; factor_one; factor_three; factor_seven
+question_one; ; 1; 
+question_two; ; -1; 1
+three; -1; 1; 
+five; 1; ;
