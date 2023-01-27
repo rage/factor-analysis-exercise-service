@@ -142,7 +142,7 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
             }
             // @ts-ignore: this is needed because inputFile throws a No overload matches this call that doesn't get fixed
             parse(inputFile, {
-              delimiter: ",",
+              delimiter: "", // auto-detect
               newline: "", // auto-detect
               quoteChar: '"',
               escapeChar: '"',
@@ -229,7 +229,7 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
           )}
         </>
       )}
-      {!error && !applyHeaders && (
+      {(!error || error.includes("DelimiterUnable")) && !applyHeaders && (
         <button
           onClick={defaultParse}
           className={css`
