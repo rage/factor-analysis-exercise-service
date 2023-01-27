@@ -365,10 +365,10 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
               </StyledInnerEditor>
             </fieldset>
             <fieldset>
-              <legend>{"Define the zero-mean variable"}</legend>
+              <legend>{"Define the main-mean variable"}</legend>
               <StyledInnerEditor>
                 <TextField
-                  label={`Label for zero mean (e.g. "Dogs average")`}
+                  label={`Label for main mean (e.g. "Dogs on average")`}
                   type="text"
                   value={
                     state.reportVariables?.zeroVariable?.label

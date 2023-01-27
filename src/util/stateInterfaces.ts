@@ -86,6 +86,7 @@ export interface Factor {
   score: number
   /** [variableKey: [variableItem: avg-score] ]to be compared to in the factor report */
   comparingVariable?: { [key: string]: { [key: string]: number } }
+  mainComparingVar?: number
 }
 
 export type FactorReport = Omit<Factor, "weights">
