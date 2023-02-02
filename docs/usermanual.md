@@ -92,5 +92,6 @@ $$factor_j=\sum_{i=1}^{n}a_{i,j}\*x_i,$$ where $x_i$ is the numerical value that
 
 Additional optional information can be provided:
  - scaling values: used to normalize the user answers
-   $$\dfrac{x_i - \mu_i}{scale}$$
+   $x_i = \dfrac{x_i - \mu_i}{scale_i}$ where $x_i$ is the rate given for question $i$, and $\mu_i$ and $scale_i$ are the values associated with the question $i$. The rates are scaled before the factorial calculation is performed.
+ - 
 
