@@ -34,7 +34,7 @@ The list can be modified to insert elements or remove elements from the list. `I
 
 The **non-factorial** survey has the list insertion as an option only if the survey is empty.
 
-### Non-factorial survey
+## Non-factorial survey
 
 Either insert questions as a list to the list editor, or create a survey item one by one. Each question (survey item) is placed in its own box for editing. Once the label and question text are defined the selector for specifying the answer type will be rendered.
 
@@ -44,7 +44,7 @@ Either insert questions as a list to the list editor, or create a survey item on
 
 For answer-types `multiple-choice`, `radio-group`, `dropdown-selection` and `advanced-dropdown` the options can be inserted one by one or as a .csv-file ([Comma Separated Values](https://en.wikipedia.org/wiki/Comma-separated_values)). The allowed delimiter for the .csv files are: `,` and `;`. Each value will be added as an option.
 
-After parsing the .csv file each option can still be edited or deleted manually as well as new options can be added. **Applying the .csv file will always overwrite any existing options.**
+> After parsing the .csv file each option can still be edited or deleted manually as well as new options can be added. **Applying the .csv file will always overwrite any existing options.**
 
 For options containing `,` either *escape* the it by wrapping the option in double-quotes `""`, like so:
 ```
@@ -71,5 +71,16 @@ By ticking the box "Make global" the answer of this question is made available f
 
 where on the left hand side of `=` the `question_label` is the unique question label of the global question and on the right-hand-side `default value` is any value (text) that is rendered in case the user has not answered that question yet. The `default value` can be left empty.
 
+## Factorial
+The factorial survey type is ment for
 
+| | factor_label $1$ | $$\dots$$ | factor_label $n$ |
+| -- | -- | -- | -- |
+| question_label $1$ | $$ə_{1,1}$$ | $$\dots$$ | $$a_{1,m}$$ |
+| $$\vdots$$ | $$\vdots | $$\ddots$$ | $$\dots$$ |
+| question_label $n$ | $$a_{n,1}$$ | $$\dots$$ | $$a_{n,m}$$ |
+
+The score for each factor $j$ is calculated by
+
+$$factor_j=\sum_{i=1}^{n}a_{i,j}\*x_i,$$ where $x_i$ is the numerical value that the survey user has rated question $i$.
 
