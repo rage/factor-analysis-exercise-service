@@ -74,6 +74,12 @@ where on the left hand side of `=` the `question_label` is the unique question l
 ## Factorial
 The factorial survey type is ment for
 
+To build a factorial survey that calculates a factorial report provided to the student the survey maker has to define the following:
+ - set of questions
+ - set of answer options, mapped to a numerical value used in the calculation
+ - factor weigths matrix in the form:
+
+
 | | factor_label $1$ | $$\dots$$ | factor_label $n$ |
 | -- | -- | -- | -- |
 | question_label $1$ | $$a_{1,1}$$ | $$\dots$$ | $$a_{1,m}$$ |
