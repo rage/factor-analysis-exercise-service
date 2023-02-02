@@ -76,8 +76,8 @@ The factorial survey type is ment for
 
 | | factor_label $1$ | $$\dots$$ | factor_label $n$ |
 | -- | -- | -- | -- |
-| question_label $1$ | $$ə_{1,1}$$ | $$\dots$$ | $$a_{1,m}$$ |
-| $$\vdots$$ | $$\vdots | $$\ddots$$ | $$\dots$$ |
+| question_label $1$ | $$a_{1,1}$$ | $$\dots$$ | $$a_{1,m}$$ |
+| $$\vdots$$ | $$\vdots$$ | $$\ddots$$ | $$\dots$$ |
 | question_label $n$ | $$a_{n,1}$$ | $$\dots$$ | $$a_{n,m}$$ |
 
 The score for each factor $j$ is calculated by
