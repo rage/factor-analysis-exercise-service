@@ -76,7 +76,7 @@ The factorial survey type is ment for
 
 To build a factorial survey that calculates a factorial report provided to the student the survey maker has to define the following:
  - set of questions
- - set of answer options, mapped to a numerical value used in the calculation
+ - set of answer [options](#options), mapped to a numerical value used in the calculation
  - factor weigths matrix in the form:
 
 
@@ -93,5 +93,7 @@ $$factor_j=\sum_{i=1}^{n}a_{i,j}\*x_i,$$ where $x_i$ is the numerical value that
 Additional optional information can be provided:
  - scaling values: used to normalize the user answers
    $x_i = \dfrac{x_i - \mu_i}{scale_i}$ where $x_i$ is the rate given for question $i$, and $\mu_i$ and $scale_i$ are the values associated with the question $i$. The rates are scaled before the factorial calculation is performed.
- - 
+ - information on a comparing variable [placeholder for link].
 
+#### Options
+<img source="https://github.com/rage/factor-analysis-exercise-service/blob/docs/docs/imgs/factorial_options.png" width=500 position=left>
