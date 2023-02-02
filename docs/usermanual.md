@@ -94,6 +94,11 @@ Additional optional information can be provided:
  - scaling values: used to normalize the user answers
    $x_i = \dfrac{x_i - \mu_i}{scale_i}$ where $x_i$ is the rate given for question $i$, and $\mu_i$ and $scale_i$ are the values associated with the question $i$. The rates are scaled before the factorial calculation is performed.
  - information on a comparing variable [placeholder for link].
+ - Allowed amount of questions rated with NaN. That is, if 
 
 #### Options
-<img source="https://github.com/rage/factor-analysis-exercise-service/blob/docs/docs/imgs/factorial_options.png" width=500 position=left>
+Options are added, edited and deleted in the `Options` section:
+
+<img src="https://github.com/rage/factor-analysis-exercise-service/blob/docs/docs/imgs/factorial_options.png" width=500 position=left>
+
+The numerical value associated with each answer option is defined in it's own box. Several options can have the same value, but the option texts have to differ. The numerical value will not be displayed in the actual survey, only the text inside the `Option text` editor will be displayed to the student.
