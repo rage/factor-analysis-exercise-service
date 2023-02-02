@@ -58,6 +58,22 @@ const FactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ factor, onChan
             }}
             className={css`
               flex: 1;
+              padding: 0 0.4rem 0 0rem;
+            `}
+          />
+          <TextField
+            label="factor average"
+            type="number"
+            placeholder="mean"
+            value={factor.mainComparingVar ? (factor.mainComparingVar as unknown as string) : "0"}
+            onChange={(value) => {
+              onChangeFactor({
+                ...factor,
+                mainComparingVar: parseFloat(value) ?? 0,
+              })
+            }}
+            className={css`
+              flex: 1;
             `}
           />
         </StyledInnerEditor>

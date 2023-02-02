@@ -185,11 +185,11 @@ export const scaleAndImputRatedQuestions = (
 ): RatedQuestion[] | null => {
   let amount = 0
   const questions: RatedQuestion[] = ratedQuestions.map((q) => {
-    if (!q.rate) {
+    if (q.rate == null) {
       amount++
     }
     const rate =
-      q.rate && meansAndStandardDeviations
+      q.rate != null && meansAndStandardDeviations
         ? (q.rate - meansAndStandardDeviations.means[q.questionLabel]) /
           meansAndStandardDeviations.standardDeviations[q.questionLabel]
         : q.rate ?? 0

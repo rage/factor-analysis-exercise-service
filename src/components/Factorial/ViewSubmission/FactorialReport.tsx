@@ -38,14 +38,14 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
   zeroVar,
 }) => {
   const species =
-    (100 * -(factor.range?.min as number)) /
+    (100 * (-(factor.range?.min as number) + (factor.mainComparingVar ?? 0))) /
     ((factor.range?.max as number) - (factor.range?.min as number))
 
   const userScore =
     (100 * (-(factor.range?.min as number) + factor.score)) /
     ((factor.range?.max as number) - (factor.range?.min as number))
 
-  let comparingVarAvg = null //species + Math.random() * 4
+  let comparingVarAvg = null
   if (
     factor.comparingVariable &&
     userCompVar &&
