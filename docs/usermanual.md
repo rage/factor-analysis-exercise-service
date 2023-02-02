@@ -90,3 +90,7 @@ The score for each factor $j$ is calculated by
 
 $$factor_j=\sum_{i=1}^{n}a_{i,j}\*x_i,$$ where $x_i$ is the numerical value that the survey user has rated question $i$.
 
+Additional optional information can be provided:
+ - scaling values: used to normalize the user answers
+   $$\dfrac{x_i - \mu_i}{scale}$$
+
