@@ -6,10 +6,10 @@ First select the appropriate exercise type from the exercise selector:
 
 ### There are 2 types of surveys:
 
-| factorial | non-factorial |
-| ------- | -------|
-| This survey type is meant for building the factorial survey type for calculating and outputting a factorial report to the user based on the user answers. It can also be used for a set of questions having the same answer options (single-choice). For example: | This survey type lets you create survey questions of type: |
-<img src="https://github.com/rage/factor-analysis-exercise-service/blob/docs/docs/imgs/questions_with_same_options_example.png" width=500 position=left> | <ul><li> free text</li><li> number</li><li>date</li><li>multiple-choice</li><li>single choice:<ul><li>radio-group</li><li>drop-down selection: the advanced drop-down selection allows the user to start typing in the search bar and provides answer alternatives matching the user input, in case of a very long option list.</li></ul></li><li>info element</li></ul> |
+| factorial                                                                                                                                                                                                                                                         | non-factorial                                                                                                                                                                                                                                                                                                                                                            |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| This survey type is meant for building the factorial survey type for calculating and outputting a factorial report to the user based on the user answers. It can also be used for a set of questions having the same answer options (single-choice). For example: | This survey type lets you create survey questions of type:                                                                                                                                                                                                                                                                                                               |
+| ![example of questions with same answer options](./imgs/questions_with_same_options_example.png)                                                                                                                                                                  | <ul><li> free text</li><li> number</li><li>date</li><li>multiple-choice</li><li>single choice:<ul><li>radio-group</li><li>drop-down selection: the advanced drop-down selection allows the user to start typing in the search bar and provides answer alternatives matching the user input, in case of a very long option list.</li></ul></li><li>info element</li></ul> |
 
 ## Building a survey
 
@@ -18,7 +18,7 @@ First select the appropriate exercise type from the exercise selector:
 Survey questions are identified by their unique `labels`. The question is inputted in the format
 
 > label; question text
- 
+
 where the label and the question text are separated by a `;` (semicolon). The label should _not_ contain any whitespace, the whitespaces will be automatically removed. Question editor supports markdown and the question text is rendered above the editor the same way it will be rendered in the actual survey.
 
 <img src="https://github.com/rage/factor-analysis-exercise-service/blob/docs/docs/imgs/question_editor_example.png" width=500 position=left>
@@ -26,7 +26,6 @@ where the label and the question text are separated by a `;` (semicolon). The la
 For the **factorial** survey the list of questions is inserted into the list editor in the format
 
 > label_one; question one text \n other_label; other question text
-
 
 <img src="https://github.com/rage/factor-analysis-exercise-service/blob/docs/docs/imgs/question_list_editor.png" width=500 position=left>
 
@@ -46,11 +45,13 @@ For answer-types `multiple-choice`, `radio-group`, `dropdown-selection` and `adv
 
 > After parsing the .csv file each option can still be edited or deleted manually as well as new options can be added. **Applying the .csv file will always overwrite any existing options.**
 
-For options containing `,` either *escape* the it by wrapping the option in double-quotes `""`, like so:
+For options containing `,` either _escape_ the it by wrapping the option in double-quotes `""`, like so:
+
 ```
 ,option one,"option two, contains comma"
 "option three"
 ```
+
 yielding the following result:
 
 <img src="https://github.com/rage/factor-analysis-exercise-service/blob/docs/docs/imgs/add_options_non-factorial.png" width=500 position=left>
@@ -72,33 +73,37 @@ By ticking the box "Make global" the answer of this question is made available f
 where on the left hand side of `=` the `question_label` is the unique question label of the global question and on the right-hand-side `default value` is any value (text) that is rendered in case the user has not answered that question yet. The `default value` can be left empty.
 
 ## Factorial
+
 The factorial survey type is ment for
 
 To build a factorial survey that calculates a factorial report provided to the student the survey maker has to define the following:
- - set of questions
- - set of answer [options](#options), mapped to a numerical value used in the calculation
- - factor weigths matrix in the form:
 
+- set of questions
+- set of answer [options](#options), mapped to a numerical value used in the calculation
+- factor weigths matrix in the form:
 
-| | factor_label $1$ | $$\dots$$ | factor_label $n$ |
-| -- | -- | -- | -- |
-| question_label $1$ | $$a_{1,1}$$ | $$\dots$$ | $$a_{1,m}$$ |
-| $$\vdots$$ | $$\vdots$$ | $$\ddots$$ | $$\dots$$ |
-| question_label $n$ | $$a_{n,1}$$ | $$\dots$$ | $$a_{n,m}$$ |
+|                    | factor_label $1$ | $$\dots$$  | factor_label $n$ |
+| ------------------ | ---------------- | ---------- | ---------------- |
+| question_label $1$ | $$a_{1,1}$$      | $$\dots$$  | $$a_{1,m}$$      |
+| $$\vdots$$         | $$\vdots$$       | $$\ddots$$ | $$\dots$$        |
+| question_label $n$ | $$a_{n,1}$$      | $$\dots$$  | $$a_{n,m}$$      |
 
 The score for each factor $j$ is calculated by
 
-$$factor_j=\sum_{i=1}^{n}a_{i,j}\*x_i,$$ where $x_i$ is the numerical value that the survey user has rated question $i$.
+$$factor_j=\sum_{i=1}^{n}a_{i,j}x_i,$$
+where $x_i$ is the numerical value that the survey user has rated question $i$.
 
 Additional optional information can be provided:
- - scaling values: used to normalize the user answers
-   $x_i = \dfrac{x_i - \mu_i}{scale_i}$ where $x_i$ is the rate given for question $i$, and $\mu_i$ and $scale_i$ are the values associated with the question $i$. The rates are scaled before the factorial calculation is performed.
- - information on a comparing variable [placeholder for link].
- - Allowed amount of questions rated with NaN. That is, if 
+
+- scaling values: used to normalize the user answers
+  $x_i = \dfrac{x_i - \mu_i}{scale_i}$ where $x_i$ is the rate given for question $i$, and $\mu_i$ and $scale_i$ are the values associated with the question $i$. The rates are scaled before the factorial calculation is performed.
+- information on a comparing variable [placeholder for link].
+- Allowed amount of questions rated with NaN. That is, if
 
 #### Options
+
 Options are added, edited and deleted in the `Options` section:
 
-<img src="https://github.com/rage/factor-analysis-exercise-service/blob/docs/docs/imgs/factorial_options.png" width=500 position=left>
+![picture of options](./imgs/factorial_options.png)
 
 The numerical value associated with each answer option is defined in it's own box. Several options can have the same value, but the option texts have to differ. The numerical value will not be displayed in the actual survey, only the text inside the `Option text` editor will be displayed to the student.
