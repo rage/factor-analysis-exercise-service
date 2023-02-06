@@ -261,6 +261,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
           <fieldset>
             <legend>{"Other documents and report variables"}</legend>
             <fieldset>
+              <legend>{"Define the user variable"}</legend>
               <CsvReader
                 title="Upload means and SDs CSV File for answer normalization"
                 parseUsingHeaders={(value) => {
@@ -396,7 +397,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                   `}
                 />
                 <LogoSelection
-                  label={"Select icon for zero-mean"}
+                  label={"Select icon for main-mean"}
                   chosenLogo={state.reportVariables?.zeroVariable?.logo}
                   onChange={(value) => {
                     setState({
@@ -499,7 +500,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
             </fieldset>
             <StyledInnerEditor>
               <TextField
-                label="max nan-answers allowed"
+                label="maximum amount of questions permitted to be rated with NaN (natural number)"
                 type="number"
                 value={state.allowedNans ? (state.allowedNans as unknown as string) : "0"}
                 onChange={(value) => {
