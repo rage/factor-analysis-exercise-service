@@ -72,11 +72,15 @@ By ticking the box "Make global" the answer of this question is made available f
 
 where on the left hand side of `=` the `question_label` is the unique question label of the global question and on the right-hand-side `default value` is any value (text) that is rendered in case the user has not answered that question yet. The `default value` can be left empty.
 
-## Factorial
+#### Duplicate item
 
-The factorial survey type is ment for
+The button `duplicate item` will create a new survey item below the given item with the exact same list of options. The question label and question text need still be defined. The list of options as well as the answer type can still be modified in both of the survey items independently.
 
-To build a factorial survey that calculates a factorial report provided to the student the survey maker has to define the following:
+## Factorial survey
+
+The factorial survey type is ment for a set of questions having same set of answer options. Based on the answers of a survey it is possible to calculate and provide a factorial report to the student upon submission
+
+In order to build a factorial survey that calculates a factorial report, the survey maker has to define the following:
 
 - set of questions
 - set of answer [options](#options), mapped to a numerical value used in the calculation
@@ -104,6 +108,6 @@ Additional optional information can be provided:
 
 Options are added, edited and deleted in the `Options` section:
 
-![picture of options](./imgs/factorial_options.png)
+<img src="./imgs/factorial_options.png" width=500 position=left>
 
 The numerical value associated with each answer option is defined in it's own box. Several options can have the same value, but the option texts have to differ. The numerical value will not be displayed in the actual survey, only the text inside the `Option text` editor will be displayed to the student.
