@@ -12,7 +12,6 @@ export interface Question {
 export interface RatedQuestion {
   questionId: string
   questionLabel: string
-  rate: number | null
   chosenOption: string
 }
 

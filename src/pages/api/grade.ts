@@ -17,6 +17,7 @@ import {
 import {
   calculateFactors,
   getGlobalVariables,
+  mapRatesToAnswers,
   sanitizeQuestions,
   scaleAndImputRatedQuestions,
 } from "../../util/utils"
@@ -53,6 +54,10 @@ export interface ExerciseFeedback {
   factorReport: FactorReport[] | null
 }
 
+export interface Rate {
+  questionLabel: string
+  rate: number | null
+}
 interface GradingRequest {
   exercise_spec: PrivateSpec
   submission_data: SubmittedForm
@@ -76,9 +81,12 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     gradingRequest.exercise_spec.calculateFeedback
   ) {
     const scaledAnswers = scaleAndImputRatedQuestions(
-      sanitizeQuestions(
-        gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
-      ) as RatedQuestion[],
+      mapRatesToAnswers(
+        gradingRequest.exercise_spec.options,
+        sanitizeQuestions(
+          gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
+        ) as RatedQuestion[],
+      ),
       gradingRequest.exercise_spec.meansAndStandardDeviations ?? null,
       gradingRequest.exercise_spec.allowedNans ?? 0,
     )
