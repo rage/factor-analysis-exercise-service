@@ -29,7 +29,6 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
     .filter((question) => question.questionLabel !== "info")
     .map((q) => {
       return {
-        questionId: q.id,
         questionLabel: q.questionLabel,
         chosenOption: "",
       } as RatedQuestion
@@ -60,7 +59,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
     return res
   }
 
-  const updateRate = (questionId: string, chosenOption: string) => {
+  const updateRate = (questionLabel: string, chosenOption: string) => {
     if (!port) {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Cannot send current state to parent because I don't have a port")
@@ -68,7 +67,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
     }
 
     const newRatedQ = ratedQuestions.map((quest) => {
-      if (quest.questionId !== questionId) {
+      if (quest.questionLabel !== questionLabel) {
         return quest
       }
       return { ...quest, chosenOption: chosenOption }
@@ -94,7 +93,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
                 ratedQuestion={ratedQuestion}
                 questionText={questionText}
                 options={state.options}
-                onClick={(id, chosenOption) => updateRate(id, chosenOption)}
+                onClick={(questionLabel, chosenOption) => updateRate(questionLabel, chosenOption)}
               />
             )
           )

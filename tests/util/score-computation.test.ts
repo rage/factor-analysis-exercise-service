@@ -125,22 +125,18 @@ export const testOptions: FactorialOption[] = [
 
 export const testAnswer: RatedQuestion[] = [
   {
-    questionId: "5b8fcb89-294d-47b3-9b0c-aec435c66cf0",
     questionLabel: "question_one",
     chosenOption: "maybe",
   },
   {
-    questionId: "aad5183b-594a-4779-9fd2-7892d1e81d28",
     questionLabel: "question_two",
     chosenOption: "yes",
   },
   {
-    questionId: "b7dd0f63-d710-4fd0-a55f-92041bb0b332",
     questionLabel: "three",
     chosenOption: "no",
   },
   {
-    questionId: "564089ab-f1ec-413f-8440-f247cee1eadf",
     questionLabel: "five",
     chosenOption: "yes",
   },

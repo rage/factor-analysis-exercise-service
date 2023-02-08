@@ -8,7 +8,7 @@ interface Props {
   ratedQuestion: RatedQuestion
   questionText: string
   options: FactorialOption[]
-  onClick: (questionId: string, chosenOption: string) => void
+  onClick: (questionLabel: string, chosenOption: string) => void
   disabled?: boolean
 }
 
@@ -43,7 +43,7 @@ const FactorialSurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
                   id={`${question.questionLabel}-factorial-option-${idx + 1}`}
                   value={option.value ?? undefined}
                   onChange={() => {
-                    onClick(question.id, option.name)
+                    onClick(question.questionLabel, option.name)
                   }}
                   checked={ratedQuestion.chosenOption === option.name}
                   required

@@ -10,7 +10,6 @@ export interface Question {
 
 /** Evaluated survey question contains numerical | NA value as rate */
 export interface RatedQuestion {
-  questionId: string
   questionLabel: string
   chosenOption: string
 }
