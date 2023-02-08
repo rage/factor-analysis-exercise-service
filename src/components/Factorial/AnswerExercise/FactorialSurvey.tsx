@@ -25,15 +25,16 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
   state,
   userVariables,
 }) => {
-  const INITIAL_R = state.questions.map((q) => {
-    return {
-      questionId: q.id,
-      questionLabel: q.questionLabel,
-      rate: null,
-      question: q.question,
-      chosenOption: "",
-    } as RatedQuestion
-  })
+  const INITIAL_R = state.questions
+    .filter((question) => question.questionLabel !== "info")
+    .map((q) => {
+      return {
+        questionId: q.id,
+        questionLabel: q.questionLabel,
+        rate: null,
+        chosenOption: "",
+      } as RatedQuestion
+    })
 
   const [ratedQuestions, _setRatedQuestions] = useState<RatedQuestion[]>(INITIAL_R)
 
@@ -78,19 +79,25 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
 
   return (
     <>
-      {ratedQuestions.map((question) => {
+      {state.questions.map((question) => {
         const questionText = insertVariablesToText(question.question, userVariables)
         if (question.questionLabel === "info") {
-          return <InfoSection key={question.questionId} content={questionText} />
+          return <InfoSection key={question.id} content={questionText} />
         } else {
+          const ratedQuestion = ratedQuestions.find(
+            (q) => q.questionLabel === question.questionLabel,
+          )
           return (
-            <FactorialSurveyQuestion
-              key={question.questionId}
-              question={question}
-              questionText={questionText}
-              options={state.options}
-              onClick={(id, rate, chosenOption) => updateRate(id, rate, chosenOption)}
-            />
+            ratedQuestion && (
+              <FactorialSurveyQuestion
+                key={question.id}
+                question={question}
+                ratedQuestion={ratedQuestion}
+                questionText={questionText}
+                options={state.options}
+                onClick={(id, rate, chosenOption) => updateRate(id, rate, chosenOption)}
+              />
+            )
           )
         }
       })}

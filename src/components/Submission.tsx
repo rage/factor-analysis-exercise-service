@@ -80,6 +80,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
       {publicSpec.type === SurveyType.Factorial && (
         <FactorialSurveySubmission
           options={publicSpec.options}
+          questions={publicSpec.questions}
           userAnswer={answer.answeredQuestions as RatedQuestion[]}
           userVariables={userVariables}
         />

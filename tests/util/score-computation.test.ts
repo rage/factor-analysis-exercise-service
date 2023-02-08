@@ -100,45 +100,27 @@ export const testQuestions: Question[] = [
 
 export const testAnswer: RatedQuestion[] = [
   {
-    questionId: "177c84db-0c81-4ff5-b2a4-d1bf4b3745e8",
-    questionLabel: "info",
-    rate: null,
-    question: " this is just an info element to provide some info for the coming section....",
-    chosenOption: "",
-  },
-  {
     questionId: "5b8fcb89-294d-47b3-9b0c-aec435c66cf0",
     questionLabel: "question_one",
     rate: 2,
-    question: " This is the first question",
     chosenOption: "maybe",
   },
   {
     questionId: "aad5183b-594a-4779-9fd2-7892d1e81d28",
     questionLabel: "question_two",
     rate: 3,
-    question: "This is the second",
     chosenOption: "yes",
-  },
-  {
-    questionId: "305aa478-25df-4748-a416-dfdde1661b81",
-    questionLabel: "info",
-    rate: null,
-    question: "Questions should have unique question labels for identification",
-    chosenOption: "",
   },
   {
     questionId: "b7dd0f63-d710-4fd0-a55f-92041bb0b332",
     questionLabel: "three",
     rate: 1,
-    question: "otherwise they can contain anything",
     chosenOption: "no",
   },
   {
     questionId: "564089ab-f1ec-413f-8440-f247cee1eadf",
     questionLabel: "five",
     rate: 3,
-    question: " newlines should be avoided",
     chosenOption: "yes",
   },
 ]
