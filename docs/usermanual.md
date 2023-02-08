@@ -2,7 +2,7 @@
 
 First select the appropriate exercise type from the exercise selector:
 
-<img src="./imgs/choose_exercise_type.png" width=500 position=left>
+<img src="./imgs/choose_exercise_type.png" width=600 position=left>
 
 <p>&nbsp;</p>
 
@@ -25,14 +25,14 @@ Survey questions are identified by their unique `labels`. The question is inputt
 
 where the label and the question text are separated by a `;` (semicolon). The label should _not_ contain any whitespace, the whitespaces will be automatically removed. Question editor supports markdown and the question text is rendered above the editor the same way it will be rendered in the actual survey.
 
-<img src="./imgs/question_editor_example.png" width=500 position=left>
+<img src="./imgs/question_editor_example.png" width=600 position=left>
 <p>&nbsp;</p>
 
 For the [**factorial**](#factorial-survey) survey the list of questions is inserted into the list editor in the format
 
 > label_one; question one text \n other_label; other question text
 
-<img src="./imgs/question_list_editor.png" width=500 position=left>
+<img src="./imgs/question_list_editor.png" width=600 position=left>
 
 The list can be modified to insert elements or remove elements from the list.
 
@@ -40,18 +40,26 @@ The list can be modified to insert elements or remove elements from the list.
 
 > `Info` elements are labeled `info` and can be inserted anywhere into the list. Info elements do not have any answering option.
 
-<img src="./imgs/factorial_with_infos.png" width=500>
+<img src="./imgs/factorial_with_infos.png" width=600>
 <p>&nbsp;</p>
 
 > The [**non-factorial**](#non-factorial-survey) survey has the list insertion as an option only if the survey is empty.
 
 <p>&nbsp;</p>
 
+### Sumbission view parameters
+
+<img src="./imgs/submission_view_parameters.png" width=600 position=left>
+
+> This box defines the given parameters for the given task only, that is, if the exercise consists of more than one task each of them may have its own title and feedback text. Non-factorial survey cannot failby default, so there is no failure message to be defined. Factorial survey displays the failure message in case of "unable to calculate report".
+
+Some or all of the fields may be left empty.
+
 ## Non-factorial survey
 
 Either insert questions as a list to the list editor, or create a survey item one by one. Each question (survey item) is placed in its own box for editing. Once the label and question text are defined the selector for specifying the answer type will be rendered.
 
-<img src="./imgs/non-factorial-answer-selector.png" width=500 position=left>
+<img src="./imgs/non-factorial-answer-selector.png" width=600 position=left>
 
 <p>&nbsp;</p>
 
@@ -70,7 +78,7 @@ For options containing `,` either _escape_ the it by wrapping the option in doub
 
 yielding the following result:
 
-<img src="./imgs/add_options_non-factorial.png" width=500 position=left>
+<img src="./imgs/add_options_non-factorial.png" width=600 position=left>
 
 Be careful with the no whitespaces between `"` (double-quote) and the preceding delimiter (in this case `,` (comma)).
 
@@ -102,7 +110,7 @@ The button `duplicate item` will create a new survey item below the given item w
 
 The factorial survey type is ment for a set of questions having same set of answer options. Based on the answers of a survey it is possible to calculate and provide a factorial report to the student upon submission based on static analysis numbers defined by the survey maker.
 
-<img src="./imgs/factor_report.png" width=500>
+<img src="./imgs/factor_report.png" width=600>
 
 In order to build a factorial survey that calculates a factorial report, the survey maker has to define the following:
 
@@ -134,16 +142,16 @@ where $x_i$ is the numerical value associated with the answer that the survey us
 
 - normalization values: used to normalize the user answers
   $x_i = \dfrac{x_i - \mu_i}{scale_i}$ where $x_i$ is the rate given for question $i$, and $\mu_i$ and $scale_i$ are the values associated with the question $i$. The rates are scaled before the factorial calculation is performed by the above formula (1).
-- information on a comparing variable [placeholder for link].
-- Allowed amount of questions rated with `NaN`. That is, if some survey user chooses more than the allowed amount of `NaN`-options the factorial report will not be displayed and a failure message is rendered [link placeholder].
+- information on a [comparing variable](#other-documents-and-report-variables).
+- Allowed amount of questions rated with `NaN`. That is, if some survey user chooses more than the allowed amount of `NaN`-options the factorial report will not be displayed and a failure message is rendered.
 
 ### Options
 
 Options are added, edited and deleted in the `Options` section:
 
-<img src="./imgs/factorial_options.png" width=500 position=left>
+<img src="./imgs/factorial_options.png" width=600 position=left>
 
-The numerical value associated with each answer option is defined in it's own box. Several options can have the same value, but the option texts have to differ. The numerical value will not be displayed in the actual survey, only the text inside the `Option text` editor will be displayed to the student. By leaving the `value` box empty, the option is mapped to a rating of `NaN`. Upon submission the `NaN` answers are imputed by the average $x_i =\dfrac{\mu - \mu}{scale} = 0$. If, during the survey answering, the amount of chosen `NaN` options exceeds some limit [link placeholder] set by the survey maker, factorial report will not be calculated.
+The numerical value associated with each answer option is defined in it's own box. Several options can have the same value, but the option texts have to differ. The numerical value will not be displayed in the actual survey, only the text inside the `Option text` editor will be displayed to the student. By leaving the `value` box empty, the option is mapped to a rating of `NaN`. Upon submission the `NaN` answers are imputed by the average $x_i =\dfrac{\mu - \mu}{scale} = 0$. If, during the survey answering, the amount of chosen `NaN` options exceeds some [limit](#nan-limit) set by the survey maker, factorial report will not be calculated and the [failure message](#sumbission-view-parameters) is displayed.
 
 > Ask group what to do when normalization values are not provided
 
@@ -151,15 +159,15 @@ The numerical value associated with each answer option is defined in it's own bo
 
 Once the list of questions has been defined and the `Provide factor report to student` checkbox is checked it is time to define the factors of the survey by uploading a weight-matrix in a .csv file. The file parser will display the column headers in the `--select key column--` dropdown. Assign the column containing the `question_label`s of this survey as the `key-column`.
 
-<img src="./imgs/upload_factor_weights.png" width=500>
+<img src="./imgs/upload_factor_weights.png" width=600>
 
 By clicking the `set factors` button, the file parser will read the file and display each factor for further editioning in its own editor box. If operation is successful the read matrix is displayed at the bottom of the `task-editor`. where the `factor_label`s are the column headers and the `question_label`s are rows.
 
-<img src="./imgs/weight_matrix.png" width=500>
+<img src="./imgs/weight_matrix.png" width=600>
 
 Each column will be added as a factor and for each factor a factor-editor will appear:
 
-<img src="./imgs/factor_editor.png" width=500>
+<img src="./imgs/factor_editor.png" width=600>
 
 - Name: is the title for the factor displayed to the user, the `factor_label` is not displayed.
 - min and max are the minimal and maximal values a user can score for for a given factor. These values define the scale-line for the factor needed to correctly place the `user score` icon along it.
@@ -168,7 +176,7 @@ Each column will be added as a factor and for each factor a factor-editor will a
 
 ### Other documents and report variables
 
-<img src="./imgs/other_documents_factorial.png" width=500>
+<img src="./imgs/other_documents_factorial.png" width=600>
 
 |                      | Define the user variables                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -179,7 +187,10 @@ Each column will be added as a factor and for each factor a factor-editor will a
 |                      | **Define a variable to compare to**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | Define               | It is possible to define one more variable to compare the user to. This variable has to be defined as a global variable from an earlier non-factorial survey with the answering type of one of the [`single-choice`](#adding-answer-options) types. The `Global variable key` is again the `question_label` of the given question. Once this global `key` is defined a .csv file with the average values can be uploaded                                                                                                                                                                                                                                                   |
 | Upload .csv          | The file upload is similar to the factor-weights upload. The columns are the `factor_label`s and the rows are the list of the possible `options` for the given global question defined above. On succesful parsing the preview-matrix will be extended witht the given rows                                                                                                                                                                                                                                                                                                                                                                                                |
-|                      | <img src="./imgs/breed-avg_display.png" width=500>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+|                      | <img src="./imgs/breed-avg_display.png" width=600>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | **Important**        | The `Global variable key` (in the above example "breed") must be defined before the file upload and will be rendered as a subheading in the display-matrix between the `question_label`s and the list of `options` for examination of the data. Uploading new files will overwrite the existing data. Some or all of the `options` may or may not have a defined average value for a given factor (empty cells or NaNs). In this case the factorial report will simply omit displaying the variable all together. The `options` must be in the same format as the list of `options` in the question marked `global`                                                        |
-| example              | <img src="./imgs/report_example.png" width=500>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| **NaN** limit        | A numerical (natural number) value for the permitted amount of [`NaN`](#options)-options chosen before the report can no longer be calculated. By default this value is 0, meaning if not specified otherwise, report will no be calculated if any questions are reted with `NaN`.                                                                                                                                                                                                                                                                                                                                                                                         |
+| example              | <img src="./imgs/report_example.png" width=600>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+
+### NaN limit
+
+A numerical (natural number) value for the permitted amount of [`NaN`](#options)-options chosen before the report can no longer be calculated. By default this value is 0, meaning if not specified otherwise, report will no be calculated if any questions are reted with `NaN`.
