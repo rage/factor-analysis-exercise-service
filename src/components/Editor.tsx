@@ -7,6 +7,7 @@ import { CurrentStateMessage } from "../shared-module/exercise-service-protocol-
 import { PrivateSpec, SurveyType } from "../util/stateInterfaces"
 
 import FactorialSurveyEditor from "./Factorial/ExerciseEditor/FactorialSurveyEditor"
+import UserManualLink from "./SharedMisc/UserManualLink"
 import SurveyItemEditor from "./Survey/Editors/SurveyEditor"
 
 const CURRENT_STATE = "current-state"
@@ -37,6 +38,7 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
           flex-direction: column;
         `}
       >
+        <UserManualLink />
         <legend>{"Choose type of Survey"}</legend>
         <select
           aria-label="select-survey-type"
@@ -90,6 +92,7 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
     case SurveyType.Factorial: {
       return (
         <div>
+          <UserManualLink />
           <FactorialSurveyEditor key={state.id} state={state} setState={setState} />
         </div>
       )
@@ -97,6 +100,7 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
     case SurveyType.NonFactorial: {
       return (
         <div>
+          <UserManualLink />
           <SurveyItemEditor key={state.id} state={state} setState={setState} />
         </div>
       )
