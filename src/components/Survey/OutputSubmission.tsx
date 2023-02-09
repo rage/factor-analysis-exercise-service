@@ -2,7 +2,7 @@ import React from "react"
 
 import Accordion from "../../shared-module/components/Accordion"
 import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
-import { SurveyItem } from "../../util/stateInterfaces"
+import { AnsweredSurveyItem, SurveyItem } from "../../util/stateInterfaces"
 import { insertVariablesToText } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
@@ -13,10 +13,15 @@ import SurveyExerciseItem from "./SurveyExerciseItem"
 
 interface Props {
   items: SurveyItem[]
+  answers: AnsweredSurveyItem[]
   userVariables?: UserVariablesMap | null
 }
 
-const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items, userVariables }) => {
+const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({
+  items,
+  answers,
+  userVariables,
+}) => {
   return (
     <Accordion variant="detail">
       <details>
@@ -25,11 +30,13 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items, use
           <div>
             {items.map((item) => {
               if (item.conditional && item.dependsOn) {
-                const chosenOptions = items.find(
-                  (surveyItem) =>
-                    surveyItem.question.questionLabel === item.dependsOn?.questionLabel,
-                )?.answer.answer as string[]
-                if (chosenOptions?.indexOf(item.dependsOn.triggeringOption) === -1) {
+                const chosenOptions = answers.find(
+                  (surveyItem) => surveyItem.questionLabel === item.dependsOn?.questionLabel,
+                )?.answer as string[]
+                if (
+                  !chosenOptions ||
+                  (chosenOptions && chosenOptions.indexOf(item.dependsOn.triggeringOption) === -1)
+                ) {
                   return
                 }
               }
@@ -41,7 +48,12 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items, use
                 return (
                   <InfoHeaderWrapper key={item.id}>
                     <MarkdownText text={content} />
-                    <SurveyExerciseItem item={item} updateAnswer={() => null} disabled />
+                    <SurveyExerciseItem
+                      item={item}
+                      answer={answers.find((i) => i.surveyItemId === item.id)?.answer ?? null}
+                      updateAnswer={() => null}
+                      disabled
+                    />
                   </InfoHeaderWrapper>
                 )
               }
@@ -51,6 +63,7 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({ items, use
                   <SurveyExerciseItem
                     key={item.id}
                     item={item}
+                    answer={answers.find((i) => i.surveyItemId === item.id)?.answer ?? null}
                     updateAnswer={() => null}
                     disabled={true}
                   />

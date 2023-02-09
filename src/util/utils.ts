@@ -2,6 +2,7 @@ import { Rate } from "../pages/api/grade"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
 import {
+  AnsweredSurveyItem,
   Factor,
   FactorialOption,
   FactorReport,
@@ -101,12 +102,16 @@ export const sanitizeQuestions = (questions: QuestionItem[]) => {
 
 type QuestionItem = RatedQuestion | Question
 
-export const getGlobalVariables = (answeredSurvey: SurveyItem[]): UserVariablesMap | undefined => {
-  const surveyItems: SurveyItem[] = answeredSurvey.filter((item) => item.globalVariable === true)
+export const getGlobalVariables = (
+  answeredSurvey: AnsweredSurveyItem[],
+  survey: SurveyItem[],
+): UserVariablesMap | undefined => {
+  const surveyItems: SurveyItem[] = survey.filter((item) => item.globalVariable === true)
   if (surveyItems.length > 0) {
     const globalVariables: UserVariablesMap = {}
     surveyItems.map((item) => {
-      globalVariables[item.question.questionLabel] = item.answer.answer
+      globalVariables[item.question.questionLabel] =
+        answeredSurvey.find((i) => i.surveyItemId === item.id)?.answer ?? null
     })
     return globalVariables
   }

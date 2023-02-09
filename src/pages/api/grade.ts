@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
 import { cors, runMiddleware } from "../../util/cors"
 import {
+  AnsweredSurveyItem,
   ClientErrorResponse,
   FactorReport,
   PrivateSpec,
@@ -11,7 +12,6 @@ import {
   ReportVariable,
   SubmittedForm,
   Survey,
-  SurveyItem,
   SurveyType,
 } from "../../util/stateInterfaces"
 import {
@@ -117,7 +117,8 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
   const vars =
     gradingRequest.exercise_spec?.type === SurveyType.NonFactorial
       ? (getGlobalVariables(
-          gradingRequest.submission_data.answeredQuestions as SurveyItem[],
+          gradingRequest.submission_data.answeredQuestions as AnsweredSurveyItem[],
+          gradingRequest.exercise_spec.content,
         ) as UserVariablesMap)
       : null
 

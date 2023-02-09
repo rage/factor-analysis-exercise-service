@@ -5,10 +5,10 @@ import React from "react"
 import { ExerciseFeedback } from "../pages/api/grade"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 import {
+  AnsweredSurveyItem,
   PublicSpec,
   RatedQuestion,
   SubmittedForm,
-  SurveyItem,
   SurveyType,
 } from "../util/stateInterfaces"
 
@@ -87,7 +87,8 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
       )}
       {publicSpec.type === SurveyType.NonFactorial && (
         <SurveySubmission
-          items={answer.answeredQuestions as SurveyItem[]}
+          items={publicSpec.content}
+          answers={answer.answeredQuestions as AnsweredSurveyItem[]}
           userVariables={userVariables}
         />
       )}
