@@ -51,7 +51,7 @@ const SelectConditionForItem: React.FC<React.PropsWithChildren<Props>> = ({
           overflow: hidden;
         `}
       >
-        <option value="default" aria-label="Set condition" disabled selected>
+        <option value="default" aria-label="Set condition" disabled>
           {"Set condition"}
         </option>
         {state.content.map((sItem) => {

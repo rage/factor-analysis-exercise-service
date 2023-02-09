@@ -168,7 +168,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
             required
             disabled={disabled}
           >
-            <option value="default" disabled selected label="--"></option>
+            <option value="default" disabled label="--"></option>
             {item.answer.options.map((option) => {
               return (
                 <Option key={option} value={option}>

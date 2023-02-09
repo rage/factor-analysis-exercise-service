@@ -44,7 +44,7 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
           aria-label="select-survey-type"
           name="type-selection"
           id="survey-type"
-          value={undefined}
+          value={"--"}
           onChange={(event) => {
             const surveyType = event.target.value
             switch (surveyType) {
@@ -78,7 +78,7 @@ const Editor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState, por
             }
           }}
         >
-          <option value={undefined} disabled selected>
+          <option value={"--"} disabled>
             {"--"}
           </option>
           <option value={SurveyType.Factorial}>{SurveyType.Factorial}</option>
