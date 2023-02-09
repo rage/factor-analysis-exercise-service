@@ -10,10 +10,7 @@ export interface Question {
 
 /** Evaluated survey question contains numerical | NA value as rate */
 export interface RatedQuestion {
-  questionId: string
   questionLabel: string
-  question: string
-  rate: number | null
   chosenOption: string
 }
 
@@ -67,7 +64,7 @@ export interface NormalizationValues {
  * RatedQuesiton[] | SurveyItem[]
  */
 export interface SubmittedForm {
-  answeredQuestions: RatedQuestion[] | SurveyItem[]
+  answeredQuestions: RatedQuestion[] | AnsweredSurveyItem[]
 }
 
 /** Contains information for calculating factorial analysis report
@@ -110,6 +107,12 @@ export interface SurveyItem {
   globalVariable?: boolean
 }
 
+export interface AnsweredSurveyItem {
+  surveyItemId: string
+  questionLabel: string
+  answer: string[] | string | number | null
+}
+
 /** Condition for whether to display the question or not
  *  triggering questionLabel and option: if chosen by student will display the conditional SurveyItem */
 export interface SurveyItemCondition {
@@ -121,7 +124,6 @@ export interface Answer {
   id: string
   type: AnswerType
   options: string[]
-  answer: string[] | string | number | null
 }
 
 export interface Survey {

@@ -1,13 +1,14 @@
-import { FactorialOption, RatedQuestion } from "../../../util/stateInterfaces"
+import { FactorialOption, Question, RatedQuestion } from "../../../util/stateInterfaces"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
 import { CheckedRadioGroupWrap } from "../../StyledComponents/RadioGroupWrap"
 import { ItemWrapper } from "../../StyledComponents/Wrappers"
 
 interface Props {
-  question: RatedQuestion
+  question: Question
+  ratedQuestion: RatedQuestion
   questionText: string
   options: FactorialOption[]
-  onClick: (questionId: string, rate: number | null, chosenOption: string) => void
+  onClick: (questionLabel: string, chosenOption: string) => void
   disabled?: boolean
 }
 
@@ -23,6 +24,7 @@ const noBorder = {
 
 const FactorialSurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
   question,
+  ratedQuestion,
   questionText,
   options,
   onClick,
@@ -40,14 +42,10 @@ const FactorialSurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
                   type="radio"
                   id={`${question.questionLabel}-factorial-option-${idx + 1}`}
                   value={option.value ?? undefined}
-                  onChange={(e) => {
-                    onClick(
-                      question.questionId,
-                      isNaN(parseInt(e.target.value)) ? null : parseInt(e.target.value),
-                      option.name,
-                    )
+                  onChange={() => {
+                    onClick(question.questionLabel, option.name)
                   }}
-                  checked={question.chosenOption === option.name}
+                  checked={ratedQuestion.chosenOption === option.name}
                   required
                   disabled={disabled}
                 />

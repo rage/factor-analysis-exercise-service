@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
 import { cors, runMiddleware } from "../../util/cors"
 import {
+  AnsweredSurveyItem,
   ClientErrorResponse,
   FactorReport,
   PrivateSpec,
@@ -11,12 +12,12 @@ import {
   ReportVariable,
   SubmittedForm,
   Survey,
-  SurveyItem,
   SurveyType,
 } from "../../util/stateInterfaces"
 import {
   calculateFactors,
   getGlobalVariables,
+  mapRatesToAnswers,
   sanitizeQuestions,
   scaleAndImputRatedQuestions,
 } from "../../util/utils"
@@ -53,6 +54,10 @@ export interface ExerciseFeedback {
   factorReport: FactorReport[] | null
 }
 
+export interface Rate {
+  questionLabel: string
+  rate: number | null
+}
 interface GradingRequest {
   exercise_spec: PrivateSpec
   submission_data: SubmittedForm
@@ -76,9 +81,12 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
     gradingRequest.exercise_spec.calculateFeedback
   ) {
     const scaledAnswers = scaleAndImputRatedQuestions(
-      sanitizeQuestions(
-        gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
-      ) as RatedQuestion[],
+      mapRatesToAnswers(
+        gradingRequest.exercise_spec.options,
+        sanitizeQuestions(
+          gradingRequest.submission_data.answeredQuestions as RatedQuestion[],
+        ) as RatedQuestion[],
+      ),
       gradingRequest.exercise_spec.meansAndStandardDeviations ?? null,
       gradingRequest.exercise_spec.allowedNans ?? 0,
     )
@@ -109,7 +117,8 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
   const vars =
     gradingRequest.exercise_spec?.type === SurveyType.NonFactorial
       ? (getGlobalVariables(
-          gradingRequest.submission_data.answeredQuestions as SurveyItem[],
+          gradingRequest.submission_data.answeredQuestions as AnsweredSurveyItem[],
+          gradingRequest.exercise_spec.content,
         ) as UserVariablesMap)
       : null
 

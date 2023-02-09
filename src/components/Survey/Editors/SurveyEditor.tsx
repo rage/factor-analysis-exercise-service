@@ -109,7 +109,6 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
               id: v4(),
               type: AnswerType.None,
               options: [],
-              answer: "",
             }
             newState.content.push({
               id: v4(),
@@ -139,7 +138,6 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
                   id: v4(),
                   type: AnswerType.None,
                   options: [],
-                  answer: "",
                 }
                 newContent.push({
                   id: v4(),
@@ -160,21 +158,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
       <fieldset>
         <legend>{"Submission view"}</legend>
         <TextField
-          label="Title text for submission view"
-          type="text"
-          value={state.titleText ? state.titleText : ""}
-          onChange={(value) => {
-            setState({
-              view_type: "exercise-editor",
-              private_spec: {
-                ...state,
-                titleText: value,
-              },
-            })
-          }}
-        />
-        <TextField
-          label="Feedback message for the case of successfull submission"
+          label="Feedback message for submission"
           type="text"
           value={state.reportSuccessMessage ? state.reportSuccessMessage : ""}
           onChange={(value) => {

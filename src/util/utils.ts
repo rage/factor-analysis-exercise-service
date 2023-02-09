@@ -1,7 +1,10 @@
+import { Rate } from "../pages/api/grade"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
 import {
+  AnsweredSurveyItem,
   Factor,
+  FactorialOption,
   FactorReport,
   NormalizationValues,
   Question,
@@ -15,32 +18,13 @@ const matrixMultiplication = require("matrix-multiplication")
 /**
  * Calculates the scores for factors
  * @param factors contains the weight matrix to by multiplied with rated questions
- * @param ratedQuestions used to create vector of scores for the matrix multiplication
+ * @param rates used to create vector of scores for the matrix multiplication
  * @returns FactorReports with calculated score
  */
-export const calculateFactors = (
-  factors: Factor[],
-  ratedQuestions: RatedQuestion[],
-): FactorReport[] => {
-  // If have to use number[][] as the weights matrix in some parts
-  /* const matrix = survey.matrix
-
-  factors.map((f, f_idx) => {
-    let score = 0
-    ratedQuestions.map((q, q_idx) => {
-      score = q.rate ? score + matrix[q_idx][f_idx] * q.rate : score
-    })
-    f.score = score
-  })
-
-  // create the rate vector to be multiplied with matrix, substitute null values with zero, LATER: use average imputation values from the research group
-  const questionRateVector = ratedQuestions.map((rq) => rq.rate ?? 0)
-  const result = vectorMatrixMultiplication(questionRateVector, matrix)
-  console.log(result) */
-
+export const calculateFactors = (factors: Factor[], rates: Rate[]): FactorReport[] => {
   factors.map((factor) => {
     factor.score = 0
-    ratedQuestions.map((item) => {
+    rates.map((item) => {
       if (typeof factor.weights[item.questionLabel] === "undefined") {
         console.log("Did not find data for question:", item.questionLabel)
         return
@@ -118,12 +102,16 @@ export const sanitizeQuestions = (questions: QuestionItem[]) => {
 
 type QuestionItem = RatedQuestion | Question
 
-export const getGlobalVariables = (answeredSurvey: SurveyItem[]): UserVariablesMap | undefined => {
-  const surveyItems: SurveyItem[] = answeredSurvey.filter((item) => item.globalVariable === true)
+export const getGlobalVariables = (
+  answeredSurvey: AnsweredSurveyItem[],
+  survey: SurveyItem[],
+): UserVariablesMap | undefined => {
+  const surveyItems: SurveyItem[] = survey.filter((item) => item.globalVariable === true)
   if (surveyItems.length > 0) {
     const globalVariables: UserVariablesMap = {}
     surveyItems.map((item) => {
-      globalVariables[item.question.questionLabel] = item.answer.answer
+      globalVariables[item.question.questionLabel] =
+        answeredSurvey.find((i) => i.surveyItemId === item.id)?.answer ?? null
     })
     return globalVariables
   }
@@ -171,33 +159,45 @@ export const insertVariablesToText = (
 }
 
 /**
- *
- * @param ratedQuestions used to create vector of scores for the matrix multiplication
+ * @param rates: list of question_label; rate pairs
  * @param meansAndStandardDeviations used to scale the answers before adding up the factors,
  * means also used to impute nan-answers
  * @param maxNanAllowed allowed limit amount of nan-answers, beyond which report is not calculated
  * @returns scaled ratedQuestions or null if max nan exceeded
  */
 export const scaleAndImputRatedQuestions = (
-  ratedQuestions: RatedQuestion[],
+  rates: Rate[],
   meansAndStandardDeviations: NormalizationValues | null,
   maxNanAllowed: number,
-): RatedQuestion[] | null => {
+): Rate[] | null => {
   let amount = 0
-  const questions: RatedQuestion[] = ratedQuestions.map((q) => {
+  const scaledRates: Rate[] = rates.map((q) => {
     if (q.rate == null) {
       amount++
     }
-    const rate =
+    const scaledRate =
       q.rate != null && meansAndStandardDeviations
         ? (q.rate - meansAndStandardDeviations.means[q.questionLabel]) /
           meansAndStandardDeviations.standardDeviations[q.questionLabel]
         : q.rate ?? 0
-    const scaledQuestion = { ...q, rate: rate }
+    const scaledQuestion = { ...q, rate: scaledRate }
     return scaledQuestion
   })
   if (amount > maxNanAllowed) {
     return null
   }
-  return questions
+  return scaledRates
+}
+
+export const mapRatesToAnswers = (
+  options: FactorialOption[],
+  ratedQuestions: RatedQuestion[],
+): Rate[] => {
+  const rates: Rate[] = ratedQuestions.map((q) => {
+    return {
+      questionLabel: q.questionLabel,
+      rate: options.find((o) => o.name === q.chosenOption)?.value ?? null,
+    }
+  })
+  return rates
 }

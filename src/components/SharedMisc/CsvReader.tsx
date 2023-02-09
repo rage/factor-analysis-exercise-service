@@ -149,7 +149,7 @@ const CsvReader: React.FC<React.PropsWithChildren<Props>> = ({
               header: applyHeaders,
               transformHeader: (header) => {
                 const newHeaders = headers
-                newHeaders.push(header)
+                newHeaders.push(header.trim())
                 setHeaders(newHeaders)
                 return header
               },

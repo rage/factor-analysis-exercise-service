@@ -3,11 +3,10 @@ import { useState } from "react"
 
 import {
   CurrentStateMessage,
-  FileUploadMessage,
   UserVariablesMap,
 } from "../../shared-module/exercise-service-protocol-types"
 import { baseTheme } from "../../shared-module/styles"
-import { Answer, AnswerType, SubmittedForm, Survey, SurveyItem } from "../../util/stateInterfaces"
+import { AnsweredSurveyItem, SubmittedForm, Survey } from "../../util/stateInterfaces"
 import { insertVariablesToText } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
@@ -27,18 +26,17 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
   state,
   userVariables,
 }) => {
-  const INITIAL_ANSWERED = state.content.map((q) => {
-    return {
-      id: q.id,
-      question: q.question,
-      answer: q.answer,
-      conditional: q.conditional,
-      dependsOn: q.dependsOn,
-      globalVariable: q.globalVariable,
-    } as SurveyItem
-  })
+  const INITIAL_ANSWERED = state.content
+    .filter((item) => item.question.questionLabel !== "info")
+    .map((item) => {
+      return {
+        surveyItemId: item.id,
+        questionLabel: item.question.questionLabel,
+        answer: null,
+      } as AnsweredSurveyItem
+    })
 
-  const [answeredItems, _setAnsweredItems] = useState<SurveyItem[]>(INITIAL_ANSWERED)
+  const [answeredItems, _setAnsweredItems] = useState<AnsweredSurveyItem[]>(INITIAL_ANSWERED)
 
   const setAnsweredItems: typeof _setAnsweredItems = (value) => {
     const res = _setAnsweredItems(value)
@@ -51,7 +49,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
     console.info("Posting current state to parent")
     // the type should be the same one that is received as the initial selected id
     const data: SubmittedForm = {
-      answeredQuestions: value ? (value as SurveyItem[]) : [],
+      answeredQuestions: value ? (value as AnsweredSurveyItem[]) : [],
     }
 
     const message: CurrentStateMessage = {
@@ -64,78 +62,38 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
     return res
   }
 
-  const [_uploadFile, _setUploadFile] = useState<File>()
-
-  const setUploadFile: typeof _setUploadFile = (value) => {
-    const res = _setUploadFile(value)
-    if (!port) {
-      // eslint-disable-next-line i18next/no-literal-string
-      console.error("Cannot send current state to parent because I don't have a port")
-      return
-    }
-    // eslint-disable-next-line i18next/no-literal-string
-    console.info("Posting file upload to parent")
-    // the type should be the same one that is received as the initial selected id
-
-    const data: File = value as File
-    const files = new Map()
-    files.set(data.name, data as Blob)
-
-    const message: FileUploadMessage = {
-      // eslint-disable-next-line i18next/no-literal-string
-      message: "file-upload",
-      files: files,
-    }
-    port.postMessage(message)
-    return res
-  }
-
-  const updateAnswer = (itemId: string, answer: Answer) => {
+  const updateAnswer = (itemId: string, answer: string[] | string | number | null) => {
     if (!port) {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Cannot send current state to parent because I don't have a port")
       return
     }
 
-    const newAnsweredQ = answeredItems.map((quest) => {
-      if (quest.id !== itemId) {
-        return quest
+    const newAnsweredQ: AnsweredSurveyItem[] = answeredItems.map((item) => {
+      if (item.surveyItemId !== itemId) {
+        return item
       }
-      return { ...quest, answer: answer }
+      return { ...item, answer: answer }
     })
     setAnsweredItems(newAnsweredQ)
   }
 
-  const updateFileUpload = (_item: SurveyItem, file: File | null) => {
-    if (!port) {
-      // eslint-disable-next-line i18next/no-literal-string
-      console.error("Cannot send current state to parent because I don't have a port")
-      return
-    }
-    if (file) {
-      setUploadFile(file)
-    } else {
-      console.log(file)
-    }
-    /* if (url) {  // This will be the received url for file upload
-      const answer: Answer = {
-        ...item.answer,
-        answer: url.url,
-      }
-      updateAnswer(item.id, answer)
-    } */
-  }
-
   return (
     <>
-      {answeredItems.map((item) => {
+      {state.content.map((item) => {
         if (item.conditional && item.dependsOn) {
           const chosenOptions = answeredItems.find(
-            (surveyItem) => surveyItem.question.questionLabel === item.dependsOn?.questionLabel,
-          )?.answer.answer as string[]
-          if (chosenOptions?.indexOf(item.dependsOn.triggeringOption) === -1) {
-            if (item.answer.answer !== "") {
-              updateAnswer(item.id, { ...item.answer, answer: "" })
+            (surveyItem) => surveyItem.questionLabel === item.dependsOn?.questionLabel,
+          )?.answer as string[]
+          if (
+            !chosenOptions ||
+            (chosenOptions && chosenOptions.indexOf(item.dependsOn.triggeringOption) === -1)
+          ) {
+            if (
+              answeredItems.find((i) => i.surveyItemId === item.id) &&
+              answeredItems.find((i) => i.surveyItemId === item.id)?.answer !== null
+            ) {
+              updateAnswer(item.id, null)
             }
             return
           }
@@ -154,31 +112,22 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
               >
                 <MarkdownText text={content} />
               </div>
-              <SurveyExerciseItem item={item} updateAnswer={updateAnswer} />
+              <SurveyExerciseItem
+                item={item}
+                answer={answeredItems.find((i) => i.surveyItemId === item.id)?.answer ?? null}
+                updateAnswer={updateAnswer}
+              />
             </InfoHeaderWrapper>
-          )
-        }
-        if (item.answer.type == AnswerType.FileUpload) {
-          return (
-            <div key={item.id}>
-              <input
-                id="pngInput"
-                name="file"
-                type="file"
-                accept="png"
-                onChange={(e) => {
-                  if (e.target.files) {
-                    updateFileUpload(item, e.target.files[0])
-                  }
-                }}
-              ></input>
-            </div>
           )
         }
         return (
           <ItemWrapper key={item.id}>
             <ExerciseItemHeader titleText={content} />
-            <SurveyExerciseItem item={item} updateAnswer={updateAnswer} />
+            <SurveyExerciseItem
+              item={item}
+              answer={answeredItems.find((i) => i.surveyItemId === item.id)?.answer ?? null}
+              updateAnswer={updateAnswer}
+            />
           </ItemWrapper>
         )
       })}

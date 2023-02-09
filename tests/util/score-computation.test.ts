@@ -1,11 +1,13 @@
 import {
   Factor,
+  FactorialOption,
   NormalizationValues,
   Question,
   RatedQuestion,
 } from "../../src/util/stateInterfaces"
 import {
   calculateFactors,
+  mapRatesToAnswers,
   sanitizeQuestions,
   scaleAndImputRatedQuestions,
   vectorMatrixMultiplication,
@@ -98,47 +100,44 @@ export const testQuestions: Question[] = [
   },
 ]
 
-export const testAnswer: RatedQuestion[] = [
+export const testOptions: FactorialOption[] = [
   {
-    questionId: "177c84db-0c81-4ff5-b2a4-d1bf4b3745e8",
-    questionLabel: "info",
-    rate: null,
-    question: " this is just an info element to provide some info for the coming section....",
-    chosenOption: "",
+    name: "no",
+    value: 1,
+    id: "10e97e0f-ea25-4eed-b1d8-20ae8306303b",
   },
   {
-    questionId: "5b8fcb89-294d-47b3-9b0c-aec435c66cf0",
+    name: "maybe",
+    value: 2,
+    id: "95806e1e-00a7-4431-ab3e-00be3de5870a",
+  },
+  {
+    name: "yes",
+    value: 3,
+    id: "ae93bc43-3d8f-4296-9f8a-53358ad41ac6",
+  },
+  {
+    name: "Can't tell",
+    value: null,
+    id: "7cf41679-a0cf-4ef9-a634-782f8132069b",
+  },
+]
+
+export const testAnswer: RatedQuestion[] = [
+  {
     questionLabel: "question_one",
-    rate: 2,
-    question: " This is the first question",
     chosenOption: "maybe",
   },
   {
-    questionId: "aad5183b-594a-4779-9fd2-7892d1e81d28",
     questionLabel: "question_two",
-    rate: 3,
-    question: "This is the second",
     chosenOption: "yes",
   },
   {
-    questionId: "305aa478-25df-4748-a416-dfdde1661b81",
-    questionLabel: "info",
-    rate: null,
-    question: "Questions should have unique question labels for identification",
-    chosenOption: "",
-  },
-  {
-    questionId: "b7dd0f63-d710-4fd0-a55f-92041bb0b332",
     questionLabel: "three",
-    rate: 1,
-    question: "otherwise they can contain anything",
     chosenOption: "no",
   },
   {
-    questionId: "564089ab-f1ec-413f-8440-f247cee1eadf",
     questionLabel: "five",
-    rate: 3,
-    question: " newlines should be avoided",
     chosenOption: "yes",
   },
 ]
@@ -164,12 +163,13 @@ describe("When all questions are rated propperly, thus not null", () => {
     sanitizedAnswers.map((a) => {
       expect(a.questionLabel).not.toBe("info")
     })
-    const rateVector: number[] = sanitizedAnswers.map((e) => e.rate as number)
+    const rates = mapRatesToAnswers(testOptions, sanitizedAnswers)
+    const rateVector: number[] = rates.map((e) => e.rate as number)
     const weightsMatrix = sanitizedAnswers.map((e) => {
       return testFactors.map((f) => f.weights[e.questionLabel])
     })
 
-    const scoredFactors = calculateFactors(testFactors, sanitizedAnswers)
+    const scoredFactors = calculateFactors(testFactors, rates)
     const derivedScoreVector = vectorMatrixMultiplication(rateVector, weightsMatrix)
     expect(scoredFactors.map((e) => e.score)).toEqual(derivedScoreVector)
   })
@@ -193,12 +193,10 @@ describe("When all questions are rated propperly, thus not null", () => {
 describe("Scaling rated questions", () => {
   test("scale rated questions scales correctly", () => {
     const answeredQuestions = sanitizeQuestions(testAnswer) as RatedQuestion[]
-    const scaledAnswers = scaleAndImputRatedQuestions(
-      answeredQuestions,
-      meansAndStandardDeviations,
-      0,
-    )
-    const expected = answeredQuestions.map((q) => {
+    const rates = mapRatesToAnswers(testOptions, answeredQuestions)
+
+    const scaledAnswers = scaleAndImputRatedQuestions(rates, meansAndStandardDeviations, 0)
+    const expected = rates.map((q) => {
       return {
         ...q,
         rate:
@@ -212,11 +210,13 @@ describe("Scaling rated questions", () => {
   test("scale rated questions scales correctly when some rates are nan", () => {
     const answeredQuestions = sanitizeQuestions(testAnswer) as RatedQuestion[]
     let p = 0
-    const newAnswered = answeredQuestions.map((q) => {
+    const rates = mapRatesToAnswers(testOptions, answeredQuestions)
+
+    const newRates = rates.map((q) => {
       p++
       return { ...q, rate: p > 3 ? null : q.rate }
     })
-    const expected = newAnswered.map((q) => {
+    const expected = newRates.map((q) => {
       return {
         ...q,
         rate: q.rate
@@ -225,18 +225,16 @@ describe("Scaling rated questions", () => {
           : 0,
       }
     })
-    expect(scaleAndImputRatedQuestions(newAnswered, meansAndStandardDeviations, 0)).toBeNull()
-    expect(scaleAndImputRatedQuestions(newAnswered, meansAndStandardDeviations, 0)).not.toBe(
-      expected,
-    )
-    expect(scaleAndImputRatedQuestions(newAnswered, meansAndStandardDeviations, 1)).not.toBeNull()
-    expect(scaleAndImputRatedQuestions(newAnswered, meansAndStandardDeviations, 1)).toEqual(
-      expected,
-    )
+    expect(scaleAndImputRatedQuestions(newRates, meansAndStandardDeviations, 0)).toBeNull()
+    expect(scaleAndImputRatedQuestions(newRates, meansAndStandardDeviations, 0)).not.toBe(expected)
+    expect(scaleAndImputRatedQuestions(newRates, meansAndStandardDeviations, 1)).not.toBeNull()
+    expect(scaleAndImputRatedQuestions(newRates, meansAndStandardDeviations, 1)).toEqual(expected)
   })
 
   test("scale rated questions scales correctly with random means and sds", () => {
     const answeredQuestions = sanitizeQuestions(testAnswer) as RatedQuestion[]
+    const rates = mapRatesToAnswers(testOptions, answeredQuestions)
+
     const means: { [id: string]: number } = {}
     const standardDeviations: { [id: string]: number } = {}
     answeredQuestions.map((q) => {
@@ -244,12 +242,8 @@ describe("Scaling rated questions", () => {
       standardDeviations[q.questionLabel] = Math.random() + 1
     })
     const randomMeansAndStandardDeviations: NormalizationValues = { means, standardDeviations }
-    const scaledAnswers = scaleAndImputRatedQuestions(
-      answeredQuestions,
-      randomMeansAndStandardDeviations,
-      0,
-    )
-    const expected = answeredQuestions.map((q) => {
+    const scaledAnswers = scaleAndImputRatedQuestions(rates, randomMeansAndStandardDeviations, 0)
+    const expected = rates.map((q) => {
       return {
         ...q,
         rate:

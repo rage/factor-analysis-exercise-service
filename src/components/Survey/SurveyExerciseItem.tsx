@@ -1,7 +1,7 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 
-import { Answer, AnswerType, SurveyItem } from "../../util/stateInterfaces"
+import { AnswerType, SurveyItem } from "../../util/stateInterfaces"
 import MarkdownText from "../MarkdownText"
 import AdvancedDropdown from "../SharedMisc/AdvancedDropdown"
 import { CheckboxWrap } from "../StyledComponents/CheckboxWrap"
@@ -10,7 +10,8 @@ import { RadioGroupWrap } from "../StyledComponents/RadioGroupWrap"
 const CHECKED = "#44827E"
 interface Props {
   item: SurveyItem
-  updateAnswer: (itemId: string, answer: Answer) => void
+  answer: string[] | string | number | null
+  updateAnswer: (itemId: string, answer: string[] | string | number | null) => void
   disabled?: boolean
 }
 
@@ -21,6 +22,7 @@ const Option = styled.option`
 
 const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
   item,
+  answer,
   updateAnswer,
   disabled,
 }) => {
@@ -36,9 +38,9 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
         >
           <AdvancedDropdown
             onClick={(option) => {
-              updateAnswer(item.id, { ...item.answer, answer: option })
+              updateAnswer(item.id, option)
             }}
-            chosenOption={item.answer.answer as string}
+            chosenOption={(answer as string) ?? null}
             disabled={disabled}
             options={item.answer.options}
           />
@@ -49,10 +51,10 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <div>
           <input
-            value={item.answer.answer ?? ""}
+            value={answer ?? ""}
             type="number"
             onChange={(e) => {
-              updateAnswer(item.id, { ...item.answer, answer: e.target.value })
+              updateAnswer(item.id, e.target.value)
             }}
             required
             disabled={disabled}
@@ -68,10 +70,10 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <div>
           <input
-            value={item.answer.answer ?? ""}
+            value={answer ?? ""}
             type="text"
             onChange={(e) => {
-              updateAnswer(item.id, { ...item.answer, answer: e.target.value })
+              updateAnswer(item.id, e.target.value)
             }}
             required
             disabled={disabled}
@@ -84,7 +86,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
       )
     }
     case AnswerType.MultiChoice: {
-      const selectedOptions: string[] = (item.answer.answer as string[]) || []
+      const selectedOptions: string[] = (answer as string[]) ?? []
       return (
         <div>
           {item.answer.options.map((o) => {
@@ -99,8 +101,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
                   onChange={(e) => {
                     const newSeleceted = selectedOptions.filter((option) => o !== option)
                     e.target.checked && newSeleceted.push(o)
-                    const newAnswer = { ...item.answer, answer: newSeleceted }
-                    updateAnswer(item.id, newAnswer)
+                    updateAnswer(item.id, newSeleceted)
                   }}
                   disabled={disabled}
                 />
@@ -123,9 +124,9 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
                     type="radio"
                     value={option}
                     onChange={(e) => {
-                      updateAnswer(item.id, { ...item.answer, answer: e.target.value })
+                      updateAnswer(item.id, e.target.value)
                     }}
-                    checked={option === item.answer.answer}
+                    checked={option === answer}
                     required
                     disabled={disabled}
                   />
@@ -143,10 +144,10 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
           <input
             type="date"
             onChange={(e) => {
-              updateAnswer(item.id, { ...item.answer, answer: e.target.value })
+              updateAnswer(item.id, e.target.value)
             }}
             required
-            value={item.answer.answer as string}
+            value={(answer as string) ?? ""}
             disabled={disabled}
             className={css`
               border: 1px solid #e0e0e0;
@@ -162,13 +163,13 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
           <select
             aria-label={`${item.question.questionLabel}-dropdown-selection`}
             onChange={(e) => {
-              updateAnswer(item.id, { ...item.answer, answer: e.target.value })
+              updateAnswer(item.id, e.target.value)
             }}
-            value={item.answer.answer ? (item.answer.answer as string) : "default"}
+            value={answer ? (answer as string) : "default"}
             required
             disabled={disabled}
           >
-            <option value="default" disabled selected label="--"></option>
+            <option value="default" disabled label="--"></option>
             {item.answer.options.map((option) => {
               return (
                 <Option key={option} value={option}>
@@ -189,10 +190,9 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
               type="checkbox"
               id={item.id}
               name={item.answer.options[0]}
-              checked={(item.answer.answer as string).length > 0}
+              checked={(answer as string)?.length > 0}
               onChange={(e) => {
-                const newAnswer = { ...item.answer, answer: e.target.checked ? "checked" : "" }
-                updateAnswer(item.id, newAnswer)
+                updateAnswer(item.id, e.target.checked ? "checked" : "")
               }}
               disabled={disabled}
             />

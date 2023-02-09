@@ -25,15 +25,14 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
   state,
   userVariables,
 }) => {
-  const INITIAL_R = state.questions.map((q) => {
-    return {
-      questionId: q.id,
-      questionLabel: q.questionLabel,
-      rate: null,
-      question: q.question,
-      chosenOption: "",
-    } as RatedQuestion
-  })
+  const INITIAL_R = state.questions
+    .filter((question) => question.questionLabel !== "info")
+    .map((q) => {
+      return {
+        questionLabel: q.questionLabel,
+        chosenOption: "",
+      } as RatedQuestion
+    })
 
   const [ratedQuestions, _setRatedQuestions] = useState<RatedQuestion[]>(INITIAL_R)
 
@@ -60,7 +59,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
     return res
   }
 
-  const updateRate = (questionId: string, rate: number | null, chosenOption: string) => {
+  const updateRate = (questionLabel: string, chosenOption: string) => {
     if (!port) {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Cannot send current state to parent because I don't have a port")
@@ -68,29 +67,35 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
     }
 
     const newRatedQ = ratedQuestions.map((quest) => {
-      if (quest.questionId !== questionId) {
+      if (quest.questionLabel !== questionLabel) {
         return quest
       }
-      return { ...quest, rate: rate, chosenOption: chosenOption }
+      return { ...quest, chosenOption: chosenOption }
     })
     setRatedQuestions(newRatedQ)
   }
 
   return (
     <>
-      {ratedQuestions.map((question) => {
+      {state.questions.map((question) => {
         const questionText = insertVariablesToText(question.question, userVariables)
         if (question.questionLabel === "info") {
-          return <InfoSection key={question.questionId} content={questionText} />
+          return <InfoSection key={question.id} content={questionText} />
         } else {
+          const ratedQuestion = ratedQuestions.find(
+            (q) => q.questionLabel === question.questionLabel,
+          )
           return (
-            <FactorialSurveyQuestion
-              key={question.questionId}
-              question={question}
-              questionText={questionText}
-              options={state.options}
-              onClick={(id, rate, chosenOption) => updateRate(id, rate, chosenOption)}
-            />
+            ratedQuestion && (
+              <FactorialSurveyQuestion
+                key={question.id}
+                question={question}
+                ratedQuestion={ratedQuestion}
+                questionText={questionText}
+                options={state.options}
+                onClick={(questionLabel, chosenOption) => updateRate(questionLabel, chosenOption)}
+              />
+            )
           )
         }
       })}
