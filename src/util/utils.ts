@@ -2,7 +2,6 @@ import { ItemWithCondition } from "../components/Survey/Editors/SurveyEditor"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
 //import { Rate } from "./spec-types/grading" //WIP
-import { SurveyItemCondition } from "./spec-types/privateSpec"
 import {
   AnsweredSurveyItem,
   Factor,
@@ -12,6 +11,7 @@ import {
   Question,
   RatedQuestion,
   SurveyItem,
+  SurveyItemCondition,
 } from "./stateInterfaces"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
