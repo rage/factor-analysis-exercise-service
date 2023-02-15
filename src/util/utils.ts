@@ -1,7 +1,7 @@
 import { ItemWithCondition } from "../components/Survey/Editors/SurveyEditor"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
-import { Rate } from "./spec-types/grading"
+//import { Rate } from "./spec-types/grading" //WIP
 import { SurveyItemCondition } from "./spec-types/privateSpec"
 import {
   AnsweredSurveyItem,
@@ -16,6 +16,12 @@ import {
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
+
+//WIP
+export interface Rate {
+  questionLabel: string
+  rate: number | null
+}
 
 /**
  * Calculates the scores for factors
