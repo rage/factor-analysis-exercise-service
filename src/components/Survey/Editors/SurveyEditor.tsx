@@ -1,11 +1,17 @@
-/* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import { useEffect, useState } from "react"
 import { v4 } from "uuid"
 
 import { State } from "../../../pages/iframe"
 import TextField from "../../../shared-module/components/InputFields/TextField"
-import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/stateInterfaces"
+import {
+  Answer,
+  AnswerType,
+  Survey,
+  SurveyItem,
+  SurveyItemCondition,
+} from "../../../util/stateInterfaces"
+import { validateConditionConsistency } from "../../../util/utils"
 import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton } from "../../StyledComponents/Wrappers"
 
@@ -16,8 +22,14 @@ interface Props {
   setState: (newState: State) => void
 }
 
+export interface ItemWithCondition {
+  questionLabel: string
+  conditions: SurveyItemCondition[]
+}
+
 const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState }) => {
-  const [error, setError] = useState<string[]>([])
+  const [duplicateError, setDuplicateError] = useState<string[]>([])
+  const [conditionError, setConditionError] = useState<ItemWithCondition[]>([])
   useEffect(() => {
     const labels = state.content.map((item) => item.question.questionLabel)
     const count = labels.reduce(
@@ -26,7 +38,14 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
     )
     const duplicates = Object.keys(count).filter((value) => count[value as keyof typeof count] > 1)
     const newError: string[] = [...duplicates]
-    setError(newError)
+    setDuplicateError(newError)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state])
+
+  useEffect(() => {
+    const inconsistencies = validateConditionConsistency(state.content)
+    const newError = inconsistencies
+    setConditionError(newError)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
 
@@ -89,12 +108,22 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
         className={css`
           margin-top: 1rem;
           margin-bottom: 1rem;
-          ${error && `color: red;`}
+          ${duplicateError && `color: red;`}
         `}
       >
-        {error.length > 0 && <p>{"Found duplicate question labels:"}</p>}
-        {error.map((label, idx) => {
+        {duplicateError.length > 0 && <p>{"Found duplicate question labels:"}</p>}
+        {duplicateError.map((label, idx) => {
           return <p key={idx}>{label}</p>
+        })}
+        {conditionError.length > 0 && <p>{"Found questions with invalid conditions:"}</p>}
+        {conditionError.map((item, idx) => {
+          return (
+            <p key={idx}>
+              {item.questionLabel +
+                ", ---->  " +
+                item.conditions.map((c) => " " + c.questionLabel + ": " + c.triggeringOption)}
+            </p>
+          )
         })}
       </div>
 
@@ -119,12 +148,12 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
             setState({ view_type: "exercise-editor", private_spec: newState })
           }}
         >
-          Add Survey Item
+          {"Add Survey Item"}
         </NewButton>
       </ButtonWrapper>
       {state.content.length === 0 && (
         <ButtonWrapper>
-          Paste list of questions (one time only)
+          {"Paste list of questions (one time only)"}
           <ListInputEditor
             topic="question"
             questions={state.content.map((item) => item.question)}

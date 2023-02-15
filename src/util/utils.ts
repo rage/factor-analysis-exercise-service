@@ -231,3 +231,42 @@ export const checkCondition = (
   )
   return matchingOptions.length > 0
 }
+
+export const validateConditionConsistency = (surveyItems: SurveyItem[]) => {
+  const possibleConditions = surveyItems
+    .filter((i) => Array.isArray(i.answer.options))
+    .map((i) => {
+      return i.answer.options.map((it) => {
+        return {
+          questionLabel: i.question.questionLabel,
+          triggeringOption: it,
+        } as SurveyItemCondition
+      })
+    })
+    .flat()
+
+  const dependableItems = surveyItems
+    .filter((i) => i.dependsOn)
+    .map((i) => {
+      return {
+        questionLabel: i.question.questionLabel,
+        conditions: [i.dependsOn].flat() as SurveyItemCondition[],
+      }
+    })
+
+  const inconsistencies = dependableItems.filter((item) => {
+    const unmet = item.conditions.filter(
+      (con) =>
+        !possibleConditions.find(
+          (obj) =>
+            obj.questionLabel === con.questionLabel &&
+            obj.triggeringOption === con.triggeringOption,
+        ),
+    )
+    if (unmet.length) {
+      return { ...item, conditions: unmet }
+    }
+  })
+  console.log(inconsistencies)
+  return inconsistencies
+}
