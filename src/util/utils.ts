@@ -1,6 +1,7 @@
-import { Rate } from "../pages/api/grade"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
+import { Rate } from "./spec-types/grading"
+import { SurveyItemCondition } from "./spec-types/privateSpec"
 import {
   AnsweredSurveyItem,
   Factor,
@@ -22,22 +23,19 @@ const matrixMultiplication = require("matrix-multiplication")
  * @returns FactorReports with calculated score
  */
 export const calculateFactors = (factors: Factor[], rates: Rate[]): FactorReport[] => {
-  factors.map((factor) => {
-    factor.score = 0
+  const report = factors.map((factor) => {
+    let score = 0
     rates.map((item) => {
       if (typeof factor.weights[item.questionLabel] === "undefined") {
         console.log("Did not find data for question:", item.questionLabel)
         return
       }
-
-      factor.score = item.rate
-        ? factor.score + factor.weights[item.questionLabel] * item.rate
-        : factor.score
+      score = item.rate ? score + factor.weights[item.questionLabel] * item.rate : score
     })
-    return factor as FactorReport
+    return { ...factor, score: score } as FactorReport
   })
 
-  return factors
+  return report
 }
 
 /**
@@ -161,7 +159,6 @@ export const insertVariablesToText = (
 /**
  * @param rates: list of question_label; rate pairs
  * @param meansAndStandardDeviations used to scale the answers before adding up the factors,
- * means also used to impute nan-answers
  * @param maxNanAllowed allowed limit amount of nan-answers, beyond which report is not calculated
  * @returns scaled ratedQuestions or null if max nan exceeded
  */
@@ -200,4 +197,37 @@ export const mapRatesToAnswers = (
     }
   })
   return rates
+}
+
+export const checkCondition = (
+  answeredItems: AnsweredSurveyItem[],
+  dependsOn: SurveyItemCondition[],
+): boolean => {
+  const chosenAlternatives: SurveyItemCondition[] = answeredItems
+    .filter((i) => i.answer)
+    .map((i) => {
+      if (Array.isArray(i.answer)) {
+        return i.answer.map((it) => {
+          return {
+            questionLabel: i.questionLabel,
+            triggeringOption: it,
+          } as SurveyItemCondition
+        })
+      }
+      return {
+        questionLabel: i.questionLabel,
+        triggeringOption: i.answer,
+      } as SurveyItemCondition
+    })
+    .flat()
+
+  const matchingOptions = chosenAlternatives.filter((alt) =>
+    [dependsOn]
+      .flat()
+      .find(
+        (obj) =>
+          obj.questionLabel === alt.questionLabel && obj.triggeringOption === alt.triggeringOption,
+      ),
+  )
+  return matchingOptions.length > 0
 }

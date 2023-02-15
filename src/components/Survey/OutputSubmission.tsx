@@ -3,7 +3,7 @@ import React from "react"
 import Accordion from "../../shared-module/components/Accordion"
 import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
 import { AnsweredSurveyItem, SurveyItem } from "../../util/stateInterfaces"
-import { insertVariablesToText } from "../../util/utils"
+import { checkCondition, insertVariablesToText } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 import { InfoSection } from "../StyledComponents/InfoSection"
@@ -30,13 +30,7 @@ const SurveySubmission: React.FC<React.PropsWithChildren<Props>> = ({
           <div>
             {items.map((item) => {
               if (item.conditional && item.dependsOn) {
-                const chosenOptions = answers.find(
-                  (surveyItem) => surveyItem.questionLabel === item.dependsOn?.questionLabel,
-                )?.answer as string[]
-                if (
-                  !chosenOptions ||
-                  (chosenOptions && chosenOptions.indexOf(item.dependsOn.triggeringOption) === -1)
-                ) {
+                if (!checkCondition(answers, item.dependsOn)) {
                   return
                 }
               }

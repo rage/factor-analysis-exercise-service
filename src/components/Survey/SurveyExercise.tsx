@@ -7,7 +7,7 @@ import {
 } from "../../shared-module/exercise-service-protocol-types"
 import { baseTheme } from "../../shared-module/styles"
 import { AnsweredSurveyItem, SubmittedForm, Survey } from "../../util/stateInterfaces"
-import { insertVariablesToText } from "../../util/utils"
+import { checkCondition, insertVariablesToText } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 import { InfoSection } from "../StyledComponents/InfoSection"
@@ -82,13 +82,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
     <>
       {state.content.map((item) => {
         if (item.conditional && item.dependsOn) {
-          const chosenOptions = answeredItems.find(
-            (surveyItem) => surveyItem.questionLabel === item.dependsOn?.questionLabel,
-          )?.answer as string[]
-          if (
-            !chosenOptions ||
-            (chosenOptions && chosenOptions.indexOf(item.dependsOn.triggeringOption) === -1)
-          ) {
+          if (!checkCondition(answeredItems, item.dependsOn)) {
             if (
               answeredItems.find((i) => i.surveyItemId === item.id) &&
               answeredItems.find((i) => i.surveyItemId === item.id)?.answer !== null

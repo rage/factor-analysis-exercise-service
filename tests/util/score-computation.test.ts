@@ -24,7 +24,6 @@ export const testFactors: Factor[] = [
       three: -1,
       five: 1,
     },
-    score: 0,
     range: {
       min: -6,
       max: 10,
@@ -41,7 +40,6 @@ export const testFactors: Factor[] = [
       three: -1.5,
       five: -1,
     },
-    score: 0,
     range: {
       min: -5,
       max: 13,
@@ -58,7 +56,6 @@ export const testFactors: Factor[] = [
       three: 1,
       five: 0,
     },
-    score: 0,
     range: {
       min: -2.5,
       max: 15,

@@ -10,6 +10,7 @@ export interface Question {
 
 /** Evaluated survey question contains numerical | NA value as rate */
 export interface RatedQuestion {
+  //TODO, rahter use the ID than chosenOption
   questionLabel: string
   chosenOption: string
 }
@@ -80,13 +81,13 @@ export interface Factor {
     min: number
     max: number
   }
-  score: number
+  // score: number
   /** [variableKey: [variableItem: avg-score] ]to be compared to in the factor report */
   comparingVariable?: { [key: string]: { [key: string]: number } }
   mainComparingVar?: number
 }
 
-export type FactorReport = Omit<Factor, "weights">
+export type FactorReport = Omit<Factor, "weights"> & { score: number }
 
 /** PublicSpec for Factorial survey contains only questions and options
  */
@@ -102,7 +103,7 @@ export interface SurveyItem {
   question: Question
   answer: Answer
   conditional: boolean
-  dependsOn?: SurveyItemCondition
+  dependsOn?: SurveyItemCondition[]
   /** If marked as globalVariabel a <key: questionLabel, value: userAnswer> pair will be created upon submission and saved to the database, available in other exercises */
   globalVariable?: boolean
 }
