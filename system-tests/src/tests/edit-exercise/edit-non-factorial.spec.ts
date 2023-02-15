@@ -4,7 +4,7 @@ import { expect, test } from "@playwright/test"
 import expectScreenshotsToMatchSnapshots from "../../utils/screenshot"
 import waitForFunction from "../../utils/waitForFunction"
 
-test("can add non-factorial survey type wtih information elements and questions intermixed", async ({
+test.only("can add non-factorial survey type wtih information elements and questions intermixed", async ({
   page,
   headless,
 }) => {
@@ -82,30 +82,6 @@ test("can add non-factorial survey type wtih information elements and questions 
   await page
     .frameLocator("iframe")
     .getByRole("combobox", { name: "select-answer-type-other_owner" })
-    .press("ArrowDown")
-  await page
-    .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answer-type-other_owner" })
-    .press("ArrowDown")
-  await page
-    .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answer-type-other_owner" })
-    .press("ArrowDown")
-  await page
-    .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answer-type-other_owner" })
-    .press("ArrowDown")
-  await page
-    .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answer-type-other_owner" })
-    .press("ArrowDown")
-  await page
-    .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answer-type-other_owner" })
-    .press("ArrowDown")
-  await page
-    .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answer-type-other_owner" })
     .selectOption("advanced-dropdown")
   await page
     .frameLocator("iframe")
@@ -127,7 +103,7 @@ test("can add non-factorial survey type wtih information elements and questions 
     .getByRole("group", { name: "other_owner" })
     .getByLabel("Conditional")
     .check()
-  await page.frameLocator("iframe").locator(".css-qbdosj-Input").click()
+  await page.frameLocator("iframe").locator("#condition-selector-for-other_owner").click()
   await page.frameLocator("iframe").locator("#react-select-2-option-2").dblclick()
   await page
     .frameLocator("iframe")
@@ -138,12 +114,7 @@ test("can add non-factorial survey type wtih information elements and questions 
     .getByRole("group", { name: "animal_name" })
     .getByLabel("Conditional")
     .check()
-  await page
-    .frameLocator("iframe")
-    .locator(
-      "#condition-selector-for-animal_name > .css-13cymwt-control > .css-1fdsijx-ValueContainer > .css-qbdosj-Input",
-    )
-    .click()
+  await page.frameLocator("iframe").locator("#condition-selector-for-animal_name").click()
   await page.frameLocator("iframe").locator("#react-select-3-option-1").click()
   await page
     .frameLocator("iframe")
@@ -204,44 +175,16 @@ test("can add non-factorial survey type wtih information elements and questions 
   await page
     .frameLocator("iframe")
     .getByRole("combobox", { name: "select-answer-type-death" })
-    .press("ArrowDown")
-  await page
-    .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answer-type-death" })
-    .press("ArrowDown")
-  await page
-    .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answer-type-death" })
-    .press("ArrowDown")
-  await page
-    .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answer-type-death" })
-    .press("ArrowDown")
-  await page
-    .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answer-type-death" })
-    .press("ArrowDown")
+    .selectOption("date")
   await page
     .frameLocator("iframe")
     .getByRole("group", { name: "death" })
     .getByLabel("Conditional")
     .check()
-  await page
-    .frameLocator("iframe")
-    .locator(
-      "#condition-selector-for-death > .css-13cymwt-control > .css-1fdsijx-ValueContainer > .css-qbdosj-Input",
-    )
-    .click()
+  await page.frameLocator("iframe").locator("#condition-selector-for-death").click()
   await page.frameLocator("iframe").locator("#react-select-4-option-2").click()
+  //Choose two more options
   await page.frameLocator("iframe").locator("#react-select-4-option-5").dblclick()
-  await page
-    .frameLocator("iframe")
-    .locator("div")
-    .filter({
-      hasText: "user manual:https://github.com/rage/factor-analysis-exercise-service/blob/main/d",
-    })
-    .nth(1)
-    .click()
   await page
     .frameLocator("iframe")
     .getByRole("group", { name: "owner" })
