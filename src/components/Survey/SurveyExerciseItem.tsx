@@ -51,6 +51,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <div>
           <input
+            aria-label={`number-input-for-${item.question.questionLabel}`}
             value={answer ?? ""}
             type="number"
             onChange={(e) => {
@@ -70,6 +71,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <div>
           <input
+            aria-label={`text-input-for-${item.question.questionLabel}`}
             value={answer ?? ""}
             type="text"
             onChange={(e) => {
@@ -142,6 +144,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <form>
           <input
+            aria-label={`date-input-for-${item.question.questionLabel}`}
             type="date"
             onChange={(e) => {
               updateAnswer(item.id, e.target.value)

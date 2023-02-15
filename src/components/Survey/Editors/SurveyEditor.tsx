@@ -4,6 +4,7 @@ import { v4 } from "uuid"
 
 import { State } from "../../../pages/iframe"
 import TextField from "../../../shared-module/components/InputFields/TextField"
+import { baseTheme, primaryFont } from "../../../shared-module/styles"
 import {
   Answer,
   AnswerType,
@@ -108,7 +109,9 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
         className={css`
           margin-top: 1rem;
           margin-bottom: 1rem;
-          ${duplicateError && `color: red;`}
+          font: ${primaryFont};
+          ${duplicateError && `color: ${baseTheme.colors.red[700]};`};
+          ${duplicateError && `background-color: ${baseTheme.colors.yellow[100]};`};
         `}
       >
         {duplicateError.length > 0 && <p>{"Found duplicate question labels:"}</p>}

@@ -57,19 +57,19 @@ export const SelectCondition: React.FC<React.PropsWithChildren<SelectorProps>> =
         </ul>
       )}
       <label
-        htmlFor="logo-selector"
+        htmlFor={`condition-selector-for-${item.question.questionLabel}`}
         className={css`
           color: #333;
           font-family: ${primaryFont};
           font-weight: 500;
-          font-size: 14px;
           display: block;
           margin-bottom: 2px;
         `}
       >
         {"Select condition"}
         <Select
-          id="logo-selector"
+          id={`condition-selector-for-${item.question.questionLabel}`}
+          aria-label="triggering-option-selector"
           isMulti
           options={conditions}
           closeMenuOnSelect={false}

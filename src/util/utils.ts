@@ -1,3 +1,4 @@
+import { ItemWithCondition } from "../components/Survey/Editors/SurveyEditor"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
 import { Rate } from "./spec-types/grading"
@@ -254,19 +255,21 @@ export const validateConditionConsistency = (surveyItems: SurveyItem[]) => {
       }
     })
 
-  const inconsistencies = dependableItems.filter((item) => {
-    const unmet = item.conditions.filter(
-      (con) =>
-        !possibleConditions.find(
-          (obj) =>
-            obj.questionLabel === con.questionLabel &&
-            obj.triggeringOption === con.triggeringOption,
-        ),
-    )
-    if (unmet.length) {
-      return { ...item, conditions: unmet }
-    }
-  })
-  console.log(inconsistencies)
-  return inconsistencies
+  const inconsistencies = dependableItems
+    .map((item) => {
+      const unmet = item.conditions.filter(
+        (con) =>
+          !possibleConditions.find(
+            (obj) =>
+              obj.questionLabel === con.questionLabel &&
+              obj.triggeringOption === con.triggeringOption,
+          ),
+      )
+      if (unmet.length) {
+        return { ...item, conditions: unmet }
+      }
+    })
+    .filter((item) => item !== undefined)
+
+  return inconsistencies as ItemWithCondition[]
 }
