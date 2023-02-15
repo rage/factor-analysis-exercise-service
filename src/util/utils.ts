@@ -1,6 +1,7 @@
-import { Rate } from "../pages/api/grade"
+import { ItemWithCondition } from "../components/Survey/Editors/SurveyEditor"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
+//import { Rate } from "./spec-types/grading" //WIP
 import {
   AnsweredSurveyItem,
   Factor,
@@ -10,10 +11,17 @@ import {
   Question,
   RatedQuestion,
   SurveyItem,
+  SurveyItemCondition,
 } from "./stateInterfaces"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
+
+//WIP
+export interface Rate {
+  questionLabel: string
+  rate: number | null
+}
 
 /**
  * Calculates the scores for factors
@@ -22,22 +30,19 @@ const matrixMultiplication = require("matrix-multiplication")
  * @returns FactorReports with calculated score
  */
 export const calculateFactors = (factors: Factor[], rates: Rate[]): FactorReport[] => {
-  factors.map((factor) => {
-    factor.score = 0
+  const report = factors.map((factor) => {
+    let score = 0
     rates.map((item) => {
       if (typeof factor.weights[item.questionLabel] === "undefined") {
         console.log("Did not find data for question:", item.questionLabel)
         return
       }
-
-      factor.score = item.rate
-        ? factor.score + factor.weights[item.questionLabel] * item.rate
-        : factor.score
+      score = item.rate ? score + factor.weights[item.questionLabel] * item.rate : score
     })
-    return factor as FactorReport
+    return { ...factor, score: score } as FactorReport
   })
 
-  return factors
+  return report
 }
 
 /**
@@ -161,7 +166,6 @@ export const insertVariablesToText = (
 /**
  * @param rates: list of question_label; rate pairs
  * @param meansAndStandardDeviations used to scale the answers before adding up the factors,
- * means also used to impute nan-answers
  * @param maxNanAllowed allowed limit amount of nan-answers, beyond which report is not calculated
  * @returns scaled ratedQuestions or null if max nan exceeded
  */
@@ -200,4 +204,78 @@ export const mapRatesToAnswers = (
     }
   })
   return rates
+}
+
+export const checkCondition = (
+  answeredItems: AnsweredSurveyItem[],
+  dependsOn: SurveyItemCondition[],
+): boolean => {
+  const chosenAlternatives: SurveyItemCondition[] = answeredItems
+    .filter((i) => i.answer)
+    .map((i) => {
+      if (Array.isArray(i.answer)) {
+        return i.answer.map((it) => {
+          return {
+            questionLabel: i.questionLabel,
+            triggeringOption: it,
+          } as SurveyItemCondition
+        })
+      }
+      return {
+        questionLabel: i.questionLabel,
+        triggeringOption: i.answer,
+      } as SurveyItemCondition
+    })
+    .flat()
+
+  const matchingOptions = chosenAlternatives.filter((alt) =>
+    [dependsOn]
+      .flat()
+      .find(
+        (obj) =>
+          obj.questionLabel === alt.questionLabel && obj.triggeringOption === alt.triggeringOption,
+      ),
+  )
+  return matchingOptions.length > 0
+}
+
+export const validateConditionConsistency = (surveyItems: SurveyItem[]) => {
+  const possibleConditions = surveyItems
+    .filter((i) => Array.isArray(i.answer.options))
+    .map((i) => {
+      return i.answer.options.map((it) => {
+        return {
+          questionLabel: i.question.questionLabel,
+          triggeringOption: it,
+        } as SurveyItemCondition
+      })
+    })
+    .flat()
+
+  const dependableItems = surveyItems
+    .filter((i) => i.dependsOn)
+    .map((i) => {
+      return {
+        questionLabel: i.question.questionLabel,
+        conditions: [i.dependsOn].flat() as SurveyItemCondition[],
+      }
+    })
+
+  const inconsistencies = dependableItems
+    .map((item) => {
+      const unmet = item.conditions.filter(
+        (con) =>
+          !possibleConditions.find(
+            (obj) =>
+              obj.questionLabel === con.questionLabel &&
+              obj.triggeringOption === con.triggeringOption,
+          ),
+      )
+      if (unmet.length) {
+        return { ...item, conditions: unmet }
+      }
+    })
+    .filter((item) => item !== undefined)
+
+  return inconsistencies as ItemWithCondition[]
 }

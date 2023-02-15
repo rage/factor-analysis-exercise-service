@@ -220,7 +220,6 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                     label: header,
                     name: "",
                     weights: { ...(value[header] as { [key: string]: number }) },
-                    score: 0,
                     comparingVariable: {},
                   }
                   factors.push(factor)

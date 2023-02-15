@@ -19,7 +19,7 @@ import {
   StyledOuterEditor,
 } from "../../StyledComponents/Wrappers"
 
-import SelectConditionForItem from "./SelectConditionForItem"
+import { SelectCondition } from "./SelectItemCondition"
 
 interface Props {
   item: SurveyItem
@@ -354,11 +354,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
           </button>
         </StyledInnerEditor>
         {item.conditional && (
-          <SelectConditionForItem
-            item={item}
-            onChangeSurveyItem={onChangeSurveyItem}
-            state={state}
-          />
+          <SelectCondition item={item} onChange={onChangeSurveyItem} state={state} />
         )}
       </fieldset>
     </StyledOuterEditor>
