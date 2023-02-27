@@ -3,7 +3,8 @@ import { css } from "@emotion/css"
 import React from "react"
 
 import { respondToOrLarger } from "../../../shared-module/styles/respond"
-import { FactorReport, ReportVariable } from "../../../util/stateInterfaces"
+import { FactorReport } from "../../../util/spec-types/grading"
+import { LegendKey } from "../../../util/spec-types/privateSpec"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
 
 import { GetLogo } from "./ReportLogos"
@@ -24,9 +25,9 @@ interface CoordinateProps {
   factor: FactorReport
   userName: string | null
   userCompVar: string | null
-  comparingVar: ReportVariable | null
-  userVar: ReportVariable | null
-  zeroVar: ReportVariable | null
+  comparingVar: LegendKey | null
+  userVar: LegendKey | null
+  zeroVar: LegendKey | null
 }
 
 export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>> = ({

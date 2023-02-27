@@ -1,7 +1,7 @@
 import { css } from "@emotion/css"
 
 import TextArea from "../../shared-module/components/InputFields/TextAreaField"
-import { Question } from "../../util/stateInterfaces"
+import { Question } from "../../util/spec-types/privateSpec"
 import { parseLabelQuestion, reverseParseLabelQuestion } from "../../util/utils"
 
 interface Props {

@@ -5,19 +5,26 @@ export type PrivateSpec = FactorialSurvey | Survey | null
 export interface FactorialSurvey {
   id: string
   type: SurveyType.Factorial
+  /** List of weighted options */
   options: FactorialOption[]
+  /** List of questions */
   questions: Question[]
+  /** Whether to calculate a feedback report or not. */
   calculateFeedback: boolean
+  /** List of factors for this particular survey along with their weights. */
   factors: Factor[]
+  /** Values to normalize the user answers, if not defined user answers are used as is in the factorial calculation. */
   meansAndStandardDeviations?: NormalizationValues
+  /** Amount of questions allowed to be rated with NaN before no report can be provided. */
   allowedNans?: number
+  /** The variables needed for constructing the factorial report to show to the student */
   reportVariables?: {
     titleText?: string
     reportFailureMessage?: string
     reportSuccessMessage?: string | null
-    userVariable?: ReportVariable
-    comparingVariable?: ReportVariable
-    zeroVariable?: ReportVariable
+    userVariable?: LegendKey
+    comparingVariable?: LegendKey
+    zeroVariable?: LegendKey
   }
 }
 
@@ -100,7 +107,7 @@ export interface NormalizationValues {
 }
 
 /** Legend key used with factor range to display score after answering factorial survey. */
-export interface ReportVariable {
+export interface LegendKey {
   //TODO RENAME to legend key or sopmething
   /** The label for the legend key displayed to the user if global key is not defined. Example "The average of all submitted surveys". */
   label?: string

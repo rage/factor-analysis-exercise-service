@@ -9,7 +9,9 @@ import HeightTrackingContainer from "../shared-module/components/HeightTrackingC
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 import { isSetStateMessage } from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
-import { PrivateSpec, PublicSpec, RatedQuestion, SubmittedForm } from "../util/stateInterfaces"
+import { PrivateSpec } from "../util/spec-types/privateSpec"
+import { PublicSpec } from "../util/spec-types/publicSpec"
+import { RatedQuestion, UserAnswer } from "../util/spec-types/userAnswer"
 
 import { ExerciseFeedback } from "./api/grade"
 
@@ -28,7 +30,7 @@ export type State =
   | {
       view_type: "view-submission"
       public_spec: PublicSpec
-      answer: SubmittedForm
+      answer: UserAnswer
       feedback_json: ExerciseFeedback | null
       grading: ExerciseTaskGradingResult | null
       user_variables?: UserVariablesMap | null
@@ -67,7 +69,7 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
             private_spec: messageData.data.private_spec as PrivateSpec,
           })
         } else if (messageData.view_type === "view-submission") {
-          const userAnswer = messageData.data.user_answer as SubmittedForm
+          const userAnswer = messageData.data.user_answer as UserAnswer
           setState({
             view_type: messageData.view_type,
             public_spec: messageData.data.public_spec as PublicSpec,

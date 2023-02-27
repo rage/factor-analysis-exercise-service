@@ -1,17 +1,16 @@
 /**
  * RatedQuesiton[] | SurveyItem[]
  */
-export interface SubmittedForm {
-  //TODO: rename to useranswer
+export interface UserAnswer {
   answeredQuestions: RatedQuestion[] | AnsweredSurveyItem[]
 }
 
 /** Evaluated survey question contains numerical | NA value as rate */
 export interface RatedQuestion {
-  //TODO, rahter use the ID than chosenOption
+  /** The question label is saved here for retrieval of facotr weights from the factor matrix */
   questionLabel: string
-  //TODO use optionId instead
-  chosenOption: string
+  /** The id of the chosen option */
+  chosenOptionId: string
 }
 
 export interface AnsweredSurveyItem {

@@ -2,7 +2,7 @@ import { css } from "@emotion/css"
 
 import TextArea from "../../../../shared-module/components/InputFields/TextAreaField"
 import TextField from "../../../../shared-module/components/InputFields/TextField"
-import { Factor } from "../../../../util/stateInterfaces"
+import { Factor } from "../../../../util/spec-types/privateSpec"
 import { StyledInnerEditor, StyledOuterEditor } from "../../../StyledComponents/Wrappers"
 
 interface Props {

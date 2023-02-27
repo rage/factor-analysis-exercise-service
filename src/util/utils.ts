@@ -1,27 +1,19 @@
 import { ItemWithCondition } from "../components/Survey/Editors/SurveyEditor"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
-//import { Rate } from "./spec-types/grading" //WIP
+import { FactorReport, Rate } from "./spec-types/grading"
 import {
-  AnsweredSurveyItem,
   Factor,
   FactorialOption,
-  FactorReport,
   NormalizationValues,
   Question,
-  RatedQuestion,
   SurveyItem,
   SurveyItemCondition,
-} from "./stateInterfaces"
+} from "./spec-types/privateSpec"
+import { AnsweredSurveyItem, RatedQuestion } from "./spec-types/userAnswer"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
-
-//WIP
-export interface Rate {
-  questionLabel: string
-  rate: number | null
-}
 
 /**
  * Calculates the scores for factors
@@ -200,7 +192,7 @@ export const mapRatesToAnswers = (
   const rates: Rate[] = ratedQuestions.map((q) => {
     return {
       questionLabel: q.questionLabel,
-      rate: options.find((o) => o.name === q.chosenOption)?.value ?? null,
+      rate: options.find((o) => o.id === q.chosenOptionId)?.value ?? null,
     }
   })
   return rates

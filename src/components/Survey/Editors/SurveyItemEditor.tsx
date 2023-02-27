@@ -2,7 +2,7 @@ import { css } from "@emotion/css"
 
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
 import { baseTheme, primaryFont } from "../../../shared-module/styles"
-import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/stateInterfaces"
+import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/spec-types/privateSpec"
 import {
   insertVariablesToText,
   parseLabelQuestion,

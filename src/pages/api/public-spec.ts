@@ -3,14 +3,8 @@ import { NextApiRequest, NextApiResponse } from "next"
 
 import { SpecRequest } from "../../shared-module/bindings"
 import { cors, runMiddleware } from "../../util/cors"
-import {
-  ClientErrorResponse,
-  FactorialSurvey,
-  PrivateSpec,
-  PublicFactorialSurveySpec,
-  Survey,
-  SurveyType,
-} from "../../util/stateInterfaces"
+import { FactorialSurvey, PrivateSpec, Survey, SurveyType } from "../../util/spec-types/privateSpec"
+import { ClientErrorResponse, PublicFactorialSurveySpec } from "../../util/spec-types/publicSpec"
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await runMiddleware(req, res, cors)

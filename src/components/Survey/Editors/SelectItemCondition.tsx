@@ -3,7 +3,7 @@ import React from "react"
 import Select from "react-select"
 
 import { primaryFont } from "../../../shared-module/styles"
-import { Survey, SurveyItem, SurveyItemCondition } from "../../../util/stateInterfaces"
+import { Survey, SurveyItem, SurveyItemCondition } from "../../../util/spec-types/privateSpec"
 
 interface SelectorProps {
   item: SurveyItem

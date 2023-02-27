@@ -11,7 +11,7 @@ import {
   Survey,
   SurveyItem,
   SurveyItemCondition,
-} from "../../../util/stateInterfaces"
+} from "../../../util/spec-types/privateSpec"
 import { validateConditionConsistency } from "../../../util/utils"
 import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton } from "../../StyledComponents/Wrappers"

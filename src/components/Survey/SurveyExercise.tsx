@@ -6,7 +6,8 @@ import {
   UserVariablesMap,
 } from "../../shared-module/exercise-service-protocol-types"
 import { baseTheme } from "../../shared-module/styles"
-import { AnsweredSurveyItem, SubmittedForm, Survey } from "../../util/stateInterfaces"
+import { Survey } from "../../util/spec-types/privateSpec"
+import { AnsweredSurveyItem, UserAnswer } from "../../util/spec-types/userAnswer"
 import { checkCondition, insertVariablesToText } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
@@ -48,7 +49,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
     // eslint-disable-next-line i18next/no-literal-string
     console.info("Posting current state to parent")
     // the type should be the same one that is received as the initial selected id
-    const data: SubmittedForm = {
+    const data: UserAnswer = {
       answeredQuestions: value ? (value as AnsweredSurveyItem[]) : [],
     }
 

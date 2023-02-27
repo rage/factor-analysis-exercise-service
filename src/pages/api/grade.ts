@@ -3,17 +3,10 @@ import type { NextApiRequest, NextApiResponse } from "next"
 
 import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
 import { cors, runMiddleware } from "../../util/cors"
-import {
-  AnsweredSurveyItem,
-  ClientErrorResponse,
-  FactorReport,
-  PrivateSpec,
-  RatedQuestion,
-  ReportVariable,
-  SubmittedForm,
-  Survey,
-  SurveyType,
-} from "../../util/stateInterfaces"
+import { FactorReport } from "../../util/spec-types/grading"
+import { LegendKey, PrivateSpec, Survey, SurveyType } from "../../util/spec-types/privateSpec"
+import { ClientErrorResponse } from "../../util/spec-types/publicSpec"
+import { AnsweredSurveyItem, RatedQuestion, UserAnswer } from "../../util/spec-types/userAnswer"
 import {
   calculateFactors,
   getGlobalVariables,
@@ -46,9 +39,9 @@ interface GradingResult {
 }
 
 export interface ExerciseFeedback {
-  userVar?: ReportVariable
-  comparingVar?: ReportVariable
-  zeroVar?: ReportVariable
+  userVar?: LegendKey
+  comparingVar?: LegendKey
+  zeroVar?: LegendKey
   titleText?: string
   noReportMessage?: string
   factorReport: FactorReport[] | null
@@ -56,7 +49,7 @@ export interface ExerciseFeedback {
 
 interface GradingRequest {
   exercise_spec: PrivateSpec
-  submission_data: SubmittedForm
+  submission_data: UserAnswer
 }
 
 const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) => {

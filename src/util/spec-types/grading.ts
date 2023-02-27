@@ -1,9 +1,9 @@
-import { Factor, ReportVariable } from "./privateSpec"
+import { Factor, LegendKey } from "./privateSpec"
 
 export interface ExerciseFeedback {
-  userVar?: ReportVariable
-  comparingVar?: ReportVariable
-  zeroVar?: ReportVariable
+  userVar?: LegendKey
+  comparingVar?: LegendKey
+  zeroVar?: LegendKey
   titleText?: string
   noReportMessage?: string
   factorReport: FactorReport[] | null
