@@ -3,8 +3,8 @@ import {
   FactorialOption,
   NormalizationValues,
   Question,
-  RatedQuestion,
-} from "../../src/util/stateInterfaces"
+} from "../../src/util/spec-types/privateSpec"
+import { RatedQuestion } from "../../src/util/spec-types/userAnswer"
 import {
   calculateFactors,
   mapRatesToAnswers,
@@ -123,19 +123,19 @@ export const testOptions: FactorialOption[] = [
 export const testAnswer: RatedQuestion[] = [
   {
     questionLabel: "question_one",
-    chosenOption: "maybe",
+    chosenOptionId: "95806e1e-00a7-4431-ab3e-00be3de5870a",
   },
   {
     questionLabel: "question_two",
-    chosenOption: "yes",
+    chosenOptionId: "ae93bc43-3d8f-4296-9f8a-53358ad41ac6",
   },
   {
     questionLabel: "three",
-    chosenOption: "no",
+    chosenOptionId: "10e97e0f-ea25-4eed-b1d8-20ae8306303b",
   },
   {
     questionLabel: "five",
-    chosenOption: "yes",
+    chosenOptionId: "ae93bc43-3d8f-4296-9f8a-53358ad41ac6",
   },
 ]
 

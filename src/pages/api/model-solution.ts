@@ -2,7 +2,7 @@
 import { NextApiRequest, NextApiResponse } from "next"
 
 import { cors, runMiddleware } from "../../util/cors"
-import { ClientErrorResponse } from "../../util/stateInterfaces"
+import { ClientErrorResponse } from "../../util/spec-types/publicSpec"
 
 export default async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await runMiddleware(req, res, cors)

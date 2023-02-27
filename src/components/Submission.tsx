@@ -4,13 +4,9 @@ import React from "react"
 
 import { ExerciseFeedback } from "../pages/api/grade"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
-import {
-  AnsweredSurveyItem,
-  PublicSpec,
-  RatedQuestion,
-  SubmittedForm,
-  SurveyType,
-} from "../util/stateInterfaces"
+import { SurveyType } from "../util/spec-types/privateSpec"
+import { PublicSpec } from "../util/spec-types/publicSpec"
+import { AnsweredSurveyItem, RatedQuestion, UserAnswer } from "../util/spec-types/userAnswer"
 
 import { FactorialReport } from "./Factorial/ViewSubmission/FactorialReport"
 import FactorialSurveySubmission from "./Factorial/ViewSubmission/OutputSubmission"
@@ -19,7 +15,7 @@ import SurveySubmission from "./Survey/OutputSubmission"
 interface SubmissionProps {
   port: MessagePort
   publicSpec: PublicSpec
-  answer: SubmittedForm
+  answer: UserAnswer
   gradingFeedback: ExerciseFeedback | null
   userVariables?: UserVariablesMap | null
 }
@@ -38,9 +34,6 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
         flex-direction: column;
       `}
     >
-      {publicSpec.type === SurveyType.NonFactorial && publicSpec.titleText && (
-        <h2>{publicSpec.titleText}</h2>
-      )}
       {gradingFeedback?.titleText && <h2>{gradingFeedback?.titleText}</h2>}
       {gradingFeedback?.factorReport &&
         gradingFeedback?.factorReport.map((f) => {

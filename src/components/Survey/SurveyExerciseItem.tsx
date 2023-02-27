@@ -1,7 +1,7 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 
-import { AnswerType, SurveyItem } from "../../util/stateInterfaces"
+import { AnswerType, SurveyItem } from "../../util/spec-types/privateSpec"
 import MarkdownText from "../MarkdownText"
 import AdvancedDropdown from "../SharedMisc/AdvancedDropdown"
 import { CheckboxWrap } from "../StyledComponents/CheckboxWrap"

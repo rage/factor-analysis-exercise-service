@@ -1,27 +1,21 @@
 import { ItemWithCondition } from "../components/Survey/Editors/SurveyEditor"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
-//import { Rate } from "./spec-types/grading" //WIP
+import { FactorReport, Rate } from "./spec-types/grading"
 import {
-  AnsweredSurveyItem,
   Factor,
   FactorialOption,
-  FactorReport,
   NormalizationValues,
   Question,
-  RatedQuestion,
   SurveyItem,
   SurveyItemCondition,
-} from "./stateInterfaces"
+  SurveyType,
+} from "./spec-types/privateSpec"
+import { PublicSpec } from "./spec-types/publicSpec"
+import { AnsweredSurveyItem, RatedQuestion, UserAnswer } from "./spec-types/userAnswer"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
-
-//WIP
-export interface Rate {
-  questionLabel: string
-  rate: number | null
-}
 
 /**
  * Calculates the scores for factors
@@ -200,7 +194,7 @@ export const mapRatesToAnswers = (
   const rates: Rate[] = ratedQuestions.map((q) => {
     return {
       questionLabel: q.questionLabel,
-      rate: options.find((o) => o.name === q.chosenOption)?.value ?? null,
+      rate: options.find((o) => o.id === q.chosenOptionId)?.value ?? null,
     }
   })
   return rates
@@ -278,4 +272,36 @@ export const validateConditionConsistency = (surveyItems: SurveyItem[]) => {
     .filter((item) => item !== undefined)
 
   return inconsistencies as ItemWithCondition[]
+}
+
+export const validateAnsweredQuestions = (
+  publicSpec: PublicSpec,
+  userAnswer: UserAnswer,
+): boolean => {
+  let allAnswered = true
+
+  publicSpec.type === SurveyType.Factorial
+    ? publicSpec.questions.map((q) => {
+        if (q.question.endsWith("*")) {
+          if (
+            !(userAnswer.answeredQuestions as RatedQuestion[]).find(
+              (item) => item.questionLabel === q.questionLabel,
+            )?.chosenOptionId.length
+          ) {
+            allAnswered = false
+          }
+        }
+      })
+    : publicSpec.content.map((q) => {
+        if (q.question.question.endsWith("*")) {
+          if (
+            !(userAnswer.answeredQuestions as AnsweredSurveyItem[]).find(
+              (item) => item.questionLabel === q.question.questionLabel,
+            )?.answer
+          ) {
+            allAnswered = false
+          }
+        }
+      })
+  return allAnswered
 }

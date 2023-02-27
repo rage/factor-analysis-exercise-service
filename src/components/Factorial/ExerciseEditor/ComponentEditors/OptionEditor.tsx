@@ -1,7 +1,7 @@
 import { css } from "@emotion/css"
 
 import TextField from "../../../../shared-module/components/InputFields/TextField"
-import { FactorialOption } from "../../../../util/stateInterfaces"
+import { FactorialOption } from "../../../../util/spec-types/privateSpec"
 import { DeleteButton, StyledLabelEditor } from "../../../StyledComponents/Wrappers"
 interface Props {
   idx: number

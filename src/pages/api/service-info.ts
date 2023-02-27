@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import { ExerciseServiceInfoApi } from "../../shared-module/bindings"
 import basePath from "../../shared-module/utils/base-path"
 import { cors, runMiddleware } from "../../util/cors"
-import { ClientErrorResponse } from "../../util/stateInterfaces"
+import { ClientErrorResponse } from "../../util/spec-types/publicSpec"
 
 export default async (
   req: NextApiRequest,

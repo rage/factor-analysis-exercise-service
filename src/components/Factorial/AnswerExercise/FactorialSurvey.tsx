@@ -4,12 +4,9 @@ import {
   CurrentStateMessage,
   UserVariablesMap,
 } from "../../../shared-module/exercise-service-protocol-types"
-import {
-  PublicFactorialSurveySpec,
-  RatedQuestion,
-  SubmittedForm,
-} from "../../../util/stateInterfaces"
-import { insertVariablesToText } from "../../../util/utils"
+import { PublicFactorialSurveySpec } from "../../../util/spec-types/publicSpec"
+import { RatedQuestion, UserAnswer } from "../../../util/spec-types/userAnswer"
+import { insertVariablesToText, validateAnsweredQuestions } from "../../../util/utils"
 import { InfoSection } from "../../StyledComponents/InfoSection"
 
 import FactorialSurveyQuestion from "./FactorialSurveyQuestion"
@@ -30,7 +27,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
     .map((q) => {
       return {
         questionLabel: q.questionLabel,
-        chosenOption: "",
+        chosenOptionId: "",
       } as RatedQuestion
     })
 
@@ -46,20 +43,20 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
     // eslint-disable-next-line i18next/no-literal-string
     console.info("Posting current state to parent")
     // the type should be the same one that is received as the initial selected id
-    const data: SubmittedForm = {
+    const data: UserAnswer = {
       answeredQuestions: value ? (value as RatedQuestion[]) : [],
     }
     const message: CurrentStateMessage = {
       // eslint-disable-next-line i18next/no-literal-string
       message: "current-state",
       data,
-      valid: true,
+      valid: validateAnsweredQuestions(state, data),
     }
     port.postMessage(message)
     return res
   }
 
-  const updateRate = (questionLabel: string, chosenOption: string) => {
+  const updateRate = (questionLabel: string, chosenOptionId: string) => {
     if (!port) {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Cannot send current state to parent because I don't have a port")
@@ -70,7 +67,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
       if (quest.questionLabel !== questionLabel) {
         return quest
       }
-      return { ...quest, chosenOption: chosenOption }
+      return { ...quest, chosenOptionId: chosenOptionId }
     })
     setRatedQuestions(newRatedQ)
   }
@@ -93,7 +90,9 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
                 ratedQuestion={ratedQuestion}
                 questionText={questionText}
                 options={state.options}
-                onClick={(questionLabel, chosenOption) => updateRate(questionLabel, chosenOption)}
+                onClick={(questionLabel, chosenOptionId) =>
+                  updateRate(questionLabel, chosenOptionId)
+                }
               />
             )
           )

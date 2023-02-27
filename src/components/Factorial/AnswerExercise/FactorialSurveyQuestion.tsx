@@ -1,4 +1,5 @@
-import { FactorialOption, Question, RatedQuestion } from "../../../util/stateInterfaces"
+import { FactorialOption, Question } from "../../../util/spec-types/privateSpec"
+import { RatedQuestion } from "../../../util/spec-types/userAnswer"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
 import { CheckedRadioGroupWrap } from "../../StyledComponents/RadioGroupWrap"
 import { ItemWrapper } from "../../StyledComponents/Wrappers"
@@ -8,7 +9,7 @@ interface Props {
   ratedQuestion: RatedQuestion
   questionText: string
   options: FactorialOption[]
-  onClick: (questionLabel: string, chosenOption: string) => void
+  onClick: (questionLabel: string, chosenOptionId: string) => void
   disabled?: boolean
 }
 
@@ -43,9 +44,9 @@ const FactorialSurveyQuestion: React.FC<React.PropsWithChildren<Props>> = ({
                   id={`${question.questionLabel}-factorial-option-${idx + 1}`}
                   value={option.value ?? undefined}
                   onChange={() => {
-                    onClick(question.questionLabel, option.name)
+                    onClick(question.questionLabel, option.id)
                   }}
-                  checked={ratedQuestion.chosenOption === option.name}
+                  checked={ratedQuestion.chosenOptionId === option.id}
                   required
                   disabled={disabled}
                 />

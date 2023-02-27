@@ -8,7 +8,7 @@ import {
   FactorialSurvey,
   NormalizationValues,
   Question,
-} from "../../../util/stateInterfaces"
+} from "../../../util/spec-types/privateSpec"
 import CsvReader from "../../SharedMisc/CsvReader"
 import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"

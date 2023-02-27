@@ -1,5 +1,6 @@
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
-import { PublicSpec, SurveyType } from "../util/stateInterfaces"
+import { SurveyType } from "../util/spec-types/privateSpec"
+import { PublicSpec } from "../util/spec-types/publicSpec"
 
 import FactorialSurvey from "./Factorial/AnswerExercise/FactorialSurvey"
 import SurveyExercise from "./Survey/SurveyExercise"

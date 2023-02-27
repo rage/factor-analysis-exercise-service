@@ -11,7 +11,7 @@ import {
   Survey,
   SurveyItem,
   SurveyItemCondition,
-} from "../../../util/stateInterfaces"
+} from "../../../util/spec-types/privateSpec"
 import { validateConditionConsistency } from "../../../util/utils"
 import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton } from "../../StyledComponents/Wrappers"
@@ -38,7 +38,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
       {},
     )
     const duplicates = Object.keys(count).filter((value) => count[value as keyof typeof count] > 1)
-    const newError: string[] = [...duplicates]
+    const newError: string[] = [...duplicates].filter((i) => i !== "info")
     setDuplicateError(newError)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
@@ -138,7 +138,6 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
               newState.content = []
             }
             const answerObject: Answer = {
-              id: v4(),
               type: AnswerType.None,
               options: [],
             }
@@ -167,7 +166,6 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
                   return
                 }
                 const answerObject: Answer = {
-                  id: v4(),
                   type: AnswerType.None,
                   options: [],
                 }
