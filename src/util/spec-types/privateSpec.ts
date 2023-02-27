@@ -108,7 +108,6 @@ export interface NormalizationValues {
 
 /** Legend key used with factor range to display score after answering factorial survey. */
 export interface LegendKey {
-  //TODO RENAME to legend key or sopmething
   /** The label for the legend key displayed to the user if global key is not defined. Example "The average of all submitted surveys". */
   label?: string
   /** Refering to a global variable derived from a previuos user answer used to label the legend key. This key is the questionLabel of the survey item marked "globalVariable". */
@@ -134,8 +133,6 @@ export interface SurveyItem {
 
 /** Specifies how a non-factorial survey item can be answered. */
 export interface Answer {
-  // TODO poistetaan se
-  id: string
   /** Specifies the kind of answer required. */
   type: AnswerType
   /** The list of predefined options student can choose from. Examples ["yes", "no", "maybe"] or ["dog", "cat", "horse"]. */

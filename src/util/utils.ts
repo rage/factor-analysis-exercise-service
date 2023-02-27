@@ -9,8 +9,10 @@ import {
   Question,
   SurveyItem,
   SurveyItemCondition,
+  SurveyType,
 } from "./spec-types/privateSpec"
-import { AnsweredSurveyItem, RatedQuestion } from "./spec-types/userAnswer"
+import { PublicSpec } from "./spec-types/publicSpec"
+import { AnsweredSurveyItem, RatedQuestion, UserAnswer } from "./spec-types/userAnswer"
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const matrixMultiplication = require("matrix-multiplication")
@@ -270,4 +272,36 @@ export const validateConditionConsistency = (surveyItems: SurveyItem[]) => {
     .filter((item) => item !== undefined)
 
   return inconsistencies as ItemWithCondition[]
+}
+
+export const validateAnsweredQuestions = (
+  publicSpec: PublicSpec,
+  userAnswer: UserAnswer,
+): boolean => {
+  let allAnswered = true
+
+  publicSpec.type === SurveyType.Factorial
+    ? publicSpec.questions.map((q) => {
+        if (q.question.endsWith("*")) {
+          if (
+            !(userAnswer.answeredQuestions as RatedQuestion[]).find(
+              (item) => item.questionLabel === q.questionLabel,
+            )?.chosenOptionId.length
+          ) {
+            allAnswered = false
+          }
+        }
+      })
+    : publicSpec.content.map((q) => {
+        if (q.question.question.endsWith("*")) {
+          if (
+            !(userAnswer.answeredQuestions as AnsweredSurveyItem[]).find(
+              (item) => item.questionLabel === q.question.questionLabel,
+            )?.answer
+          ) {
+            allAnswered = false
+          }
+        }
+      })
+  return allAnswered
 }

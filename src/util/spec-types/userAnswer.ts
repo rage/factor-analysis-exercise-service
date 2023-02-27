@@ -14,8 +14,8 @@ export interface RatedQuestion {
 }
 
 export interface AnsweredSurveyItem {
+  /** Use both id and questionLabel because questionLabel is needed for filtering out conditional questions, and id is used because questionLabel may not be unique */
   surveyItemId: string
-  //TODO, use only id
   questionLabel: string
   answer: string[] | string | number | null
 }

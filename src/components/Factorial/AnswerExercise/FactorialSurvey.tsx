@@ -6,7 +6,7 @@ import {
 } from "../../../shared-module/exercise-service-protocol-types"
 import { PublicFactorialSurveySpec } from "../../../util/spec-types/publicSpec"
 import { RatedQuestion, UserAnswer } from "../../../util/spec-types/userAnswer"
-import { insertVariablesToText } from "../../../util/utils"
+import { insertVariablesToText, validateAnsweredQuestions } from "../../../util/utils"
 import { InfoSection } from "../../StyledComponents/InfoSection"
 
 import FactorialSurveyQuestion from "./FactorialSurveyQuestion"
@@ -50,7 +50,7 @@ const FactorialSurvey: React.FC<React.PropsWithChildren<Props>> = ({
       // eslint-disable-next-line i18next/no-literal-string
       message: "current-state",
       data,
-      valid: true,
+      valid: validateAnsweredQuestions(state, data),
     }
     port.postMessage(message)
     return res

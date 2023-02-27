@@ -138,7 +138,6 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
               newState.content = []
             }
             const answerObject: Answer = {
-              id: v4(),
               type: AnswerType.None,
               options: [],
             }
@@ -167,7 +166,6 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
                   return
                 }
                 const answerObject: Answer = {
-                  id: v4(),
                   type: AnswerType.None,
                   options: [],
                 }

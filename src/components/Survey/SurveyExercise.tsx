@@ -8,7 +8,7 @@ import {
 import { baseTheme } from "../../shared-module/styles"
 import { Survey } from "../../util/spec-types/privateSpec"
 import { AnsweredSurveyItem, UserAnswer } from "../../util/spec-types/userAnswer"
-import { checkCondition, insertVariablesToText } from "../../util/utils"
+import { checkCondition, insertVariablesToText, validateAnsweredQuestions } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 import { ExerciseItemHeader } from "../StyledComponents/ExerciseItemHeader"
 import { InfoSection } from "../StyledComponents/InfoSection"
@@ -57,7 +57,7 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
       // eslint-disable-next-line i18next/no-literal-string
       message: "current-state",
       data,
-      valid: true,
+      valid: validateAnsweredQuestions(state, data),
     }
     port.postMessage(message)
     return res
