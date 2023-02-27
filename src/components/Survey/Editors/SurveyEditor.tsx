@@ -38,7 +38,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
       {},
     )
     const duplicates = Object.keys(count).filter((value) => count[value as keyof typeof count] > 1)
-    const newError: string[] = [...duplicates]
+    const newError: string[] = [...duplicates].filter((i) => i !== "info")
     setDuplicateError(newError)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])

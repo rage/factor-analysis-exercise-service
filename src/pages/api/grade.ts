@@ -54,10 +54,6 @@ export interface ExerciseFeedback {
   factorReport: FactorReport[] | null
 }
 
-export interface Rate {
-  questionLabel: string
-  rate: number | null
-}
 interface GradingRequest {
   exercise_spec: PrivateSpec
   submission_data: SubmittedForm
