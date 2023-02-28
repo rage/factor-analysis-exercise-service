@@ -56,8 +56,7 @@ const OptionEditor: React.FC<React.PropsWithChildren<Props>> = ({
           }
         `}
       />
-      {/* eslint-disable-next-line i18next/no-literal-string */}
-      <DeleteButton onClick={onDelete}>x</DeleteButton>
+      <DeleteButton onClick={onDelete}>{"x"}</DeleteButton>
     </StyledLabelEditor>
   )
 }

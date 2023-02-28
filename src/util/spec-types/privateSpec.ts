@@ -28,6 +28,20 @@ export interface FactorialSurvey {
   }
 }
 
+export interface SumFactor {
+  title?: string
+  description?: string
+  categories?: SubCategory[]
+  userVariable?: LegendKey
+}
+
+export interface SubCategory {
+  from: number
+  to: number
+  label: string
+  color: string
+}
+
 /** A grouping of non-factorial questions, cannot be right or wrong. */
 export interface Survey {
   id: string
@@ -37,6 +51,7 @@ export interface Survey {
   content: SurveyItem[]
   /** Rendered to student upon submission. */
   reportSuccessMessage?: string | null
+  sumFactor?: SumFactor
 }
 
 /** Specifies the types of possible surveys */
@@ -161,6 +176,8 @@ export enum AnswerType {
   FileUpload = "file-upload",
   /** Select one option from a drop-down menu, where one can filter available options by typing. */
   AdvancedDropdown = "advanced-dropdown",
+  /** Radio group with tweighted options for use in sum factor calculation, summing all answers. */
+  WeightedRadioGroup = "weighted-radio-group",
 }
 
 /** Condition for whether to display the question or not

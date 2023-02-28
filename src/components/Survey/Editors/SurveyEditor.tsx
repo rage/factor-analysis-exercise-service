@@ -8,14 +8,16 @@ import { baseTheme, primaryFont } from "../../../shared-module/styles"
 import {
   Answer,
   AnswerType,
+  SumFactor,
   Survey,
   SurveyItem,
   SurveyItemCondition,
 } from "../../../util/spec-types/privateSpec"
 import { validateConditionConsistency } from "../../../util/utils"
 import ListInputEditor from "../../SharedMisc/ListInputEditor"
-import { ButtonWrapper, NewButton } from "../../StyledComponents/Wrappers"
+import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
 
+import SumFactorEditor from "./SumFactorEditor"
 import SurveyItemEditor from "./SurveyItemEditor"
 
 interface Props {
@@ -202,6 +204,37 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
           }}
         />
       </fieldset>
+      <StyledInnerEditor>
+        <label htmlFor="calculate-feedback-checkbox">
+          {"Calculate sum-factor report to student"}
+        </label>
+        <input
+          type="checkbox"
+          id="calculate-feedback-checkbox"
+          checked={state.sumFactor === undefined ? false : true}
+          onChange={(e) => {
+            const newState: Survey = {
+              ...(state as Survey),
+              sumFactor: e.target.checked ? ({} as SumFactor) : undefined,
+            }
+            setState({ view_type: "exercise-editor", private_spec: newState })
+          }}
+        />
+      </StyledInnerEditor>
+      {state && state.sumFactor && (
+        <SumFactorEditor
+          sumFactor={state.sumFactor}
+          onChange={(newSumFactor) => {
+            setState({
+              view_type: "exercise-editor",
+              private_spec: {
+                ...state,
+                sumFactor: newSumFactor,
+              },
+            })
+          }}
+        />
+      )}
     </div>
   )
 }
