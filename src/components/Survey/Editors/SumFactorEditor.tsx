@@ -1,10 +1,12 @@
 import { css } from "@emotion/css"
+import { useState } from "react"
 
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
 import TextField from "../../../shared-module/components/InputFields/TextField"
-import { SumFactor } from "../../../util/spec-types/privateSpec"
+import { LegendKey, SumFactor } from "../../../util/spec-types/privateSpec"
 import { LogoSelection } from "../../Factorial/ExerciseEditor/ComponentEditors/LogoSelector"
 import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
+import { SumFactorReport } from "../ViewSubmission/SumFactorReport"
 
 import FactorCategoryEditor from "./FactorCategoryEditor"
 
@@ -13,6 +15,7 @@ interface Props {
   onChange: (survey: SumFactor) => void
 }
 const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, onChange }) => {
+  const [testScore, setTestScore] = useState(1)
   return (
     <div>
       <fieldset>
@@ -145,6 +148,18 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
           })}
         </ol>
       </fieldset>
+      <TextField
+        label="Move the score icon"
+        placeholder={testScore.toString()}
+        type="number"
+        onChange={(score) => setTestScore(+score)}
+      />
+      <SumFactorReport
+        factor={sumFactor}
+        userName={sumFactor.userVariable?.label ?? "Your score"}
+        userScore={testScore}
+        userVar={sumFactor.userVariable as LegendKey}
+      ></SumFactorReport>
     </div>
   )
 }

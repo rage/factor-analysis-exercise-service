@@ -10,7 +10,7 @@ import { AnsweredSurveyItem, RatedQuestion, UserAnswer } from "../util/spec-type
 
 import { FactorialReport } from "./Factorial/ViewSubmission/FactorialReport"
 import FactorialSurveySubmission from "./Factorial/ViewSubmission/OutputSubmission"
-import SurveySubmission from "./Survey/OutputSubmission"
+import SurveySubmission from "./Survey/ViewSubmission/OutputSubmission"
 
 interface SubmissionProps {
   port: MessagePort

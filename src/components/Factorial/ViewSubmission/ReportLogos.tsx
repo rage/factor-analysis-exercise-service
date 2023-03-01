@@ -23,7 +23,7 @@ const LogoWrapper = styled.div<LogoProps>`
   display: grid;
   place-content: center;
   ${({ position }) =>
-    position
+    position !== undefined
       ? `position: absolute;
   left: ${position}%;
   transform: translate(-50%, 0);`

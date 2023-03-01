@@ -1,9 +1,10 @@
 import { css } from "@emotion/css"
+import { ColorPalette } from "@wordpress/components"
 
 import TextField from "../../../shared-module/components/InputFields/TextField"
+import { baseTheme } from "../../../shared-module/styles"
 import { SubCategory } from "../../../util/spec-types/privateSpec"
 import { DeleteButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
-
 interface Props {
   idx: number
   category: SubCategory
@@ -63,19 +64,18 @@ const FactorCategoryEditor: React.FC<React.PropsWithChildren<Props>> = ({
           padding: 0 0.4rem 0 0rem;
         `}
       />
-      <TextField
-        label="bar color"
-        type="text"
-        placeholder="color"
-        value={category.color}
-        onChange={(value) => {
-          onChange({
-            ...category,
-            color: value,
-          })
-        }}
+      <label htmlFor="color-picker">{"bar color"}</label>
+      <ColorPalette
+        id="color-picker"
+        aria-label={`set bar color for ${(category.label, idx)}`}
+        disableCustomColors={false}
+        value={category.color.length ? category.color : baseTheme.colors.clear[100]}
+        onChange={(backgroundColor: string) => onChange({ ...category, color: backgroundColor })}
+        clearable={false}
+        enableAlpha
         className={css`
           flex: 1;
+          padding: 0 0.4rem 0 0rem;
         `}
       />
       <DeleteButton onClick={onDelete}>{"x"}</DeleteButton>

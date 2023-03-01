@@ -139,7 +139,7 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
       >
         {barColors.map((color, idx) => {
           return (
-            <rect
+            <div
               key={idx}
               className={css`
                 height: 15px;
@@ -150,7 +150,18 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           )
         })}
       </div>
-      <div>
+      <div
+        className={css`
+          height: 50px;
+          font-family: "Raleway";
+          font-style: normal;
+          font-weight: 500;
+          font-size: 15px;
+          line-height: 150%;
+          display: flex;
+          align-items: center;
+        `}
+      >
         <p>{factor.description}</p>
       </div>
     </div>
