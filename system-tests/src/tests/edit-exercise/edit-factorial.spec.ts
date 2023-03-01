@@ -4,7 +4,7 @@ import { expect, test } from "@playwright/test"
 import expectScreenshotsToMatchSnapshots from "../../utils/screenshot"
 import waitForFunction from "../../utils/waitForFunction"
 
-test("can add factorial survey type wtih information elements and questions intermixed", async ({
+test("can add factorial survey type with information elements and questions intermixed", async ({
   page,
   headless,
 }) => {

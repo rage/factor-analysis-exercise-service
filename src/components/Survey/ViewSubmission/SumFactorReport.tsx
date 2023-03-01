@@ -40,6 +40,7 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
       className={css`
         display: flex;
         flex-direction: column;
+        margin-top: 1rem;
       `}
     >
       {factor.title && <ExerciseItemHeader titleText={factor.title} />}
@@ -48,6 +49,7 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           display: flex;
           position: relative;
           height: 50px;
+          margin-top: 1rem;
         `}
       >
         <GetLogo logo={userVar?.logo ?? "dog"} position={userPlacement} withCarret />
@@ -123,6 +125,7 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           line-height: 150%;
           display: flex;
           align-items: center;
+          margin-bottom: 1.5rem;
         `}
       >
         <p>{factor.description}</p>

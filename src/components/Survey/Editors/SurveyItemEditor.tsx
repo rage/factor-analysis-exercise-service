@@ -1,4 +1,5 @@
 import { css } from "@emotion/css"
+import { v4 } from "uuid"
 
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
 import { baseTheme, primaryFont } from "../../../shared-module/styles"
@@ -8,6 +9,7 @@ import {
   parseLabelQuestion,
   reverseParseLabelQuestion,
 } from "../../../util/utils"
+import OptionEditor from "../../Factorial/ExerciseEditor/ComponentEditors/OptionEditor"
 import MarkdownText from "../../MarkdownText"
 import CsvReader from "../../SharedMisc/CsvReader"
 import {
@@ -153,7 +155,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                     answerType === AnswerType.Dropdown ||
                     answerType === AnswerType.MultiChoice ||
                     answerType === AnswerType.RadioGroup
-                      ? [...answer.options]
+                      ? ([...answer.options] as string[])
                       : [],
                   type: answerType,
                 },
@@ -173,9 +175,8 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             {Object.values(AnswerType).map((t) => {
               if (t === AnswerType.None) {
                 return (
-                  // eslint-disable-next-line i18next/no-literal-string
                   <option key={AnswerType.None} value={AnswerType.None}>
-                    Select answer type
+                    {"Select answer type"}
                   </option>
                 )
               }
@@ -219,7 +220,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                       <StyledInnerEditor>
                         <Input
                           aria-label={`${o_idx}-option-text`}
-                          value={o}
+                          value={o as string}
                           type="text"
                           onChange={(e) => {
                             const newAnswer = item.answer
@@ -231,7 +232,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                           onClick={() => {
                             const newAnswer = {
                               ...item.answer,
-                              options: item.answer.options.filter((e) => o !== e),
+                              options: (item.answer.options as string[]).filter((e) => o !== e),
                             }
                             onChangeSurveyItem({ ...item, answer: newAnswer })
                           }}
@@ -273,6 +274,60 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               id={`${item.question.questionLabel}-csv-file-input`}
             />
           </div>
+        )}
+        {item.answer.type === AnswerType.WeightedRadioGroup && (
+          <>
+            <ol>
+              {item.answer.factorialOptions?.map((fop, idx) => {
+                return (
+                  <li key={idx}>
+                    <OptionEditor
+                      idx={idx + 1}
+                      item={fop}
+                      onDelete={() => {
+                        const newOptions = item.answer.factorialOptions?.filter(
+                          (e) => e.id !== fop.id,
+                        )
+                        onChangeSurveyItem({
+                          ...item,
+                          answer: { ...item.answer, factorialOptions: newOptions },
+                        })
+                      }}
+                      onChange={(op) => {
+                        const newOptions = item.answer.factorialOptions?.map((option) => {
+                          if (option.id !== fop.id) {
+                            return option
+                          }
+                          return op
+                        })
+                        onChangeSurveyItem({
+                          ...item,
+                          answer: { ...item.answer, factorialOptions: newOptions },
+                        })
+                      }}
+                    />
+                  </li>
+                )
+              })}
+            </ol>
+            <button
+              onClick={() => {
+                const newItem: SurveyItem = { ...item }
+                if (typeof newItem.answer.factorialOptions === "undefined") {
+                  newItem.answer.factorialOptions = []
+                }
+                newItem.answer.factorialOptions.push({ name: "", value: 0, id: v4() })
+                onChangeSurveyItem(newItem)
+              }}
+              className={css`
+                flex: 1;
+                width: 100%;
+                background-color: ${baseTheme.colors.blue[200]};
+              `}
+            >
+              {"Add Option"}
+            </button>
+          </>
         )}
         {item.answer?.type === AnswerType.ConsentCheckbox && (
           <TextArea

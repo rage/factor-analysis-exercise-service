@@ -32,9 +32,11 @@ export interface SumFactor {
   title?: string
   description?: string
   categories?: SubCategory[]
+  /** Defines the legend key for the user score. */
   userVariable?: LegendKey
 }
 
+/** Sum-factor contains sub categories, based on amount of point for the user, example: points: 1-3: "low", points 4-7: "middle", points: 8-20: "high". */
 export interface SubCategory {
   from: number
   to: number
@@ -51,6 +53,7 @@ export interface Survey {
   content: SurveyItem[]
   /** Rendered to student upon submission. */
   reportSuccessMessage?: string | null
+  /** Defines the one and only possible factor for this survey type */
   sumFactor?: SumFactor
 }
 
@@ -152,6 +155,7 @@ export interface Answer {
   type: AnswerType
   /** The list of predefined options student can choose from. Examples ["yes", "no", "maybe"] or ["dog", "cat", "horse"]. */
   options: string[]
+  factorialOptions?: FactorialOption[]
 }
 
 /** Specifies the types of possible answers. */
