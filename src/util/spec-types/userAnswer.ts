@@ -1,5 +1,5 @@
 /**
- * RatedQuesiton[] | SurveyItem[]
+ * answeredQuestions: RatedQuesiton[] | AnsweredSurveyItem[]
  */
 export interface UserAnswer {
   answeredQuestions: RatedQuestion[] | AnsweredSurveyItem[]

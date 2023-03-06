@@ -87,6 +87,8 @@ export interface Question {
   questionLabel: string
   /** The question shown to the survey user */
   question: string
+  /** Marks question as mandatory for the student. Needed for form validation upon submit. */
+  mandatory?: boolean
 }
 
 /** Contains information for calculating factorial analysis report

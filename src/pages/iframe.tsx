@@ -6,12 +6,16 @@ import ReactDOM from "react-dom"
 import Renderer from "../components/Renderer"
 import { ExerciseTaskGradingResult } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
-import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
+import {
+  CurrentStateMessage,
+  UserVariablesMap,
+} from "../shared-module/exercise-service-protocol-types"
 import { isSetStateMessage } from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { PrivateSpec } from "../util/spec-types/privateSpec"
 import { PublicSpec } from "../util/spec-types/publicSpec"
 import { RatedQuestion, UserAnswer } from "../util/spec-types/userAnswer"
+import { validateAnsweredQuestions } from "../util/utils"
 
 import { ExerciseFeedback } from "./api/grade"
 
@@ -54,7 +58,7 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
     maxWidth = Number(rawMaxWidth)
   }
 
-  const callback = useCallback((messageData: unknown) => {
+  const callback = useCallback((messageData: unknown, port: MessagePort) => {
     if (isSetStateMessage(messageData)) {
       ReactDOM.flushSync(() => {
         if (messageData.view_type === "answer-exercise") {
@@ -63,6 +67,16 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
             public_spec: messageData.data.public_spec as PublicSpec,
             user_variables: messageData.user_variables,
           })
+          const valid = validateAnsweredQuestions(messageData.data.public_spec as PublicSpec, {
+            answeredQuestions: [],
+          })
+          port.postMessage({
+            message: "current-state",
+            data: {
+              answeredQuestions: [],
+            },
+            valid: valid,
+          } satisfies CurrentStateMessage)
         } else if (messageData.view_type === "exercise-editor") {
           setState({
             view_type: messageData.view_type,

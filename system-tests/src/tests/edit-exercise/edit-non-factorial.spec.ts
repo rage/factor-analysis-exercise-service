@@ -42,41 +42,22 @@ test("can add non-factorial survey type with information elements and questions 
     .selectOption("radio-group")
   await page.frameLocator("iframe").getByRole("button", { name: "add option" }).click()
   await page.frameLocator("iframe").getByRole("button", { name: "add option" }).click()
-  await page.frameLocator("iframe").getByRole("textbox", { name: "0-option-text" }).click()
   await page.frameLocator("iframe").getByRole("textbox", { name: "0-option-text" }).fill("yes")
-  await page.frameLocator("iframe").getByRole("textbox", { name: "1-option-text" }).click()
   await page.frameLocator("iframe").getByRole("textbox", { name: "1-option-text" }).fill("no")
 
   await page
     .frameLocator("iframe")
-    .getByRole("group", { name: "owner" })
-    .filter({
-      hasText: 'ownerVastaan koirasta, joka on... xEditor (special purpose labels: "info" & "inf',
-    })
-    .getByRole("combobox", { name: "select-answer-type-owner" })
+    .getByRole("group", { name: "owner." })
+    .getByRole("combobox", { name: "select-answer-type-owner." })
     .selectOption("multiple-choice")
   await page
     .frameLocator("iframe")
-    .getByRole("group", { name: "owner" })
-    .filter({
-      hasText: 'ownerVastaan koirasta, joka on... xEditor (special purpose labels: "info" & "inf',
-    })
-    .getByLabel("or upload a csv file")
-    .click()
-  await page
-    .frameLocator("iframe")
-    .getByRole("group", { name: "owner" })
-    .filter({
-      hasText: 'ownerVastaan koirasta, joka on... xEditor (special purpose labels: "info" & "inf',
-    })
+    .getByRole("group", { name: "owner." })
     .getByLabel("or upload a csv file")
     .setInputFiles("test-data/some-options.csv")
   await page
     .frameLocator("iframe")
-    .getByRole("group", { name: "owner" })
-    .filter({
-      hasText: 'ownerVastaan koirasta, joka on... xEditor (special purpose labels: "info" & "inf',
-    })
+    .getByRole("group", { name: "owner." })
     .getByRole("button", { name: "Apply" })
     .click()
   await page
@@ -187,10 +168,7 @@ test("can add non-factorial survey type with information elements and questions 
   await page.frameLocator("iframe").locator("#react-select-4-option-5").dblclick()
   await page
     .frameLocator("iframe")
-    .getByRole("group", { name: "owner" })
-    .filter({
-      hasText: 'ownerVastaan koirasta, joka on... xEditor (special purpose labels: "info" & "inf',
-    })
+    .getByRole("group", { name: "owner." })
     .getByRole("button", { name: "x" })
     .nth(1)
     .click()
@@ -214,9 +192,6 @@ test("can add non-factorial survey type with information elements and questions 
     frame: edit_frame,
     clearNotifications: true,
   })
-  /* 
-  // Click text=Set as private spec input
-  await page.locator("text=Set as private spec input").click() */
 
   // Click button:has-text("answer-exercise")
   await page.locator('button:has-text("answer-exercise")').click()

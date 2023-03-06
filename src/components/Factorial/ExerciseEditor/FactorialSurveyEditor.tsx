@@ -2,6 +2,7 @@ import { css } from "@emotion/css"
 import { v4 } from "uuid"
 
 import { State } from "../../../pages/iframe"
+import CheckBox from "../../../shared-module/components/InputFields/CheckBox"
 import TextField from "../../../shared-module/components/InputFields/TextField"
 import {
   Factor,
@@ -191,15 +192,14 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
         />
       </fieldset>
       <StyledInnerEditor>
-        <label htmlFor="calculate-feedback-checkbox">{"Provide factor report to student"}</label>
-        <input
-          type="checkbox"
-          id="calculate-feedback-checkbox"
-          checked={state.calculateFeedback}
-          onChange={(e) => {
+        <CheckBox
+          label="Provide factor report to student"
+          aria-label="calculate-feedback-checkbox"
+          checked={state.calculateFeedback ? true : false}
+          onChange={(checked) => {
             const newState: FactorialSurvey = {
               ...(state as FactorialSurvey),
-              calculateFeedback: e.target.checked,
+              calculateFeedback: checked,
             }
             setState({ view_type: "exercise-editor", private_spec: newState })
           }}

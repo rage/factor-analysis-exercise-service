@@ -1,8 +1,10 @@
 import { css } from "@emotion/css"
 import { v4 } from "uuid"
 
+import CheckBox from "../../../shared-module/components/InputFields/CheckBox"
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
 import { baseTheme, primaryFont } from "../../../shared-module/styles"
+import { respondToOrLarger } from "../../../shared-module/styles/respond"
 import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/spec-types/privateSpec"
 import {
   insertVariablesToText,
@@ -52,6 +54,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
   return (
     <StyledOuterEditor>
       <fieldset
+        aria-label={`${item.question.questionLabel}.`}
         className={css`
           background-color: ${getBackgroundColor(item.question.questionLabel)};
           legend {
@@ -87,7 +90,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
           <DeleteButton onClick={onDelete}>{"x"}</DeleteButton>
         </StyledInnerEditor>
         <TextArea
-          label={`Editor (special purpose labels: "info" & "info-header")`}
+          label={`Markdown Editor (special purpose labels: "info" & "info-header")`}
           autoResize
           placeholder="question_label; question text"
           onChange={(value) => {
@@ -106,10 +109,14 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             if (newItem.question.questionLabel === "info") {
               newItem.answer.type = AnswerType.None
               newItem.answer.options = []
+              delete newItem.globalVariable
+              delete newItem.question.mandatory
             }
             if (newItem.question.questionLabel === "info-header") {
               newItem.answer.type = AnswerType.ConsentCheckbox
               newItem.answer.options = []
+              delete newItem.globalVariable
+              delete newItem.question.mandatory
             }
             if (
               newItem.answer.type === AnswerType.ConsentCheckbox &&
@@ -137,10 +144,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             }
           `}
         />
-        {/* eslint-disable-next-line i18next/no-literal-string */}
         {item.question.questionLabel && item.question.questionLabel !== "info" && (
           <select
-            aria-label={`select-answer-type-${item.question.questionLabel}`}
+            aria-label={`select-answer-type-${item.question.questionLabel}.`}
             onChange={(event) => {
               const answer: Answer = item.answer
               const answerType: AnswerType = event.target.value as unknown as AnswerType
@@ -348,58 +354,81 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             defaultValue={item.answer.options[0]}
           />
         )}
-        <StyledInnerEditor>
+        <StyledInnerEditor respondTo>
           <div
             className={css`
               display: flex;
-              width: 85%;
+              flex: 2;
               align-items: center;
-              justify-content: space-apart;
-              margin-right 20px;
             `}
           >
-            <label htmlFor={`mark-conditional-${item.id}`}>{"Conditional"}</label>
-            <input
-              id={`mark-conditional-${item.id}`}
-              type="checkbox"
+            <CheckBox
+              label="Conditional"
+              aria-label={`mark-conditional-${item.question.questionLabel}`}
               checked={item.conditional}
-              onChange={(e) => {
-                onChangeSurveyItem({
+              onChange={(checked) => {
+                const newItem = {
                   ...item,
-                  conditional: e.target.checked,
-                  dependsOn: undefined,
-                })
+                  conditional: checked,
+                }
+                delete newItem.dependsOn
+                onChangeSurveyItem(newItem)
               }}
             />
           </div>
           {item.question.questionLabel !== "info" &&
             item.question.questionLabel !== "info-header" && (
-              <div
-                className={css`
-              display: flex;
-              width: 85%;
-              align-items: center;
-              justify-content: space-apart;
-              margin-right 20px;
-            `}
-              >
-                <label htmlFor={`mark-global-variable-${item.id}`}>{"Make global"}</label>
-                <input
-                  id={`mark-global-variable-${item.id}`}
-                  type="checkbox"
-                  checked={item.globalVariable ? true : false}
-                  onChange={(e) => {
-                    onChangeSurveyItem({
-                      ...item,
-                      globalVariable: e.target.checked,
-                    })
-                  }}
-                />
-              </div>
+              <>
+                <div
+                  className={css`
+                    display: flex;
+                    flex: 2;
+                    align-items: center;
+                  `}
+                >
+                  <CheckBox
+                    label={"Make global"}
+                    aria-label={`mark-global-variable-${item.question.questionLabel}`}
+                    checked={item.globalVariable ? true : false}
+                    onChange={(checked) => {
+                      onChangeSurveyItem({
+                        ...item,
+                        globalVariable: checked,
+                      })
+                    }}
+                  />
+                </div>
+                <div
+                  className={css`
+                    display: flex;
+                    flex: 2;
+                    align-items: center;
+                  `}
+                >
+                  <CheckBox
+                    label="Mandatory"
+                    aria-label={`mark-mandatory-variable-${item.question.questionLabel}`}
+                    checked={item.question.mandatory ? true : false}
+                    onChange={(checked) => {
+                      const newQuestion = { ...item.question, mandatory: checked }
+                      onChangeSurveyItem({
+                        ...item,
+                        question: newQuestion,
+                      })
+                    }}
+                  />
+                </div>
+              </>
             )}
           <button
+            aria-label={`duplicate-${item.question.questionLabel}`}
             className={css`
-              flex: 1;
+              display: flex;
+              width: 50%;
+              ${respondToOrLarger.sm} {
+                width: 15%;
+              }
+              place-content: center;
             `}
             onClick={() => {
               onDuplicate(item)
