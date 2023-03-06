@@ -77,7 +77,6 @@ export const SelectCondition: React.FC<React.PropsWithChildren<SelectorProps>> =
             const conditions = e.map((con) => {
               return con.condition
             })
-            console.log(e, "saving:", conditions)
             onChange({ ...item, dependsOn: conditions })
           }}
           formatOptionLabel={(logo) => {

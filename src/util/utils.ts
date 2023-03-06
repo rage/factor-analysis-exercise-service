@@ -28,7 +28,6 @@ export const calculateFactors = (factors: Factor[], rates: Rate[]): FactorReport
     let score = 0
     rates.map((item) => {
       if (typeof factor.weights[item.questionLabel] === "undefined") {
-        console.log("Did not find data for question:", item.questionLabel)
         return
       }
       score = item.rate ? score + factor.weights[item.questionLabel] * item.rate : score
@@ -200,6 +199,7 @@ export const mapRatesToAnswers = (
   return rates
 }
 
+/** Check if the the dependsOn condition is met, that is, the triggering option is amongst the answered items */
 export const checkCondition = (
   answeredItems: AnsweredSurveyItem[],
   dependsOn: SurveyItemCondition[],
@@ -280,9 +280,10 @@ export const validateAnsweredQuestions = (
 ): boolean => {
   let allAnswered = true
 
-  publicSpec.type === SurveyType.Factorial
-    ? publicSpec.questions.map((q) => {
-        if (q.question.endsWith("*")) {
+  switch (publicSpec.type) {
+    case SurveyType.Factorial: {
+      publicSpec.questions.map((q) => {
+        if (q.mandatory) {
           if (
             !(userAnswer.answeredQuestions as RatedQuestion[]).find(
               (item) => item.questionLabel === q.questionLabel,
@@ -292,8 +293,18 @@ export const validateAnsweredQuestions = (
           }
         }
       })
-    : publicSpec.content.map((q) => {
-        if (q.question.question.endsWith("*")) {
+      break
+    }
+    case SurveyType.NonFactorial: {
+      const displayedQuestions: SurveyItem[] = publicSpec.content.filter((item) => {
+        return (
+          !item.conditional ||
+          (item.dependsOn &&
+            checkCondition(userAnswer.answeredQuestions as AnsweredSurveyItem[], item.dependsOn))
+        )
+      })
+      displayedQuestions.map((q) => {
+        if (q.question.mandatory) {
           if (
             !(userAnswer.answeredQuestions as AnsweredSurveyItem[]).find(
               (item) => item.questionLabel === q.question.questionLabel,
@@ -303,5 +314,8 @@ export const validateAnsweredQuestions = (
           }
         }
       })
+    }
+  }
+
   return allAnswered
 }
