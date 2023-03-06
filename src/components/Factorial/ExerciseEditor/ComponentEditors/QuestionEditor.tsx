@@ -1,5 +1,6 @@
 import { css } from "@emotion/css"
 
+import CheckBox from "../../../../shared-module/components/InputFields/CheckBox"
 import TextArea from "../../../../shared-module/components/InputFields/TextAreaField"
 import { baseTheme, primaryFont } from "../../../../shared-module/styles"
 import { Question } from "../../../../util/spec-types/privateSpec"
@@ -47,7 +48,7 @@ const QuestionEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChan
           {item.question && <MarkdownText text={insertVariablesToText(item.question)} />}
         </StyledInnerEditor>
         <TextArea
-          label="Editor"
+          label={`Markdown Editor (special purpose labels: "info")`}
           placeholder="question_label; question text"
           autoResize
           onChange={(value) => {
@@ -55,7 +56,11 @@ const QuestionEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChan
             if (!parsedValue) {
               return
             }
-            onChangeQuestion({ ...item, questionLabel: parsedValue[0], question: parsedValue[1] })
+            const newItem = { ...item, questionLabel: parsedValue[0], question: parsedValue[1] }
+            if (newItem.questionLabel === "info") {
+              delete newItem.mandatory
+            }
+            onChangeQuestion(newItem)
           }}
           defaultValue={reverseParseLabelQuestion(item.questionLabel, item.question)}
           className={css`
@@ -71,6 +76,16 @@ const QuestionEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChan
             }
           `}
         />
+        {item.questionLabel !== "info" && (
+          <CheckBox
+            label="Mandatory"
+            onChange={(checked) => {
+              const mandatory = checked
+              onChangeQuestion({ ...item, mandatory: mandatory ?? false })
+            }}
+            checked={item.mandatory ?? false}
+          />
+        )}
       </fieldset>
     </StyledOuterEditor>
   )
