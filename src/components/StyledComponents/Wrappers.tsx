@@ -1,5 +1,7 @@
 import styled from "@emotion/styled"
 
+import { respondToOrLarger } from "../../shared-module/styles/respond"
+
 export const infoHeaderColor = "rgba(85, 179, 245, 0.05)"
 export const infoColor = "#faf6e3"
 
@@ -22,12 +24,12 @@ export const InfoWrapper = styled.div`
   background: ${infoColor};
   width: 100%;
   padding: 15px;
+  margin-bottom: 10px;
 
   font-family: "Raleway";
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
-  line-height: 110%;
 
   display: flex;
   align-items: flex-end;
@@ -104,13 +106,19 @@ export const StyledOuterEditor = styled.div<{ border?: boolean }>`
   flex-direction: column;
 `
 
-export const StyledInnerEditor = styled.div`
+export const StyledInnerEditor = styled.div<{ respondTo?: boolean }>`
   margin: 0 auto;
   padding: 0.5rem 0 0.5rem 0;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-apart;
+  ${({ respondTo }) =>
+    respondTo &&
+    `flex-direction: column;
+  ${respondToOrLarger.sm} {
+    flex-direction: row;
+  }`}
 `
 
 export const Input = styled.input`
