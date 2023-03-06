@@ -32,26 +32,6 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
             flex: 2;
           `}
         />
-        <TextArea
-          label="Description"
-          placeholder="Factor description"
-          autoResize
-          onChange={(value) => {
-            onChange({ ...sumFactor, description: value })
-          }}
-          value={sumFactor.description}
-          className={css`
-            flex: 2;
-            textarea {
-              width: 100%;
-              padding: 0.5rem;
-              margin: 0 auto;
-              margin-right: 0.5rem;
-              resize: vertical;
-              max-height: 120px;
-            }
-          `}
-        />
         <StyledInnerEditor>
           <TextField
             label="Default label for user score icon"
@@ -147,19 +127,42 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
             )
           })}
         </ol>
+        <TextArea
+          label="Description"
+          placeholder="Factor description"
+          autoResize
+          onChange={(value) => {
+            onChange({ ...sumFactor, description: value })
+          }}
+          value={sumFactor.description}
+          className={css`
+            flex: 2;
+            textarea {
+              width: 100%;
+              padding: 0.5rem;
+              margin: 0 auto;
+              margin-right: 0.5rem;
+              resize: vertical;
+              max-height: 120px;
+            }
+          `}
+        />
       </fieldset>
-      <TextField
-        label="Move the score icon"
-        placeholder={testScore.toString()}
-        type="number"
-        onChange={(score) => setTestScore(+score)}
-      />
       <SumFactorReport
         factor={sumFactor}
         userName={sumFactor.userVariable?.label ?? "Your score"}
         userScore={testScore}
         userVar={sumFactor.userVariable as LegendKey}
-      ></SumFactorReport>
+      />
+      <fieldset>
+        <legend>{"Test it out"}</legend>
+        <TextField
+          label="Move the score icon"
+          placeholder={testScore.toString()}
+          type="number"
+          onChange={(score) => setTestScore(+score)}
+        />
+      </fieldset>
     </div>
   )
 }
