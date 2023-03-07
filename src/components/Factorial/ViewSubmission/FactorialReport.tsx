@@ -2,7 +2,6 @@
 import { css } from "@emotion/css"
 import React from "react"
 
-import { respondToOrLarger } from "../../../shared-module/styles/respond"
 import { FactorReport } from "../../../util/spec-types/grading"
 import { LegendKey } from "../../../util/spec-types/privateSpec"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
@@ -73,40 +72,31 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
         className={css`
           display: flex;
           flex-direction: column;
-          justify-content: space-between;
-          ${respondToOrLarger.sm} {
-            flex-direction: row;
-          }
           height: 100%;
           width: 100%;
-          place-content: left;
-          gap: 0.5rem;
-          margin-bottom: 3rem;
+          margin-bottom: 1.5rem;
           .div-container {
             display: flex;
-            flex-direction: column;
-            ${respondToOrLarger.sm} {
-              flex-direction: row;
-            }
+            text-align: center;
+            justify-content: space-apart;
             label {
+              display: grid;
               font-family: "Raleway";
               font-style: normal;
               font-weight: 500;
               font-size: 15px;
-              line-height: 250%;
-              display: flex;
-              align-items: flex-end;
+              place-content: center;
             }
           }
         `}
       >
         <div className="div-container">
-          <GetLogo logo={zeroVar?.logo ?? "paw"} id={`${factor.label}-zero-logo`} />
-          <label>{zeroVar?.label ?? "Dogs average"}</label>
-        </div>
-        <div className="div-container">
           <GetLogo logo={userVar?.logo ?? "dog"} id={`${factor.label}-ownpet-logo`} />
           <label>{userName ?? userVar?.label ?? "Your Score"}</label>
+        </div>
+        <div className="div-container">
+          <GetLogo logo={zeroVar?.logo ?? "paw"} id={`${factor.label}-zero-logo`} />
+          <label>{zeroVar?.label ?? "Dogs average"}</label>
         </div>
         {userCompVar && comparingVarAvg && (
           <div className="div-container">
@@ -150,20 +140,21 @@ export const FactorialReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           )
         })}
       </div>
-      <div
-        className={css`
-          height: 50px;
-          font-family: "Raleway";
-          font-style: normal;
-          font-weight: 500;
-          font-size: 15px;
-          line-height: 150%;
-          display: flex;
-          align-items: center;
-        `}
-      >
-        <p>{factor.description}</p>
-      </div>
+      {factor.description && (
+        <div
+          className={css`
+            font-family: "Raleway";
+            font-style: normal;
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 150%;
+            display: flex;
+            align-items: center;
+          `}
+        >
+          <p>{factor.description}</p>
+        </div>
+      )}
     </div>
   )
 }

@@ -59,7 +59,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
                 width: 100%;
                 display: flex;
                 flex-direction: column;
-                margin: 4rem auto;
+                margin: 2rem auto;
               `}
             >
               <FactorialReport

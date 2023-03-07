@@ -60,6 +60,7 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
         display: flex;
         flex-direction: column;
         margin-top: 1rem;
+        margin-bottom: 1.5rem;
       `}
     >
       {factor.title && <ExerciseItemHeader titleText={factor.title} />}
@@ -137,42 +138,53 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
             <div
               key={idx}
               className={css`
-                height: 25px;
-                width: 25px;
-                background-color: ${bar.color};
-                display: grid;
-                place-content: center;
-                text-align: left;
-                justify-content: left;
-                p {
-                  margin-left: 30px;
+                display: flex;
+                place-content: left;
+                text-align: center;
+                justify-content: space-apart;
+              `}
+            >
+              <div
+                className={css`
+                  height: 25px;
+                  width: 25px;
+                  background-color: ${bar.color};
+                `}
+              />
+              <div
+                className={css`
+                  display: grid;
+                  margin-left: 10px;
+                  height: 25px;
                   font-family: "Raleway";
                   font-style: normal;
                   font-weight: 500;
                   font-size: 15px;
+                  place-content: center;
                   line-height: 100%;
-                }
-              `}
-            >
-              <p>{bar.label}</p>
+                `}
+              >
+                {bar.label}
+              </div>
             </div>
           )
         })}
-      <div
-        className={css`
-          font-family: "Raleway";
-          font-style: normal;
-          font-weight: 500;
-          font-size: 15px;
-          line-height: 150%;
-          display: flex;
-          align-items: center;
-          margin-bottom: 1.5rem;
-          margin-top: 1.5rem;
-        `}
-      >
-        <p>{factor.description}</p>
-      </div>
+      {factor.description && (
+        <div
+          className={css`
+            font-family: "Raleway";
+            font-style: normal;
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 150%;
+            display: flex;
+            align-items: center;
+            margin-top: ${!labelsFitInBars ? "1.5rem" : "0"};
+          `}
+        >
+          <p>{factor.description}</p>
+        </div>
+      )}
     </div>
   )
 }
