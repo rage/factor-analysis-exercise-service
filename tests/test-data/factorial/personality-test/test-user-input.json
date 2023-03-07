@@ -1,0 +1,236 @@
+{
+  "answeredQuestions": [
+    {
+      "questionLabel": "Willing_to_learn",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Playful_dogs",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Predictable",
+      "chosenOptionId": "b4dba5ec-2913-4c26-8d48-bce1c0a96114"
+    },
+    {
+      "questionLabel": "Obedient",
+      "chosenOptionId": "b4dba5ec-2913-4c26-8d48-bce1c0a96114"
+    },
+    {
+      "questionLabel": "Boisterous",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Sensitive_touch",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Anxious",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Independent",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Lazy",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Intelligent",
+      "chosenOptionId": ""
+    },
+    {
+      "questionLabel": "Reliable",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Human_dependent",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Wary",
+      "chosenOptionId": "b4dba5ec-2913-4c26-8d48-bce1c0a96114"
+    },
+    {
+      "questionLabel": "Erratic",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Stubborn",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Fearful_people",
+      "chosenOptionId": "b4dba5ec-2913-4c26-8d48-bce1c0a96114"
+    },
+    {
+      "questionLabel": "Playful_people",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Playful_alone",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Curious",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Fearful_dogs",
+      "chosenOptionId": "b4dba5ec-2913-4c26-8d48-bce1c0a96114"
+    },
+    {
+      "questionLabel": "Impulsive",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Affectionate_people",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Decisive",
+      "chosenOptionId": ""
+    },
+    {
+      "questionLabel": "Persevering",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Distractible",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Submissive",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Cautious",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Restless",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Confident",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Easygoing",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Dominant",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Patient",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Sociable_dogs_samegender",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Slow",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Sociable_dogs_oppositegender",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Calm",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Provocative",
+      "chosenOptionId": ""
+    },
+    {
+      "questionLabel": "Excitable",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Human_oriented",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Focused",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Empathic",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Aggressive_dogs_samegender",
+      "chosenOptionId": "9fa0ce89-b842-45b7-8a87-98d1c458fd87"
+    },
+    {
+      "questionLabel": "Attention_seeking",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Indifferent",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Aggressive_people",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Affectionate_dogs",
+      "chosenOptionId": "b4dba5ec-2913-4c26-8d48-bce1c0a96114"
+    },
+    {
+      "questionLabel": "Calming",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Solitary",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Aggressive_dogs_oppositegender",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    },
+    {
+      "questionLabel": "Territorial",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Flexible",
+      "chosenOptionId": "e55d1a10-c84a-467b-8baf-d5897cfc624a"
+    },
+    {
+      "questionLabel": "Easily_recovered",
+      "chosenOptionId": "b4dba5ec-2913-4c26-8d48-bce1c0a96114"
+    },
+    {
+      "questionLabel": "Bold",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Active",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Energetic",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Insecure",
+      "chosenOptionId": "b4dba5ec-2913-4c26-8d48-bce1c0a96114"
+    },
+    {
+      "questionLabel": "Attentive",
+      "chosenOptionId": "d59c319f-6a67-4727-9e83-0c67a6ec7f45"
+    },
+    {
+      "questionLabel": "Sociable_people",
+      "chosenOptionId": "bd04fc95-9db0-45df-b470-fe795467051a"
+    }
+  ]
+}

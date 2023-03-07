@@ -342,14 +342,12 @@ export const calculateSumFactorScore = (
     const answeredItem = answeredQuestions.find((ans) => {
       return ans.surveyItemId === item.id
     })
-    console.log("Found this thisng:", answeredItem, item.id)
     score +=
       item.answer.factorialOptions?.find((opt) => {
         return opt.name === answeredItem?.answer
       })?.value ?? 0
   })
 
-  console.log(score, weightedItems)
   return score
 }
 

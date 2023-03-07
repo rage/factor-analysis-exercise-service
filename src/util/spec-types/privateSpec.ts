@@ -31,16 +31,19 @@ export interface FactorialSurvey {
 export interface SumFactor {
   title?: string
   description?: string
+  /** Sum-factor contains sub categories, based on amount of point of the user, example: points: 1-3: "low", points 4-7: "middle", points: 8-20: "high". */
   categories?: SubCategory[]
   /** Defines the legend key for the user score. */
   userVariable?: LegendKey
 }
 
-/** Sum-factor contains sub categories, based on amount of point for the user, example: points: 1-3: "low", points 4-7: "middle", points: 8-20: "high". */
+/** A subcategory of a sumfactor is a continuos range of possible achieved points, label of the category, for example "critical", and color of the range for the report visualization. */
 export interface SubCategory {
   from: number
   to: number
+  /** Label to describe the sub-range. */
   label: string
+  /** Color for the result-showing bar for this range of accumulated points. */
   color: string
 }
 

@@ -60,7 +60,7 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
         display: flex;
         flex-direction: column;
         margin-top: 1rem;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
       `}
     >
       {factor.title && <ExerciseItemHeader titleText={factor.title} />}
