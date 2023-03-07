@@ -208,7 +208,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
       <StyledInnerEditor>
         <CheckBox
           label={"Calculate sum-factor report to student"}
-          id="calculate-feedback-checkbox"
+          aria-label="calculate-feedback-checkbox"
           checked={state.sumFactor === undefined ? false : true}
           onChange={(checked) => {
             const newState: Survey = {
