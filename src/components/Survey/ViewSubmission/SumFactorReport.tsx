@@ -2,7 +2,8 @@
 import { css } from "@emotion/css"
 import React from "react"
 
-import { LegendKey, SumFactor } from "../../../util/spec-types/privateSpec"
+import { LegendKey, SubCategory, SumFactor } from "../../../util/spec-types/privateSpec"
+import { getTextWidth } from "../../../util/utils"
 import { GetLogo } from "../../Factorial/ViewSubmission/ReportLogos"
 import { ExerciseItemHeader } from "../../StyledComponents/ExerciseItemHeader"
 
@@ -11,32 +12,50 @@ interface CoordinateProps {
   userName: string | null
   userScore: number
   userVar: LegendKey | null
+  parentWidthPx: number
 }
+
+type Bar = SubCategory & { barWidth: number; padding: number; labelWidth: number }
 
 export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>> = ({
   factor,
   userName,
   userScore,
   userVar,
+  parentWidthPx,
 }) => {
   if (!factor.categories) {
     return <></>
   }
-  const sortedBars = [...factor.categories].sort((a, b) => a.from - b.from)
-  const start = sortedBars[0].from
-  const finnish = sortedBars[sortedBars.length - 1].to
+  const sortedCategories = [...factor.categories].sort((a, b) => a.from - b.from)
+  const start = sortedCategories[0].from
+  const finnish = sortedCategories[sortedCategories.length - 1].to
+  let labelsFitInBars = true
+  const sortedBars: Bar[] = sortedCategories.map((cat, idx) => {
+    const width = (100 * (cat.to - cat.from)) / (finnish - start)
+    const padding =
+      idx === sortedCategories.length - 1
+        ? 0
+        : (100 * (sortedCategories[idx + 1].from - cat.to)) / (finnish - start)
+    const labelWidth = getTextWidth(cat.label, "15px Raleway")
+    if (parentWidthPx && width < (100 * labelWidth) / parentWidthPx) {
+      labelsFitInBars = false
+    }
+    return { ...cat, barWidth: width, padding: padding, labelWidth: labelWidth }
+  })
 
   const userLabel: string = userName ?? userVar?.label ?? "Your Score"
   const userPlacement =
     (100 * (-(start as number) + userScore)) / ((finnish as number) - (start as number))
+  const userLabelWidth = (100 * getTextWidth(userLabel, "15px Raleway")) / parentWidthPx
   const labelPlacement =
-    userPlacement > 100 - userLabel.length * 1.3
-      ? userPlacement - Math.max(userLabel.length, 6) * 1.3
-      : userPlacement + 3
+    userPlacement >= 100 - userLabelWidth - 2000 / parentWidthPx
+      ? userPlacement - userLabelWidth - 2000 / parentWidthPx
+      : userPlacement + 2000 / parentWidthPx
 
-  console.log(userPlacement, labelPlacement)
   return (
     <div
+      id="sum-factor-report"
       className={css`
         display: flex;
         flex-direction: column;
@@ -79,43 +98,66 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
         `}
       >
         {sortedBars.map((car, idx) => {
-          const width = (car.to - car.from) / (finnish - start)
-          // console.log(width, finnish, start, userPlacement)
-          const padding =
-            idx === sortedBars.length - 1
-              ? 0
-              : (100 * (sortedBars[idx + 1].from - car.to)) / (finnish - start)
           return (
             <div
               key={idx}
               className={css`
                 height: 50px;
-                width: ${width * 100}%;
+                width: ${car.barWidth}%;
                 background-color: ${car.color};
                 place-content: center;
-                margin-right: ${padding}%;
+                margin-right: ${car.padding}%;
               `}
             >
-              <div
-                className={css`
-                  height: 50px;
+              {labelsFitInBars && (
+                <div
+                  className={css`
+                    height: 50px;
+                    font-family: "Raleway";
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 15px;
+                    line-height: 100%;
+                    display: flex;
+                    align-items: center;
+                    text-align: center;
+                    justify-content: center;
+                  `}
+                >
+                  {car.label}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+      {!labelsFitInBars &&
+        sortedBars.map((bar, idx) => {
+          return (
+            <div
+              key={idx}
+              className={css`
+                height: 25px;
+                width: 25px;
+                background-color: ${bar.color};
+                display: grid;
+                place-content: center;
+                text-align: left;
+                justify-content: left;
+                p {
+                  margin-left: 30px;
                   font-family: "Raleway";
                   font-style: normal;
                   font-weight: 500;
                   font-size: 15px;
                   line-height: 100%;
-                  display: flex;
-                  align-items: center;
-                  text-align: center;
-                  justify-content: center;
-                `}
-              >
-                {car.label}
-              </div>
+                }
+              `}
+            >
+              <p>{bar.label}</p>
             </div>
           )
         })}
-      </div>
       <div
         className={css`
           font-family: "Raleway";
@@ -126,6 +168,7 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
           display: flex;
           align-items: center;
           margin-bottom: 1.5rem;
+          margin-top: 1.5rem;
         `}
       >
         <p>{factor.description}</p>

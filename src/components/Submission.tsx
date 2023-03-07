@@ -30,6 +30,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
 }) => {
   return (
     <div
+      id="sum-factor-editor"
       className={css`
         width: 100%;
         display: flex;
@@ -102,7 +103,8 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
                   ) ?? 0
                 }
                 userVar={publicSpec.sumFactor.userVariable ?? null}
-              ></SumFactorReport>
+                parentWidthPx={document.getElementById("sum-factor-editor")?.clientWidth ?? 0}
+              />
             )}
           <SurveySubmission
             items={publicSpec.content}

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { v4 } from "uuid"
 
 import { State } from "../../../pages/iframe"
+import CheckBox from "../../../shared-module/components/InputFields/CheckBox"
 import TextField from "../../../shared-module/components/InputFields/TextField"
 import { baseTheme, primaryFont } from "../../../shared-module/styles"
 import {
@@ -205,17 +206,14 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
         />
       </fieldset>
       <StyledInnerEditor>
-        <label htmlFor="calculate-feedback-checkbox">
-          {"Calculate sum-factor report to student"}
-        </label>
-        <input
-          type="checkbox"
+        <CheckBox
+          label={"Calculate sum-factor report to student"}
           id="calculate-feedback-checkbox"
           checked={state.sumFactor === undefined ? false : true}
-          onChange={(e) => {
+          onChange={(checked) => {
             const newState: Survey = {
               ...(state as Survey),
-              sumFactor: e.target.checked ? ({} as SumFactor) : undefined,
+              sumFactor: checked ? ({} as SumFactor) : undefined,
             }
             setState({ view_type: "exercise-editor", private_spec: newState })
           }}

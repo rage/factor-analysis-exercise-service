@@ -15,9 +15,9 @@ interface Props {
   onChange: (survey: SumFactor) => void
 }
 const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, onChange }) => {
-  const [testScore, setTestScore] = useState(1)
+  const [testScore, setTestScore] = useState(0)
   return (
-    <div>
+    <div id="sum-factor-editor">
       <fieldset>
         <legend>{"Define the sum-factor"}</legend>
         <TextField
@@ -32,7 +32,7 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
             flex: 2;
           `}
         />
-        <StyledInnerEditor>
+        <StyledInnerEditor respondTo>
           <TextField
             label="Default label for user score icon"
             type="text"
@@ -122,7 +122,7 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
                     newCats?.splice(idx, 1)
                     onChange({ ...sumFactor, categories: newCats })
                   }}
-                ></FactorCategoryEditor>
+                />
               </li>
             )
           })}
@@ -147,22 +147,23 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
             }
           `}
         />
+        <fieldset>
+          <legend>{"Test it out"}</legend>
+          <TextField
+            label="Move the score icon"
+            placeholder={testScore.toString()}
+            type="number"
+            onChange={(score) => setTestScore(+score)}
+          />
+        </fieldset>
       </fieldset>
       <SumFactorReport
         factor={sumFactor}
         userName={sumFactor.userVariable?.label ?? "Your score"}
         userScore={testScore}
         userVar={sumFactor.userVariable as LegendKey}
+        parentWidthPx={document.getElementById("sum-factor-editor")?.clientWidth ?? 0}
       />
-      <fieldset>
-        <legend>{"Test it out"}</legend>
-        <TextField
-          label="Move the score icon"
-          placeholder={testScore.toString()}
-          type="number"
-          onChange={(score) => setTestScore(+score)}
-        />
-      </fieldset>
     </div>
   )
 }

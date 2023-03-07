@@ -19,7 +19,7 @@ const FactorCategoryEditor: React.FC<React.PropsWithChildren<Props>> = ({
   onChange,
 }) => {
   return (
-    <StyledInnerEditor>
+    <StyledInnerEditor respondTo>
       <TextField
         label={`Category Label`}
         aria-label={`${idx + 1}-Category Label`}
