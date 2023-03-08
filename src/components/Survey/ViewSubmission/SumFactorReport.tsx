@@ -24,7 +24,6 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
   userVar,
   parentWidthPx,
 }) => {
-  console.log(parentWidthPx)
   if (!factor.categories) {
     return <></>
   }

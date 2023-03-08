@@ -4,9 +4,10 @@ import { useWindowSize } from "usehooks-ts"
 
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
 import TextField from "../../../shared-module/components/InputFields/TextField"
+import { baseTheme } from "../../../shared-module/styles"
 import { LegendKey, SumFactor } from "../../../util/spec-types/privateSpec"
 import { LogoSelection } from "../../Factorial/ExerciseEditor/ComponentEditors/LogoSelector"
-import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
+import { ButtonWrapper, StyledInnerEditor } from "../../StyledComponents/Wrappers"
 import { SumFactorReport } from "../ViewSubmission/SumFactorReport"
 
 import FactorCategoryEditor from "./FactorCategoryEditor"
@@ -86,7 +87,7 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
           />
         </StyledInnerEditor>
         <ButtonWrapper>
-          <NewButton
+          <button
             onClick={() => {
               const newSumFactor = { ...sumFactor }
               if (typeof newSumFactor.categories === "undefined") {
@@ -100,32 +101,39 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
               })
               onChange(newSumFactor)
             }}
+            className={css`
+              flex: 1;
+              width: 100%;
+              background-color: ${baseTheme.colors.blue[200]};
+            `}
           >
-            {"Add Sum Factor Sub Category"}
-          </NewButton>
+            {"Add Sum-Factor Sub-Category"}
+          </button>
         </ButtonWrapper>
         <ol>
           {sumFactor.categories?.map((cat, idx) => {
             return (
               <li key={idx}>
-                <FactorCategoryEditor
-                  onChange={(newCat) => {
-                    const newCats = sumFactor.categories?.map((c, i) => {
-                      if (idx != i) {
-                        return c
-                      }
-                      return newCat
-                    })
-                    onChange({ ...sumFactor, categories: newCats })
-                  }}
-                  idx={idx}
-                  category={cat}
-                  onDelete={() => {
-                    const newCats = sumFactor.categories
-                    newCats?.splice(idx, 1)
-                    onChange({ ...sumFactor, categories: newCats })
-                  }}
-                />
+                <fieldset>
+                  <FactorCategoryEditor
+                    onChange={(newCat) => {
+                      const newCats = sumFactor.categories?.map((c, i) => {
+                        if (idx != i) {
+                          return c
+                        }
+                        return newCat
+                      })
+                      onChange({ ...sumFactor, categories: newCats })
+                    }}
+                    idx={idx}
+                    category={cat}
+                    onDelete={() => {
+                      const newCats = sumFactor.categories
+                      newCats?.splice(idx, 1)
+                      onChange({ ...sumFactor, categories: newCats })
+                    }}
+                  />
+                </fieldset>
               </li>
             )
           })}
