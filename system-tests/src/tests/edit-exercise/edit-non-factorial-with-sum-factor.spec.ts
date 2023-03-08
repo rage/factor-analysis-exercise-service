@@ -1,9 +1,9 @@
-import { expect, test } from "@playwright/test"
+import { test } from "@playwright/test"
 
 import expectScreenshotsToMatchSnapshots from "../../utils/screenshot"
 import waitForFunction from "../../utils/waitForFunction"
 
-test.only("can add weighted options to non-factorial survey and build a sum-factor report", async ({
+test("can add weighted options to non-factorial survey and build a sum-factor report", async ({
   page,
   headless,
 }) => {
@@ -109,7 +109,7 @@ test.only("can add weighted options to non-factorial survey and build a sum-fact
     )
     .click()
   await frame.locator("#react-select-3-option-0").click()
-  await frame.getByRole("button", { name: "Add Sum Factor Sub Category" }).click()
+  await frame.getByRole("button", { name: "Add Sum-Factor Sub-Category" }).click()
   await frame.getByPlaceholder('example "normal", "low" or "danger zone"').fill("normal")
   await frame.getByLabel("range to").fill("7")
   await frame
@@ -119,7 +119,7 @@ test.only("can add weighted options to non-factorial survey and build a sum-fact
     .click()
   await frame.getByLabel("Hex color").fill("80BFFF")
 
-  await frame.getByRole("button", { name: "Add Sum Factor Sub Category" }).click()
+  await frame.getByRole("button", { name: "Add Sum-Factor Sub-Category" }).click()
   await frame.getByRole("textbox", { name: "2-Category Label" }).fill("not normal")
   await frame
     .getByRole("button", {
@@ -133,7 +133,7 @@ test.only("can add weighted options to non-factorial survey and build a sum-fact
     .filter({ hasText: "Category Label range from range to bar colorCustomffa6ffx" })
     .getByLabel("range to")
     .fill("18")
-  await frame.getByRole("button", { name: "Add Sum Factor Sub Category" }).click()
+  await frame.getByRole("button", { name: "Add Sum-Factor Sub-Category" }).click()
   await frame.getByRole("textbox", { name: "3-Category Label" }).fill("no problems")
   await frame
     .getByRole("listitem")
@@ -147,7 +147,7 @@ test.only("can add weighted options to non-factorial survey and build a sum-fact
     .click()
   await frame.getByLabel("Hex color").fill("73E6E6")
 
-  await frame.getByRole("button", { name: "Add Sum Factor Sub Category" }).click()
+  await frame.getByRole("button", { name: "Add Sum-Factor Sub-Category" }).click()
   await frame
     .getByRole("listitem")
     .filter({ hasText: "Category Label range from range to bar colorCustomF5F6F7x" })
