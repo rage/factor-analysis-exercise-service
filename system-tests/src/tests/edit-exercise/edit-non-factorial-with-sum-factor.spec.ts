@@ -92,7 +92,7 @@ test("can add weighted options to non-factorial survey and build a sum-factor re
     .fill("do; What do you do when you get angry?")
   await frame.getByRole("combobox", { name: "select-answer-type-do." }).press("ArrowDown")
   await frame.getByRole("checkbox", { name: "mark-conditional-do" }).check()
-  await frame.locator(".css-qbdosj-Input").click()
+  await frame.locator("#condition-selector-for-do").click()
   await frame.getByRole("combobox", { name: "triggering-option-selector" }).fill("ofte")
   await frame.getByRole("combobox", { name: "triggering-option-selector" }).press("Enter")
   await frame.getByRole("combobox", { name: "triggering-option-selector" }).fill("alwa")
