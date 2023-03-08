@@ -23,21 +23,21 @@ const LogoWrapper = styled.div<LogoProps>`
   display: grid;
   place-content: center;
   ${({ position }) =>
-    position
+    position !== undefined
       ? `position: absolute;
   left: ${position}%;
   transform: translate(-50%, 0);`
       : ""}
   .div-logo {
-    height: 26px;
-    width: 26px;
+    height: 30px;
+    width: 30px;
     background-color: ${({ backgroundColor }) => backgroundColor};
     border-radius: 20px;
     display: grid;
     place-content: center;
     .div-content {
-      height: 12px;
-      width: 12px;
+      height: 14px;
+      width: 14px;
       background-color: black;
       border-radius: 14px;
     }

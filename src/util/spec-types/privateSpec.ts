@@ -28,6 +28,25 @@ export interface FactorialSurvey {
   }
 }
 
+export interface SumFactor {
+  title?: string
+  description?: string
+  /** Sum-factor contains sub categories, based on amount of point of the user, example: points: 1-3: "low", points 4-7: "middle", points: 8-20: "high". */
+  categories?: SubCategory[]
+  /** Defines the legend key for the user score. */
+  userVariable?: LegendKey
+}
+
+/** A subcategory of a sumfactor is a continuos range of possible achieved points, label of the category, for example "critical", and color of the range for the report visualization. */
+export interface SubCategory {
+  from: number
+  to: number
+  /** Label to describe the sub-range. */
+  label: string
+  /** Color for the result-showing bar for this range of accumulated points. */
+  color: string
+}
+
 /** A grouping of non-factorial questions, cannot be right or wrong. */
 export interface Survey {
   id: string
@@ -37,6 +56,8 @@ export interface Survey {
   content: SurveyItem[]
   /** Rendered to student upon submission. */
   reportSuccessMessage?: string | null
+  /** Defines the one and only possible factor for this survey type */
+  sumFactor?: SumFactor
 }
 
 /** Specifies the types of possible surveys */
@@ -139,6 +160,7 @@ export interface Answer {
   type: AnswerType
   /** The list of predefined options student can choose from. Examples ["yes", "no", "maybe"] or ["dog", "cat", "horse"]. */
   options: string[]
+  factorialOptions?: FactorialOption[]
 }
 
 /** Specifies the types of possible answers. */
@@ -163,6 +185,8 @@ export enum AnswerType {
   FileUpload = "file-upload",
   /** Select one option from a drop-down menu, where one can filter available options by typing. */
   AdvancedDropdown = "advanced-dropdown",
+  /** Radio group with tweighted options for use in sum factor calculation, summing all answers. */
+  WeightedRadioGroup = "weighted-radio-group",
 }
 
 /** Condition for whether to display the question or not

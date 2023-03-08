@@ -33,7 +33,6 @@ interface GradingResult {
   score_given: number
   score_maximum: number
   feedback_text: string | null
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   feedback_json: ExerciseFeedback | null
   set_user_variables?: UserVariablesMap | null
 }

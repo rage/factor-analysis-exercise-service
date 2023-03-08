@@ -3,6 +3,7 @@ import { UserVariablesMap } from "../shared-module/exercise-service-protocol-typ
 
 import { FactorReport, Rate } from "./spec-types/grading"
 import {
+  AnswerType,
   Factor,
   FactorialOption,
   NormalizationValues,
@@ -235,8 +236,16 @@ export const checkCondition = (
 
 export const validateConditionConsistency = (surveyItems: SurveyItem[]) => {
   const possibleConditions = surveyItems
-    .filter((i) => Array.isArray(i.answer.options))
+    .filter((i) => Array.isArray(i.answer.options) || Array.isArray(i.answer.factorialOptions))
     .map((i) => {
+      if (i.answer.factorialOptions) {
+        return i.answer.factorialOptions.map((fop) => {
+          return {
+            questionLabel: i.question.questionLabel,
+            triggeringOption: fop.name,
+          } as SurveyItemCondition
+        })
+      }
       return i.answer.options.map((it) => {
         return {
           questionLabel: i.question.questionLabel,
@@ -318,4 +327,46 @@ export const validateAnsweredQuestions = (
   }
 
   return allAnswered
+}
+
+export const calculateSumFactorScore = (
+  surveyContent: SurveyItem[],
+  answeredQuestions: AnsweredSurveyItem[],
+): number | null => {
+  const weightedItems = surveyContent.filter(
+    (obj) => obj.answer.type === AnswerType.WeightedRadioGroup,
+  )
+
+  let score = 0
+  weightedItems.map((item) => {
+    const answeredItem = answeredQuestions.find((ans) => {
+      return ans.surveyItemId === item.id
+    })
+    score +=
+      item.answer.factorialOptions?.find((opt) => {
+        return opt.name === answeredItem?.answer
+      })?.value ?? 0
+  })
+
+  return score
+}
+
+/**
+ * Uses canvas.measureText to compute and return the width of the given text of given font in pixels.
+ *
+ * @param {String} text The text to be rendered.
+ * @param {String} font The css font descriptor that text is to be rendered with (e.g. "bold 14px verdana").
+ *
+ * @see https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript/21015393#21015393
+ */
+export const getTextWidth = (text: string, font: string): number => {
+  // re-use canvas object for better performance
+  const canvas = document.createElement("canvas")
+  const context = canvas.getContext("2d")
+  if (context) {
+    context.font = font
+    const metrics = context.measureText(text)
+    return metrics.width
+  }
+  return 0
 }

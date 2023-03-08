@@ -204,6 +204,32 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
         </div>
       )
     }
+    case AnswerType.WeightedRadioGroup: {
+      return (
+        <form>
+          <div className="radio">
+            {item.answer.factorialOptions?.map((option) => {
+              return (
+                <RadioGroupWrap key={option.id} checkedColor={CHECKED} disabled={disabled}>
+                  <input
+                    aria-label={option.name}
+                    type="radio"
+                    value={option.name}
+                    onChange={(e) => {
+                      updateAnswer(item.id, e.target.value)
+                    }}
+                    checked={option.name === answer}
+                    required
+                    disabled={disabled}
+                  />
+                  <label>{option.name}</label>
+                </RadioGroupWrap>
+              )
+            })}
+          </div>
+        </form>
+      )
+    }
     default: {
       // eslint-disable-next-line i18next/no-literal-string
       return null

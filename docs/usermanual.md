@@ -8,10 +8,10 @@ First select the appropriate exercise type from the exercise selector:
 
 ### There are 2 types of surveys:
 
-| factorial                                                                                                                                                                                                                                                         | non-factorial                                                                                                                                                                                                                                                                                                                                                            |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| This survey type is meant for building the factorial survey type for calculating and outputting a factorial report to the user based on the user answers. It can also be used for a set of questions having the same answer options (single-choice). For example: | This survey type lets you create survey questions of type:                                                                                                                                                                                                                                                                                                               |
-| ![example of questions with same answer options](./imgs/questions_with_same_options_example.png)                                                                                                                                                                  | <ul><li> free text</li><li> number</li><li>date</li><li>multiple-choice</li><li>single choice:<ul><li>radio-group</li><li>drop-down selection: the advanced drop-down selection allows the user to start typing in the search bar and provides answer alternatives matching the user input, in case of a very long option list.</li></ul></li><li>info element</li></ul> |
+| factorial                                                                                                                                                                                                                                                         | non-factorial                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| This survey type is meant for building the factorial survey type for calculating and outputting a factorial report to the user based on the user answers. It can also be used for a set of questions having the same answer options (single-choice). For example: | This survey type lets you create survey questions of type:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ![example of questions with same answer options](./imgs/questions_with_same_options_example.png)                                                                                                                                                                  | <ul><li> free text</li><li> number</li><li>date</li><li>multiple-choice</li><li>single choice:<ul><li>radio-group</li><li>weighted-radio-group: looks just like radio-group to student, but the options are mapped with weights enabling summing up a ["survey score"](#sum-factor-report)</li><li>drop-down selection: the advanced drop-down selection allows the user to start typing in the search bar and provides answer alternatives matching the user input, in case of a very long option list.</li></ul></li><li>info element</li></ul> |
 
 ## Building a survey
 
@@ -51,7 +51,7 @@ The list can be modified to insert elements or remove elements from the list.
 
 <img src="./imgs/submission_view_parameters.png" width=600 position=left>
 
-> This box defines the given parameters for the given task only, that is, if the exercise consists of more than one task each of them may have its own title and feedback text. Non-factorial survey cannot failby default, so there is no failure message to be defined. Factorial survey displays the failure message in case of "unable to calculate report".
+> This box defines the given parameters for the given task only, that is, if the exercise consists of more than one task each of them may have its own title and feedback text. Non-factorial survey cannot fail by default, so there is no failure message to be defined. Factorial survey displays the failure message in case of "unable to calculate report".
 
 Some or all of the fields may be left empty.
 
@@ -88,7 +88,9 @@ By clicking the "duplicate item" button, a new survey item will be inserted belo
 
 ### Making questions render conditionally
 
-By ticking the box "Conditional" you can choose what condition the question will be rendered on. The condition is another question within the same `task` containing options. The conditional question will be rendered once the survey user selects that particular option from that question. Questions can be made "double conditional" (or triple and so on) by depending on other conditional questions.
+By ticking the box "Conditional" you can choose what condition the question will be rendered on. The condition is another question within the same `task` containing `options`. The question may depend on several options from several questions, meaning that the question is rendered if **ANY** of the conditions are satisfied. The condition .is satisfied if the student selects an option from the list of conditions.
+
+Questions may be made "double conditional" (or triple and so on) by depending on other conditional questions. In other words, chaining conditions.
 
 <p>&nbsp;</p>
 
@@ -100,9 +102,33 @@ By ticking the box "Make global" the answer of this question is made available f
 
 where on the left hand side of `=` the `question_label` is the unique question label of the global question and on the right-hand-side `default value` is any value (text) that is rendered in case the user has not answered that question yet. The `default value` can be left empty.
 
+<p>&nbsp;</p>
+
+### Mandatory questions
+
+By ticking out the `Mandatory` checkbox the student may not submit the survey form unless the question is answered. It is possible to make conditional questions mandatory, the conditional question then affects form validation only if rendered (that is, its condition is met and the question is displayed).
+
+<p>&nbsp;</p>
+
 ### Duplicate item
 
 The button `duplicate item` will create a new survey item below the given item with the exact same list of options. The question label and question text need still be defined. The list of options as well as the answer type can still be modified in both of the survey items independently.
+
+<p>&nbsp;</p>
+
+### Sum factor report
+
+It is possible to build a one-factor report based on the sum of `weighted-radio-group` answers. Just tick the box `Calculate sum-factor report to student` and define the visualization report by adding "sub-categories" to the report. The report will be rendered below for inspection during the editing.
+
+The end result will look exactly like the displayed vasualization (except for the user legend moving along the category-bars).
+
+Student view:
+
+<img src="./imgs/sum-factor-report.png" width=600>
+
+The user score key legend is defined in the same way as in factorial survey [report creation](#define-user-variables) section: Label for user score.
+
+> The `global variable` to impute to the user legend may also come from the same survey form as the one building this report. The key legend will be imputed upon form submission.
 
 <p>&nbsp;</p>
 
@@ -178,7 +204,11 @@ Each column will be added as a factor and for each factor a factor-editor will a
 
 <img src="./imgs/other_documents_factorial.png" width=600>
 
-|                      | Define the user variables                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+<br/>
+
+## Define user variables
+
+|                      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | normalization values | _(Optional)_ normalization values are uploaded in the same way as the factor-weight values. On succesful parsing the values will be displayed in the same matrix as the factor-weights. If not defined the user answers will not be normilized and used in the calculations as is.                                                                                                                                                                                                                                                                                                                                                                                         |
 | Label for user score | Here it is possible to insert a [global variable](#make-global), i. e. a user answer to a question somewhere else in this course ( preferrably earlier and in particular in a [non-factorial survey](#non-factorial-survey)) that is marked `global`. The `question_label` of the given question is given in the `Global variable key for user icon` text-box. In case the survey user does not have such a variable (has not answered and submitted the survey with the global question) a default value to be used is spesified in the `Default label for user score icon` text-box. The icon to represent the user score can be defined in the icon selection dropdown. |
