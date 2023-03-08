@@ -103,11 +103,7 @@ test("can add weighted options to non-factorial survey and build a sum-factor re
   await frame.getByRole("combobox", { name: "triggering-option-selector" }).press("Enter")
   await frame.getByLabel("Calculate sum-factor report to student").check()
   await frame.getByPlaceholder("Factor title text").fill("Hunger-Anger")
-  await frame
-    .locator(
-      "#logo-selector > .css-13cymwt-control > .css-1hb7zxy-IndicatorsContainer > .css-1xc3v61-indicatorContainer",
-    )
-    .click()
+  await frame.locator("#logo-selector").click()
   await frame.locator("#react-select-3-option-0").click()
   await frame.getByRole("button", { name: "Add Sum-Factor Sub-Category" }).click()
   await frame.getByPlaceholder('example "normal", "low" or "danger zone"').fill("normal")
