@@ -1,6 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
 import React from "react"
+import { useWindowSize } from "usehooks-ts"
 
 import { ExerciseFeedback } from "../pages/api/grade"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
@@ -28,6 +29,7 @@ const Submission: React.FC<React.PropsWithChildren<SubmissionProps>> = ({
   gradingFeedback,
   userVariables,
 }) => {
+  useWindowSize()
   return (
     <div
       id="sum-factor-editor"

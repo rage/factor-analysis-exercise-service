@@ -24,9 +24,11 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
   userVar,
   parentWidthPx,
 }) => {
+  console.log(parentWidthPx)
   if (!factor.categories) {
     return <></>
   }
+
   const sortedCategories = [...factor.categories].sort((a, b) => a.from - b.from)
   const start = sortedCategories[0].from
   const finnish = sortedCategories[sortedCategories.length - 1].to

@@ -1,5 +1,6 @@
 import { css } from "@emotion/css"
 import { useState } from "react"
+import { useWindowSize } from "usehooks-ts"
 
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
 import TextField from "../../../shared-module/components/InputFields/TextField"
@@ -16,6 +17,8 @@ interface Props {
 }
 const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, onChange }) => {
   const [testScore, setTestScore] = useState(0)
+  useWindowSize()
+
   return (
     <div id="sum-factor-editor">
       <fieldset>
