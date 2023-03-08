@@ -288,6 +288,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                 return (
                   <li key={idx}>
                     <OptionEditor
+                      questionLabel={item.question.questionLabel}
                       idx={idx + 1}
                       item={fop}
                       onDelete={() => {

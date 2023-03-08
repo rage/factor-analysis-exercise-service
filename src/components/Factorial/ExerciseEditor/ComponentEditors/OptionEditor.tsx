@@ -8,6 +8,7 @@ interface Props {
   item: FactorialOption
   onDelete: () => void
   onChange: (item: FactorialOption) => void
+  questionLabel?: string
 }
 
 const OptionEditor: React.FC<React.PropsWithChildren<Props>> = ({
@@ -15,11 +16,12 @@ const OptionEditor: React.FC<React.PropsWithChildren<Props>> = ({
   item,
   onDelete,
   onChange,
+  questionLabel,
 }) => {
   return (
     <StyledLabelEditor>
       <TextField
-        id={`rate-value-${idx}`}
+        id={`rate-value-${idx}${questionLabel ? "-" + questionLabel : ""}`}
         label="value"
         type="number"
         value={(item.value as unknown as string) ?? ""}
@@ -38,7 +40,7 @@ const OptionEditor: React.FC<React.PropsWithChildren<Props>> = ({
         `}
       />
       <TextField
-        id={`option-text-${idx}`}
+        id={`option-text-${idx}${questionLabel ? "-" + questionLabel : ""}`}
         label={`Option text`}
         value={item.name}
         onChange={(e) => {

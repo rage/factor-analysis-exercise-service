@@ -23,6 +23,7 @@ const FactorCategoryEditor: React.FC<React.PropsWithChildren<Props>> = ({
       <TextField
         label={`Category Label`}
         aria-label={`${idx + 1}-Category Label`}
+        id={`${idx + 1}-Category Label`}
         type="text"
         placeholder={`example "normal", "low" or "danger zone"`}
         onChange={(value) => {
@@ -36,6 +37,8 @@ const FactorCategoryEditor: React.FC<React.PropsWithChildren<Props>> = ({
 
       <TextField
         label="range from"
+        aria-label={`Category-${idx + 1}-range-from`}
+        id={`Category-${idx + 1}-range-from`}
         type="number"
         value={category.from ? (category.from as unknown as string) : "0"}
         onChange={(value) => {
@@ -51,6 +54,8 @@ const FactorCategoryEditor: React.FC<React.PropsWithChildren<Props>> = ({
       />
       <TextField
         label="range to"
+        aria-label={`Category-${idx + 1}-range-to`}
+        id={`Category-${idx + 1}-range-to`}
         type="number"
         value={category.to ? (category.to as unknown as string) : "0"}
         onChange={(value) => {
@@ -64,10 +69,10 @@ const FactorCategoryEditor: React.FC<React.PropsWithChildren<Props>> = ({
           padding: 0 0.4rem 0 0rem;
         `}
       />
-      <label htmlFor="color-picker">{"bar color"}</label>
+      <label htmlFor={`color-picker-for-${category.label + "-" + idx}`}>{"bar color"}</label>
       <ColorPalette
-        id="color-picker"
-        aria-label={`set bar color for ${(category.label, idx)}`}
+        id={`color-picker-for-${category.label + "-" + idx}`}
+        aria-label={`set bar color for ${category.label + "-" + idx}`}
         disableCustomColors={false}
         value={category.color.length ? category.color : baseTheme.colors.clear[100]}
         onChange={(backgroundColor: string) => onChange({ ...category, color: backgroundColor })}
