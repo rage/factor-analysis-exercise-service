@@ -16,11 +16,10 @@ jobs:
         poetry-version: ["1.4.2"]
         os: [macos-latest, ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-      
-    steps:
-      - name: Change wd 
-        run: cd data-parser
-      
+    defaults:
+      run:
+        working-directory: ./data-parser
+    steps:      
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
@@ -57,6 +56,9 @@ jobs:
   release:
     needs: build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./data-parser
     steps:
       - name: Change wd 
         run: cd data-parser
