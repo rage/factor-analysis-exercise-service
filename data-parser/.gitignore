@@ -159,4 +159,7 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+# Never want to upload the data being used to the VC
 data
+# Never want to upload the data been parsed either
+*outputs
