@@ -26,7 +26,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
   updateAnswer,
   disabled,
 }) => {
-  switch (item.answer.type) {
+  switch (item.answerSpec.type) {
     case AnswerType.AdvancedDropdown: {
       return (
         <div
@@ -42,7 +42,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
             }}
             chosenOption={(answer as string) ?? null}
             disabled={disabled}
-            options={item.answer.options}
+            options={item.answerSpec.options}
           />
         </div>
       )
@@ -91,7 +91,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
       const selectedOptions: string[] = (answer as string[]) ?? []
       return (
         <div>
-          {item.answer.options.map((o) => {
+          {item.answerSpec.options.map((o) => {
             return (
               <CheckboxWrap key={o} checkedCollor={CHECKED} disabled={disabled}>
                 <input
@@ -107,7 +107,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
                   }}
                   disabled={disabled}
                 />
-                <label>{o}</label>
+                <label>{o.split(";")[o.split(";").length - 1]}</label>
               </CheckboxWrap>
             )
           })}
@@ -118,7 +118,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <form>
           <div className="radio">
-            {item.answer.options.map((option) => {
+            {item.answerSpec.options.map((option) => {
               return (
                 <RadioGroupWrap key={option} checkedColor={CHECKED} disabled={disabled}>
                   <input
@@ -173,7 +173,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
             disabled={disabled}
           >
             <option value="default" disabled label="--"></option>
-            {item.answer.options.map((option) => {
+            {item.answerSpec.options.map((option) => {
               return (
                 <Option key={option} value={option}>
                   {option}
@@ -192,14 +192,14 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
               aria-label="consent-checkbox"
               type="checkbox"
               id={item.id}
-              name={item.answer.options[0]}
+              name={item.answerSpec.options[0]}
               checked={(answer as string)?.length > 0}
               onChange={(e) => {
                 updateAnswer(item.id, e.target.checked ? "checked" : "")
               }}
               disabled={disabled}
             />
-            <MarkdownText text={item.answer.options.join("")} />
+            <MarkdownText text={item.answerSpec.options.join("")} />
           </CheckboxWrap>
         </div>
       )
@@ -208,7 +208,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
       return (
         <form>
           <div className="radio">
-            {item.answer.factorialOptions?.map((option) => {
+            {item.answerSpec.factorialOptions?.map((option) => {
               return (
                 <RadioGroupWrap key={option.id} checkedColor={CHECKED} disabled={disabled}>
                   <input

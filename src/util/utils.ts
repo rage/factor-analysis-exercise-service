@@ -236,17 +236,19 @@ export const checkCondition = (
 
 export const validateConditionConsistency = (surveyItems: SurveyItem[]) => {
   const possibleConditions = surveyItems
-    .filter((i) => Array.isArray(i.answer.options) || Array.isArray(i.answer.factorialOptions))
+    .filter(
+      (i) => Array.isArray(i.answerSpec.options) || Array.isArray(i.answerSpec.factorialOptions),
+    )
     .map((i) => {
-      if (i.answer.factorialOptions) {
-        return i.answer.factorialOptions.map((fop) => {
+      if (i.answerSpec.factorialOptions) {
+        return i.answerSpec.factorialOptions.map((fop) => {
           return {
             questionLabel: i.question.questionLabel,
             triggeringOption: fop.name,
           } as SurveyItemCondition
         })
       }
-      return i.answer.options.map((it) => {
+      return i.answerSpec.options.map((it) => {
         return {
           questionLabel: i.question.questionLabel,
           triggeringOption: it,
@@ -334,7 +336,7 @@ export const calculateSumFactorScore = (
   answeredQuestions: AnsweredSurveyItem[],
 ): number | null => {
   const weightedItems = surveyContent.filter(
-    (obj) => obj.answer.type === AnswerType.WeightedRadioGroup,
+    (obj) => obj.answerSpec.type === AnswerType.WeightedRadioGroup,
   )
 
   let score = 0
@@ -343,7 +345,7 @@ export const calculateSumFactorScore = (
       return ans.surveyItemId === item.id
     })
     score +=
-      item.answer.factorialOptions?.find((opt) => {
+      item.answerSpec.factorialOptions?.find((opt) => {
         return opt.name === answeredItem?.answer
       })?.value ?? 0
   })
