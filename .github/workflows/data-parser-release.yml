@@ -58,11 +58,8 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./data-parser
+        working-directory: /data-parser
     steps:
-      - name: Change wd 
-        run: cd data-parser
-      
       - uses: actions/setup-node@v3
         with: 
           node-version: '16'
