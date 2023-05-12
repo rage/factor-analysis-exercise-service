@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: /data-parser
+        working-directory: ./data-parser
     steps:
       - uses: actions/setup-node@v3
         with: 
