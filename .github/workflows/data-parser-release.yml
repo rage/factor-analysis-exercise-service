@@ -39,19 +39,11 @@ jobs:
       - name: Build execution file
         run: poetry run pyinstaller main.py --onefile
 
-      - uses: actions/setup-node@v3
-        with: 
-          node-version: '16'
-      
       - name: Rename built binary
         run: poetry run mv ./dist/main ./dist/main-${{ matrix.os }}
-      - name: just checking the dist folder
-        run: |
-          ls
-          ls ./dist/
         
       - name: Store built binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: parser-binary
           path: data-parser/dist
@@ -64,12 +56,9 @@ jobs:
       run:
         working-directory: ./data-parser
     steps:
-      - uses: actions/setup-node@v3
-        with: 
-          node-version: '16'
 
       - name: Download built binary
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: parser-binary
           path: ./dist/
