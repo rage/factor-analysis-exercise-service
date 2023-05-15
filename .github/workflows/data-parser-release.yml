@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: parser-binary
-          path: ./dist/*
+          path: data-parser/dist
           retention-days: 5
 
   release:
@@ -83,5 +83,3 @@ jobs:
     permissions:
       contents: write
 
-# upload artifact instead, new job between for release once artifacts uploaded
-# use som downloadartifact command 
