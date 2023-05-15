@@ -43,7 +43,7 @@ jobs:
         with: 
           node-version: '16'
       
-      - name: rename built binary
+      - name: Rename built binary
         run: poetry run mv ./dist/main ./dist/main-${{ matrix.os }}
       - name: just checking the dist folder
         run: |
@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: parser-binary
-          path: ./dist/
+          path: ./dist/*
           retention-days: 5
 
   release:
