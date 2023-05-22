@@ -143,9 +143,8 @@ for k,v in exercise_tasks_map.items():
 
     else: 
         # Columns are "questionLabel", unless it is mulptiple-choice question,
-        # then columns are "questionLabel option" per option. Some options
-        # end with empty space, we strip it away.
-        col_labels = [[' '.join([item['questionLabel'], option.strip()]) for option in item['options']] if item['answer-type'] == 'multiple-choice' else item['questionLabel'] for item in v['content']]
+        # then columns are "questionLabel option" per option.
+        col_labels = [[' '.join([item['questionLabel'], option.split(';', 1)[0].strip()]) for option in item['options']] if item['answer-type'] == 'multiple-choice' else item['questionLabel'] for item in v['content']]
 
         col_labels = flatten(col_labels)
         col_labels.append('user_id')
@@ -168,8 +167,7 @@ for k,v in exercise_tasks_map.items():
                 else:
                     # If user has not answered this question, all cloumns belonging to this question are NaN, 
                     # otherwise "1" indicates option is checked else "0".
-                    # Have to consider that the column names contain the stripped option
-                    submission.append({col: (1 if col.split(' ', 1)[1] in list(map(str.strip, questionAnswer)) else 0) if questionAnswer else None})
+                    submission.append({col: (1 if col.split(' ', 1)[1] in [x.split(';', 1)[0].strip() for x in questionAnswer] else 0) if questionAnswer else None})
 
             submission = dict(ChainMap(*submission))
             
