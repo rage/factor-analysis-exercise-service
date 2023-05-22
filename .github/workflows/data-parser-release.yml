@@ -72,3 +72,7 @@ jobs:
     permissions:
       contents: write
 
+
+# TODO:
+# codesign --force -s - target/release/tmc-langs-cli for the mac release
+# add this mac sign to gh actions and run the compilation 

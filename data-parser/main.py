@@ -52,7 +52,7 @@ except OSError as error:
 try:
     submissions = (pl.read_csv(join('./data/', submission_files[0]))
             # remove outdated format
-            .filter(pl.col('created_at') >= '2023-03-03'))  
+            .filter(pl.col('created_at') >= '2023-05-22'))  
 except OSError as error:
     print(error)
 
