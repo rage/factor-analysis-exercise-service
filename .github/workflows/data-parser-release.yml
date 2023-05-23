@@ -41,7 +41,7 @@ jobs:
 
       - name: Sign the macos-version build
         if: ${{ matrix.os  == 'macos-11' }}
-        run: codesign --force -s ./dist/main
+        run: codesign --force -s - ./dist/main
 
       - name: Rename built binary
         run: poetry run mv ./dist/main ./dist/main-${{ matrix.os }}
