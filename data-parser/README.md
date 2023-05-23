@@ -33,13 +33,17 @@ The parser expects folder named `data` to contain the downloaded .csv files and 
 where the green `main` is the executable program in question (will probably be called `main-[name of you os]-latest`).
 The parser will use the latest versions of the .csv files if there are several versions available in the `data` folder as in the above example.
 
-Run the parser with
+Open up a terminal and navigate to the directory with the execution file and the `data` folder. From that folder run the parser with
 
 > `./name-of-executable`
 
-from the directory. The parser will create a `parsed-outputs` folder with the resulting .csv file:
+The parser will create a `parsed-outputs` folder with the resulting .csv file:
 
 <img src="../docs/imgs/data-parser/dir-with-output-dir.png" width=500>
+
+You may have to give executuion right to the executable file with:
+
+> `chmod +x name-of-executable`
 
 ## Executing on Cubbli machine using VMware Horizen Client from your browser
 
