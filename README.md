@@ -23,3 +23,10 @@ The adress to use in minikube is:
 When stopping the cluster, the best is to stop the ktunnel exposure before killing the minikube cluster.
 
 If the service is active when minikube is stopped remember to either delete the service from the cluster (see commands in the bin/ktunnel [file](./bin/ktunnel)) or to update the name of the service (factorial-analysis2 for example) which will again affect the local cluster-adress.
+
+### Data parser
+
+The program for parsing the submitted exercises is in the [data-parser](./data-parser/) folder.
+[user manual](./data-parser/README.md) to run the program
+
+### [User manual](./docs/usermanual.md) for building a survey on the courses.mooc.fi platform
