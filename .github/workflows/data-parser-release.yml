@@ -39,6 +39,10 @@ jobs:
       - name: Build execution file
         run: poetry run pyinstaller main.py --onefile
 
+      - name: Sign the macos-version build
+        if: ${{ matrix.os }} == macos
+        run: codesign --force -s ./dist/main
+
       - name: Rename built binary
         run: poetry run mv ./dist/main ./dist/main-${{ matrix.os }}
         
