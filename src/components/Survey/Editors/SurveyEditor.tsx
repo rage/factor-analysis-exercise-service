@@ -7,7 +7,7 @@ import CheckBox from "../../../shared-module/components/InputFields/CheckBox"
 import TextField from "../../../shared-module/components/InputFields/TextField"
 import { baseTheme, primaryFont } from "../../../shared-module/styles"
 import {
-  Answer,
+  AnswerSpec,
   AnswerType,
   SumFactor,
   Survey,
@@ -91,7 +91,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
                     ...quest,
                     id: v4(),
                     question: { question: "", questionLabel: "", id: v4() },
-                    answer: { ...quest.answer, id: v4() },
+                    answer: { ...quest.answerSpec, id: v4() },
                   }
                   const currentIndex = state.content.indexOf(quest)
                   const newContent = state.content
@@ -140,14 +140,14 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
             if (typeof newState.content === "undefined") {
               newState.content = []
             }
-            const answerObject: Answer = {
+            const answerObject: AnswerSpec = {
               type: AnswerType.None,
               options: [],
             }
             newState.content.push({
               id: v4(),
               question: { id: v4(), question: "", questionLabel: "" },
-              answer: answerObject,
+              answerSpec: answerObject,
               conditional: false,
             })
             setState({ view_type: "exercise-editor", private_spec: newState })
@@ -168,14 +168,14 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
                 if (!e) {
                   return
                 }
-                const answerObject: Answer = {
+                const answerObject: AnswerSpec = {
                   type: AnswerType.None,
                   options: [],
                 }
                 newContent.push({
                   id: v4(),
                   question: { id: v4(), questionLabel: e[0], question: e[1] },
-                  answer: answerObject,
+                  answerSpec: answerObject,
                   conditional: false,
                 })
               })

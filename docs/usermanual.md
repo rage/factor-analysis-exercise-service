@@ -84,6 +84,8 @@ Be careful with the no whitespaces between `"` (double-quote) and the preceding 
 
 By clicking the "duplicate item" button, a new survey item will be inserted below containing the same options and of the same answer-type. Once the question label is defined, the answer-selector will appear. You can freely switch between answer-types that contain options without losing your list of options. Choosing an answer type that does not contain options (text, number, date) will clear the list of options.
 
+`multiple-choice` options can also be labelled the same way as questions (`option_label ; arbitrary option text`), see the [parser documentation](../data-parser/README.md#multiple-choice-questions).
+
 <p>&nbsp;</p>
 
 ### Making questions render conditionally

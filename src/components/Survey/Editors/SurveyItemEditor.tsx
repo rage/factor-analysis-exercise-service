@@ -5,7 +5,7 @@ import CheckBox from "../../../shared-module/components/InputFields/CheckBox"
 import TextArea from "../../../shared-module/components/InputFields/TextAreaField"
 import { baseTheme, primaryFont } from "../../../shared-module/styles"
 import { respondToOrLarger } from "../../../shared-module/styles/respond"
-import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/spec-types/privateSpec"
+import { AnswerSpec, AnswerType, Survey, SurveyItem } from "../../../util/spec-types/privateSpec"
 import {
   insertVariablesToText,
   parseLabelQuestion,
@@ -107,23 +107,23 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               },
             }
             if (newItem.question.questionLabel === "info") {
-              newItem.answer.type = AnswerType.None
-              newItem.answer.options = []
+              newItem.answerSpec.type = AnswerType.None
+              newItem.answerSpec.options = []
               delete newItem.globalVariable
               delete newItem.question.mandatory
             }
             if (newItem.question.questionLabel === "info-header") {
-              newItem.answer.type = AnswerType.ConsentCheckbox
-              newItem.answer.options = []
+              newItem.answerSpec.type = AnswerType.ConsentCheckbox
+              newItem.answerSpec.options = []
               delete newItem.globalVariable
               delete newItem.question.mandatory
             }
             if (
-              newItem.answer.type === AnswerType.ConsentCheckbox &&
+              newItem.answerSpec.type === AnswerType.ConsentCheckbox &&
               newItem.question.questionLabel !== "info-header"
             ) {
-              newItem.answer.type = AnswerType.None
-              newItem.answer.options = []
+              newItem.answerSpec.type = AnswerType.None
+              newItem.answerSpec.options = []
             }
             onChangeSurveyItem(newItem)
           }}
@@ -146,22 +146,22 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
         />
         {item.question.questionLabel && item.question.questionLabel !== "info" && (
           <select
-            aria-label={`select-answer-type-${item.question.questionLabel}.`}
+            aria-label={`select-answerSpec-type-${item.question.questionLabel}.`}
             onChange={(event) => {
-              const answer: Answer = item.answer
+              const answerSpec: AnswerSpec = item.answerSpec
               const answerType: AnswerType = event.target.value as unknown as AnswerType
               if (!answerType) {
                 return
               }
               onChangeSurveyItem({
                 ...item,
-                answer: {
-                  ...answer,
+                answerSpec: {
+                  ...answerSpec,
                   options:
                     answerType === AnswerType.Dropdown ||
                     answerType === AnswerType.MultiChoice ||
                     answerType === AnswerType.RadioGroup
-                      ? ([...answer.options] as string[])
+                      ? ([...answerSpec.options] as string[])
                       : [],
                   type: answerType,
                 },
@@ -176,7 +176,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               margin-top: 1rem;
               margin-bottom: 1rem;
             `}
-            value={item.answer.type}
+            value={item.answerSpec.type}
           >
             {Object.values(AnswerType).map((t) => {
               if (t === AnswerType.None) {
@@ -202,13 +202,12 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             })}
           </select>
         )}
-
-        {(item.answer?.type === AnswerType.MultiChoice ||
-          item.answer?.type === AnswerType.RadioGroup ||
-          item.answer?.type === AnswerType.Dropdown ||
-          item.answer?.type === AnswerType.AdvancedDropdown) && (
+        {(item.answerSpec?.type === AnswerType.MultiChoice ||
+          item.answerSpec?.type === AnswerType.RadioGroup ||
+          item.answerSpec?.type === AnswerType.Dropdown ||
+          item.answerSpec?.type === AnswerType.AdvancedDropdown) && (
           <div>
-            {item.answer.options.length > 0 && (
+            {item.answerSpec.options.length > 0 && (
               <ol
                 className={css`
                   width: 100%;
@@ -220,7 +219,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                   border-spacing: 0;
                 `}
               >
-                {item.answer.options.map((o, o_idx) => {
+                {item.answerSpec.options.map((o, o_idx) => {
                   return (
                     <li key={o_idx}>
                       <StyledInnerEditor>
@@ -229,18 +228,18 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                           value={o as string}
                           type="text"
                           onChange={(e) => {
-                            const newAnswer = item.answer
-                            newAnswer.options[o_idx] = e.target.value
-                            onChangeSurveyItem({ ...item, answer: newAnswer })
+                            const newAnswerSpec = item.answerSpec
+                            newAnswerSpec.options[o_idx] = e.target.value
+                            onChangeSurveyItem({ ...item, answerSpec: newAnswerSpec })
                           }}
                         />
                         <DeleteButton
                           onClick={() => {
                             const newAnswer = {
-                              ...item.answer,
-                              options: (item.answer.options as string[]).filter((e) => o !== e),
+                              ...item.answerSpec,
+                              options: (item.answerSpec.options as string[]).filter((e) => o !== e),
                             }
-                            onChangeSurveyItem({ ...item, answer: newAnswer })
+                            onChangeSurveyItem({ ...item, answerSpec: newAnswer })
                           }}
                         >
                           {"x"}
@@ -254,8 +253,8 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             <button
               onClick={() => {
                 const newItem = item as SurveyItem
-                newItem.answer.options.push("")
-                onChangeSurveyItem({ ...item, answer: newItem.answer })
+                newItem.answerSpec.options.push("")
+                onChangeSurveyItem({ ...item, answerSpec: newItem.answerSpec })
               }}
               className={css`
                 flex: 1;
@@ -268,9 +267,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             <CsvReader
               parseNoHeaders={(value) => {
                 const newOptions = value.flat().filter((n) => n === 0 || n)
-                const newAnswer = item.answer
-                newAnswer.options = newOptions
-                onChangeSurveyItem({ ...item, answer: newAnswer })
+                const newAnswerSpec = item.answerSpec
+                newAnswerSpec.options = newOptions
+                onChangeSurveyItem({ ...item, answerSpec: newAnswerSpec })
               }}
               parseUsingHeaders={() => null}
               title={"or upload a csv file"}
@@ -281,10 +280,10 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             />
           </div>
         )}
-        {item.answer.type === AnswerType.WeightedRadioGroup && (
+        {item.answerSpec.type === AnswerType.WeightedRadioGroup && (
           <>
             <ol>
-              {item.answer.factorialOptions?.map((fop, idx) => {
+              {item.answerSpec.factorialOptions?.map((fop, idx) => {
                 return (
                   <li key={idx}>
                     <OptionEditor
@@ -292,16 +291,16 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                       idx={idx + 1}
                       item={fop}
                       onDelete={() => {
-                        const newOptions = item.answer.factorialOptions?.filter(
+                        const newOptions = item.answerSpec.factorialOptions?.filter(
                           (e) => e.id !== fop.id,
                         )
                         onChangeSurveyItem({
                           ...item,
-                          answer: { ...item.answer, factorialOptions: newOptions },
+                          answerSpec: { ...item.answerSpec, factorialOptions: newOptions },
                         })
                       }}
                       onChange={(op) => {
-                        const newOptions = item.answer.factorialOptions?.map((option) => {
+                        const newOptions = item.answerSpec.factorialOptions?.map((option) => {
                           if (option.id !== fop.id) {
                             return option
                           }
@@ -309,7 +308,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                         })
                         onChangeSurveyItem({
                           ...item,
-                          answer: { ...item.answer, factorialOptions: newOptions },
+                          answerSpec: { ...item.answerSpec, factorialOptions: newOptions },
                         })
                       }}
                     />
@@ -320,10 +319,10 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             <button
               onClick={() => {
                 const newItem: SurveyItem = { ...item }
-                if (typeof newItem.answer.factorialOptions === "undefined") {
-                  newItem.answer.factorialOptions = []
+                if (typeof newItem.answerSpec.factorialOptions === "undefined") {
+                  newItem.answerSpec.factorialOptions = []
                 }
-                newItem.answer.factorialOptions.push({ name: "", value: 0, id: v4() })
+                newItem.answerSpec.factorialOptions.push({ name: "", value: 0, id: v4() })
                 onChangeSurveyItem(newItem)
               }}
               className={css`
@@ -336,7 +335,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
             </button>
           </>
         )}
-        {item.answer?.type === AnswerType.ConsentCheckbox && (
+        {item.answerSpec?.type === AnswerType.ConsentCheckbox && (
           <TextArea
             label="Checkbox text editor"
             placeholder={"Consent message"}
@@ -350,9 +349,9 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               }
             `}
             onChange={(value) => {
-              onChangeSurveyItem({ ...item, answer: { ...item.answer, options: [value] } })
+              onChangeSurveyItem({ ...item, answerSpec: { ...item.answerSpec, options: [value] } })
             }}
-            defaultValue={item.answer.options[0]}
+            defaultValue={item.answerSpec.options[0]}
           />
         )}
         <StyledInnerEditor respondTo>
