@@ -145,7 +145,7 @@ export interface SurveyItem {
   /** What is asked from the student. */
   question: Question
   /** Specifies how this item can be answered. */
-  answerSpec: AnswerSpec
+  answer: Answer
   /** Defines if question is rendered conditionally */
   conditional: boolean
   /** If this item is conditional, this one defines the rule for the condition. */
@@ -155,7 +155,7 @@ export interface SurveyItem {
 }
 
 /** Specifies how a non-factorial survey item can be answered. */
-export interface AnswerSpec {
+export interface Answer {
   /** Specifies the kind of answer required. */
   type: AnswerType
   /** The list of predefined options student can choose from. Examples ["yes", "no", "maybe"] or ["dog", "cat", "horse"]. */

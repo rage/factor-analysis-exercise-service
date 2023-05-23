@@ -25,14 +25,14 @@ export const SelectCondition: React.FC<React.PropsWithChildren<SelectorProps>> =
     ) {
       return
     }
-    sItem.answerSpec.options.map((option) => {
+    sItem.answer.options.map((option) => {
       const condition: SurveyItemCondition = {
         questionLabel: sItem.question.questionLabel,
         triggeringOption: option,
       }
       possibleItems.push(condition)
     })
-    sItem.answerSpec.factorialOptions?.map((option) => {
+    sItem.answer.factorialOptions?.map((option) => {
       const condition: SurveyItemCondition = {
         questionLabel: sItem.question.questionLabel,
         triggeringOption: option.name,

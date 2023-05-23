@@ -38,7 +38,7 @@ test("can add non-factorial survey type with information elements and questions 
 
   await page
     .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answerSpec-type-ownership" })
+    .getByRole("combobox", { name: "select-answer-type-ownership" })
     .selectOption("radio-group")
   await page.frameLocator("iframe").getByRole("button", { name: "add option" }).click()
   await page.frameLocator("iframe").getByRole("button", { name: "add option" }).click()
@@ -48,7 +48,7 @@ test("can add non-factorial survey type with information elements and questions 
   await page
     .frameLocator("iframe")
     .getByRole("group", { name: "owner." })
-    .getByRole("combobox", { name: "select-answerSpec-type-owner." })
+    .getByRole("combobox", { name: "select-answer-type-owner." })
     .selectOption("multiple-choice")
   await page
     .frameLocator("iframe")
@@ -62,7 +62,7 @@ test("can add non-factorial survey type with information elements and questions 
     .click()
   await page
     .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answerSpec-type-other_owner" })
+    .getByRole("combobox", { name: "select-answer-type-other_owner" })
     .selectOption("advanced-dropdown")
   await page
     .frameLocator("iframe")
@@ -88,7 +88,7 @@ test("can add non-factorial survey type with information elements and questions 
   await page.frameLocator("iframe").locator("#react-select-2-option-2").dblclick()
   await page
     .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answerSpec-type-animal_name" })
+    .getByRole("combobox", { name: "select-answer-type-animal_name" })
     .selectOption("number")
   await page
     .frameLocator("iframe")
@@ -99,7 +99,7 @@ test("can add non-factorial survey type with information elements and questions 
   await page.frameLocator("iframe").locator("#react-select-3-option-1").click()
   await page
     .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answerSpec-type-official_name" })
+    .getByRole("combobox", { name: "select-answer-type-official_name" })
     .selectOption("dropdown-selection")
   await page
     .frameLocator("iframe")
@@ -155,7 +155,7 @@ test("can add non-factorial survey type with information elements and questions 
     .click()
   await page
     .frameLocator("iframe")
-    .getByRole("combobox", { name: "select-answerSpec-type-death" })
+    .getByRole("combobox", { name: "select-answer-type-death" })
     .selectOption("date")
   await page
     .frameLocator("iframe")

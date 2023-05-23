@@ -34,7 +34,7 @@ test("can add weighted options to non-factorial survey and build a sum-factor re
     .getByPlaceholder("question_label; question text")
     .fill("first_quest; Are you always hungry?")
   await frame
-    .getByRole("combobox", { name: "select-answerSpec-type-first_quest." })
+    .getByRole("combobox", { name: "select-answer-type-first_quest." })
     .selectOption("weighted-radio-group")
   await frame.getByRole("button", { name: "Add Option" }).click()
   await frame.getByLabel("Option text").fill("yes")
@@ -55,7 +55,7 @@ test("can add weighted options to non-factorial survey and build a sum-factor re
     .getByPlaceholder("question_label; question text")
     .fill("anger; Do you get angry when hungry?")
   await frame
-    .getByRole("combobox", { name: "select-answerSpec-type-anger." })
+    .getByRole("combobox", { name: "select-answer-type-anger." })
     .selectOption("weighted-radio-group")
   await frame
     .getByRole("group", { name: "anger." })
@@ -90,7 +90,7 @@ test("can add weighted options to non-factorial survey and build a sum-factor re
     })
     .getByPlaceholder("question_label; question text")
     .fill("do; What do you do when you get angry?")
-  await frame.getByRole("combobox", { name: "select-answerSpec-type-do." }).press("ArrowDown")
+  await frame.getByRole("combobox", { name: "select-answer-type-do." }).press("ArrowDown")
   await frame.getByRole("checkbox", { name: "mark-conditional-do" }).check()
   await frame.locator("#condition-selector-for-do").click()
   await frame.getByRole("combobox", { name: "triggering-option-selector" }).fill("ofte")
