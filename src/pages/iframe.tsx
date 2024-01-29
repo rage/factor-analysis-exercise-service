@@ -1,5 +1,3 @@
-import { css } from "@emotion/css"
-import { useRouter } from "next/router"
 import React, { useCallback, useState } from "react"
 import ReactDOM from "react-dom"
 
@@ -51,13 +49,6 @@ export type Url = {
 const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [state, setState] = useState<State | null>(null)
 
-  const router = useRouter()
-  const rawMaxWidth = router?.query?.width
-  let maxWidth: number | null = 500
-  if (rawMaxWidth) {
-    maxWidth = Number(rawMaxWidth)
-  }
-
   const callback = useCallback((messageData: unknown, port: MessagePort) => {
     if (isSetStateMessage(messageData)) {
       ReactDOM.flushSync(() => {
@@ -108,13 +99,7 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   return (
     <HeightTrackingContainer port={port}>
-      <div
-        className={css`
-          width: 100%;
-          ${maxWidth && `max-width: ${maxWidth}px;`}
-          margin: 0 auto;
-        `}
-      >
+      <div>
         <Renderer port={port} setState={setState} state={state} />
       </div>
     </HeightTrackingContainer>
