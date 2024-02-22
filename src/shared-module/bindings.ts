@@ -455,6 +455,7 @@ export interface ExerciseServiceInfoApi {
   grade_endpoint_path: string
   public_spec_endpoint_path: string
   model_solution_spec_endpoint_path: string
+  has_custom_view?: boolean
 }
 
 export interface ExerciseService {

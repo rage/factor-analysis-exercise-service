@@ -934,7 +934,10 @@ export function isExerciseServiceInfoApi(obj: unknown): obj is ExerciseServiceIn
     typeof typedObj["user_interface_iframe_path"] === "string" &&
     typeof typedObj["grade_endpoint_path"] === "string" &&
     typeof typedObj["public_spec_endpoint_path"] === "string" &&
-    typeof typedObj["model_solution_spec_endpoint_path"] === "string"
+    typeof typedObj["model_solution_spec_endpoint_path"] === "string" &&
+    (typeof typedObj["has_custom_view"] === "undefined" ||
+      typedObj["has_custom_view"] === false ||
+      typedObj["has_custom_view"] === true)
   )
 }
 

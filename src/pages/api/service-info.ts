@@ -26,5 +26,6 @@ const handlePost = (_req: NextApiRequest, res: NextApiResponse<ExerciseServiceIn
     grade_endpoint_path: `${prefix}/api/grade`,
     public_spec_endpoint_path: `${prefix}/api/public-spec`,
     model_solution_spec_endpoint_path: `${prefix}/api/model-solution`,
+    has_custom_view: true,
   })
 }
