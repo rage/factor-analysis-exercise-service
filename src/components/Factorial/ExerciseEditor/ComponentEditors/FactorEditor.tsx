@@ -20,7 +20,7 @@ const FactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ factor, onChan
             label="Name"
             type="text"
             placeholder="Factor name"
-            onChange={(value) => {
+            onChangeByValue={(value) => {
               onChangeFactor({ ...factor, name: value })
             }}
             value={factor.name}
@@ -34,7 +34,7 @@ const FactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ factor, onChan
             type="number"
             placeholder="ranging from"
             value={factor.range?.min ? (factor.range?.min as unknown as string) : "0"}
-            onChange={(value) => {
+            onChangeByValue={(value) => {
               onChangeFactor({
                 ...factor,
                 range: { max: factor.range?.max ?? 0, min: parseFloat(value) },
@@ -50,7 +50,7 @@ const FactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ factor, onChan
             type="number"
             placeholder="ranging to"
             value={factor.range?.max ? (factor.range?.max as unknown as string) : "0"}
-            onChange={(value) => {
+            onChangeByValue={(value) => {
               onChangeFactor({
                 ...factor,
                 range: { min: factor.range?.min ?? 0, max: parseFloat(value) },
@@ -66,7 +66,7 @@ const FactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ factor, onChan
             type="number"
             placeholder="mean"
             value={factor.mainComparingVar ? (factor.mainComparingVar as unknown as string) : "0"}
-            onChange={(value) => {
+            onChangeByValue={(value) => {
               onChangeFactor({
                 ...factor,
                 mainComparingVar: parseFloat(value) ?? 0,
@@ -81,7 +81,7 @@ const FactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ factor, onChan
           label="Description"
           placeholder="Factor description"
           autoResize
-          onChange={(value) => {
+          onChangeByValue={(value) => {
             onChangeFactor({ ...factor, description: value })
           }}
           value={factor.description}

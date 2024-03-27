@@ -15,7 +15,7 @@ interface CoordinateProps {
   parentWidthPx: number
 }
 
-type Bar = SubCategory & { barWidth: number; padding: number; labelWidth: number }
+export type Bar = SubCategory & { barWidth: number; padding: number; labelWidth: number }
 
 export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>> = ({
   factor,
@@ -25,7 +25,7 @@ export const SumFactorReport: React.FC<React.PropsWithChildren<CoordinateProps>>
   parentWidthPx,
 }) => {
   if (!factor.categories) {
-    return <></>
+    return null
   }
 
   const sortedCategories = [...factor.categories].sort((a, b) => a.from - b.from)

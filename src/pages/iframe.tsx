@@ -3,11 +3,13 @@ import { useRouter } from "next/router"
 import React, { useCallback, useState } from "react"
 import ReactDOM from "react-dom"
 
+import customViewState from "../../tests/test-data/custom-view-spec.json"
 import Renderer from "../components/Renderer"
 import { ExerciseTaskGradingResult } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import {
   CurrentStateMessage,
+  CustomViewIframeState,
   UserVariablesMap,
 } from "../shared-module/exercise-service-protocol-types"
 import { isSetStateMessage } from "../shared-module/exercise-service-protocol-types.guard"
@@ -43,6 +45,7 @@ export type State =
       view_type: "exercise-editor"
       private_spec: PrivateSpec
     }
+  | CustomViewIframeState
 
 export type Url = {
   url: string
@@ -59,7 +62,9 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
   }
 
   const callback = useCallback((messageData: unknown, port: MessagePort) => {
+    //const messageData = customViewState as SetStateMessage
     if (isSetStateMessage(messageData)) {
+      console.log("Messagedata:", messageData)
       ReactDOM.flushSync(() => {
         if (messageData.view_type === "answer-exercise") {
           setState({
@@ -91,6 +96,17 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
             feedback_json: messageData.data.grading?.feedback_json as ExerciseFeedback | null,
             grading: messageData.data.grading,
             user_variables: messageData.user_variables,
+          })
+        } else if (messageData.view_type === "custom-view") {
+          const customView = customViewState as unknown as CustomViewIframeState
+          console.log("view_type is custom-view", customView)
+          setState({
+            view_type: customView.view_type,
+            user_information: customView.user_information,
+            course_name: customView.course_name,
+            user_variables: customView.user_variables,
+            data: customView.data,
+            module_completion_date: customView.module_completion_date ?? null,
           })
         } else {
           // eslint-disable-next-line i18next/no-literal-string

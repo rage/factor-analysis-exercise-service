@@ -51,7 +51,7 @@ const QuestionEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChan
           label={`Markdown Editor (special purpose labels: "info")`}
           placeholder="question_label; question text"
           autoResize
-          onChange={(value) => {
+          onChangeByValue={(value) => {
             const parsedValue = parseLabelQuestion(value)
             if (!parsedValue) {
               return
@@ -79,7 +79,7 @@ const QuestionEditor: React.FC<React.PropsWithChildren<Props>> = ({ item, onChan
         {item.questionLabel !== "info" && (
           <CheckBox
             label="Mandatory"
-            onChange={(checked) => {
+            onChangeByValue={(checked) => {
               const mandatory = checked
               onChangeQuestion({ ...item, mandatory: mandatory ?? false })
             }}

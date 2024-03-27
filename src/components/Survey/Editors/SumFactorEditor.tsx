@@ -28,7 +28,7 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
           label="Title text"
           type="text"
           placeholder="Factor title text"
-          onChange={(value) => {
+          onChangeByValue={(value) => {
             onChange({ ...sumFactor, title: value })
           }}
           value={sumFactor.title}
@@ -41,7 +41,7 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
             label="Default label for user score icon"
             type="text"
             value={sumFactor.userVariable?.label ? sumFactor.userVariable?.label : ""}
-            onChange={(value) => {
+            onChangeByValue={(value) => {
               onChange({
                 ...sumFactor,
                 userVariable: {
@@ -58,7 +58,7 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
             label="Global variable key for user icon"
             type="text"
             value={sumFactor.userVariable?.globalKey ? sumFactor.userVariable.globalKey : ""}
-            onChange={(value) => {
+            onChangeByValue={(value) => {
               onChange({
                 ...sumFactor,
                 userVariable: {
@@ -142,7 +142,7 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
           label="Description"
           placeholder="Factor description"
           autoResize
-          onChange={(value) => {
+          onChangeByValue={(value) => {
             onChange({ ...sumFactor, description: value })
           }}
           value={sumFactor.description}
@@ -164,7 +164,7 @@ const SumFactorEditor: React.FC<React.PropsWithChildren<Props>> = ({ sumFactor, 
             label="Move the score icon"
             placeholder={testScore.toString()}
             type="number"
-            onChange={(score) => setTestScore(+score)}
+            onChangeByValue={(score) => setTestScore(+score)}
           />
         </fieldset>
       </fieldset>

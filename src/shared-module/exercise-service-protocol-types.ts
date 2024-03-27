@@ -1,5 +1,6 @@
 /* eslint-disable i18next/no-literal-string */
-import { ExerciseTaskGradingResult, RepositoryExercise } from "./bindings"
+import { ExerciseTaskGradingResult, RepositoryExercise, UserInfo } from "./bindings"
+import { GradingRequest, GradingResult } from "./exercise-service-protocol-types-2"
 import { isSetStateMessage } from "./exercise-service-protocol-types.guard"
 
 /**
@@ -7,17 +8,12 @@ import { isSetStateMessage } from "./exercise-service-protocol-types.guard"
  *
  * to: parent
  */
-export type MessageFromIframe = CurrentStateMessage | FileUploadMessage | HeightChangedMessage
+export type MessageFromIframe = CurrentStateMessage | HeightChangedMessage | FileUploadMessage
 
 export interface CurrentStateMessage {
   message: "current-state"
-  data: unknown
+  data: unknown // { private_spec: unknown } | { public_spec: unknown } ?
   valid: boolean
-}
-
-export interface FileUploadMessage {
-  message: "file-upload"
-  files: Map<string, string | Blob>
 }
 
 export interface HeightChangedMessage {
@@ -25,12 +21,17 @@ export interface HeightChangedMessage {
   data: number
 }
 
+export interface FileUploadMessage {
+  message: "file-upload"
+  files: Map<string, string | Blob>
+}
+
 /**
  * from: Parent
  *
  * to: IFrame
  */
-export type MessageToIframe = SetLanguageMessage | UploadResultMessage | SetStateMessage
+export type MessageToIframe = SetLanguageMessage | SetStateMessage | UploadResultMessage
 
 export interface SetLanguageMessage {
   message: "set-language"
@@ -38,19 +39,22 @@ export interface SetLanguageMessage {
   data: string
 }
 
-export type UploadResultMessage =
+export type SetStateMessage = {
+  message: "set-state"
+} & ExtendedIframeState
+
+export type UploadResultMessage = {
+  message: "upload-result"
+} & (
   | {
-      message: "upload-result"
       success: true
       urls: Map<string, string>
     }
   | {
-      message: "upload-result"
       success: false
       error: string
     }
-
-export type SetStateMessage = { message: "set-state" } & IframeState
+)
 
 /**
  * Checks if the message is a set state messages but doesn't require all the fields in the object to match
@@ -81,37 +85,71 @@ export type UserInformation = {
 
 export type UserVariablesMap = { [key: string]: unknown }
 
-export type IframeState =
-  | {
-      view_type: "answer-exercise"
-      exercise_task_id: string
-      user_information: UserInformation
-      /** Variables set from this exercise service's grade endpoint, visible only to this user on this course instance. */
-      user_variables?: UserVariablesMap | null
-      data: {
-        public_spec: unknown
-        previous_submission: unknown | null
-      }
-    }
-  | {
-      view_type: "view-submission"
-      exercise_task_id: string
-      user_information: UserInformation
-      /** Variables set from this exercise service's grade endpoint, visible only to this user on this course instance. */
-      user_variables?: UserVariablesMap | null
-      data: {
-        grading: ExerciseTaskGradingResult | null
-        user_answer: unknown
-        public_spec: unknown
-        model_solution_spec: unknown
-      }
-    }
-  | {
-      view_type: "exercise-editor"
-      exercise_task_id: string
-      user_information: UserInformation
-      repository_exercises?: Array<RepositoryExercise>
-      data: { private_spec: unknown }
-    }
+export type AnswerExerciseIframeState = {
+  view_type: "answer-exercise"
+  exercise_task_id: string
+  user_information: UserInformation
+  /** Variables set from this exercise service's grade endpoint, visible only to this user on this course instance. */
+  user_variables?: UserVariablesMap | null
+  data: {
+    public_spec: unknown
+    previous_submission: unknown | null
+  }
+}
 
-export type IframeViewType = IframeState["view_type"]
+export type ViewSubmissionIframeState = {
+  view_type: "view-submission"
+  exercise_task_id: string
+  user_information: UserInformation
+  /** Variables set from this exercise service's grade endpoint, visible only to this user on this course instance. */
+  user_variables?: UserVariablesMap | null
+  data: {
+    grading: ExerciseTaskGradingResult | null
+    user_answer: unknown
+    public_spec: unknown
+    model_solution_spec: unknown
+  }
+}
+
+export type ExerciseEditorIframeState = {
+  view_type: "exercise-editor"
+  exercise_task_id: string
+  user_information: UserInformation
+  repository_exercises?: Array<RepositoryExercise>
+  data: { private_spec: unknown }
+}
+
+export type CustomViewIframeState = {
+  view_type: "custom-view"
+  user_information: UserInfo
+  user_variables?: UserVariablesMap | null
+  course_name: string
+  module_completion_date: string | null
+  data: {
+    submissions_by_exercise: Array<{
+      exercise_id: string
+      exercise_name: string
+      exercise_tasks: Array<{
+        task_id: string
+        public_spec: unknown
+        user_answer: unknown
+        grading: unknown
+      }>
+    }>
+  }
+}
+
+/** Defines the allowed data formats for the set-state-message */
+export type ExerciseIframeState =
+  | AnswerExerciseIframeState
+  | ViewSubmissionIframeState
+  | ExerciseEditorIframeState
+
+export type ExtendedIframeState = ExerciseIframeState | CustomViewIframeState
+
+export type IframeViewType = ExerciseIframeState["view_type"]
+
+// To workaround a bug in ts-auto-guard
+export type NonGenericGradingRequest = GradingRequest<unknown, unknown>
+
+export type NonGenericGradingResult = GradingResult<unknown>
