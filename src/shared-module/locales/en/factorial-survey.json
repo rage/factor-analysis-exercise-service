@@ -1,0 +1,12 @@
+{
+  "feedback-text": "feedback",
+  "input-placeholder-option-text": "Option text",
+  "new": "New",
+  "score-given": "score given",
+  "waiting-for-content": "Waiting for content...",
+  "waiting-for-port": "Waiting for port...",
+  "pdf-file-name": "survey_responses_summary",
+  "pdf-download-text": "Download a summary of your research reports as a PDF file from here",
+  "pdf-sub-title": "Summary of My Research Reports",
+  "pdf-sub-text": "{{ studentName }}, you completed the online course 'Me and My Pet,' developed by the research group of Hannes Lohi at the University of Helsinki. Course completion date: {{ date }}. Here is a summary report of the survey responses you filled out during the course regarding your own and your pet's characteristics."
+}

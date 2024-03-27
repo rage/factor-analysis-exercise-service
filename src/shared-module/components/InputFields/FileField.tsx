@@ -51,8 +51,7 @@ const errorClass = css`
   display: inline-block;
 `
 
-export interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
-  type?: "email" | "password" | "text" | "number" | "color"
+export interface FileFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string
   labelStyle?: string
   hint?: string
@@ -60,8 +59,8 @@ export interface TextFieldProps extends InputHTMLAttributes<HTMLInputElement> {
   onChangeByValue?: (value: string, name?: string) => void
 }
 
-const TextField: React.FC<TextFieldProps> = forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ onChange, onChangeByValue, className, disabled, error, ...rest }: TextFieldProps, ref) => {
+const FileField = forwardRef<HTMLInputElement, FileFieldProps>(
+  ({ onChange, onChangeByValue, className, disabled, error, ...rest }: FileFieldProps, ref) => {
     const { t } = useTranslation()
 
     const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,7 +74,6 @@ const TextField: React.FC<TextFieldProps> = forwardRef<HTMLInputElement, TextFie
         onChange(event)
       }
     }
-
     return (
       <div
         className={cx(
@@ -113,12 +111,11 @@ const TextField: React.FC<TextFieldProps> = forwardRef<HTMLInputElement, TextFie
             id={rest.id}
             name={rest.name}
             disabled={disabled}
-            colorField={rest.type === "color"}
+            type={"file"}
             // eslint-disable-next-line i18next/no-literal-string
             aria-errormessage={`${rest.id ?? rest.label}_error`}
             aria-invalid={error !== undefined}
             onChange={handleOnChange}
-            defaultValue={rest.defaultValue}
             error={errorToDescription(error) ?? undefined}
             ref={ref}
             {...rest}
@@ -142,6 +139,5 @@ const TextField: React.FC<TextFieldProps> = forwardRef<HTMLInputElement, TextFie
     )
   },
 )
-
-TextField.displayName = "TextField"
-export default TextField
+FileField.displayName = "FileField"
+export default FileField

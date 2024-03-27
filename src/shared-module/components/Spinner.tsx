@@ -1,17 +1,14 @@
 /* eslint-disable i18next/no-literal-string */
 import { keyframes } from "@emotion/react"
 import styled from "@emotion/styled"
-import React from "react"
 
 import { baseTheme } from "../styles"
+import { SPINNER_CLASS } from "../utils/constants"
 
-export interface SpinnerExtraProps {
+export interface SpinnerProps {
   variant: "large" | "medium" | "small"
   disableMargin?: boolean
 }
-
-export type SpinnerProps = React.HTMLAttributes<HTMLDivElement> & SpinnerExtraProps
-
 const rotation = keyframes`
   0% { transform: rotate(0deg) }
   100% { transform: rotate(360deg) }
@@ -59,10 +56,8 @@ const StyledSpinner = styled.div<SpinnerProps>`
   animation-fill-mode: forwards;
 `
 
-const Spinner: React.FC<React.PropsWithChildren<React.PropsWithChildren<SpinnerProps>>> = (
-  props,
-) => {
-  return <StyledSpinner {...props}></StyledSpinner>
+const Spinner = (props: SpinnerProps) => {
+  return <StyledSpinner className={SPINNER_CLASS} {...props}></StyledSpinner>
 }
 
 export default Spinner
