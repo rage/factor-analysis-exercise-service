@@ -25,8 +25,8 @@ const OptionEditor: React.FC<React.PropsWithChildren<Props>> = ({
         label="value"
         type="number"
         value={(item.value as unknown as string) ?? ""}
-        onChange={(e) => {
-          const parsedNumber = parseInt(e)
+        onChangeByValue={(value) => {
+          const parsedNumber = parseInt(value)
           onChange({ ...item, value: isNaN(parsedNumber) ? null : parsedNumber })
         }}
         className={css`
@@ -43,8 +43,8 @@ const OptionEditor: React.FC<React.PropsWithChildren<Props>> = ({
         id={`option-text-${idx}${questionLabel ? "-" + questionLabel : ""}`}
         label={`Option text`}
         value={item.name}
-        onChange={(e) => {
-          onChange({ ...item, name: e })
+        onChangeByValue={(value) => {
+          onChange({ ...item, name: value })
         }}
         className={css`
           flex: 1;

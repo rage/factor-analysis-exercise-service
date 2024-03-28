@@ -93,7 +93,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
           label={`Markdown Editor (special purpose labels: "info" & "info-header")`}
           autoResize
           placeholder="question_label; question text"
-          onChange={(value) => {
+          onChangeByValue={(value) => {
             const parsedValue = parseLabelQuestion(value)
             if (!parsedValue) {
               return
@@ -348,7 +348,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                 max-height: 100px;
               }
             `}
-            onChange={(value) => {
+            onChangeByValue={(value) => {
               onChangeSurveyItem({ ...item, answer: { ...item.answer, options: [value] } })
             }}
             defaultValue={item.answer.options[0]}
@@ -366,7 +366,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
               label="Conditional"
               aria-label={`mark-conditional-${item.question.questionLabel}`}
               checked={item.conditional}
-              onChange={(checked) => {
+              onChangeByValue={(checked) => {
                 const newItem = {
                   ...item,
                   conditional: checked,
@@ -390,7 +390,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                     label={"Make global"}
                     aria-label={`mark-global-variable-${item.question.questionLabel}`}
                     checked={item.globalVariable ? true : false}
-                    onChange={(checked) => {
+                    onChangeByValue={(checked) => {
                       onChangeSurveyItem({
                         ...item,
                         globalVariable: checked,
@@ -409,7 +409,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
                     label="Mandatory"
                     aria-label={`mark-mandatory-variable-${item.question.questionLabel}`}
                     checked={item.question.mandatory ? true : false}
-                    onChange={(checked) => {
+                    onChangeByValue={(checked) => {
                       const newQuestion = { ...item.question, mandatory: checked }
                       onChangeSurveyItem({
                         ...item,

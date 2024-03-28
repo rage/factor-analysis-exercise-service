@@ -31,7 +31,7 @@ const ListInputEditor: React.FC<React.PropsWithChildren<Props>> = ({
           max-height: 200px;
         }
       `}
-      onChange={(value) => {
+      onChangeByValue={(value) => {
         const data = value ? value : ""
         const parsedList = data.split("\n").map((e) => {
           return parseLabelQuestion(e)

@@ -26,7 +26,7 @@ const FactorCategoryEditor: React.FC<React.PropsWithChildren<Props>> = ({
         id={`${idx + 1}-Category Label`}
         type="text"
         placeholder={`example "normal", "low" or "danger zone"`}
-        onChange={(value) => {
+        onChangeByValue={(value) => {
           onChange({ ...category, label: value })
         }}
         value={category.label ?? ""}
@@ -41,7 +41,7 @@ const FactorCategoryEditor: React.FC<React.PropsWithChildren<Props>> = ({
         id={`Category-${idx + 1}-range-from`}
         type="number"
         value={category.from ? (category.from as unknown as string) : "0"}
-        onChange={(value) => {
+        onChangeByValue={(value) => {
           onChange({
             ...category,
             from: parseFloat(value),
@@ -58,7 +58,7 @@ const FactorCategoryEditor: React.FC<React.PropsWithChildren<Props>> = ({
         id={`Category-${idx + 1}-range-to`}
         type="number"
         value={category.to ? (category.to as unknown as string) : "0"}
-        onChange={(value) => {
+        onChangeByValue={(value) => {
           onChange({
             ...category,
             to: parseFloat(value),

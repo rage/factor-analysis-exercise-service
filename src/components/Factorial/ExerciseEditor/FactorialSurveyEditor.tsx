@@ -144,7 +144,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
           label="Title text for submission view"
           type="text"
           value={state.reportVariables?.titleText ? state.reportVariables.titleText : ""}
-          onChange={(value) => {
+          onChangeByValue={(value) => {
             setState({
               view_type: "exercise-editor",
               private_spec: {
@@ -162,7 +162,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
               ? state.reportVariables.reportSuccessMessage
               : ""
           }
-          onChange={(value) => {
+          onChangeByValue={(value) => {
             setState({
               view_type: "exercise-editor",
               private_spec: {
@@ -180,7 +180,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
               ? state.reportVariables.reportFailureMessage
               : ""
           }
-          onChange={(value) => {
+          onChangeByValue={(value) => {
             setState({
               view_type: "exercise-editor",
               private_spec: {
@@ -196,7 +196,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
           label="Provide factor report to student"
           aria-label="calculate-feedback-checkbox"
           checked={state.calculateFeedback ? true : false}
-          onChange={(checked) => {
+          onChangeByValue={(checked) => {
             const newState: FactorialSurvey = {
               ...(state as FactorialSurvey),
               calculateFeedback: checked,
@@ -296,7 +296,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                       ? state.reportVariables?.userVariable?.label
                       : ""
                   }
-                  onChange={(value) => {
+                  onChangeByValue={(value) => {
                     setState({
                       view_type: "exercise-editor",
                       private_spec: {
@@ -323,7 +323,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                       ? state.reportVariables.userVariable.globalKey
                       : ""
                   }
-                  onChange={(value) => {
+                  onChangeByValue={(value) => {
                     setState({
                       view_type: "exercise-editor",
                       private_spec: {
@@ -375,7 +375,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                       ? state.reportVariables.zeroVariable?.label
                       : ""
                   }
-                  onChange={(value) => {
+                  onChangeByValue={(value) => {
                     setState({
                       view_type: "exercise-editor",
                       private_spec: {
@@ -427,7 +427,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                       ? state.reportVariables.comparingVariable?.globalKey
                       : ""
                   }
-                  onChange={(value) => {
+                  onChangeByValue={(value) => {
                     setState({
                       view_type: "exercise-editor",
                       private_spec: {
@@ -502,7 +502,7 @@ const FactorialSurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state
                 label="maximum amount of questions permitted to be rated with NaN (natural number)"
                 type="number"
                 value={state.allowedNans ? (state.allowedNans as unknown as string) : "0"}
-                onChange={(value) => {
+                onChangeByValue={(value) => {
                   setState({
                     view_type: "exercise-editor",
                     private_spec: { ...state, allowedNans: parseInt(value) },

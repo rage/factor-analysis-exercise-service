@@ -194,7 +194,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
           label="Feedback message for submission"
           type="text"
           value={state.reportSuccessMessage ? state.reportSuccessMessage : ""}
-          onChange={(value) => {
+          onChangeByValue={(value) => {
             setState({
               view_type: "exercise-editor",
               private_spec: {
@@ -210,7 +210,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
           label={"Calculate sum-factor report to student"}
           aria-label="calculate-feedback-checkbox"
           checked={state.sumFactor === undefined ? false : true}
-          onChange={(checked) => {
+          onChangeByValue={(checked) => {
             const newState: Survey = {
               ...(state as Survey),
               sumFactor: checked ? ({} as SumFactor) : undefined,

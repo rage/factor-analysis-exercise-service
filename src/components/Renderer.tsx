@@ -7,6 +7,7 @@ import withNoSsr from "../shared-module/utils/withNoSsr"
 
 import Editor from "./Editor"
 import Exercise from "./Exercise"
+import PdfGenerator from "./PdfDownload/PdfGenerator"
 import Submission from "./Submission"
 
 interface RendererProps {
@@ -42,6 +43,12 @@ const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({ state, set
     )
   } else if (state.view_type === "exercise-editor") {
     return <Editor state={state.private_spec} port={port} setState={setState} />
+  } else if (state.view_type === "custom-view") {
+    return (
+      <div>
+        <PdfGenerator {...state} />
+      </div>
+    )
   } else {
     return <>{t("waiting-for-content")}</>
   }

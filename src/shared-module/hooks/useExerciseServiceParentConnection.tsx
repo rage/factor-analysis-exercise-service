@@ -5,7 +5,9 @@ import { useEffect, useState } from "react"
  *
  * How this connection establisment works and what are the allowed messages are documented here: https://github.com/rage/secret-project-331/blob/master/docs/iframes.md
  */
-function useExerciseServiceParentConnection(onMessage: (messageData: unknown, port: MessagePort) => void) {
+function useExerciseServiceParentConnection(
+  onMessage: (messageData: unknown, port: MessagePort) => void,
+) {
   const [port, setPort] = useState<MessagePort | null>(null)
   useEffect(() => {
     const handler = (message: WindowEventMap["message"]) => {
