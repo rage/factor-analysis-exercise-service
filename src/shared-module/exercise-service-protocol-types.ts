@@ -124,7 +124,7 @@ export type CustomViewIframeState = {
   user_information: UserInfo
   user_variables?: UserVariablesMap | null
   course_name: string
-  module_completion_date: string | null
+  module_completion_date?: string | null
   data: {
     submissions_by_exercise: Array<{
       exercise_id: string

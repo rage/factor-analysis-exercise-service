@@ -243,7 +243,7 @@ export function isCustomViewIframeState(obj: unknown): obj is CustomViewIframeSt
       typedObj["user_variables"] === null ||
       (isUserVariablesMap(typedObj["user_variables"]) as boolean)) &&
     typeof typedObj["course_name"] === "string" &&
-    (typedObj["module_completion_date"] === null ||
+    (typeof typedObj["module_completion_date"] === "undefined" || typedObj["module_completion_date"] === null ||
       typeof typedObj["module_completion_date"] === "string") &&
     ((typedObj["data"] !== null && typeof typedObj["data"] === "object") ||
       typeof typedObj["data"] === "function") &&

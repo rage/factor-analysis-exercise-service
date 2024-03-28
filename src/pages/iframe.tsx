@@ -2,7 +2,6 @@ import React, { useCallback, useState } from "react"
 import ReactDOM from "react-dom"
 import { useTranslation } from "react-i18next"
 
-import customViewState from "../../tests/test-data/custom-view-spec.json"
 import Renderer from "../components/Renderer"
 import { ExerciseTaskGradingResult } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
@@ -94,15 +93,14 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
             user_variables: messageData.user_variables,
           })
         } else if (messageData.view_type === "custom-view") {
-          const customView = customViewState as unknown as CustomViewIframeState
-          console.log("view_type is custom-view", customView)
+          //const customView = customViewState as unknown as CustomViewIframeState
           setState({
-            view_type: customView.view_type,
-            user_information: customView.user_information,
-            course_name: customView.course_name,
-            user_variables: customView.user_variables,
-            data: customView.data,
-            module_completion_date: customView.module_completion_date ?? null,
+            view_type: messageData.view_type,
+            user_information: messageData.user_information,
+            course_name: messageData.course_name,
+            user_variables: messageData.user_variables,
+            data: messageData.data,
+            module_completion_date: messageData.module_completion_date ?? null,
           })
         } else {
           // eslint-disable-next-line i18next/no-literal-string
