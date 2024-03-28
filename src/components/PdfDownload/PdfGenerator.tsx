@@ -292,9 +292,9 @@ const MyDoc: React.FC<React.PropsWithChildren<CustomViewIframeState>> = (props) 
     .flatMap((exercise) => {
       return exercise.exercise_tasks.flatMap((task) => {
         const grading = task.grading as CustomViewExerciseTaskGrading
-        const answer = task.user_answer
-          ? ((task.user_answer as CustomViewExerciseTaskSubmission[])[0].data_json as UserAnswer)
-          : null
+        const answer =
+          ((task.user_answer as CustomViewExerciseTaskSubmission)?.data_json as UserAnswer) ?? null
+
         const pubSpec = task.public_spec as PublicSpec
         const gradingFeedback = grading.feedback_json
           ? (grading.feedback_json as ExerciseFeedback)
