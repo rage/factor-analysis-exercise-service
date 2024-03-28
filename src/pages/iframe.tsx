@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react"
 import ReactDOM from "react-dom"
+import { useTranslation } from "react-i18next"
 
 import customViewState from "../../tests/test-data/custom-view-spec.json"
 import Renderer from "../components/Renderer"
@@ -10,7 +11,10 @@ import {
   CustomViewIframeState,
   UserVariablesMap,
 } from "../shared-module/exercise-service-protocol-types"
-import { isSetStateMessage } from "../shared-module/exercise-service-protocol-types.guard"
+import {
+  isSetLanguageMessage,
+  isSetStateMessage,
+} from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { PrivateSpec } from "../util/spec-types/privateSpec"
 import { PublicSpec } from "../util/spec-types/publicSpec"
@@ -50,6 +54,7 @@ export type Url = {
 }
 
 const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useState<State | null>(null)
 
   const callback = useCallback((messageData: unknown, port: MessagePort) => {
@@ -104,6 +109,8 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
           console.error("Unknown view type received from parent")
         }
       })
+    } else if (isSetLanguageMessage(messageData)) {
+      i18n.changeLanguage(messageData.data)
     } else {
       // eslint-disable-next-line i18next/no-literal-string
       console.error("Frame received an unknown message from message port")
