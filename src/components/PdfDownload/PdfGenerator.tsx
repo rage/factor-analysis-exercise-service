@@ -294,6 +294,7 @@ const MyDoc: React.FC<React.PropsWithChildren<CustomViewIframeState>> = (props) 
         const grading = task.grading as CustomViewExerciseTaskGrading
         const answer =
           ((task.user_answer as CustomViewExerciseTaskSubmission)?.data_json as UserAnswer) ?? null
+
         const pubSpec = task.public_spec as PublicSpec
         const gradingFeedback = grading.feedback_json
           ? (grading.feedback_json as ExerciseFeedback)
