@@ -292,8 +292,9 @@ const MyDoc: React.FC<React.PropsWithChildren<CustomViewIframeState>> = (props) 
     .flatMap((exercise) => {
       return exercise.exercise_tasks.flatMap((task) => {
         const grading = task.grading as CustomViewExerciseTaskGrading
-        const answer = (task.user_answer as CustomViewExerciseTaskSubmission[])[0]
-          .data_json as UserAnswer
+        const answer =
+          !!task.user_answer &&
+          ((task.user_answer as CustomViewExerciseTaskSubmission[])[0].data_json as UserAnswer)
         const pubSpec = task.public_spec as PublicSpec
         const gradingFeedback = grading.feedback_json
           ? (grading.feedback_json as ExerciseFeedback)
@@ -346,13 +347,15 @@ const MyDoc: React.FC<React.PropsWithChildren<CustomViewIframeState>> = (props) 
                   gradingFeedback={exercise.gradingFeedback}
                   userVariables={user_vars}
                 ></PDFFactorReport>
-                <PDFSumFactorReport
-                  key={exercise.task_id}
-                  gradingFeedback={null}
-                  userVariables={user_vars}
-                  publicSpec={exercise.pubSpec}
-                  answer={exercise.answer}
-                ></PDFSumFactorReport>
+                {exercise.answer && (
+                  <PDFSumFactorReport
+                    key={exercise.task_id}
+                    gradingFeedback={null}
+                    userVariables={user_vars}
+                    publicSpec={exercise.pubSpec}
+                    answer={exercise.answer}
+                  ></PDFSumFactorReport>
+                )}
               </View>
             )
           })}
