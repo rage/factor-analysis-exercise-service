@@ -18,6 +18,7 @@ The parser chooses the latest version of each of the files containing 'Submissio
 ! Need to extract information about which exercises belong to which module and parse accordingly:
 row1: user_id_x, module_a,  answers
 row2: user_id_x, module_b,  answers
+! At this point exercises in different modules might overwrite each other --> no way to link the answers to the correct pet!
 ```
 
 
