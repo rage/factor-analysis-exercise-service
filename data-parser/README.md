@@ -13,6 +13,11 @@ are added as new columns to the final output .csv file.
 (if your 'data' file is contaminated with files from different courses, this will show in the file name)
 The parser chooses the latest version of each of the files containing 'Submissions', 'User Details',
 'Exercise tasks' and 'User Consents' in the file name, no matter the course name.
+
+! TODO: parser does not work correctly now that there are several modules containing identical questionLabels
+! Need to extract information about which exercises belong to which module and parse accordingly:
+row1: user_id_x, module_a,  answers
+row2: user_id_x, module_b,  answers
 ```
 
 
