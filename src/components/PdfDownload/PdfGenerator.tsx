@@ -227,7 +227,7 @@ const PDFSumFactorReport: React.FC<React.PropsWithChildren<SubmissionProps>> = (
   const userLabel: string = userName ?? userVar?.label ?? "Your Score"
   const userPlacement =
     (100 * (-(start as number) + userScore)) / ((finnish as number) - (start as number))
-  const userLabelWidth = (100 * getTextWidth(userLabel, "15px Raleway")) / 100
+  const userLabelWidth = getTextWidth(userLabel, "9px Raleway")
   const labelPlacement =
     userPlacement >= 100 - userLabelWidth ? userPlacement - userLabelWidth - 4 : userPlacement + 4
   return (
