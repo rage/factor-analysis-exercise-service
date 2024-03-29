@@ -27,21 +27,28 @@ except OSError as error:
 submission_files = []
 userdetail_files = []
 exercisetasks_files = []
+user_consents_files = []
 datafiles = [f for f in listdir('./data/') if isfile(join('./data/', f))]
+
+course_names = set()
 
 for f in datafiles:
     [course_name, file_name] = f.split(' - ', 1)
+    course_names.add(course_name)
     if 'Submissions' in file_name:
         submission_files.append(f)
     elif 'Exercise tasks' in file_name:
         exercisetasks_files.append(f)
     elif 'User Details' in file_name:
         userdetail_files.append(f)
+    elif 'User Consents' in file_name:
+        user_consents_files.append(f)
 
 # Sort the files by date, most recent first
 submission_files = sorted(submission_files, key=lambda x: (x.split(' ')[-1]), reverse=True)
 exercisetasks_files = sorted(exercisetasks_files, key=lambda x: (x.split(' ')[-1]), reverse=True)
 userdetail_files = sorted(userdetail_files, key=lambda x: (x.split(' ')[-1]), reverse=True)
+user_consents_files = sorted(user_consents_files, key=lambda x: (x.split(' ')[-1]), reverse=True)
 
 try:
     exercise_tasks = pl.read_csv(join('./data/', exercisetasks_files[0]))
@@ -62,6 +69,13 @@ try:
 except OSError as error:
     print(error)
 
+try:
+    user_consents = pl.read_csv(join('./data/', user_consents_files[0])).select(['course_id', 'question','user_id','research_consent'])
+    
+except OSError as error:
+    print(error)
+
+
 cleaned_subs = (submissions
             .join(user_details.select(pl.exclude('created_at')), on='user_id', how='left')
             .join(exercise_tasks.select(['id', 'exercise_type']), left_on='exercise_task_id', right_on='id', how='left')
@@ -70,6 +84,13 @@ cleaned_subs = (submissions
             .sort('created_at', descending=True)
             .unique(subset=['exercise_task_id', 'user_id'], keep='first')
         )
+user_consents = user_consents.with_columns(
+    pl.col('question').str.replace_all(',', '').str.replace('Hyväksyn että ', '').str.slice(0, 40)
+)
+
+user_consents = user_consents.pivot(index="user_id", columns="question", values="research_consent", aggregate_function=None)
+
+user_details = user_details.join(user_consents, how='left', on='user_id')
 
 # The map of private-specs: { exercise_task_id : { private_spec } }
 exercise_tasks_map = dict([(x[0], json.loads(x[4])) for x in exercise_tasks.rows() if 'factorial' in x[3]])
@@ -189,5 +210,6 @@ except OSError as error:
     else: print(error)
         
 dt = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
-filename = f'./parsed-outputs/Submissions {dt}.csv'
+course_name = '-'.join(course_names)
+filename = f'./parsed-outputs/Survey_data-{course_name}-{dt}.csv'
 user_details.write_csv(filename, has_header=True, quote='"', null_value='', separator=';')
