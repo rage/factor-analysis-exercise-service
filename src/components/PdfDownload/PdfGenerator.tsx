@@ -38,6 +38,7 @@ interface SubmissionProps {
   answer?: UserAnswer
   gradingFeedback: ExerciseFeedback | null
   userVariables?: UserVariablesMap | null
+  exercise_name?: string
 }
 
 const styles = StyleSheet.create({
@@ -196,16 +197,20 @@ const PDFSumFactorReport: React.FC<React.PropsWithChildren<SubmissionProps>> = (
   publicSpec,
   answer,
   userVariables,
+  exercise_name,
 }) => {
   const sumFactor = (publicSpec as Survey)?.sumFactor
   if (!sumFactor || !sumFactor.categories) {
     return null
   }
-  const userScore =
-    calculateSumFactorScore(
-      (publicSpec as Survey)?.content,
-      answer?.answeredQuestions as AnsweredSurveyItem[],
-    ) ?? 0
+  const userScore = calculateSumFactorScore(
+    (publicSpec as Survey)?.content,
+    answer?.answeredQuestions as AnsweredSurveyItem[],
+  )
+
+  if (!userScore) {
+    return null
+  }
   const userName =
     (userVariables != null && sumFactor.userVariable?.globalKey) ?? userVariables
       ? (userVariables[sumFactor.userVariable?.globalKey ?? ""] as string)
@@ -231,50 +236,55 @@ const PDFSumFactorReport: React.FC<React.PropsWithChildren<SubmissionProps>> = (
   const labelPlacement =
     userPlacement >= 100 - userLabelWidth ? userPlacement - userLabelWidth - 4 : userPlacement + 4
   return (
-    <View style={{ marginHorizontal: 10 }}>
-      <Svg height={`160`} width={`100%`} viewBox={`0 0 240 120`}>
-        <Circle
-          cx={`${userPlacement}%`}
-          cy={`${13}%`}
-          r="4"
-          fill="tomato"
-          stroke="brown"
-          strokeWidth="2"
-        />
-        <Text x={`${labelPlacement}%`} y={`16%`} style={{ fontSize: 9, color: "#706d6d" }}>
-          {`${userLabel}`}
-        </Text>
-        {sortedBars.map((car, idx) => {
-          return (
-            <>
-              <Rect
-                key={idx}
-                fill={car.color}
-                width={`${car.barWidth}%`}
-                height={`20%`}
-                x={`${(100 * (car.from - start)) / (finnish - start)}%`}
-                y={`26%`}
-              ></Rect>
-              <Rect
-                key={10 * idx}
-                fill={car.color}
-                width={`8%`}
-                height={`15%`}
-                x={`0%`}
-                y={`${53 + idx * 15}%`}
-              ></Rect>
-              <Text
-                x={`10%`}
-                y={`${66 + idx * 15}%`}
-                style={{ textAlign: "left", marginBottom: "2px", fontSize: 8, color: "#706d6d" }}
-              >
-                {car.label}
-              </Text>
-            </>
-          )
-        })}
-      </Svg>
-    </View>
+    <>
+      <View style={{ paddingBottom: "10px" }}>
+        <Text>{exercise_name}</Text>
+      </View>
+      <View style={{ marginHorizontal: 10 }}>
+        <Svg height={`160`} width={`100%`} viewBox={`0 0 240 120`}>
+          <Circle
+            cx={`${userPlacement}%`}
+            cy={`${13}%`}
+            r="4"
+            fill="tomato"
+            stroke="brown"
+            strokeWidth="2"
+          />
+          <Text x={`${labelPlacement}%`} y={`16%`} style={{ fontSize: 9, color: "#706d6d" }}>
+            {`${userLabel}`}
+          </Text>
+          {sortedBars.map((car, idx) => {
+            return (
+              <>
+                <Rect
+                  key={idx}
+                  fill={car.color}
+                  width={`${car.barWidth}%`}
+                  height={`20%`}
+                  x={`${(100 * (car.from - start)) / (finnish - start)}%`}
+                  y={`26%`}
+                ></Rect>
+                <Rect
+                  key={10 * idx}
+                  fill={car.color}
+                  width={`8%`}
+                  height={`15%`}
+                  x={`0%`}
+                  y={`${53 + idx * 15}%`}
+                ></Rect>
+                <Text
+                  x={`10%`}
+                  y={`${66 + idx * 15}%`}
+                  style={{ textAlign: "left", marginBottom: "2px", fontSize: 8, color: "#706d6d" }}
+                >
+                  {car.label}
+                </Text>
+              </>
+            )
+          })}
+        </Svg>
+      </View>
+    </>
   )
 }
 
@@ -339,16 +349,21 @@ const MyDoc: React.FC<React.PropsWithChildren<CustomViewIframeState>> = (props) 
                 style={[styles.item, { paddingBottom: "20px" }]}
                 wrap={false}
               >
-                <View style={{ paddingBottom: "10px" }}>
-                  <Text>{exercise.exercise_name}</Text>
-                </View>
-                <PDFFactorReport
-                  key={exercise.task_id}
-                  gradingFeedback={exercise.gradingFeedback}
-                  userVariables={user_vars}
-                ></PDFFactorReport>
+                {exercise.gradingFeedback && (
+                  <>
+                    <View style={{ paddingBottom: "10px" }}>
+                      <Text>{exercise.exercise_name}</Text>
+                    </View>
+                    <PDFFactorReport
+                      key={exercise.task_id}
+                      gradingFeedback={exercise.gradingFeedback}
+                      userVariables={user_vars}
+                    ></PDFFactorReport>
+                  </>
+                )}
                 {exercise.answer && (
                   <PDFSumFactorReport
+                    exercise_name={exercise.exercise_name}
                     key={exercise.task_id}
                     gradingFeedback={null}
                     userVariables={user_vars}

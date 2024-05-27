@@ -338,17 +338,23 @@ export const calculateSumFactorScore = (
   )
 
   let score = 0
+  let answered = true
+
   weightedItems.map((item) => {
     const answeredItem = answeredQuestions.find((ans) => {
       return ans.surveyItemId === item.id
-    })
-    score +=
-      item.answer.factorialOptions?.find((opt) => {
-        return opt.name === answeredItem?.answer
-      })?.value ?? 0
+    })?.answer
+    if (answeredItem) {
+      score +=
+        item.answer.factorialOptions?.find((opt) => {
+          return opt.name === answeredItem
+        })?.value ?? 0
+    } else {
+      answered = false
+    }
   })
 
-  return score
+  return answered ? score : null
 }
 
 /**
