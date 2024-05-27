@@ -1,6 +1,8 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
 
+import TextAreaField from "../../shared-module/components/InputFields/TextAreaField"
+import TextField from "../../shared-module/components/InputFields/TextField"
 import { AnswerType, SurveyItem } from "../../util/spec-types/privateSpec"
 import MarkdownText from "../MarkdownText"
 import AdvancedDropdown from "../SharedMisc/AdvancedDropdown"
@@ -50,7 +52,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
     case AnswerType.Number: {
       return (
         <div>
-          <input
+          <TextField
             aria-label={`number-input-for-${item.question.questionLabel}`}
             value={answer ?? ""}
             type="number"
@@ -62,6 +64,7 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
             className={css`
               border: 1px solid #e0e0e0;
               border-radius: 2px;
+              max-width: 10em;
             `}
           />
         </div>
@@ -70,18 +73,20 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
     case AnswerType.Text: {
       return (
         <div>
-          <input
+          <TextAreaField
             aria-label={`text-input-for-${item.question.questionLabel}`}
             value={answer ?? ""}
-            type="text"
+            autoResize
             onChange={(e) => {
               updateAnswer(item.id, e.target.value)
             }}
             required
             disabled={disabled}
             className={css`
-              border: 1px solid #e0e0e0;
-              border-radius: 2px;
+              textarea {
+                width: 99%;
+                max-height: 200px;
+              }
             `}
           />
         </div>
