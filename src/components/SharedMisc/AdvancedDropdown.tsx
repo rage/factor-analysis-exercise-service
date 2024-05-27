@@ -45,6 +45,7 @@ const AdvancedDropdown: React.FC<React.PropsWithChildren<Props>> = ({
       maxMenuHeight={400}
       className={css`
         aria-label: breed-selection;
+        width: 99%;
       `}
     />
     //</div>
