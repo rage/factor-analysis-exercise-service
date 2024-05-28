@@ -34,7 +34,7 @@ course_names = set()
 
 for f in datafiles:
     [course_name, file_name] = f.split(' - ', 1)
-    course_names.add(course_name)
+    #course_names.add(course_name)
     if 'Submissions' in file_name:
         submission_files.append(f)
     elif 'Exercise tasks' in file_name:
@@ -49,6 +49,16 @@ submission_files = sorted(submission_files, key=lambda x: (x.split(' ')[-1]), re
 exercisetasks_files = sorted(exercisetasks_files, key=lambda x: (x.split(' ')[-1]), reverse=True)
 userdetail_files = sorted(userdetail_files, key=lambda x: (x.split(' ')[-1]), reverse=True)
 user_consents_files = sorted(user_consents_files, key=lambda x: (x.split(' ')[-1]), reverse=True)
+
+
+[course_name, file_name] = exercisetasks_files[0].split(' - ', 1)
+course_names.add(course_name)
+[course_name, file_name] = submission_files[0].split(' - ', 1)
+course_names.add(course_name)
+[course_name, file_name] = userdetail_files[0].split(' - ', 1)
+course_names.add(course_name)
+[course_name, file_name] = user_consents_files[0].split(' - ', 1)
+course_names.add(course_name)
 
 try:
     exercise_tasks = pl.read_csv(join('./data/', exercisetasks_files[0]))
@@ -78,7 +88,7 @@ except OSError as error:
 
 cleaned_subs = (submissions
             .join(user_details.select(pl.exclude('created_at')), on='user_id', how='left')
-            .join(exercise_tasks.select(['id', 'exercise_type']), left_on='exercise_task_id', right_on='id', how='left')
+            .join(exercise_tasks.select(['id', 'exercise_type', 'exercise_name', 'course_module_name']), left_on='exercise_task_id', right_on='id', how='left')
             .filter(pl.col('exercise_type') == 'dogs-factorial-analysis-survey')
             .drop(['course_instance_id', 'score_given','exercise_type'])
             .sort('created_at', descending=True)
@@ -92,8 +102,19 @@ user_consents = user_consents.pivot(index="user_id", columns="question", values=
 
 user_details = user_details.join(user_consents, how='left', on='user_id')
 
+course_modules = exercise_tasks.get_column('course_module_name').unique()
+module_user_details_indexes = dict()
+module_user_details = []
+for index, mod in enumerate(course_modules):
+    df = user_details.clone()
+    df = df.with_columns(pl.lit(mod).alias('course_module_name'))
+    module_user_details.append(df)
+    module_user_details_indexes[mod] = index
+#user_details = user_details.join(course_modules, how="cross")
+
 # The map of private-specs: { exercise_task_id : { private_spec } }
-exercise_tasks_map = dict([(x[0], json.loads(x[4])) for x in exercise_tasks.rows() if 'factorial' in x[3]])
+
+exercise_tasks_map = dict([(x[0], json.loads(x[1])) for x in exercise_tasks.select(['id','private_spec','exercise_type']).rows() if 'factorial' in x[2]])
 
 # Formatting the private_specs to needed fields for exstracting submission info
 keys_to_delete = []
@@ -111,6 +132,9 @@ for k,v in exercise_tasks_map.items():
             dict([(key, val) for key,val in dict(quest).items() if key not in ['question', 'mandatory']]) 
             for quest in exercise_tasks_map[k]['questions'] if quest['questionLabel'] not in 'info'
             ])
+        exercise_tasks_map[k]['exercise_name'] = exercise_tasks.select(['exercise_name','id']).row(by_predicate=(pl.col('id') == k))[0]
+        exercise_tasks_map[k]['course_module_name'] = exercise_tasks.select(['course_module_name','id']).row(by_predicate=(pl.col('id') == k))[0]
+        
 # non-factorial survey type: {
 #   id,
 #   content: [{surveyItemId, options, questionLabel, answer-type}],
@@ -132,6 +156,9 @@ for k,v in exercise_tasks_map.items():
             content[idx] = newItem
         if content:
             exercise_tasks_map[k]['content'] = content
+            exercise_tasks_map[k]['exercise_name'] = exercise_tasks.select(['exercise_name','id']).row(by_predicate=(pl.col('id') == k))[0]
+            exercise_tasks_map[k]['course_module_name'] = exercise_tasks.select(['course_module_name','id']).row(by_predicate=(pl.col('id') == k))[0]
+
         else:
             keys_to_delete.append(k)
 
@@ -140,26 +167,37 @@ for key in keys_to_delete:
 
 # Building additional columns to final dataframe exercise tasks at a time
 for k,v in exercise_tasks_map.items():
-    submissions_data = cleaned_subs.filter(pl.col('exercise_task_id') == k).select('user_id','data_json').rows()
-
+    submissions_data = cleaned_subs.filter(pl.col('exercise_task_id') == k).select('user_id','data_json', 'created_at').rows()
+    current_module = v['course_module_name'] 
+    ind = module_user_details_indexes[current_module]
     user_submissions, col_labels, typed_col_labels = [],[],{}
 
     if v['type'] == 'factorial':
         col_labels = [lab['questionLabel'] for lab in v['questions']]
         col_labels.append('user_id')
+        exercise_name_label_for_timestamp = v['exercise_name']
+        col_labels.append('course_module_name')
 
         typed_col_labels = dict(ChainMap(*[{lab['questionLabel']: pl.Int8} for lab in v['questions']]))
+        if exercise_name_label_for_timestamp not in module_user_details[ind].columns:
+                col_labels.append(exercise_name_label_for_timestamp)
+                typed_col_labels[exercise_name_label_for_timestamp] = pl.Utf8
         typed_col_labels['user_id'] = pl.Utf8
+        typed_col_labels['course_module_name'] = pl.Utf8
 
         options = dict([(option['id'], option['value']) for option in v['options']])
     
         for row in submissions_data:
-            row = [row[0], json.loads(row[1])]
+            row = [row[0], json.loads(row[1]), row[2]]
             user_answers = dict(row[1])
 
             submission = dict(ChainMap(*[{item['questionLabel']: options.get(item.get('chosenOptionId'))} for item  in user_answers.get('answeredQuestions')]))
 
             submission['user_id'] = row[0]
+            submission['course_module_name'] = v['course_module_name'] 
+            exercise_name_label_for_timestamp = v['exercise_name']
+            if exercise_name_label_for_timestamp not in module_user_details[ind].columns:
+                submission[exercise_name_label_for_timestamp] = row[2][0:19] # create_at field
             user_submissions.append(submission)
 
     else: 
@@ -169,11 +207,15 @@ for k,v in exercise_tasks_map.items():
 
         col_labels = flatten(col_labels)
         col_labels.append('user_id')
- 
+        exercise_name_label_for_timestamp = v['exercise_name']
+        if exercise_name_label_for_timestamp not in module_user_details[ind].columns:
+                col_labels.append(exercise_name_label_for_timestamp)
+        col_labels.append('course_module_name')
+
         typed_col_labels = dict(ChainMap(*[{col: pl.Utf8} for col in col_labels]))
 
         for row in submissions_data:
-            row = [row[0], json.loads(row[1])]
+            row = [row[0], json.loads(row[1]), row[2]]
 
             user_answer = dict(row[1])
             user_answer = dict([(answeredQ.get('questionLabel'), answeredQ.get('answer')) for answeredQ in user_answer.get('answeredQuestions')])
@@ -193,14 +235,19 @@ for k,v in exercise_tasks_map.items():
             submission = dict(ChainMap(*submission))
             
             submission['user_id']= row[0]
+            submission['course_module_name'] = v['course_module_name']
+            if exercise_name_label_for_timestamp not in module_user_details[ind].columns:
+                submission[exercise_name_label_for_timestamp] = row[2][0:19] # create_at field
 
             user_submissions.append(submission)
 
     data = user_submissions if user_submissions else [[None for _ in col_labels]]
 
+
     additional_cols = pl.DataFrame(data, schema=typed_col_labels).select(col_labels)
 
-    user_details = user_details.join(additional_cols, how='left', on='user_id')
+    
+    module_user_details[ind] = module_user_details[ind].join(additional_cols, how='left', on=['user_id','course_module_name'])
 
 try:
     os.mkdir("./parsed-outputs")
@@ -209,6 +256,8 @@ except OSError as error:
         pass
     else: print(error)
         
+user_details = pl.concat(module_user_details, how="diagonal")
+
 dt = datetime.now().strftime('%d-%m-%Y %H:%M:%S')
 course_name = '-'.join(course_names)
 filename = f'./parsed-outputs/Survey_data-{course_name}-{dt}.csv'

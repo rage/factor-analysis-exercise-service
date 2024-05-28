@@ -57,9 +57,7 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [state, setState] = useState<State | null>(null)
 
   const callback = useCallback((messageData: unknown, port: MessagePort) => {
-    //const messageData = customViewState as SetStateMessage
     if (isSetStateMessage(messageData)) {
-      console.log("Messagedata:", messageData)
       ReactDOM.flushSync(() => {
         if (messageData.view_type === "answer-exercise") {
           setState({

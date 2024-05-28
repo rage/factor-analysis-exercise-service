@@ -227,7 +227,7 @@ const PDFSumFactorReport: React.FC<React.PropsWithChildren<SubmissionProps>> = (
   const userLabel: string = userName ?? userVar?.label ?? "Your Score"
   const userPlacement =
     (100 * (-(start as number) + userScore)) / ((finnish as number) - (start as number))
-  const userLabelWidth = (100 * getTextWidth(userLabel, "15px Raleway")) / 100
+  const userLabelWidth = getTextWidth(userLabel, "9px Raleway")
   const labelPlacement =
     userPlacement >= 100 - userLabelWidth ? userPlacement - userLabelWidth - 4 : userPlacement + 4
   return (
@@ -292,9 +292,9 @@ const MyDoc: React.FC<React.PropsWithChildren<CustomViewIframeState>> = (props) 
     .flatMap((exercise) => {
       return exercise.exercise_tasks.flatMap((task) => {
         const grading = task.grading as CustomViewExerciseTaskGrading
-        const answer = task.user_answer
-          ? ((task.user_answer as CustomViewExerciseTaskSubmission[])[0].data_json as UserAnswer)
-          : null
+        const answer =
+          ((task.user_answer as CustomViewExerciseTaskSubmission)?.data_json as UserAnswer) ?? null
+
         const pubSpec = task.public_spec as PublicSpec
         const gradingFeedback = grading.feedback_json
           ? (grading.feedback_json as ExerciseFeedback)
