@@ -2,24 +2,24 @@
 
 The output of the data-parser is a .csv file containing only answers to the `DOGS FACTORIAL ANALYSIS SURVEY` exercise types. The file will contain answers submitted **after** 22.05.2023 due to the latest format. The separator used in the .csv file is the semicolon `;`.
 
-```diff
-@@ Update March 2024: @@
+<!--- ```diff
+%@@ Update March 2024: @@
 
-+ Support for parsing 'User Consents' files:
-columns named by the 'question' field, containing  true or false indicating whether a user checked the acceptance box,
-are added as new columns to the final output .csv file.
+%+ Support for parsing 'User Consents' files:
+%columns named by the 'question' field, containing  true or false indicating whether a user checked the acceptance box,
+%are added as new columns to the final output .csv file.
 
-+ Output .csv file will contain the course name in question
-(if your 'data' file is contaminated with files from different courses, this will show in the file name)
-The parser chooses the latest version of each of the files containing 'Submissions', 'User Details',
-'Exercise tasks' and 'User Consents' in the file name, no matter the course name.
+%+ Output .csv file will contain the course name in question
+%(if your 'data' file is contaminated with files from different courses, this will show in the file name)
+%The parser chooses the latest version of each of the files containing 'Submissions', 'User Details',
+%'Exercise tasks' and 'User Consents' in the file name, no matter the course name.
 
-! TODO: parser does not work correctly now that there are several modules containing identical questionLabels
-! Need to extract information about which exercises belong to which module and parse accordingly:
-row1: user_id_x, module_a,  answers
-row2: user_id_x, module_b,  answers
-! At this point exercises in different modules might overwrite each other --> no way to link the answers to the correct pet!
-```
+%! TODO: parser does not work correctly now that there are several modules containing identical questionLabels
+%! Need to extract information about which exercises belong to which module and parse accordingly:
+%row1: user_id_x, module_a,  answers
+%row2: user_id_x, module_b,  answers
+%! At this point exercises in different modules might overwrite each other -> no way to link the answers to the correct pet!
+%``` -->
 
 
 ## Dataset layout
