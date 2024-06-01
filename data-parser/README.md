@@ -26,6 +26,9 @@ The output of the data-parser is a .csv file containing only answers to the `DOG
 
 The file contains columns `user_id, name, email`, followed by a column per `questionLabel` existing in the course. Empty submissions (not answered questions) have empty entry-points.
 
+Additionally, column `course_module_name` specify which module the answers for the given user belong to.
+Columns `exercise_name` __per exercise__ (that may contain several _exercise tasks_) with a timestamp for when the user completed the given exercise.
+
 ## Multiple-choice questions
 
 An exception to the above format are the multiple-choice questions. These questions are represented in the dataset as `"questionLabel option"` column per option that may be selected. The user answer is then represented as 1 for chosen option, 0 for not chosen option. If the user has not answered the given question at all, the fields are empty (null).
@@ -36,13 +39,14 @@ For submissions being collected across different _language versions_ it is advic
 
 In order to parse the collected submissions you need to download the files from the main course management page on courses.mooc.fi. The links to download the files are shown at the bottom of the picture
 
-<img src="../docs/imgs/data-parser/Download-files.png" height=500>
+<img src="../docs/imgs/data-parser/Download-files.png" height=700>
 
 The csv file for course instances is not used in the process and may be skipped. The needed files are:
 
 - submissions
 - user details
 - exercise-tasks
+- research consent form answers
 
 To download the data-parser go to github release page https://github.com/rage/factor-analysis-exercise-service/releases/tag/release and choose the execution file for your operative system.
 
