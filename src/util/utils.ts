@@ -242,15 +242,13 @@ export interface UnansweredQuestion {
 }
 
 /**
- * Parses a number the way a student may type it: decimal comma or point, spaces as thousand
- * separators. Returns null for anything else, including the empty string.
+ * Normalizes a number the way a student may type it (decimal comma or point, spaces as thousand
+ * separators) to digits with a decimal point, keeping its digits as typed so leading zeros and
+ * precision survive. Returns null for anything else, including the empty string.
  */
-export const parseDecimal = (text: string): number | null => {
+export const normalizeDecimal = (text: string): string | null => {
   const normalized = text.replace(/\s/g, "").replace(",", ".")
-  if (!/^[+-]?(\d+\.?\d*|\.\d+)$/.test(normalized)) {
-    return null
-  }
-  return Number(normalized)
+  return /^[+-]?(\d+\.?\d*|\.\d+)$/.test(normalized) ? normalized : null
 }
 
 /** Whether the item is hidden unless its `dependsOn` conditions hold. */
@@ -326,7 +324,7 @@ const isAnswerGiven = (item: SurveyItem, answer: AnsweredSurveyItem["answer"] | 
     return false
   }
   if (item.answer.type === AnswerType.Number) {
-    return parseDecimal(answer) !== null
+    return normalizeDecimal(answer) !== null
   }
   return answer.trim().length > 0
 }
@@ -343,7 +341,8 @@ export const answerEntries = <T>(userAnswer: UserAnswer | null | undefined): T[]
 /**
  * Lists the required questions the answer leaves unanswered, in form order. Non-factorial items
  * are matched by survey item id; items hidden by their condition (also through a hidden trigger)
- * or rendering no input are not required. Shared by the iframe and the grade endpoint.
+ * or rendering no input, such as factorial questions without options, are not required. Shared by
+ * the iframe and the grade endpoint.
  */
 export const findUnansweredQuestions = (
   spec: PublicSpec,
@@ -353,7 +352,7 @@ export const findUnansweredQuestions = (
     case SurveyType.Factorial: {
       const ratedQuestions = answerEntries<RatedQuestion>(userAnswer)
       return spec.questions
-        .filter((q) => q.mandatory && q.questionLabel !== "info")
+        .filter((q) => q.mandatory && q.questionLabel !== "info" && (spec.options ?? []).length > 0)
         .filter((q) => {
           const chosenOptionId = ratedQuestions.find(
             (item) => item.questionLabel === q.questionLabel,

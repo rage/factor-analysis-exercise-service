@@ -58,7 +58,7 @@ export const findMandatoryWithoutInput = (content: SurveyItem[]): SpecFinding[] 
 
 /** Conditional items that depend on a label and option no answerable item offers. */
 export const findConditionsWithMissingOptions = (content: SurveyItem[]): SpecFinding[] =>
-  content.flatMap((item) => {
+  content.filter(isConditionalItem).flatMap((item) => {
     const missing = conditionsOf(item).filter(
       (condition) => !content.some((trigger) => offersOption(trigger, condition)),
     )
@@ -138,7 +138,7 @@ export const checkFactorialSpec = (
       message:
         question.questionLabel === INFO_LABEL
           ? `An "info" row is mandatory but has nothing to answer.`
-          : `"${question.questionLabel}" is mandatory but the survey has no answer options; students cannot submit.`,
+          : `"${question.questionLabel}" is mandatory but the survey has no answer options; students cannot answer it.`,
     }))
 
 /** Runs the checks for the spec's survey type; accepts public and private specs. */

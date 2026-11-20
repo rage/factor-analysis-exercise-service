@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next"
 import TextAreaField from "../../shared-module/components/InputFields/TextAreaField"
 import TextField from "../../shared-module/components/InputFields/TextField"
 import { AnswerType, SurveyItem } from "../../util/spec-types/privateSpec"
-import { parseDecimal } from "../../util/utils"
+import { normalizeDecimal } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 import AdvancedDropdown from "../SharedMisc/AdvancedDropdown"
 import { CheckboxWrap } from "../StyledComponents/CheckboxWrap"
@@ -29,7 +29,7 @@ const Option = styled.option`
 const NumberAnswerField: React.FC<Props> = ({ item, answer, updateAnswer, disabled }) => {
   const { t } = useTranslation()
   const [text, setText] = useState(answer === null ? "" : String(answer))
-  const isInvalid = text.trim() !== "" && parseDecimal(text) === null
+  const isInvalid = text.trim() !== "" && normalizeDecimal(text) === null
   return (
     <div>
       <TextField
@@ -40,9 +40,8 @@ const NumberAnswerField: React.FC<Props> = ({ item, answer, updateAnswer, disabl
         inputMode="decimal"
         onChange={(e) => {
           const value = e.target.value
-          const parsed = parseDecimal(value)
           setText(value)
-          updateAnswer(item.id, parsed === null ? null : String(parsed))
+          updateAnswer(item.id, normalizeDecimal(value))
         }}
         error={isInvalid ? t("invalid-number") : undefined}
         required

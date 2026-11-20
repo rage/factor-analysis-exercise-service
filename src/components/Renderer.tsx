@@ -89,8 +89,9 @@ class RendererErrorBoundary extends React.Component<
     return { hasCrashed: true }
   }
 
-  componentDidUpdate(prevProps: RendererErrorBoundaryProps) {
-    if (this.state.hasCrashed && prevProps.state !== this.props.state) {
+  componentDidUpdate(prevProps: RendererErrorBoundaryProps, prevState: { hasCrashed: boolean }) {
+    // The state that arrived in the crashing commit would only crash again.
+    if (prevState.hasCrashed && prevProps.state !== this.props.state) {
       this.setState({ hasCrashed: false })
     }
   }

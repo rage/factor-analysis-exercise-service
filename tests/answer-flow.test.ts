@@ -60,7 +60,7 @@ import {
   restoreRatings,
   restoreSurveyAnswers,
 } from "../src/util/surveyAnswers"
-import { findUnansweredQuestions, parseDecimal } from "../src/util/utils"
+import { findUnansweredQuestions, normalizeDecimal } from "../src/util/utils"
 import { buildValidityMessages } from "../src/util/validityMessages"
 
 import alustaArkuusFactorial from "./test-data/alusta-arkuus/factorial-public-spec.json"
@@ -318,23 +318,29 @@ describe("validation, factorial", () => {
       "fq-2",
     ])
   })
+
+  it("requires nothing when the survey has no options to rate with", () => {
+    expect(unansweredIds({ ...factorialSpec, options: [] }, ratingsOf({}))).toEqual([])
+  })
 })
 
-describe("number parsing", () => {
+describe("number normalization", () => {
   it.each([
-    ["5", 5],
-    ["0", 0],
-    ["2,5", 2.5],
-    [" 2.5 ", 2.5],
-    ["-3", -3],
-    ["1 000", 1000],
-    [".5", 0.5],
-  ])("parses %p", (text, expected) => {
-    expect(parseDecimal(text)).toBe(expected)
+    ["5", "5"],
+    ["0", "0"],
+    ["00100", "00100"],
+    ["2,5", "2.5"],
+    [" 2.5 ", "2.5"],
+    ["-3", "-3"],
+    ["1 000", "1000"],
+    [".5", ".5"],
+    ["12345678901234567890", "12345678901234567890"],
+  ])("normalizes %p", (text, expected) => {
+    expect(normalizeDecimal(text)).toBe(expected)
   })
 
   it.each(["", " ", "n. 5", "5 kg", "1,2,3", "abc", "1e3"])("rejects %p", (text) => {
-    expect(parseDecimal(text)).toBeNull()
+    expect(normalizeDecimal(text)).toBeNull()
   })
 })
 
@@ -1371,6 +1377,34 @@ describe("renderer error boundary", () => {
       root.render(React.createElement(Renderer, { port, setState: jest.fn(), state: nextState }))
     })
     expect(container.querySelector('[role="alert"]')).toBeNull()
+    act(() => root.unmount())
+  })
+
+  it("stays crashed when the state that crashed arrives as an update", () => {
+    const consoleError = jest.spyOn(console, "error").mockImplementation(() => undefined)
+    const port = { postMessage: jest.fn() } as unknown as MessagePort
+    const stateWith = (content: unknown) => ({
+      view_type: "answer-exercise" as const,
+      public_spec: { id: "spec", type: SurveyType.NonFactorial, content } as unknown as Survey,
+    })
+    const container = document.createElement("div")
+    const root = createRoot(container)
+    act(() => {
+      root.render(
+        React.createElement(Renderer, { port, setState: jest.fn(), state: stateWith([]) }),
+      )
+    })
+    act(() => {
+      root.render(
+        React.createElement(Renderer, { port, setState: jest.fn(), state: stateWith(null) }),
+      )
+    })
+
+    expect(container.querySelector('[role="alert"]')).not.toBeNull()
+    const crashLogs = consoleError.mock.calls.filter(
+      ([message]) => message === "Exercise renderer crashed",
+    )
+    expect(crashLogs).toHaveLength(1)
     act(() => root.unmount())
   })
 })
