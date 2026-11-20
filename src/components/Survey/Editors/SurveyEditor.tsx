@@ -14,7 +14,7 @@ import {
   SurveyItem,
   SurveyItemCondition,
 } from "../../../util/spec-types/privateSpec"
-import { validateConditionConsistency } from "../../../util/utils"
+import { checkSurveyContent } from "../../../util/specChecks"
 import ListInputEditor from "../../SharedMisc/ListInputEditor"
 import { ButtonWrapper, NewButton, StyledInnerEditor } from "../../StyledComponents/Wrappers"
 
@@ -33,7 +33,6 @@ export interface ItemWithCondition {
 
 const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState }) => {
   const [duplicateError, setDuplicateError] = useState<string[]>([])
-  const [conditionError, setConditionError] = useState<ItemWithCondition[]>([])
   useEffect(() => {
     const labels = state.content.map((item) => item.question.questionLabel)
     const count = labels.reduce(
@@ -46,12 +45,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state])
 
-  useEffect(() => {
-    const inconsistencies = validateConditionConsistency(state.content)
-    const newError = inconsistencies
-    setConditionError(newError)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state])
+  const findings = checkSurveyContent(state.content)
 
   return (
     <div
@@ -103,6 +97,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
                   })
                 }}
                 state={state}
+                warnings={findings.filter((finding) => finding.itemId === item.id)}
               />
             </li>
           )
@@ -121,15 +116,9 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
         {duplicateError.map((label, idx) => {
           return <p key={idx}>{label}</p>
         })}
-        {conditionError.length > 0 && <p>{"Found questions with invalid conditions:"}</p>}
-        {conditionError.map((item, idx) => {
-          return (
-            <p key={idx}>
-              {item.questionLabel +
-                ", ---->  " +
-                item.conditions.map((c) => " " + c.questionLabel + ": " + c.triggeringOption)}
-            </p>
-          )
+        {findings.length > 0 && <p>{"Found problems that may stop students submitting:"}</p>}
+        {findings.map((finding, idx) => {
+          return <p key={idx}>{finding.message}</p>
         })}
       </div>
 

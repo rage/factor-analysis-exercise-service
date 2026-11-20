@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "license": "MIT",
   "scripts": {
+    "audit-specs": "node scripts/run-ts.js scripts/audit-specs.ts",
     "build": "NODE_ENV=production next build",
     "dev": "node server.js",
     "eslint": "eslint --fix .",
