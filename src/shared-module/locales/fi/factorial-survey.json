@@ -5,6 +5,7 @@
   "score-given": "Pisteet",
   "waiting-for-content": "Odotetaan dataa...",
   "waiting-for-port": "Odotetaan porttia...",
+  "error-exercise-crashed": "Tehtävän näyttämisessä tapahtui virhe. Lataa sivu uudelleen ja yritä uudestaan.",
   "pdf-file-name": "kyselyvastaukset_yhteenveto",
   "pdf-download-text": "Lataa tästä yhteenveto tutkimusraporteistasi PDF-tiedostona",
   "pdf-sub-title": "Yhteenveto tutkimusraporteistani",

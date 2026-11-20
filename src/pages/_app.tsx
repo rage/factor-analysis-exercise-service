@@ -9,6 +9,7 @@ import { queryClient } from "../shared-module/services/appQueryClient"
 import GlobalStyles from "../shared-module/styles/GlobalStyles"
 import generateWebVitalsReporter from "../shared-module/utils/generateWebVitalsReporter"
 import initI18n from "../shared-module/utils/initI18n"
+import { removeStaticLoadingIndicator } from "../util/staticLoadingIndicator"
 
 // Prevent rehydration mismatch by preloading english translations
 import "../shared-module/locales/en/factorial-survey.json"
@@ -28,6 +29,7 @@ const MyApp: React.FC<React.PropsWithChildren<AppProps>> = ({ Component, pagePro
     if (jssStyles) {
       jssStyles.parentElement?.removeChild(jssStyles)
     }
+    removeStaticLoadingIndicator()
   }, [])
 
   useEffect(() => {

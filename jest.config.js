@@ -13,5 +13,12 @@ const customJestConfig = {
   testPathIgnorePatterns: ["<rootDir>/system-tests/"],
 }
 
-// createJestConfig is exported in this way to ensure that next/jest can load the Next.js configuration, which is async
-module.exports = createJestConfig(customJestConfig)
+// next/jest only lets custom config append to transformIgnorePatterns, and its built-in
+// "/node_modules/" pattern would skip the ESM-only @moocfi packages.
+module.exports = async () => {
+  const config = await createJestConfig(customJestConfig)()
+  config.transformIgnorePatterns = config.transformIgnorePatterns.map((pattern) =>
+    pattern === "/node_modules/" ? "/node_modules/(?!@moocfi/)" : pattern,
+  )
+  return config
+}
