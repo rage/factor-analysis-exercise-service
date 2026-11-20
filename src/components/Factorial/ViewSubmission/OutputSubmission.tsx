@@ -1,7 +1,7 @@
+import { UserVariablesMap } from "@moocfi/exercise-protocol"
 import React from "react"
 
 import Accordion from "../../../shared-module/components/Accordion"
-import { UserVariablesMap } from "../../../shared-module/exercise-service-protocol-types"
 import { FactorialOption, Question } from "../../../util/spec-types/privateSpec"
 import { RatedQuestion } from "../../../util/spec-types/userAnswer"
 import { insertVariablesToText } from "../../../util/utils"

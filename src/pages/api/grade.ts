@@ -1,7 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
+import { UserVariablesMap } from "@moocfi/exercise-protocol"
 import type { NextApiRequest, NextApiResponse } from "next"
 
-import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
 import { cors, runMiddleware } from "../../util/cors"
 import { FactorReport } from "../../util/spec-types/grading"
 import { LegendKey, PrivateSpec, Survey, SurveyType } from "../../util/spec-types/privateSpec"

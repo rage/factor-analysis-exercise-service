@@ -1,6 +1,5 @@
+import { UserVariablesMap } from "@moocfi/exercise-protocol"
 import { TFunction } from "i18next"
-
-import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
 import { insertVariablesToText, UnansweredQuestion } from "./utils"
 

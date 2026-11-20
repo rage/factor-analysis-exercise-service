@@ -1,4 +1,14 @@
 /* eslint-disable i18next/no-literal-string */
+import {
+  CurrentStateMessage,
+  isAnswerExerciseIframeState,
+  isCurrentStateMessage,
+  isFocusFirstInvalidMessage,
+  isMessageFromIframe,
+  isMessageToIframe,
+  SetStateMessage,
+  UserVariablesMap,
+} from "@moocfi/exercise-protocol"
 import { createInstance, TFunction } from "i18next"
 import type { NextApiRequest, NextApiResponse } from "next"
 import React from "react"
@@ -10,18 +20,6 @@ import Exercise from "../src/components/Exercise"
 import Renderer from "../src/components/Renderer"
 import useAnswerReporting from "../src/hooks/useAnswerReporting"
 import grade from "../src/pages/api/grade"
-import {
-  CurrentStateMessage,
-  SetStateMessage,
-  UserVariablesMap,
-} from "../src/shared-module/exercise-service-protocol-types"
-import {
-  isAnswerExerciseIframeState,
-  isCurrentStateMessage,
-  isFocusFirstInvalidMessage,
-  isMessageFromIframe,
-  isMessageToIframe,
-} from "../src/shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../src/shared-module/hooks/useExerciseServiceParentConnection"
 import fiTranslations from "../src/shared-module/locales/fi/factorial-survey.json"
 import {

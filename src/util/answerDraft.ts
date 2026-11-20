@@ -1,5 +1,5 @@
 /* eslint-disable i18next/no-literal-string */
-import { SetStateMessage } from "../shared-module/exercise-service-protocol-types"
+import { SetStateMessage } from "@moocfi/exercise-protocol"
 
 import { PublicSpec } from "./spec-types/publicSpec"
 import { UserAnswer } from "./spec-types/userAnswer"

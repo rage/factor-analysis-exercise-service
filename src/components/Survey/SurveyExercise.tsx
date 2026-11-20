@@ -1,8 +1,8 @@
 import { css } from "@emotion/css"
+import { UserVariablesMap } from "@moocfi/exercise-protocol"
 import { useCallback, useState } from "react"
 
 import useAnswerReporting from "../../hooks/useAnswerReporting"
-import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
 import { baseTheme } from "../../shared-module/styles"
 import { pickAnswerDraft } from "../../util/answerDraft"
 import { Survey } from "../../util/spec-types/privateSpec"

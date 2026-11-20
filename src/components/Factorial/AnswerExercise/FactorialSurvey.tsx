@@ -1,7 +1,7 @@
+import { UserVariablesMap } from "@moocfi/exercise-protocol"
 import { useCallback, useState } from "react"
 
 import useAnswerReporting from "../../../hooks/useAnswerReporting"
-import { UserVariablesMap } from "../../../shared-module/exercise-service-protocol-types"
 import { pickAnswerDraft } from "../../../util/answerDraft"
 import { PublicFactorialSurveySpec } from "../../../util/spec-types/publicSpec"
 import { RatedQuestion } from "../../../util/spec-types/userAnswer"

@@ -1,9 +1,9 @@
 import { css } from "@emotion/css"
+import { CurrentStateMessage } from "@moocfi/exercise-protocol"
 import { useEffect } from "react"
 import { v4 } from "uuid"
 
 import { State } from "../pages/iframe"
-import { CurrentStateMessage } from "../shared-module/exercise-service-protocol-types"
 import { PrivateSpec, SurveyType } from "../util/spec-types/privateSpec"
 
 import FactorialSurveyEditor from "./Factorial/ExerciseEditor/FactorialSurveyEditor"

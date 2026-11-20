@@ -1,18 +1,16 @@
 import { css } from "@emotion/css"
+import {
+  ExtendedIframeState,
+  isHeightChangedMessage,
+  isMessageFromIframe,
+  MessageFromIframe,
+  SetLanguageMessage,
+  SetStateMessage,
+} from "@moocfi/exercise-protocol"
 import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 
-import {
-  ExtendedIframeState,
-  MessageFromIframe,
-  SetLanguageMessage,
-  SetStateMessage,
-} from "../exercise-service-protocol-types"
-import {
-  isHeightChangedMessage,
-  isMessageFromIframe,
-} from "../exercise-service-protocol-types.guard"
 import useMessageChannel from "../hooks/useMessageChannel"
 
 import { BreakFromCenteredProps } from "./Centering/BreakFromCentered"

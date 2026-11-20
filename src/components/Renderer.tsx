@@ -1,9 +1,9 @@
+import { RequestIframeReloadMessage } from "@moocfi/exercise-protocol"
 import React, { Dispatch, SetStateAction } from "react"
 import { useTranslation } from "react-i18next"
 
 import { ExerciseFeedback } from "../pages/api/grade"
 import { State } from "../pages/iframe"
-import { RequestIframeReloadMessage } from "../shared-module/exercise-service-protocol-types"
 import withNoSsr from "../shared-module/utils/withNoSsr"
 
 import Editor from "./Editor"

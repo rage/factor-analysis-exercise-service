@@ -1,8 +1,8 @@
 import { postCurrentStateMessage } from "@moocfi/exercise-client"
+import { UserVariablesMap } from "@moocfi/exercise-protocol"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
-import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 import { saveAnswerDraft } from "../util/answerDraft"
 import { focusFirstUnansweredItem, onFocusFirstInvalidRequest } from "../util/focusFirstInvalid"
 import { PublicSpec } from "../util/spec-types/publicSpec"

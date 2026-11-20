@@ -1,4 +1,4 @@
-import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
+import { UserVariablesMap } from "@moocfi/exercise-protocol"
 
 import { FactorReport, Rate } from "./spec-types/grading"
 import {

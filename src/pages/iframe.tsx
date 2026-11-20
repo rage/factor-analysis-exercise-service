@@ -1,3 +1,10 @@
+import {
+  CustomViewIframeState,
+  isFocusFirstInvalidMessage,
+  isSetLanguageMessage,
+  isSetStateMessage,
+  UserVariablesMap,
+} from "@moocfi/exercise-protocol"
 import React, { useCallback, useState } from "react"
 import ReactDOM from "react-dom"
 import { useTranslation } from "react-i18next"
@@ -5,15 +12,6 @@ import { useTranslation } from "react-i18next"
 import Renderer from "../components/Renderer"
 import { ExerciseTaskGradingResult } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
-import {
-  CustomViewIframeState,
-  UserVariablesMap,
-} from "../shared-module/exercise-service-protocol-types"
-import {
-  isFocusFirstInvalidMessage,
-  isSetLanguageMessage,
-  isSetStateMessage,
-} from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
 import { clearSubmittedAnswerDraft } from "../util/answerDraft"
 import { requestFocusFirstInvalid } from "../util/focusFirstInvalid"

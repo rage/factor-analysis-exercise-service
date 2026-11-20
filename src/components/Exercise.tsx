@@ -1,4 +1,5 @@
-import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
+import { UserVariablesMap } from "@moocfi/exercise-protocol"
+
 import { SurveyType } from "../util/spec-types/privateSpec"
 import { PublicSpec } from "../util/spec-types/publicSpec"
 
