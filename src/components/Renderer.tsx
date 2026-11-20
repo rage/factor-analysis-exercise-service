@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next"
 
 import { ExerciseFeedback } from "../pages/api/grade"
 import { State } from "../pages/iframe"
+import { RequestIframeReloadMessage } from "../shared-module/exercise-service-protocol-types"
 import withNoSsr from "../shared-module/utils/withNoSsr"
 
 import Editor from "./Editor"
@@ -32,7 +33,14 @@ const ViewRenderer: React.FC<React.PropsWithChildren<RendererProps>> = ({
   }
 
   if (state.view_type === "answer-exercise") {
-    return <Exercise port={port} state={state.public_spec} userVariables={state.user_variables} />
+    return (
+      <Exercise
+        port={port}
+        state={state.public_spec}
+        userVariables={state.user_variables}
+        answerDraft={state.answer_draft}
+      />
+    )
   } else if (state.view_type === "view-submission") {
     const feedbackJson: unknown | null = state.grading?.feedback_json
     const exerciseFeedback = feedbackJson ? (feedbackJson as ExerciseFeedback) : null
@@ -85,9 +93,8 @@ class RendererErrorBoundary extends React.Component<
     const { port } = this.props
     if (port && !this.hasRequestedReload) {
       this.hasRequestedReload = true
-      // The host bounds how many times it reloads the iframe.
       // eslint-disable-next-line i18next/no-literal-string
-      port.postMessage({ message: "request-iframe-reload" })
+      port.postMessage({ message: "request-iframe-reload" } satisfies RequestIframeReloadMessage)
     }
   }
 

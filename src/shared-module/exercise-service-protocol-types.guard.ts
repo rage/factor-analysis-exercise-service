@@ -20,6 +20,7 @@ import {
   MessageToIframe,
   NonGenericGradingRequest,
   NonGenericGradingResult,
+  RequestIframeReloadMessage,
   SetLanguageMessage,
   SetStateMessage,
   UploadResultMessage,
@@ -33,7 +34,8 @@ export function isMessageFromIframe(obj: unknown): obj is MessageFromIframe {
   return (
     (isCurrentStateMessage(typedObj) as boolean) ||
     (isHeightChangedMessage(typedObj) as boolean) ||
-    (isFileUploadMessage(typedObj) as boolean)
+    (isFileUploadMessage(typedObj) as boolean) ||
+    (isRequestIframeReloadMessage(typedObj) as boolean)
   )
 }
 
@@ -64,6 +66,14 @@ export function isFileUploadMessage(obj: unknown): obj is FileUploadMessage {
     ((typedObj !== null && typeof typedObj === "object") || typeof typedObj === "function") &&
     typedObj["message"] === "file-upload" &&
     typedObj["files"] instanceof Map
+  )
+}
+
+export function isRequestIframeReloadMessage(obj: unknown): obj is RequestIframeReloadMessage {
+  const typedObj = obj as RequestIframeReloadMessage
+  return (
+    ((typedObj !== null && typeof typedObj === "object") || typeof typedObj === "function") &&
+    typedObj["message"] === "request-iframe-reload"
   )
 }
 

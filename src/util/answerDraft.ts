@@ -1,6 +1,4 @@
 /* eslint-disable i18next/no-literal-string */
-import { createContext } from "react"
-
 import { SetStateMessage } from "../shared-module/exercise-service-protocol-types"
 
 import { PublicSpec } from "./spec-types/publicSpec"
@@ -57,6 +55,3 @@ export const pickAnswerDraft = (specId: string, hostAnswerDraft: unknown): unkno
   hostAnswerDraft !== undefined && hostAnswerDraft !== null
     ? hostAnswerDraft
     : loadAnswerDraft(specId)
-
-/** The `answer_draft` of the current answer-exercise set-state, if the host sent one. */
-export const AnswerDraftContext = createContext<unknown>(undefined)

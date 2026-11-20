@@ -15,7 +15,7 @@ import {
   isSetStateMessage,
 } from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
-import { AnswerDraftContext, clearSubmittedAnswerDraft } from "../util/answerDraft"
+import { clearSubmittedAnswerDraft } from "../util/answerDraft"
 import { requestFocusFirstInvalid } from "../util/focusFirstInvalid"
 import { PrivateSpec } from "../util/spec-types/privateSpec"
 import { PublicSpec } from "../util/spec-types/publicSpec"
@@ -115,11 +115,7 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <HeightTrackingContainer port={port}>
       <div>
-        <AnswerDraftContext.Provider
-          value={state?.view_type === "answer-exercise" ? state.answer_draft : undefined}
-        >
-          <Renderer port={port} setState={setState} state={state} />
-        </AnswerDraftContext.Provider>
+        <Renderer port={port} setState={setState} state={state} />
       </div>
     </HeightTrackingContainer>
   )

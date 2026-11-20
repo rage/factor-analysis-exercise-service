@@ -20,7 +20,6 @@ import {
 } from "../src/shared-module/exercise-service-protocol-types.guard"
 import fiTranslations from "../src/shared-module/locales/fi/factorial-survey.json"
 import {
-  AnswerDraftContext,
   clearSubmittedAnswerDraft,
   loadAnswerDraft,
   pickAnswerDraft,
@@ -448,11 +447,12 @@ const mountExercise = (spec: PublicSpec, answerDraft?: unknown): MountedExercise
   const render = (nextSpec: PublicSpec, nextDraft?: unknown) =>
     act(() => {
       root.render(
-        React.createElement(
-          AnswerDraftContext.Provider,
-          { value: nextDraft },
-          React.createElement(Exercise, { state: nextSpec, port, userVariables: null }),
-        ),
+        React.createElement(Exercise, {
+          state: nextSpec,
+          port,
+          userVariables: null,
+          answerDraft: nextDraft,
+        }),
       )
     })
   render(spec, answerDraft)

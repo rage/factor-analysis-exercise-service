@@ -8,7 +8,11 @@ import { isSetStateMessage } from "./exercise-service-protocol-types.guard"
  *
  * to: parent
  */
-export type MessageFromIframe = CurrentStateMessage | HeightChangedMessage | FileUploadMessage
+export type MessageFromIframe =
+  | CurrentStateMessage
+  | HeightChangedMessage
+  | FileUploadMessage
+  | RequestIframeReloadMessage
 
 export interface CurrentStateMessage {
   message: "current-state"
@@ -30,6 +34,11 @@ export interface HeightChangedMessage {
 export interface FileUploadMessage {
   message: "file-upload"
   files: Map<string, string | Blob>
+}
+
+/** Asks the parent to reload this iframe; the parent limits how many times it does so. */
+export interface RequestIframeReloadMessage {
+  message: "request-iframe-reload"
 }
 
 /**
