@@ -6,19 +6,20 @@ import Renderer from "../components/Renderer"
 import { ExerciseTaskGradingResult } from "../shared-module/bindings"
 import HeightTrackingContainer from "../shared-module/components/HeightTrackingContainer"
 import {
-  CurrentStateMessage,
   CustomViewIframeState,
   UserVariablesMap,
 } from "../shared-module/exercise-service-protocol-types"
 import {
+  isFocusFirstInvalidMessage,
   isSetLanguageMessage,
   isSetStateMessage,
 } from "../shared-module/exercise-service-protocol-types.guard"
 import useExerciseServiceParentConnection from "../shared-module/hooks/useExerciseServiceParentConnection"
+import { AnswerDraftContext, clearSubmittedAnswerDraft } from "../util/answerDraft"
+import { requestFocusFirstInvalid } from "../util/focusFirstInvalid"
 import { PrivateSpec } from "../util/spec-types/privateSpec"
 import { PublicSpec } from "../util/spec-types/publicSpec"
 import { RatedQuestion, UserAnswer } from "../util/spec-types/userAnswer"
-import { validateAnsweredQuestions } from "../util/utils"
 
 import { ExerciseFeedback } from "./api/grade"
 
@@ -33,6 +34,7 @@ export type State =
       view_type: "answer-exercise"
       public_spec: PublicSpec
       user_variables?: UserVariablesMap | null
+      answer_draft?: unknown
     }
   | {
       view_type: "view-submission"
@@ -56,25 +58,17 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { i18n } = useTranslation()
   const [state, setState] = useState<State | null>(null)
 
-  const callback = useCallback((messageData: unknown, port: MessagePort) => {
+  const callback = useCallback((messageData: unknown) => {
     if (isSetStateMessage(messageData)) {
+      clearSubmittedAnswerDraft(messageData)
       ReactDOM.flushSync(() => {
         if (messageData.view_type === "answer-exercise") {
           setState({
             view_type: messageData.view_type,
             public_spec: messageData.data.public_spec as PublicSpec,
             user_variables: messageData.user_variables,
+            answer_draft: messageData.answer_draft,
           })
-          const valid = validateAnsweredQuestions(messageData.data.public_spec as PublicSpec, {
-            answeredQuestions: [],
-          })
-          port.postMessage({
-            message: "current-state",
-            data: {
-              answeredQuestions: [],
-            },
-            valid: valid,
-          } satisfies CurrentStateMessage)
         } else if (messageData.view_type === "exercise-editor") {
           setState({
             view_type: messageData.view_type,
@@ -105,6 +99,8 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
           console.error("Unknown view type received from parent")
         }
       })
+    } else if (isFocusFirstInvalidMessage(messageData)) {
+      requestFocusFirstInvalid()
     } else if (isSetLanguageMessage(messageData)) {
       i18n.changeLanguage(messageData.data)
     } else {
@@ -119,7 +115,11 @@ const Iframe: React.FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <HeightTrackingContainer port={port}>
       <div>
-        <Renderer port={port} setState={setState} state={state} />
+        <AnswerDraftContext.Provider
+          value={state?.view_type === "answer-exercise" ? state.answer_draft : undefined}
+        >
+          <Renderer port={port} setState={setState} state={state} />
+        </AnswerDraftContext.Provider>
       </div>
     </HeightTrackingContainer>
   )
