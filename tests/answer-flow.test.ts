@@ -7,17 +7,22 @@ import { act } from "react-dom/test-utils"
 import { initReactI18next } from "react-i18next"
 
 import Exercise from "../src/components/Exercise"
+import Renderer from "../src/components/Renderer"
+import useAnswerReporting from "../src/hooks/useAnswerReporting"
 import grade from "../src/pages/api/grade"
 import {
   CurrentStateMessage,
   SetStateMessage,
+  UserVariablesMap,
 } from "../src/shared-module/exercise-service-protocol-types"
 import {
   isAnswerExerciseIframeState,
   isCurrentStateMessage,
   isFocusFirstInvalidMessage,
+  isMessageFromIframe,
   isMessageToIframe,
 } from "../src/shared-module/exercise-service-protocol-types.guard"
+import useExerciseServiceParentConnection from "../src/shared-module/hooks/useExerciseServiceParentConnection"
 import fiTranslations from "../src/shared-module/locales/fi/factorial-survey.json"
 import {
   clearSubmittedAnswerDraft,
@@ -25,8 +30,12 @@ import {
   pickAnswerDraft,
   saveAnswerDraft,
 } from "../src/util/answerDraft"
-import { buildCurrentStateMessage, buildValidityMessages } from "../src/util/currentState"
-import { requestFocusFirstInvalid } from "../src/util/focusFirstInvalid"
+import { requestFocusFirstInvalid, UNANSWERED_ITEM_ATTRIBUTE } from "../src/util/focusFirstInvalid"
+import {
+  buildLoadFailureRecoveryScript,
+  LOAD_FAILURE_RELOAD_GUARD,
+  recordReloadIfAllowed,
+} from "../src/util/reloadGuard"
 import {
   AnswerType,
   FactorialSurvey,
@@ -38,15 +47,34 @@ import {
 import { PublicFactorialSurveySpec, PublicSpec } from "../src/util/spec-types/publicSpec"
 import { AnsweredSurveyItem, RatedQuestion, UserAnswer } from "../src/util/spec-types/userAnswer"
 import {
+  checkFactorialSpec,
+  checkSpec,
+  checkSurveyContent,
+  findConditionsWithMissingOptions,
+  findMandatoryNeverShown,
+  findMandatoryWithoutInput,
+} from "../src/util/specChecks"
+import {
   applyRating,
   applySurveyAnswer,
   restoreRatings,
   restoreSurveyAnswers,
 } from "../src/util/surveyAnswers"
 import { findUnansweredQuestions, parseDecimal } from "../src/util/utils"
+import { buildValidityMessages } from "../src/util/validityMessages"
 
 import alustaArkuusFactorial from "./test-data/alusta-arkuus/factorial-public-spec.json"
 import alustaArkuusSurvey from "./test-data/alusta-arkuus/non-factorial-public-spec.json"
+import miniTestSpec from "./test-data/factorial/mini-test/private-spec.json"
+import personalitySpec from "./test-data/factorial/personality-test/test-spec.json"
+import nonFactorialSpec from "./test-data/non-factorial/private-spec.json"
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const nextConfig = require("../next.config.js")
+
+// Renderer imports these only for other views; their dependencies ship ESM that Jest can't load.
+jest.mock("../src/components/Editor", () => () => null)
+jest.mock("../src/components/PdfDownload/PdfGenerator", () => () => null)
 
 declare global {
   // eslint-disable-next-line no-var
@@ -395,14 +423,7 @@ describe("validity messages", () => {
   it("is empty for a valid answer", () => {
     const spec = survey([surveyItem("a", "a")])
     const answer = answersOf(spec, { a: "x" })
-    const message = buildCurrentStateMessage(answer, findUnansweredQuestions(spec, answer), t)
-    expect(message).toEqual({
-      message: "current-state",
-      data: answer,
-      valid: true,
-      validityMessages: [],
-    })
-    expect(isCurrentStateMessage(message)).toBe(true)
+    expect(buildValidityMessages(findUnansweredQuestions(spec, answer), t)).toEqual([])
   })
 })
 
@@ -505,7 +526,8 @@ describe("posted state", () => {
     click(mounted.container.querySelector('input[value="yes"]'))
     expect(mounted.posted).toHaveLength(2)
     expect(lastPosted(mounted).valid).toBe(true)
-    expect(lastPosted(mounted).validityMessages).toEqual([])
+    expect(lastPosted(mounted).validityMessages).toBeUndefined()
+    expect(isCurrentStateMessage(lastPosted(mounted))).toBe(true)
     expect(answerFor(lastPosted(mounted), "q1")?.answer).toBe("yes")
     mounted.unmount()
   })
@@ -551,6 +573,7 @@ describe("posted state", () => {
 
     typeInto(input, "n. 5")
     expect(lastPosted(mounted).valid).toBe(false)
+    expect(answerFor(lastPosted(mounted), "n")?.answer).toBeNull()
     expect(input.value).toBe("n. 5")
     expect(mounted.container.textContent).toContain(fiTranslations["invalid-number"])
 
@@ -671,6 +694,210 @@ describe("answer draft", () => {
     expect(answerFor(lastPosted(mounted), "q1")?.answer).toBe("yes")
     mounted.unmount()
     expect(loadAnswerDraft("survey-1")).toBeNull()
+  })
+})
+
+describe("useAnswerReporting", () => {
+  interface HookProps {
+    spec: Survey
+    answeredQuestions: UserAnswer["answeredQuestions"]
+    userVariables?: UserVariablesMap | null
+  }
+
+  interface MountedHook {
+    port: FakePort
+    posted: () => CurrentStateMessage[]
+    result: () => ReturnType<typeof useAnswerReporting>
+    render: (props: HookProps) => void
+    unmount: () => void
+  }
+
+  // Marks unanswered items the way RequiredItemWrapper does, so focus requests have a target.
+  const mountHook = (props: HookProps): MountedHook => {
+    const container = document.createElement("div")
+    document.body.appendChild(container)
+    const port = createFakePort()
+    let result: ReturnType<typeof useAnswerReporting> | undefined
+    const Probe = ({ spec, answeredQuestions, userVariables }: HookProps) => {
+      result = useAnswerReporting(
+        port as unknown as MessagePort,
+        spec,
+        answeredQuestions,
+        userVariables,
+      )
+      return React.createElement(
+        React.Fragment,
+        null,
+        spec.content.map((item) =>
+          React.createElement(
+            "div",
+            {
+              key: item.id,
+              [UNANSWERED_ITEM_ATTRIBUTE]: result?.unansweredIds.has(item.id) ? "true" : undefined,
+            },
+            React.createElement("input", { id: `input-${item.id}` }),
+          ),
+        ),
+      )
+    }
+    const root = createRoot(container)
+    const render = (nextProps: HookProps) =>
+      act(() => {
+        root.render(React.createElement(Probe, nextProps))
+      })
+    render(props)
+    return {
+      port,
+      posted: () => port.postMessage.mock.calls.map(([message]) => message as CurrentStateMessage),
+      result: () => {
+        if (!result) {
+          throw new Error("hook not rendered")
+        }
+        return result
+      },
+      render,
+      unmount: () => {
+        act(() => root.unmount())
+        container.remove()
+      },
+    }
+  }
+
+  const spec = survey(
+    [
+      surveyItem("q1", "q1", yesNo),
+      surveyItem("q2", "q2", yesNo),
+      surveyItem("optional", "optional", { mandatory: false }),
+    ],
+    "hook-survey",
+  )
+  const emptyAnswers = answersOf(spec, {}).answeredQuestions
+
+  it("posts the current state on mount", () => {
+    const mounted = mountHook({ spec, answeredQuestions: emptyAnswers })
+    expect(mounted.posted()).toEqual([
+      {
+        message: "current-state",
+        data: { answeredQuestions: emptyAnswers },
+        valid: false,
+        validityMessages: ["Vastaa kysymykseen: Question q1?", "Vastaa kysymykseen: Question q2?"],
+      },
+    ])
+    expect(isCurrentStateMessage(mounted.posted()[0])).toBe(true)
+    mounted.unmount()
+  })
+
+  it("posts once per answer change and not on re-renders with the same inputs", () => {
+    const props = { spec, answeredQuestions: emptyAnswers, userVariables: null }
+    const mounted = mountHook(props)
+    mounted.render({ ...props })
+    mounted.render({ ...props })
+    expect(mounted.posted()).toHaveLength(1)
+
+    const q1Answered = answersOf(spec, { q1: "yes" }).answeredQuestions
+    mounted.render({ ...props, answeredQuestions: q1Answered })
+    expect(mounted.posted()).toHaveLength(2)
+    mounted.render({ ...props, answeredQuestions: q1Answered })
+    expect(mounted.posted()).toHaveLength(2)
+    mounted.unmount()
+  })
+
+  it("turns valid and drops validityMessages once the last mandatory item is answered", () => {
+    const mounted = mountHook({
+      spec,
+      answeredQuestions: answersOf(spec, { q1: "yes" }).answeredQuestions,
+    })
+    expect(mounted.posted()[0].valid).toBe(false)
+    expect(mounted.posted()[0].validityMessages).toEqual(["Vastaa kysymykseen: Question q2?"])
+
+    mounted.render({
+      spec,
+      answeredQuestions: answersOf(spec, { q1: "yes", q2: "no" }).answeredQuestions,
+    })
+    const last = mounted.posted()[1]
+    expect(last.valid).toBe(true)
+    expect(last).not.toHaveProperty("validityMessages")
+    expect(mounted.result().unansweredIds.size).toBe(0)
+    mounted.unmount()
+  })
+
+  it("reports the unanswered items by survey item id", () => {
+    const mounted = mountHook({
+      spec,
+      answeredQuestions: answersOf(spec, { q2: "yes" }).answeredQuestions,
+    })
+    expect([...mounted.result().unansweredIds]).toEqual(["q1"])
+    mounted.unmount()
+  })
+
+  it("fills user variables into the validity messages", () => {
+    const variableSpec = survey([
+      surveyItem("pet", "pet", { question: "Onko ${pet_name=koiralla} ongelmia?" }),
+    ])
+    const answeredQuestions = answersOf(variableSpec, {}).answeredQuestions
+    const mounted = mountHook({ spec: variableSpec, answeredQuestions })
+    expect(mounted.posted()[0].validityMessages).toEqual([
+      "Vastaa kysymykseen: Onko koiralla ongelmia?",
+    ])
+
+    mounted.render({
+      spec: variableSpec,
+      answeredQuestions,
+      userVariables: { pet_name: "Mustilla" },
+    })
+    expect(mounted.posted()).toHaveLength(2)
+    expect(mounted.posted()[1].validityMessages).toEqual([
+      "Vastaa kysymykseen: Onko Mustilla ongelmia?",
+    ])
+    mounted.unmount()
+  })
+
+  it("saves the draft under the spec id on each post", () => {
+    const mounted = mountHook({ spec, answeredQuestions: emptyAnswers })
+    expect(loadAnswerDraft(spec.id)).toEqual({ answeredQuestions: emptyAnswers })
+
+    const q1Answered = answersOf(spec, { q1: "yes" }).answeredQuestions
+    mounted.render({ spec, answeredQuestions: q1Answered })
+    expect(loadAnswerDraft(spec.id)).toEqual({ answeredQuestions: q1Answered })
+    expect(loadAnswerDraft("other-spec")).toBeNull()
+    mounted.unmount()
+  })
+
+  it("keeps posting when sessionStorage throws", () => {
+    jest.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("denied")
+    })
+    jest.spyOn(console, "warn").mockImplementation(() => undefined)
+    const mounted = mountHook({ spec, answeredQuestions: emptyAnswers })
+    mounted.render({ spec, answeredQuestions: answersOf(spec, { q1: "yes" }).answeredQuestions })
+    expect(mounted.posted()).toHaveLength(2)
+    mounted.unmount()
+  })
+
+  it("highlights and focuses the first unanswered item on a focus request", () => {
+    const mounted = mountHook({
+      spec,
+      answeredQuestions: answersOf(spec, { q1: "yes" }).answeredQuestions,
+    })
+    expect(mounted.result().shouldHighlightUnanswered).toBe(false)
+
+    act(() => requestFocusFirstInvalid())
+
+    expect(mounted.result().shouldHighlightUnanswered).toBe(true)
+    expect(document.activeElement?.id).toBe("input-q2")
+    mounted.unmount()
+  })
+
+  it("ignores focus requests after unmount", () => {
+    const mounted = mountHook({ spec, answeredQuestions: emptyAnswers })
+    mounted.unmount()
+
+    const stray = document.createElement("input")
+    stray.setAttribute(UNANSWERED_ITEM_ATTRIBUTE, "true")
+    document.body.appendChild(stray)
+    act(() => requestFocusFirstInvalid())
+    expect(document.activeElement).not.toBe(stray)
+    stray.remove()
   })
 })
 
@@ -814,5 +1041,537 @@ describe("fixtures: Alusta-arkuus (Minä ja koirani, chapter 2)", () => {
     click(surveyMounted.container.querySelector('input[value="alusta-arkuus on vähentynyt"]'))
     expect(lastPosted(surveyMounted).valid).toBe(true)
     surveyMounted.unmount()
+  })
+})
+
+class MemoryStorage {
+  private values = new Map<string, string>()
+  getItem(key: string) {
+    return this.values.get(key) ?? null
+  }
+  setItem(key: string, value: string) {
+    this.values.set(key, value)
+  }
+}
+
+interface FakePort {
+  onmessage: ((event: { data: unknown }) => void) | null
+  postMessage: jest.Mock
+}
+
+function createFakePort(): FakePort {
+  return { onmessage: null, postMessage: jest.fn() }
+}
+
+describe("parent connection handshake", () => {
+  const fakeParent = { postMessage: jest.fn() }
+  const originalParent = window.parent
+  let root: Root | null = null
+  let container: HTMLDivElement
+  let receivedPort: MessagePort | null = null
+  const onMessage = jest.fn((messageData: unknown, port: MessagePort) => {
+    port.postMessage({ message: "current-state", data: messageData, valid: true })
+  })
+
+  const ConnectionProbe: React.FC = () => {
+    receivedPort = useExerciseServiceParentConnection(onMessage)
+    return null
+  }
+
+  const readyPostCount = () =>
+    fakeParent.postMessage.mock.calls.filter(([message]) => message === "ready").length
+
+  const sendPortFrom = (source: unknown, port: FakePort) => {
+    const event = new Event("message")
+    Object.defineProperties(event, {
+      source: { value: source },
+      ports: { value: [port] },
+      data: { value: "communication-port" },
+    })
+    act(() => {
+      window.dispatchEvent(event)
+    })
+  }
+
+  beforeEach(() => {
+    jest.spyOn(console, "info").mockImplementation(() => undefined)
+    jest.spyOn(console, "groupCollapsed").mockImplementation(() => undefined)
+    jest.spyOn(console, "groupEnd").mockImplementation(() => undefined)
+    jest.useFakeTimers()
+    fakeParent.postMessage.mockClear()
+    onMessage.mockClear()
+    receivedPort = null
+    Object.defineProperty(window, "parent", { value: fakeParent, configurable: true })
+    container = document.createElement("div")
+    root = createRoot(container)
+    act(() => {
+      root?.render(React.createElement(ConnectionProbe))
+    })
+  })
+
+  afterEach(() => {
+    act(() => {
+      root?.unmount()
+    })
+    root = null
+    Object.defineProperty(window, "parent", { value: originalParent, configurable: true })
+    jest.useRealTimers()
+  })
+
+  test("posts ready at once and keeps retrying until a port arrives", () => {
+    expect(fakeParent.postMessage).toHaveBeenCalledWith("ready", "*")
+    expect(readyPostCount()).toBe(1)
+
+    act(() => {
+      jest.advanceTimersByTime(1000)
+    })
+    expect(readyPostCount()).toBe(2)
+    act(() => {
+      jest.advanceTimersByTime(2000)
+    })
+    expect(readyPostCount()).toBe(3)
+
+    sendPortFrom(fakeParent, createFakePort())
+    expect(receivedPort).not.toBeNull()
+    act(() => {
+      jest.advanceTimersByTime(60_000)
+    })
+    expect(readyPostCount()).toBe(3)
+  })
+
+  test("ignores ports from other windows", () => {
+    sendPortFrom({ postMessage: jest.fn() }, createFakePort())
+    expect(receivedPort).toBeNull()
+    act(() => {
+      jest.advanceTimersByTime(1000)
+    })
+    expect(readyPostCount()).toBe(2)
+  })
+
+  test("routes messages from the first port to the callback and keeps that port", () => {
+    const firstPort = createFakePort()
+    const secondPort = createFakePort()
+    sendPortFrom(fakeParent, firstPort)
+    sendPortFrom(fakeParent, secondPort)
+
+    expect(receivedPort).toBe(firstPort)
+    expect(secondPort.onmessage).toBeNull()
+
+    const setState = { message: "set-state", view_type: "answer-exercise" }
+    act(() => {
+      firstPort.onmessage?.({ data: setState })
+    })
+    expect(onMessage).toHaveBeenCalledWith(setState, firstPort)
+    expect(firstPort.postMessage).toHaveBeenCalledWith({
+      message: "current-state",
+      data: setState,
+      valid: true,
+    })
+  })
+
+  test("stops retrying after unmount", () => {
+    act(() => {
+      root?.unmount()
+    })
+    root = null
+    act(() => {
+      jest.advanceTimersByTime(60_000)
+    })
+    expect(readyPostCount()).toBe(1)
+  })
+})
+
+describe("reload guard", () => {
+  const config = LOAD_FAILURE_RELOAD_GUARD
+
+  test("allows reloads up to the limit within the window", () => {
+    const storage = new MemoryStorage()
+    expect(recordReloadIfAllowed(storage, 1_000, config)).toBe(true)
+    expect(recordReloadIfAllowed(storage, 2_000, config)).toBe(true)
+    expect(recordReloadIfAllowed(storage, 3_000, config)).toBe(false)
+    expect(recordReloadIfAllowed(storage, 1_000 + config.windowMs - 1, config)).toBe(false)
+  })
+
+  test("allows reloading again once earlier reloads leave the window", () => {
+    const storage = new MemoryStorage()
+    recordReloadIfAllowed(storage, 1_000, config)
+    recordReloadIfAllowed(storage, 2_000, config)
+    expect(recordReloadIfAllowed(storage, 1_000 + config.windowMs, config)).toBe(true)
+    expect(recordReloadIfAllowed(storage, 1_001 + config.windowMs, config)).toBe(false)
+  })
+
+  test("treats unreadable stored data as no earlier reloads", () => {
+    const storage = new MemoryStorage()
+    storage.setItem(config.storageKey, "{not json")
+    expect(recordReloadIfAllowed(storage, 1_000, config)).toBe(true)
+    storage.setItem(config.storageKey, JSON.stringify({ count: 5 }))
+    expect(recordReloadIfAllowed(storage, 1_000, config)).toBe(true)
+  })
+
+  test("refuses to reload when the reload can't be recorded", () => {
+    expect(recordReloadIfAllowed(null, 1_000, config)).toBe(false)
+    const throwingOnRead = {
+      getItem: () => {
+        throw new Error("SecurityError")
+      },
+      setItem: jest.fn(),
+    }
+    expect(recordReloadIfAllowed(throwingOnRead, 1_000, config)).toBe(false)
+    const throwingOnWrite = {
+      getItem: () => null,
+      setItem: () => {
+        throw new Error("QuotaExceededError")
+      },
+    }
+    expect(recordReloadIfAllowed(throwingOnWrite, 1_000, config)).toBe(false)
+  })
+
+  describe("inline script", () => {
+    type Listener = (event: unknown) => void
+
+    function loadPageWithScript(sessionStorage: () => Storage | MemoryStorage) {
+      const listeners: Record<string, Listener[]> = {}
+      const reload = jest.fn()
+      const fakeWindow = {
+        addEventListener: (type: string, listener: Listener) => {
+          ;(listeners[type] ??= []).push(listener)
+        },
+        get sessionStorage() {
+          return sessionStorage()
+        },
+        location: { reload },
+      }
+      new Function("window", buildLoadFailureRecoveryScript())(fakeWindow)
+      const dispatch = (type: string, event: unknown) =>
+        (listeners[type] ?? []).forEach((listener) => listener(event))
+      return { reload, dispatch }
+    }
+
+    const failedScriptEvent = { target: { tagName: "SCRIPT" }, error: undefined }
+
+    beforeEach(() => {
+      jest.useFakeTimers()
+      jest.setSystemTime(100_000)
+    })
+
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
+    test("reloads at most twice per minute on failed script loads", () => {
+      const storage = new MemoryStorage()
+      const reloads = [1, 2, 3].map(() => {
+        const page = loadPageWithScript(() => storage)
+        page.dispatch("error", failedScriptEvent)
+        return page.reload.mock.calls.length
+      })
+      expect(reloads).toEqual([1, 1, 0])
+
+      jest.setSystemTime(100_000 + LOAD_FAILURE_RELOAD_GUARD.windowMs)
+      const page = loadPageWithScript(() => storage)
+      page.dispatch("error", failedScriptEvent)
+      expect(page.reload).toHaveBeenCalledTimes(1)
+    })
+
+    test("reloads once per page even when several assets fail", () => {
+      const storage = new MemoryStorage()
+      const page = loadPageWithScript(() => storage)
+      page.dispatch("error", failedScriptEvent)
+      page.dispatch("error", { target: { tagName: "LINK", rel: "stylesheet" } })
+      expect(page.reload).toHaveBeenCalledTimes(1)
+      expect(
+        JSON.parse(storage.getItem(LOAD_FAILURE_RELOAD_GUARD.storageKey) ?? "[]"),
+      ).toHaveLength(1)
+    })
+
+    test("reloads on chunk load errors", () => {
+      const chunkError = Object.assign(new Error("Loading chunk 182 failed."), {
+        name: "ChunkLoadError",
+      })
+      const rejected = loadPageWithScript(() => new MemoryStorage())
+      rejected.dispatch("unhandledrejection", { reason: chunkError })
+      expect(rejected.reload).toHaveBeenCalledTimes(1)
+
+      const thrown = loadPageWithScript(() => new MemoryStorage())
+      thrown.dispatch("error", { target: {}, error: new Error("Loading CSS chunk 7 failed.") })
+      expect(thrown.reload).toHaveBeenCalledTimes(1)
+    })
+
+    test("ignores unrelated errors", () => {
+      const page = loadPageWithScript(() => new MemoryStorage())
+      page.dispatch("error", { target: {}, error: new TypeError("x is undefined") })
+      page.dispatch("error", { target: { tagName: "IMG" } })
+      page.dispatch("error", { target: { tagName: "LINK", rel: "icon" } })
+      page.dispatch("unhandledrejection", { reason: new Error("fetch failed") })
+      expect(page.reload).not.toHaveBeenCalled()
+    })
+
+    test("does not reload when session storage is blocked", () => {
+      const page = loadPageWithScript(() => {
+        throw new Error("SecurityError")
+      })
+      page.dispatch("error", failedScriptEvent)
+      expect(page.reload).not.toHaveBeenCalled()
+    })
+  })
+})
+
+describe("cache headers", () => {
+  type HeaderRule = { source: string; headers: { key: string; value: string }[] }
+
+  async function headerValue(source: string, key: string) {
+    const rules: HeaderRule[] = await nextConfig.headers()
+    const values = rules
+      .filter((rule) => rule.source === source)
+      .flatMap((rule) => rule.headers)
+      .filter((header) => header.key.toLowerCase() === key.toLowerCase())
+      .map((header) => header.value)
+    return values[values.length - 1]
+  }
+
+  test("the iframe page is always revalidated", async () => {
+    expect(await headerValue("/iframe", "Cache-Control")).toBe("no-cache")
+  })
+
+  test("every response stays embeddable", async () => {
+    expect(await headerValue("/(.*)", "Access-Control-Allow-Origin")).toBe("*")
+    expect(await headerValue("/(.*)", "X-Frame-Options")).toBeUndefined()
+  })
+})
+
+describe("renderer error boundary", () => {
+  it("shows an error and asks the host to reload the iframe", () => {
+    jest.spyOn(console, "error").mockImplementation(() => undefined)
+    const postMessage = jest.fn()
+    const port = { postMessage } as unknown as MessagePort
+    const brokenState = {
+      view_type: "answer-exercise" as const,
+      public_spec: {
+        id: "broken",
+        type: SurveyType.NonFactorial,
+        content: null,
+      } as unknown as Survey,
+    }
+    const container = document.createElement("div")
+    const root = createRoot(container)
+    act(() => {
+      root.render(React.createElement(Renderer, { port, setState: jest.fn(), state: brokenState }))
+    })
+
+    expect(container.querySelector('[role="alert"]')).not.toBeNull()
+    expect(postMessage).toHaveBeenCalledTimes(1)
+    expect(postMessage).toHaveBeenCalledWith({ message: "request-iframe-reload" })
+    expect(isMessageFromIframe(postMessage.mock.calls[0][0])).toBe(true)
+
+    const nextState = {
+      ...brokenState,
+      public_spec: { id: "fixed", type: SurveyType.NonFactorial, content: [] } as unknown as Survey,
+    }
+    act(() => {
+      root.render(React.createElement(Renderer, { port, setState: jest.fn(), state: nextState }))
+    })
+    expect(container.querySelector('[role="alert"]')).toBeNull()
+    act(() => root.unmount())
+  })
+})
+
+describe("spec audit checks", () => {
+  const trigger = surveyItem("has-dog", "has_dog", yesNo)
+  const ifYes = [{ questionLabel: "has_dog", triggeringOption: "yes" }]
+  const ifMaybe = [{ questionLabel: "has_dog", triggeringOption: "maybe" }]
+
+  describe("fixtures", () => {
+    it("finds nothing in the test-data and Alusta-arkuus specs", () => {
+      expect(checkSpec(nonFactorialSpec as unknown as Survey)).toEqual([])
+      expect(checkSpec(miniTestSpec as unknown as FactorialSurvey)).toEqual([])
+      expect(checkSpec(personalitySpec as unknown as FactorialSurvey)).toEqual([])
+      expect(checkSpec(alustaArkuusSurvey as Survey)).toEqual([])
+      expect(checkSpec(alustaArkuusFactorial as PublicFactorialSurveySpec)).toEqual([])
+    })
+
+    it("finds nothing in a null spec", () => {
+      expect(checkSpec(null)).toEqual([])
+    })
+
+    it("accepts duplicate labels and mandatory number fields, which no longer block submitting", () => {
+      expect(checkSurveyContent(duplicateLabelSurvey.content)).toEqual([])
+      expect(
+        checkSurveyContent([surveyItem("weight", "weight", { type: AnswerType.Number })]),
+      ).toEqual([])
+    })
+  })
+
+  describe("mandatory items without input", () => {
+    it.each([
+      ["no answer type", surveyItem("q", "q", { type: AnswerType.None })],
+      ["file upload", surveyItem("q", "q", { type: AnswerType.FileUpload })],
+      ["unknown answer type", surveyItem("q", "q", { type: "slider" as AnswerType })],
+      ["radio group without options", surveyItem("q", "q", { type: AnswerType.RadioGroup })],
+      [
+        "weighted radio group without options",
+        surveyItem("q", "q", { type: AnswerType.WeightedRadioGroup }),
+      ],
+      ["info row", surveyItem("q", "info")],
+    ])("flags %s", (_name, item) => {
+      expect(findMandatoryWithoutInput([item])).toMatchObject([
+        { kind: "mandatory-without-input", itemId: item.id },
+      ])
+    })
+
+    it("passes answerable and optional items", () => {
+      const weighted = surveyItem("w", "w", { type: AnswerType.WeightedRadioGroup })
+      weighted.answer.factorialOptions = [{ id: "o1", name: "often", value: 2 }]
+      const items = [
+        trigger,
+        weighted,
+        surveyItem("text", "text"),
+        surveyItem("date", "date", { type: AnswerType.Date }),
+        surveyItem("consent", "consent", { type: AnswerType.ConsentCheckbox, options: ["ok"] }),
+        surveyItem("optional", "optional", { type: AnswerType.None, mandatory: false }),
+      ]
+      expect(findMandatoryWithoutInput(items)).toEqual([])
+    })
+  })
+
+  describe("conditions pointing at missing options", () => {
+    it("flags a condition on an option no item offers", () => {
+      const item = surveyItem("dog-name", "dog_name", { dependsOn: ifMaybe })
+      const findings = findConditionsWithMissingOptions([trigger, item])
+      expect(findings).toMatchObject([{ kind: "condition-missing-option", itemId: item.id }])
+      expect(findings[0].message).toContain('has_dog = "maybe"')
+    })
+
+    it("flags only the variant whose condition is broken", () => {
+      const valid = surveyItem("valid", "dog_name", { dependsOn: ifYes })
+      const broken = surveyItem("broken", "dog_name", {
+        dependsOn: [{ questionLabel: "missing", triggeringOption: "yes" }],
+      })
+      expect(findConditionsWithMissingOptions([trigger, valid, broken])).toMatchObject([
+        { itemId: broken.id },
+      ])
+    })
+
+    it("passes conditions on offered options", () => {
+      const item = surveyItem("dog-name", "dog_name", { dependsOn: ifYes })
+      expect(findConditionsWithMissingOptions([trigger, item])).toEqual([])
+    })
+  })
+
+  describe("mandatory items that can never be shown", () => {
+    it("flags an item whose trigger option does not exist", () => {
+      const item = surveyItem("dog-name", "dog_name", { dependsOn: ifMaybe })
+      expect(findMandatoryNeverShown([trigger, item])).toMatchObject([
+        { kind: "mandatory-never-shown", itemId: item.id },
+      ])
+    })
+
+    it("flags an item behind a trigger that can never be shown", () => {
+      const unreachable = surveyItem("breed", "breed", {
+        type: AnswerType.RadioGroup,
+        options: ["husky"],
+        mandatory: false,
+        dependsOn: ifMaybe,
+      })
+      const chained = surveyItem("husky-age", "husky_age", {
+        dependsOn: [{ questionLabel: "breed", triggeringOption: "husky" }],
+      })
+      expect(findMandatoryNeverShown([trigger, unreachable, chained])).toMatchObject([
+        { itemId: chained.id },
+      ])
+    })
+
+    it("flags items that only trigger each other", () => {
+      const a = surveyItem("a", "a", {
+        type: AnswerType.RadioGroup,
+        options: ["x"],
+        dependsOn: [{ questionLabel: "b", triggeringOption: "x" }],
+      })
+      const b = surveyItem("b", "b", {
+        type: AnswerType.RadioGroup,
+        options: ["x"],
+        mandatory: false,
+        dependsOn: [{ questionLabel: "a", triggeringOption: "x" }],
+      })
+      expect(findMandatoryNeverShown([a, b])).toMatchObject([{ itemId: a.id }])
+    })
+
+    it("passes chained conditions, multi-choice and weighted triggers", () => {
+      const breed = surveyItem("breed", "breed", {
+        type: AnswerType.MultiChoice,
+        options: ["husky", "poodle"],
+        mandatory: false,
+        dependsOn: ifYes,
+      })
+      const walks = surveyItem("walks", "walks", {
+        type: AnswerType.WeightedRadioGroup,
+        mandatory: false,
+      })
+      walks.answer.factorialOptions = [{ id: "o1", name: "daily", value: 1 }]
+      const items = [
+        trigger,
+        breed,
+        walks,
+        surveyItem("husky-age", "husky_age", {
+          dependsOn: [{ questionLabel: "breed", triggeringOption: "husky" }],
+        }),
+        surveyItem("walk-length", "walk_length", {
+          dependsOn: [{ questionLabel: "walks", triggeringOption: "daily" }],
+        }),
+      ]
+      expect(findMandatoryNeverShown(items)).toEqual([])
+    })
+
+    it("treats an item marked conditional without conditions as always shown", () => {
+      const item = { ...surveyItem("q", "q"), conditional: true }
+      expect(findMandatoryNeverShown([item])).toEqual([])
+      expect(
+        findMandatoryNeverShown([{ ...item, dependsOn: null } as unknown as SurveyItem]),
+      ).toEqual([])
+    })
+  })
+
+  describe("factorial specs", () => {
+    const question = (questionLabel: string, mandatory: boolean) => ({
+      id: `${questionLabel}-id`,
+      questionLabel,
+      question: questionLabel,
+      mandatory,
+    })
+    const options = factorialSpec.options
+
+    it("flags a mandatory info row", () => {
+      expect(
+        checkFactorialSpec({ options, questions: [question("info", true), question("q1", true)] }),
+      ).toMatchObject([{ kind: "mandatory-without-input", itemId: "info-id" }])
+    })
+
+    it("flags mandatory questions when there are no options", () => {
+      expect(
+        checkFactorialSpec({
+          options: [],
+          questions: [question("q1", true), question("q2", false)],
+        }),
+      ).toMatchObject([{ itemId: "q1-id" }])
+    })
+
+    it("passes answerable questions and optional info rows", () => {
+      expect(
+        checkFactorialSpec({ options, questions: [question("info", false), question("q1", true)] }),
+      ).toEqual([])
+    })
+  })
+
+  it("checkSurveyContent combines every non-factorial check", () => {
+    const content = [
+      trigger,
+      surveyItem("photo", "photo", { type: AnswerType.FileUpload }),
+      surveyItem("ghost", "ghost", { dependsOn: ifMaybe }),
+    ]
+    expect(
+      checkSurveyContent(content)
+        .map((finding) => finding.kind)
+        .sort(),
+    ).toEqual(["condition-missing-option", "mandatory-never-shown", "mandatory-without-input"])
+    expect(checkSpec(survey(content))).toHaveLength(3)
   })
 })

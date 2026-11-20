@@ -6,7 +6,8 @@ import { checkSpec, SpecFinding } from "../src/util/specChecks"
 
 const USAGE = `Usage: npm run audit-specs -- <exported-specs.json>
 
-Reports spec problems that can block students from submitting (checks in src/util/specChecks.ts).
+Reports mandatory questions students cannot answer and conditions that never hold
+(checks in src/util/specChecks.ts).
 
 Input: a JSON array of
   { "course": string, "exercise": string, "task": string, "public_spec": object | string }
@@ -21,7 +22,7 @@ where public_spec is the exercise task's public spec (a JSON string is parsed). 
   WHERE t.exercise_type = '<this service's slug>'
     AND t.deleted_at IS NULL AND e.deleted_at IS NULL AND c.deleted_at IS NULL;
 
-Exit status: 0 no findings, 1 findings reported, 2 unreadable input.`
+Exit status: 0 no findings, 1 findings reported, 2 unreadable input or task.`
 
 /** One exported exercise task; see USAGE. */
 interface ExportedTask {
@@ -54,15 +55,27 @@ const main = (args: string[]): number => {
   }
 
   const findingsByExercise = new Map<string, { task: string; finding: SpecFinding }[]>()
+  let unreadableTaskCount = 0
+  let findingCount = 0
   for (const task of tasks) {
-    const spec =
-      typeof task.public_spec === "string" ? JSON.parse(task.public_spec) : task.public_spec
     const key = `${task.course} / ${task.exercise}`
-    for (const finding of checkSpec(spec)) {
-      findingsByExercise.set(key, [
-        ...(findingsByExercise.get(key) ?? []),
-        { task: task.task, finding },
-      ])
+    let findings: SpecFinding[]
+    try {
+      const spec =
+        typeof task.public_spec === "string" ? JSON.parse(task.public_spec) : task.public_spec
+      findings = checkSpec(spec)
+    } catch (error) {
+      unreadableTaskCount++
+      console.error(
+        `${key}: cannot check task ${task.task}: ${error instanceof Error ? error.message : error}`,
+      )
+      continue
+    }
+    if (findings.length > 0) {
+      const exerciseFindings = findingsByExercise.get(key) ?? []
+      exerciseFindings.push(...findings.map((finding) => ({ task: task.task, finding })))
+      findingsByExercise.set(key, exerciseFindings)
+      findingCount += findings.length
     }
   }
 
@@ -73,13 +86,15 @@ const main = (args: string[]): number => {
       console.log(`  task ${task} [${finding.kind}] ${finding.message}`)
     }
   }
-  const findingCount = exerciseKeys.reduce(
-    (sum, key) => sum + (findingsByExercise.get(key)?.length ?? 0),
-    0,
-  )
   console.log(
-    `${tasks.length} tasks checked, ${findingCount} findings in ${exerciseKeys.length} exercises.`,
+    `${tasks.length - unreadableTaskCount} tasks checked, ${findingCount} findings in ${
+      exerciseKeys.length
+    } exercises.`,
   )
+  if (unreadableTaskCount > 0) {
+    console.log(`${unreadableTaskCount} tasks could not be checked.`)
+    return 2
+  }
   return findingCount > 0 ? 1 : 0
 }
 

@@ -1,13 +1,14 @@
+import { postCurrentStateMessage } from "@moocfi/exercise-client"
 import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 import { saveAnswerDraft } from "../util/answerDraft"
-import { buildCurrentStateMessage } from "../util/currentState"
 import { focusFirstUnansweredItem, onFocusFirstInvalidRequest } from "../util/focusFirstInvalid"
 import { PublicSpec } from "../util/spec-types/publicSpec"
 import { UserAnswer } from "../util/spec-types/userAnswer"
 import { findUnansweredQuestions, UnansweredQuestion } from "../util/utils"
+import { buildValidityMessages } from "../util/validityMessages"
 
 interface AnswerReporting {
   unansweredIds: Set<UnansweredQuestion["id"]>
@@ -31,7 +32,13 @@ const useAnswerReporting = (
   const unanswered = useMemo(() => findUnansweredQuestions(spec, answer), [spec, answer])
 
   useEffect(() => {
-    port.postMessage(buildCurrentStateMessage(answer, unanswered, t, userVariables))
+    postCurrentStateMessage(
+      port,
+      answer,
+      unanswered.length === 0,
+      undefined,
+      buildValidityMessages(unanswered, t, userVariables),
+    )
     saveAnswerDraft(spec.id, answer)
   }, [port, spec.id, answer, unanswered, t, userVariables])
 

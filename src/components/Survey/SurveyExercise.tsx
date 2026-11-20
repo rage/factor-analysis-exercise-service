@@ -65,36 +65,31 @@ const SurveyExercise: React.FC<React.PropsWithChildren<Props>> = ({
             updateAnswer={updateAnswer}
           />
         )
-        if (item.question.questionLabel === "info-header") {
-          return (
-            <RequiredItemWrapper
-              key={item.id}
-              isUnanswered={unansweredIds.has(item.id)}
-              shouldHighlight={shouldHighlightUnanswered}
-            >
-              <InfoHeaderWrapper>
-                <div
-                  className={css`
-                    color: ${baseTheme.colors.crimson[700]};
-                  `}
-                >
-                  <MarkdownText text={content} />
-                </div>
-                {itemInput}
-              </InfoHeaderWrapper>
-            </RequiredItemWrapper>
+        const itemContent =
+          item.question.questionLabel === "info-header" ? (
+            <InfoHeaderWrapper>
+              <div
+                className={css`
+                  color: ${baseTheme.colors.crimson[700]};
+                `}
+              >
+                <MarkdownText text={content} />
+              </div>
+              {itemInput}
+            </InfoHeaderWrapper>
+          ) : (
+            <ItemWrapper>
+              <ExerciseItemHeader titleText={content} />
+              {itemInput}
+            </ItemWrapper>
           )
-        }
         return (
           <RequiredItemWrapper
             key={item.id}
             isUnanswered={unansweredIds.has(item.id)}
             shouldHighlight={shouldHighlightUnanswered}
           >
-            <ItemWrapper>
-              <ExerciseItemHeader titleText={content} />
-              {itemInput}
-            </ItemWrapper>
+            {itemContent}
           </RequiredItemWrapper>
         )
       })}

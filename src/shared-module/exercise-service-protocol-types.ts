@@ -19,9 +19,8 @@ export interface CurrentStateMessage {
   data: unknown // { private_spec: unknown } | { public_spec: unknown } ?
   valid: boolean
   /**
-   * Optional, already-localized reasons the current answer is not yet submittable. The parent
-   * renders them verbatim next to the disabled submit button. Absent/empty when the answer is valid
-   * or the service supplies no reasons.
+   * Already-localized reasons the answer is not yet submittable, shown verbatim by the parent next
+   * to the disabled submit button. Absent or empty when the answer is valid.
    */
   validityMessages?: string[]
 }

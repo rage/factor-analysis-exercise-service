@@ -42,7 +42,7 @@ const NumberAnswerField: React.FC<Props> = ({ item, answer, updateAnswer, disabl
           const value = e.target.value
           const parsed = parseDecimal(value)
           setText(value)
-          updateAnswer(item.id, parsed === null ? value : String(parsed))
+          updateAnswer(item.id, parsed === null ? null : String(parsed))
         }}
         error={isInvalid ? t("invalid-number") : undefined}
         required

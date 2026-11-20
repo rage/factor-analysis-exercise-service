@@ -73,6 +73,8 @@ const CrashMessage: React.FC = () => {
 
 interface RendererErrorBoundaryProps {
   port: MessagePort | null
+  /** A new state from the host clears the crash, in case the host does not reload the iframe. */
+  state: State | null
   children: React.ReactNode
 }
 
@@ -85,6 +87,12 @@ class RendererErrorBoundary extends React.Component<
 
   static getDerivedStateFromError() {
     return { hasCrashed: true }
+  }
+
+  componentDidUpdate(prevProps: RendererErrorBoundaryProps) {
+    if (this.state.hasCrashed && prevProps.state !== this.props.state) {
+      this.setState({ hasCrashed: false })
+    }
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -104,7 +112,7 @@ class RendererErrorBoundary extends React.Component<
 }
 
 const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = (props) => (
-  <RendererErrorBoundary port={props.port}>
+  <RendererErrorBoundary port={props.port} state={props.state}>
     <ViewRenderer {...props} />
   </RendererErrorBoundary>
 )

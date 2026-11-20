@@ -4,11 +4,7 @@
       "answer": {
         "answer": "",
         "id": "a9807d5e-0295-4663-9bbe-79b188c2cf0b",
-        "options": [
-          "kyllä",
-          "ei",
-          "en osaa sanoa"
-        ],
+        "options": ["kyllä", "ei", "en osaa sanoa"],
         "type": "radio-group"
       },
       "conditional": false,

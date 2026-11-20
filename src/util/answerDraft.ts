@@ -28,22 +28,19 @@ export const loadAnswerDraft = (specId: string): unknown => {
   }
 }
 
-export const clearAnswerDraft = (specId: string): void => {
-  try {
-    window.sessionStorage.removeItem(draftKey(specId))
-  } catch (e) {
-    console.warn("Could not clear the answer draft", e)
-  }
-}
-
 /** Clears the draft once the host shows the submission view, which it does after a submit. */
 export const clearSubmittedAnswerDraft = (message: SetStateMessage): void => {
   if (message.view_type !== "view-submission") {
     return
   }
   const specId = (message.data.public_spec as PublicSpec | null)?.id
-  if (typeof specId === "string") {
-    clearAnswerDraft(specId)
+  if (typeof specId !== "string") {
+    return
+  }
+  try {
+    window.sessionStorage.removeItem(draftKey(specId))
+  } catch (e) {
+    console.warn("Could not clear the answer draft", e)
   }
 }
 
@@ -52,6 +49,4 @@ export const clearSubmittedAnswerDraft = (message: SetStateMessage): void => {
  * when present, otherwise the one in sessionStorage.
  */
 export const pickAnswerDraft = (specId: string, hostAnswerDraft: unknown): unknown =>
-  hostAnswerDraft !== undefined && hostAnswerDraft !== null
-    ? hostAnswerDraft
-    : loadAnswerDraft(specId)
+  hostAnswerDraft ?? loadAnswerDraft(specId)

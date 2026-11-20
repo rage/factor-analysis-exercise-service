@@ -7,6 +7,7 @@ import { STATIC_LOADING_INDICATOR_ID } from "../util/staticLoadingIndicator"
 
 const loadFailureRecoveryScript = buildLoadFailureRecoveryScript()
 
+/** Adds the load-failure recovery script and a loading text that shows before any JS runs. */
 export default function Document() {
   return (
     <Html>
@@ -14,7 +15,7 @@ export default function Document() {
         <script dangerouslySetInnerHTML={{ __html: loadFailureRecoveryScript }} />
       </Head>
       <body>
-        <div id={STATIC_LOADING_INDICATOR_ID}>Ladataan…</div>
+        <div id={STATIC_LOADING_INDICATOR_ID}>Ladataan… / Loading…</div>
         <Main />
         <NextScript />
       </body>

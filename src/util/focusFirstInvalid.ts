@@ -21,16 +21,15 @@ export const onFocusFirstInvalidRequest = (listener: () => void): (() => void) =
 
 /**
  * Scrolls to the first element marked with `UNANSWERED_ITEM_ATTRIBUTE` and focuses its first
- * enabled control (or the element itself). Returns false when nothing is marked.
+ * enabled control (or the element itself).
  */
-export const focusFirstUnansweredItem = (root: ParentNode = document): boolean => {
-  const item = root.querySelector<HTMLElement>(`[${UNANSWERED_ITEM_ATTRIBUTE}]`)
+export const focusFirstUnansweredItem = (): void => {
+  const item = document.querySelector<HTMLElement>(`[${UNANSWERED_ITEM_ATTRIBUTE}]`)
   if (!item) {
-    return false
+    return
   }
   // jsdom lacks scrollIntoView
   item.scrollIntoView?.({ block: "center" })
   const control = item.querySelector<HTMLElement>(FOCUSABLE_CONTROL) ?? item
   control.focus({ preventScroll: true })
-  return true
 }

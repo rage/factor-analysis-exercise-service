@@ -15,10 +15,6 @@ const config = {
         headers: externallyEmbeddableIFrameResponseHeaders,
       },
       {
-        source: "/_next/static/:path*",
-        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
-      },
-      {
         // No max-age until old builds' chunks stay reachable after a deploy: a cached page
         // pointing at chunks the new revision no longer serves fails to load.
         source: "/iframe",

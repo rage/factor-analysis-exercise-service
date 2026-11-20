@@ -1,12 +1,15 @@
 // Both functions are serialized with Function.prototype.toString into an inline script in
 // _document, so they must not reference anything outside their own bodies.
 
+/** How many self-reloads a page may do within a time window, and where they are counted. */
 export interface ReloadGuardConfig {
+  /** sessionStorage key holding the reload timestamps. */
   storageKey: string
   maxReloads: number
   windowMs: number
 }
 
+/** Limits for reloading the iframe page after its scripts or styles fail to load. */
 export const LOAD_FAILURE_RELOAD_GUARD: ReloadGuardConfig = {
   storageKey: "factorial-survey-load-failure-reloads",
   maxReloads: 2,

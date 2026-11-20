@@ -1,4 +1,3 @@
-import { ItemWithCondition } from "../components/Survey/Editors/SurveyEditor"
 import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
 import { FactorReport, Rate } from "./spec-types/grading"
@@ -234,55 +233,6 @@ export const checkCondition = (
   return matchingOptions.length > 0
 }
 
-export const validateConditionConsistency = (surveyItems: SurveyItem[]) => {
-  const possibleConditions = surveyItems
-    .filter((i) => Array.isArray(i.answer.options) || Array.isArray(i.answer.factorialOptions))
-    .map((i) => {
-      if (i.answer.factorialOptions) {
-        return i.answer.factorialOptions.map((fop) => {
-          return {
-            questionLabel: i.question.questionLabel,
-            triggeringOption: fop.name,
-          } as SurveyItemCondition
-        })
-      }
-      return i.answer.options.map((it) => {
-        return {
-          questionLabel: i.question.questionLabel,
-          triggeringOption: it,
-        } as SurveyItemCondition
-      })
-    })
-    .flat()
-
-  const dependableItems = surveyItems
-    .filter((i) => i.dependsOn)
-    .map((i) => {
-      return {
-        questionLabel: i.question.questionLabel,
-        conditions: [i.dependsOn].flat() as SurveyItemCondition[],
-      }
-    })
-
-  const inconsistencies = dependableItems
-    .map((item) => {
-      const unmet = item.conditions.filter(
-        (con) =>
-          !possibleConditions.find(
-            (obj) =>
-              obj.questionLabel === con.questionLabel &&
-              obj.triggeringOption === con.triggeringOption,
-          ),
-      )
-      if (unmet.length) {
-        return { ...item, conditions: unmet }
-      }
-    })
-    .filter((item) => item !== undefined)
-
-  return inconsistencies as ItemWithCondition[]
-}
-
 /** A required question that an answer leaves unanswered. */
 export interface UnansweredQuestion {
   /** Survey item id for non-factorial surveys, question id for factorial ones. */
@@ -303,9 +253,29 @@ export const parseDecimal = (text: string): number | null => {
   return Number(normalized)
 }
 
+/** Whether the item is hidden unless its `dependsOn` conditions hold. */
+export const isConditionalItem = (
+  item: SurveyItem,
+): item is SurveyItem & { dependsOn: SurveyItemCondition[] } => item.conditional && !!item.dependsOn
+
 /** Whether the item is shown to the student, given the current answers. */
 export const isSurveyItemShown = (item: SurveyItem, answeredItems: AnsweredSurveyItem[]): boolean =>
-  !item.conditional || !item.dependsOn || checkCondition(answeredItems, item.dependsOn)
+  !isConditionalItem(item) || checkCondition(answeredItems, item.dependsOn)
+
+/** The option names a choice item offers; empty for non-choice items, whatever options they hold. */
+export const offeredOptions = (item: SurveyItem): string[] => {
+  switch (item.answer.type) {
+    case AnswerType.RadioGroup:
+    case AnswerType.Dropdown:
+    case AnswerType.MultiChoice:
+    case AnswerType.AdvancedDropdown:
+      return item.answer.options ?? []
+    case AnswerType.WeightedRadioGroup:
+      return (item.answer.factorialOptions ?? []).map((option) => option.name)
+    default:
+      return []
+  }
+}
 
 /**
  * Clears the answers of items whose condition no longer holds, repeating until stable so that
@@ -340,15 +310,8 @@ export const hasAnswerInput = (item: SurveyItem): boolean => {
     case AnswerType.Date:
     case AnswerType.ConsentCheckbox:
       return true
-    case AnswerType.RadioGroup:
-    case AnswerType.Dropdown:
-    case AnswerType.MultiChoice:
-    case AnswerType.AdvancedDropdown:
-      return (item.answer.options?.length ?? 0) > 0
-    case AnswerType.WeightedRadioGroup:
-      return (item.answer.factorialOptions?.length ?? 0) > 0
     default:
-      return false
+      return offeredOptions(item).length > 0
   }
 }
 
@@ -368,8 +331,8 @@ const isAnswerGiven = (item: SurveyItem, answer: AnsweredSurveyItem["answer"] | 
   return answer.trim().length > 0
 }
 
-// Submissions reach the grade endpoint unchecked, so tolerate any shape.
-const answerEntries = <T>(userAnswer: UserAnswer | null | undefined): T[] => {
+/** Object entries of `answeredQuestions`; any shape is accepted since submissions are unchecked. */
+export const answerEntries = <T>(userAnswer: UserAnswer | null | undefined): T[] => {
   const entries: unknown = userAnswer?.answeredQuestions
   if (!Array.isArray(entries)) {
     return []

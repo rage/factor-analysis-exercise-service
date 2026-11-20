@@ -1,19 +1,15 @@
 import { TFunction } from "i18next"
 
-import {
-  CurrentStateMessage,
-  UserVariablesMap,
-} from "../shared-module/exercise-service-protocol-types"
+import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 
-import { UserAnswer } from "./spec-types/userAnswer"
 import { insertVariablesToText, UnansweredQuestion } from "./utils"
 
 /** Unanswered questions named one by one; the rest are only counted. */
-export const MAX_NAMED_UNANSWERED_QUESTIONS = 3
+const MAX_NAMED_UNANSWERED_QUESTIONS = 3
 const MAX_QUESTION_TEXT_LENGTH = 80
 
 /** Question text as a short plain-text line, without markdown and the trailing "*" teachers use. */
-export const toQuestionSummary = (
+const toQuestionSummary = (
   question: UnansweredQuestion,
   userVariables?: UserVariablesMap | null,
 ): string => {
@@ -31,6 +27,7 @@ export const toQuestionSummary = (
     : text
 }
 
+/** Localized `validityMessages` naming the first unanswered questions and counting the rest. */
 export const buildValidityMessages = (
   unanswered: UnansweredQuestion[],
   t: TFunction,
@@ -45,16 +42,3 @@ export const buildValidityMessages = (
   }
   return named
 }
-
-/** The `current-state` message reporting `answer`, given what `findUnansweredQuestions` found in it. */
-export const buildCurrentStateMessage = (
-  answer: UserAnswer,
-  unanswered: UnansweredQuestion[],
-  t: TFunction,
-  userVariables?: UserVariablesMap | null,
-): CurrentStateMessage => ({
-  message: "current-state",
-  data: answer,
-  valid: unanswered.length === 0,
-  validityMessages: buildValidityMessages(unanswered, t, userVariables),
-})

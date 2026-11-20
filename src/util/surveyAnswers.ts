@@ -1,7 +1,7 @@
 import { Survey } from "./spec-types/privateSpec"
 import { PublicFactorialSurveySpec } from "./spec-types/publicSpec"
-import { AnsweredSurveyItem, RatedQuestion } from "./spec-types/userAnswer"
-import { clearHiddenAnswers } from "./utils"
+import { AnsweredSurveyItem, RatedQuestion, UserAnswer } from "./spec-types/userAnswer"
+import { answerEntries, clearHiddenAnswers } from "./utils"
 
 type SurveyItemAnswer = AnsweredSurveyItem["answer"]
 
@@ -11,16 +11,8 @@ const isSurveyItemAnswer = (value: unknown): value is SurveyItemAnswer =>
   typeof value === "number" ||
   (Array.isArray(value) && value.every((v) => typeof v === "string"))
 
-const draftEntries = (draft: unknown): Record<string, unknown>[] => {
-  if (draft === null || typeof draft !== "object") {
-    return []
-  }
-  const entries = (draft as { answeredQuestions?: unknown }).answeredQuestions
-  if (!Array.isArray(entries)) {
-    return []
-  }
-  return entries.filter((entry) => entry !== null && typeof entry === "object")
-}
+const draftEntries = (draft: unknown) =>
+  answerEntries<Record<string, unknown>>(draft as UserAnswer | null)
 
 /** Sets one item's answer and clears the answers of the items that the change hides. */
 export const applySurveyAnswer = (

@@ -12,7 +12,6 @@ import {
   SumFactor,
   Survey,
   SurveyItem,
-  SurveyItemCondition,
 } from "../../../util/spec-types/privateSpec"
 import { checkSurveyContent } from "../../../util/specChecks"
 import ListInputEditor from "../../SharedMisc/ListInputEditor"
@@ -24,11 +23,6 @@ import SurveyItemEditor from "./SurveyItemEditor"
 interface Props {
   state: Survey
   setState: (newState: State) => void
-}
-
-export interface ItemWithCondition {
-  questionLabel: string
-  conditions: SurveyItemCondition[]
 }
 
 const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setState }) => {
@@ -116,7 +110,7 @@ const SurveyEditor: React.FC<React.PropsWithChildren<Props>> = ({ state, setStat
         {duplicateError.map((label, idx) => {
           return <p key={idx}>{label}</p>
         })}
-        {findings.length > 0 && <p>{"Found problems that may stop students submitting:"}</p>}
+        {findings.length > 0 && <p>{"Found problems with mandatory questions or conditions:"}</p>}
         {findings.map((finding, idx) => {
           return <p key={idx}>{finding.message}</p>
         })}
