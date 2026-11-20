@@ -5,6 +5,7 @@
   "score-given": "score given",
   "waiting-for-content": "Waiting for content...",
   "waiting-for-port": "Waiting for port...",
+  "error-exercise-crashed": "Something went wrong while showing this exercise. Reload the page to try again.",
   "pdf-file-name": "survey_responses_summary",
   "pdf-download-text": "Download a summary of your research reports as a PDF file from here",
   "pdf-sub-title": "Summary of My Research Reports",
