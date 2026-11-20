@@ -85,14 +85,17 @@ export default async function expectScreenshotsToMatchSnapshots({
     replaceSomePartsWithPlaceholders,
   })
 
+  let toastHidingStyle: ElementHandle<Node> | undefined
   if (clearNotifications) {
     await (page || pageObjectToUse).evaluate(() => {
       for (const notif of Array.from(document.querySelectorAll("#give-feedback-button"))) {
         notif.remove()
       }
-      for (const notif of Array.from(document.querySelectorAll(".toast-notification"))) {
-        notif.remove()
-      }
+    })
+    // Hidden with CSS rather than removed: the host's toaster is React-managed and a toast can
+    // still appear after this runs. Removed afterwards because tests wait for toasts.
+    toastHidingStyle = await (page || pageObjectToUse).addStyleTag({
+      content: `[data-testid="toast-notification"] { display: none !important; }`,
     })
   }
 
@@ -129,6 +132,8 @@ export default async function expectScreenshotsToMatchSnapshots({
     scrollToYCoordinate,
     replaceSomePartsWithPlaceholders,
   })
+
+  await toastHidingStyle?.evaluate((style) => style.parentNode?.removeChild(style))
 
   if (originalViewPort) {
     // always restore the original viewport
