@@ -8,5 +8,10 @@
   "pdf-file-name": "kyselyvastaukset_yhteenveto",
   "pdf-download-text": "Lataa tästä yhteenveto tutkimusraporteistasi PDF-tiedostona",
   "pdf-sub-title": "Yhteenveto tutkimusraporteistani",
-  "pdf-sub-text": "{{ studentName }}, suoritit Helsingin yliopiston Hannes Lohen tutkimusryhmän kehittämän ”Minä ja lemmikkini”-verkkokurssin. Kurssin suorittamispäivä: {{ date }}. Tässä on koontiraportti kurssilla täyttämistäsi kyselyvastauksista liittyen omiin ja lemmikkisi piirteisiin."
+  "pdf-sub-text": "{{ studentName }}, suoritit Helsingin yliopiston Hannes Lohen tutkimusryhmän kehittämän ”Minä ja lemmikkini”-verkkokurssin. Kurssin suorittamispäivä: {{ date }}. Tässä on koontiraportti kurssilla täyttämistäsi kyselyvastauksista liittyen omiin ja lemmikkisi piirteisiin.",
+  "answer-required-question": "Vastaa kysymykseen: {{question}}",
+  "more-required-questions-unanswered_one": "Lisäksi {{count}} muu pakollinen kysymys on vastaamatta.",
+  "more-required-questions-unanswered_other": "Lisäksi {{count}} muuta pakollista kysymystä on vastaamatta.",
+  "required-question-unanswered": "Tämä kysymys on pakollinen.",
+  "invalid-number": "Kirjoita pelkkä luku, esimerkiksi 5 tai 2,5."
 }

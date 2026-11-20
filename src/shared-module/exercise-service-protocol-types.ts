@@ -14,6 +14,12 @@ export interface CurrentStateMessage {
   message: "current-state"
   data: unknown // { private_spec: unknown } | { public_spec: unknown } ?
   valid: boolean
+  /**
+   * Optional, already-localized reasons the current answer is not yet submittable. The parent
+   * renders them verbatim next to the disabled submit button. Absent/empty when the answer is valid
+   * or the service supplies no reasons.
+   */
+  validityMessages?: string[]
 }
 
 export interface HeightChangedMessage {
@@ -31,7 +37,11 @@ export interface FileUploadMessage {
  *
  * to: IFrame
  */
-export type MessageToIframe = SetLanguageMessage | SetStateMessage | UploadResultMessage
+export type MessageToIframe =
+  | SetLanguageMessage
+  | SetStateMessage
+  | UploadResultMessage
+  | FocusFirstInvalidMessage
 
 export interface SetLanguageMessage {
   message: "set-language"
@@ -55,6 +65,15 @@ export type UploadResultMessage = {
       error: string
     }
 )
+
+/**
+ * Asks the exercise to scroll to and focus its first required item that is still unanswered, sent
+ * when the student tries to submit an answer the exercise reported as invalid. Exercises that don't
+ * support it can ignore it.
+ */
+export interface FocusFirstInvalidMessage {
+  message: "focus-first-invalid"
+}
 
 /**
  * Checks if the message is a set state messages but doesn't require all the fields in the object to match
@@ -95,6 +114,12 @@ export type AnswerExerciseIframeState = {
     public_spec: unknown
     previous_submission: unknown | null
   }
+  /**
+   * The last answer this exercise reported (`CurrentStateMessage.data`) before the parent reloaded
+   * its iframe, so the exercise can restore the unsubmitted form. Only sent after a reload; an
+   * exercise that doesn't support it can ignore it.
+   */
+  answer_draft?: unknown
 }
 
 export type ViewSubmissionIframeState = {

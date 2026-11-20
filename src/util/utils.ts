@@ -283,50 +283,144 @@ export const validateConditionConsistency = (surveyItems: SurveyItem[]) => {
   return inconsistencies as ItemWithCondition[]
 }
 
-export const validateAnsweredQuestions = (
-  publicSpec: PublicSpec,
-  userAnswer: UserAnswer,
-): boolean => {
-  let allAnswered = true
+/** A required question that an answer leaves unanswered. */
+export interface UnansweredQuestion {
+  /** Survey item id for non-factorial surveys, question id for factorial ones. */
+  id: string
+  questionLabel: string
+  question: string
+}
 
-  switch (publicSpec.type) {
+/**
+ * Parses a number the way a student may type it: decimal comma or point, spaces as thousand
+ * separators. Returns null for anything else, including the empty string.
+ */
+export const parseDecimal = (text: string): number | null => {
+  const normalized = text.replace(/\s/g, "").replace(",", ".")
+  if (!/^[+-]?(\d+\.?\d*|\.\d+)$/.test(normalized)) {
+    return null
+  }
+  return Number(normalized)
+}
+
+/** Whether the item is shown to the student, given the current answers. */
+export const isSurveyItemShown = (item: SurveyItem, answeredItems: AnsweredSurveyItem[]): boolean =>
+  !item.conditional || !item.dependsOn || checkCondition(answeredItems, item.dependsOn)
+
+/**
+ * Clears the answers of items whose condition no longer holds, repeating until stable so that
+ * items depending on a cleared item are cleared too. Returns the input when nothing changes.
+ */
+export const clearHiddenAnswers = (
+  surveyItems: SurveyItem[],
+  answeredItems: AnsweredSurveyItem[],
+): AnsweredSurveyItem[] => {
+  let current = answeredItems
+  for (;;) {
+    const hiddenIds = new Set(
+      surveyItems.filter((item) => !isSurveyItemShown(item, current)).map((item) => item.id),
+    )
+    if (!current.some((a) => hiddenIds.has(a.surveyItemId) && a.answer !== null)) {
+      return current
+    }
+    current = current.map((a) =>
+      hiddenIds.has(a.surveyItemId) && a.answer !== null ? { ...a, answer: null } : a,
+    )
+  }
+}
+
+/** Whether the item renders something the student can answer with. */
+export const hasAnswerInput = (item: SurveyItem): boolean => {
+  if (item.question.questionLabel === "info") {
+    return false
+  }
+  switch (item.answer.type) {
+    case AnswerType.Text:
+    case AnswerType.Number:
+    case AnswerType.Date:
+    case AnswerType.ConsentCheckbox:
+      return true
+    case AnswerType.RadioGroup:
+    case AnswerType.Dropdown:
+    case AnswerType.MultiChoice:
+    case AnswerType.AdvancedDropdown:
+      return (item.answer.options?.length ?? 0) > 0
+    case AnswerType.WeightedRadioGroup:
+      return (item.answer.factorialOptions?.length ?? 0) > 0
+    default:
+      return false
+  }
+}
+
+const isAnswerGiven = (item: SurveyItem, answer: AnsweredSurveyItem["answer"] | undefined) => {
+  if (Array.isArray(answer)) {
+    return answer.length > 0
+  }
+  if (typeof answer === "number") {
+    return Number.isFinite(answer)
+  }
+  if (typeof answer !== "string") {
+    return false
+  }
+  if (item.answer.type === AnswerType.Number) {
+    return parseDecimal(answer) !== null
+  }
+  return answer.trim().length > 0
+}
+
+// Submissions reach the grade endpoint unchecked, so tolerate any shape.
+const answerEntries = <T>(userAnswer: UserAnswer | null | undefined): T[] => {
+  const entries: unknown = userAnswer?.answeredQuestions
+  if (!Array.isArray(entries)) {
+    return []
+  }
+  return entries.filter((entry) => entry !== null && typeof entry === "object") as T[]
+}
+
+/**
+ * Lists the required questions the answer leaves unanswered, in form order. Non-factorial items
+ * are matched by survey item id; items hidden by their condition (also through a hidden trigger)
+ * or rendering no input are not required. Shared by the iframe and the grade endpoint.
+ */
+export const findUnansweredQuestions = (
+  spec: PublicSpec,
+  userAnswer: UserAnswer | null | undefined,
+): UnansweredQuestion[] => {
+  switch (spec.type) {
     case SurveyType.Factorial: {
-      publicSpec.questions.map((q) => {
-        if (q.mandatory) {
-          if (
-            !(userAnswer.answeredQuestions as RatedQuestion[]).find(
-              (item) => item.questionLabel === q.questionLabel,
-            )?.chosenOptionId.length
-          ) {
-            allAnswered = false
-          }
-        }
-      })
-      break
+      const ratedQuestions = answerEntries<RatedQuestion>(userAnswer)
+      return spec.questions
+        .filter((q) => q.mandatory && q.questionLabel !== "info")
+        .filter((q) => {
+          const chosenOptionId = ratedQuestions.find(
+            (item) => item.questionLabel === q.questionLabel,
+          )?.chosenOptionId
+          return typeof chosenOptionId !== "string" || chosenOptionId.length === 0
+        })
+        .map((q) => ({ id: q.id, questionLabel: q.questionLabel, question: q.question }))
     }
     case SurveyType.NonFactorial: {
-      const displayedQuestions: SurveyItem[] = publicSpec.content.filter((item) => {
-        return (
-          !item.conditional ||
-          (item.dependsOn &&
-            checkCondition(userAnswer.answeredQuestions as AnsweredSurveyItem[], item.dependsOn))
+      const answeredItems = clearHiddenAnswers(
+        spec.content,
+        answerEntries<AnsweredSurveyItem>(userAnswer),
+      )
+      return spec.content
+        .filter(
+          (item) =>
+            item.question.mandatory &&
+            hasAnswerInput(item) &&
+            isSurveyItemShown(item, answeredItems) &&
+            !isAnswerGiven(item, answeredItems.find((a) => a.surveyItemId === item.id)?.answer),
         )
-      })
-      displayedQuestions.map((q) => {
-        if (q.question.mandatory) {
-          if (
-            !(userAnswer.answeredQuestions as AnsweredSurveyItem[]).find(
-              (item) => item.questionLabel === q.question.questionLabel,
-            )?.answer
-          ) {
-            allAnswered = false
-          }
-        }
-      })
+        .map((item) => ({
+          id: item.id,
+          questionLabel: item.question.questionLabel,
+          question: item.question.question,
+        }))
     }
+    default:
+      return []
   }
-
-  return allAnswered
 }
 
 export const calculateSumFactorScore = (

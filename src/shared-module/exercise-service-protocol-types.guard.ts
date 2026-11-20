@@ -13,6 +13,7 @@ import {
   ExerciseIframeState,
   ExtendedIframeState,
   FileUploadMessage,
+  FocusFirstInvalidMessage,
   HeightChangedMessage,
   IframeViewType,
   MessageFromIframe,
@@ -41,7 +42,10 @@ export function isCurrentStateMessage(obj: unknown): obj is CurrentStateMessage 
   return (
     ((typedObj !== null && typeof typedObj === "object") || typeof typedObj === "function") &&
     typedObj["message"] === "current-state" &&
-    typeof typedObj["valid"] === "boolean"
+    typeof typedObj["valid"] === "boolean" &&
+    (typeof typedObj["validityMessages"] === "undefined" ||
+      (Array.isArray(typedObj["validityMessages"]) &&
+        typedObj["validityMessages"].every((e: any) => typeof e === "string")))
   )
 }
 
@@ -88,7 +92,8 @@ export function isMessageToIframe(obj: unknown): obj is MessageToIframe {
       typedObj["message"] === "upload-result" &&
       ((typedObj !== null && typeof typedObj === "object") || typeof typedObj === "function") &&
       typedObj["success"] === false &&
-      typeof typedObj["error"] === "string")
+      typeof typedObj["error"] === "string") ||
+    (isFocusFirstInvalidMessage(typedObj) as boolean)
   )
 }
 
@@ -132,6 +137,14 @@ export function isUploadResultMessage(obj: unknown): obj is UploadResultMessage 
       ((typedObj !== null && typeof typedObj === "object") || typeof typedObj === "function") &&
       typedObj["success"] === false &&
       typeof typedObj["error"] === "string")
+  )
+}
+
+export function isFocusFirstInvalidMessage(obj: unknown): obj is FocusFirstInvalidMessage {
+  const typedObj = obj as FocusFirstInvalidMessage
+  return (
+    ((typedObj !== null && typeof typedObj === "object") || typeof typedObj === "function") &&
+    typedObj["message"] === "focus-first-invalid"
   )
 }
 

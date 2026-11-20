@@ -9,6 +9,7 @@ import { ClientErrorResponse } from "../../util/spec-types/publicSpec"
 import { AnsweredSurveyItem, RatedQuestion, UserAnswer } from "../../util/spec-types/userAnswer"
 import {
   calculateFactors,
+  findUnansweredQuestions,
   getGlobalVariables,
   mapRatesToAnswers,
   sanitizeQuestions,
@@ -62,6 +63,23 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
       feedback_text: "You didn't select anything",
       feedback_json: null,
     })
+  }
+
+  if (gradingRequest.exercise_spec) {
+    const unanswered = findUnansweredQuestions(
+      gradingRequest.exercise_spec,
+      gradingRequest.submission_data,
+    )
+    // Logged, not rejected: rejecting would lose the answer the student already submitted.
+    if (unanswered.length > 0) {
+      console.warn(
+        "Grading a submission with unanswered required questions",
+        JSON.stringify({
+          specId: gradingRequest.exercise_spec.id,
+          unansweredQuestionLabels: unanswered.map((q) => q.questionLabel),
+        }),
+      )
+    }
   }
 
   if (
