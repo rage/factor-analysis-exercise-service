@@ -1,0 +1,121 @@
+{
+  "content": [
+    {
+      "answer": {
+        "answer": "",
+        "id": "a9807d5e-0295-4663-9bbe-79b188c2cf0b",
+        "options": ["kyllä", "ei", "en osaa sanoa"],
+        "type": "radio-group"
+      },
+      "conditional": false,
+      "id": "8943cd76-3caf-4c2b-8423-c3760171fccf",
+      "question": {
+        "id": "e418dc60-85ef-45a3-993a-aa37fddd4883",
+        "mandatory": true,
+        "question": " Onko koiralla mielestäsi ongelmia kävellä erilaisilla alustoilla? * ",
+        "questionLabel": "fearful_surfaces"
+      }
+    },
+    {
+      "answer": {
+        "answer": "",
+        "id": "8b12df6d-7f71-4a01-8d17-44df98d1aeed",
+        "options": [
+          "alle kolmen kuukauden iässä",
+          "3 kk – 6 kk ikäisenä",
+          "6 kk – 1 vuoden ikäisenä",
+          "1–1,5 vuoden iässä",
+          "1,5–2 vuoden iässä",
+          "2–3 vuoden iässä",
+          "3–6 vuoden iässä",
+          "yli 6 vuoden iässä",
+          "koiralla oli alusta-arkuutta ennen kuin se tuli minulle"
+        ],
+        "type": "radio-group"
+      },
+      "conditional": true,
+      "dependsOn": [
+        {
+          "questionLabel": "fearful_surfaces",
+          "triggeringOption": "kyllä"
+        }
+      ],
+      "id": "c48779a4-6de7-45f5-bc67-b900ae561d7d",
+      "question": {
+        "id": "e5e689c0-f9dc-46b3-b84e-e1af13b8f500",
+        "mandatory": true,
+        "question": " Milloin koirasi alkoi ensimmäisen kerran reagoida alustoihin ja korkeisiin paikkoihin? *",
+        "questionLabel": "fearful_surfaces_start"
+      }
+    },
+    {
+      "answer": {
+        "answer": "",
+        "id": "d7b6db72-f3ac-4674-90ff-a50c621e2923",
+        "options": [
+          "koiran suhtautuminen on pysynyt ennallaan",
+          "koirasta on tullut alusta-arka (ei ollut aiemmin)",
+          "alusta-arkuus on lisääntynyt",
+          "alusta-arkuus on vähentynyt",
+          "alusta-arkuus on kokonaan loppunut"
+        ],
+        "type": "radio-group"
+      },
+      "conditional": false,
+      "id": "2cc21810-ab19-4acf-b2f5-b801701b3069",
+      "question": {
+        "id": "861a0598-a447-4f47-867f-05ca8ae65d8c",
+        "mandatory": true,
+        "question": " Onko koiran suhtautuminen alustoihin/korkeisiin paikkoihin muuttunut viimeisen puolen vuoden aikana? *",
+        "questionLabel": "fearful_surfaces_change"
+      }
+    },
+    {
+      "answer": {
+        "answer": "",
+        "id": "809b0ec1-29d8-4d91-8093-5a8a76fdb703",
+        "options": [],
+        "type": "text"
+      },
+      "conditional": false,
+      "id": "f4eb2bf5-02cb-4129-a0ca-afa4ff9336e5",
+      "question": {
+        "id": "16cddea4-d112-45db-8aec-dd5a6f6d70aa",
+        "question": " Miten koira reagoi korkeisiin paikkoihin ja erilaisiin alustoihin? Kerro koiran käyttäytymisestä omin sanoin alle.",
+        "questionLabel": "fearful_surfaces_reaction"
+      }
+    },
+    {
+      "answer": {
+        "answer": "",
+        "id": "8fb4189b-bc41-432c-99bb-cf22e6576b24",
+        "options": [],
+        "type": "text"
+      },
+      "conditional": false,
+      "id": "525c17d5-7e21-4499-8eaa-4e739ea6d9fc",
+      "question": {
+        "id": "fc6a12d2-6cfd-40b1-859b-6f11bf6a77d1",
+        "question": " Pelkääkö koira joillakin muilla alustoilla?",
+        "questionLabel": "fearful_surfaces_other"
+      }
+    },
+    {
+      "answer": {
+        "answer": "",
+        "id": "51cf70ef-3a7f-41f8-b601-b14eab4e38eb",
+        "options": [],
+        "type": "text"
+      },
+      "conditional": false,
+      "id": "23f0f41e-36d5-4454-94f3-e70c220667bf",
+      "question": {
+        "id": "bb52530f-ebd3-486e-85a3-e2fee8b44f2a",
+        "question": " Jos haluat, voit laittaa lisätietoja koirasi käyttäytymisestä.",
+        "questionLabel": "fearful_surfaces_add"
+      }
+    }
+  ],
+  "id": "a6f073aa-02d0-40e4-a8df-729545b8dcb9",
+  "type": "non-factorial"
+}

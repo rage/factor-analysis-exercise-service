@@ -1,7 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
+import { UserVariablesMap } from "@moocfi/exercise-protocol"
 import type { NextApiRequest, NextApiResponse } from "next"
 
-import { UserVariablesMap } from "../../shared-module/exercise-service-protocol-types"
 import { cors, runMiddleware } from "../../util/cors"
 import { FactorReport } from "../../util/spec-types/grading"
 import { LegendKey, PrivateSpec, Survey, SurveyType } from "../../util/spec-types/privateSpec"
@@ -9,6 +9,7 @@ import { ClientErrorResponse } from "../../util/spec-types/publicSpec"
 import { AnsweredSurveyItem, RatedQuestion, UserAnswer } from "../../util/spec-types/userAnswer"
 import {
   calculateFactors,
+  findUnansweredQuestions,
   getGlobalVariables,
   mapRatesToAnswers,
   sanitizeQuestions,
@@ -51,6 +52,25 @@ interface GradingRequest {
   submission_data: UserAnswer
 }
 
+// Logged, not rejected: rejecting would lose the answer the student already submitted. Must never
+// throw, since it reads spec fields that grading itself does not.
+const logUnansweredQuestions = (spec: NonNullable<PrivateSpec>, submission: UserAnswer) => {
+  try {
+    const unanswered = findUnansweredQuestions(spec, submission)
+    if (unanswered.length > 0) {
+      console.warn(
+        "Grading a submission with unanswered required questions",
+        JSON.stringify({
+          specId: spec.id,
+          unansweredQuestionLabels: unanswered.map((q) => q.questionLabel),
+        }),
+      )
+    }
+  } catch (e) {
+    console.error("Could not check the submission for unanswered questions", e)
+  }
+}
+
 const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) => {
   const gradingRequest: GradingRequest = req.body
 
@@ -62,6 +82,10 @@ const handlePost = (req: NextApiRequest, res: NextApiResponse<GradingResult>) =>
       feedback_text: "You didn't select anything",
       feedback_json: null,
     })
+  }
+
+  if (gradingRequest.exercise_spec) {
+    logUnansweredQuestions(gradingRequest.exercise_spec, gradingRequest.submission_data)
   }
 
   if (

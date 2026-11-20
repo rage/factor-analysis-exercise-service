@@ -1,9 +1,12 @@
 import { css } from "@emotion/css"
 import styled from "@emotion/styled"
+import { useState } from "react"
+import { useTranslation } from "react-i18next"
 
 import TextAreaField from "../../shared-module/components/InputFields/TextAreaField"
 import TextField from "../../shared-module/components/InputFields/TextField"
 import { AnswerType, SurveyItem } from "../../util/spec-types/privateSpec"
+import { normalizeDecimal } from "../../util/utils"
 import MarkdownText from "../MarkdownText"
 import AdvancedDropdown from "../SharedMisc/AdvancedDropdown"
 import { CheckboxWrap } from "../StyledComponents/CheckboxWrap"
@@ -21,6 +24,38 @@ const Option = styled.option`
   text-align: left;
   padding: 0.5rem;
 `
+
+// A text input, because type="number" reports "" for text like "n. 5" while still showing it.
+const NumberAnswerField: React.FC<Props> = ({ item, answer, updateAnswer, disabled }) => {
+  const { t } = useTranslation()
+  const [text, setText] = useState(answer === null ? "" : String(answer))
+  const isInvalid = text.trim() !== "" && normalizeDecimal(text) === null
+  return (
+    <div>
+      <TextField
+        id={`number-input-${item.id}`}
+        aria-label={`number-input-for-${item.question.questionLabel}`}
+        value={text}
+        type="text"
+        inputMode="decimal"
+        onChange={(e) => {
+          const value = e.target.value
+          setText(value)
+          updateAnswer(item.id, normalizeDecimal(value))
+        }}
+        error={isInvalid ? t("invalid-number") : undefined}
+        required
+        disabled={disabled}
+        className={css`
+          max-width: 20em;
+          input {
+            max-width: 10em;
+          }
+        `}
+      />
+    </div>
+  )
+}
 
 const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
   item,
@@ -51,23 +86,12 @@ const SurveyExerciseitem: React.FC<React.PropsWithChildren<Props>> = ({
     }
     case AnswerType.Number: {
       return (
-        <div>
-          <TextField
-            aria-label={`number-input-for-${item.question.questionLabel}`}
-            value={answer ?? ""}
-            type="number"
-            onChange={(e) => {
-              updateAnswer(item.id, e.target.value)
-            }}
-            required
-            disabled={disabled}
-            className={css`
-              border: 1px solid #e0e0e0;
-              border-radius: 2px;
-              max-width: 10em;
-            `}
-          />
-        </div>
+        <NumberAnswerField
+          item={item}
+          answer={answer}
+          updateAnswer={updateAnswer}
+          disabled={disabled}
+        />
       )
     }
     case AnswerType.Text: {

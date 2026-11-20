@@ -1,10 +1,10 @@
 /* eslint-disable i18next/no-literal-string */
 import { css } from "@emotion/css"
+import { UserVariablesMap } from "@moocfi/exercise-protocol"
 import React from "react"
 import { useWindowSize } from "usehooks-ts"
 
 import { ExerciseFeedback } from "../pages/api/grade"
-import { UserVariablesMap } from "../shared-module/exercise-service-protocol-types"
 import { SurveyType } from "../util/spec-types/privateSpec"
 import { PublicSpec } from "../util/spec-types/publicSpec"
 import { AnsweredSurveyItem, RatedQuestion, UserAnswer } from "../util/spec-types/userAnswer"

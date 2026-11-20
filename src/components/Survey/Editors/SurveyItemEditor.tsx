@@ -6,6 +6,7 @@ import TextArea from "../../../shared-module/components/InputFields/TextAreaFiel
 import { baseTheme, primaryFont } from "../../../shared-module/styles"
 import { respondToOrLarger } from "../../../shared-module/styles/respond"
 import { Answer, AnswerType, Survey, SurveyItem } from "../../../util/spec-types/privateSpec"
+import { SpecFinding } from "../../../util/specChecks"
 import {
   insertVariablesToText,
   parseLabelQuestion,
@@ -31,6 +32,7 @@ interface Props {
   onChangeSurveyItem: (item: SurveyItem) => void
   onDuplicate: (item: SurveyItem) => void
   state: Survey
+  warnings: SpecFinding[]
 }
 
 export const getBackgroundColor = (questionLabel: string) => {
@@ -50,6 +52,7 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
   onChangeSurveyItem,
   onDuplicate,
   state,
+  warnings,
 }) => {
   return (
     <StyledOuterEditor>
@@ -439,6 +442,21 @@ const SurveyItemEditor: React.FC<React.PropsWithChildren<Props>> = ({
         </StyledInnerEditor>
         {item.conditional && (
           <SelectCondition item={item} onChange={onChangeSurveyItem} state={state} />
+        )}
+        {warnings.length > 0 && (
+          <div
+            className={css`
+              margin-top: 0.5rem;
+              padding: 0.5rem;
+              font-family: ${primaryFont};
+              color: ${baseTheme.colors.red[700]};
+              background-color: ${baseTheme.colors.yellow[100]};
+            `}
+          >
+            {warnings.map((warning) => (
+              <p key={warning.kind}>{warning.message}</p>
+            ))}
+          </div>
         )}
       </fieldset>
     </StyledOuterEditor>

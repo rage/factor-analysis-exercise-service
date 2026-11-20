@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "license": "MIT",
   "scripts": {
+    "audit-specs": "node scripts/run-ts.js scripts/audit-specs.ts",
     "build": "NODE_ENV=production next build",
     "dev": "node server.js",
     "eslint": "eslint --fix .",
@@ -27,6 +28,8 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@monaco-editor/react": "^4.6.0",
+    "@moocfi/exercise-client": "^0.0.5",
+    "@moocfi/exercise-protocol": "^0.0.5",
     "@mui/icons-material": "^5.10.9",
     "@mui/lab": "^5.0.0-alpha.91",
     "@mui/material": "^5.10.12",

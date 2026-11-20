@@ -1,0 +1,84 @@
+{
+  "id": "889ba99f-0299-499b-9e5d-591f73bfb5a8",
+  "options": [
+    {
+      "id": "ff4ab4d5-7a86-4d5b-8a46-0811442515b1",
+      "name": "kyllä, aina tai useimmiten",
+      "value": 3
+    },
+    {
+      "id": "d061e1ed-e2ae-42d1-b43b-bc80f768a795",
+      "name": "toisinaan, riippuu paikasta",
+      "value": 2
+    },
+    {
+      "id": "2ef2c7f9-ea00-406e-a37a-bc6c351ff8f7",
+      "name": "ei koskaan",
+      "value": 1
+    },
+    {
+      "id": "d9556661-5ec1-4e94-a3bb-171722154a86",
+      "name": "en osaa sanoa",
+      "value": null
+    },
+    {
+      "id": "208c8adc-e5d8-4b92-98bd-e21ccab1cd99",
+      "name": "koirani ei ole kohdannut kyseistä tilannetta",
+      "value": null
+    }
+  ],
+  "questions": [
+    {
+      "id": "b9256221-adf9-4dca-af81-e5ace4973cb5",
+      "question": " Raporttia ei pystytä antamaan, jos olet vastannut johonkin kysymykseen \"en osaa sanoa\" tai \"koirani ei ole kohdannut kyseistä tilannetta\".   **Tarkistathan vastauksesi huolella ennen kuin lähetät vastaukset, sillä vastauksia ei voi enää muuttaa jälkikäteen.** Tähdellä merkityt kysymykset ovat pakollisia.",
+      "questionLabel": "info"
+    },
+    {
+      "id": "ba3071fb-63c2-4ae6-b0be-c1826cd656e5",
+      "question": " **Alustat ja korkeat paikat**",
+      "questionLabel": "info"
+    },
+    {
+      "id": "87b013c7-5fcb-4ec5-a6cb-e37f08aa268b",
+      "question": " Onko koiralla ongelmia kävellä...",
+      "questionLabel": "info"
+    },
+    {
+      "id": "39d3d66d-e435-4245-a80a-9c0fd263b542",
+      "mandatory": true,
+      "question": " … metalliritilän päällä? *",
+      "questionLabel": "metal_grid"
+    },
+    {
+      "id": "6bf2b8b8-174b-469b-b6c2-e1d03324323b",
+      "mandatory": true,
+      "question": " … kiiltävällä lattialla (esim. ostoskeskuksessa, eläinlääkärillä)? *",
+      "questionLabel": "shiny_floor"
+    },
+    {
+      "id": "c30fb2e1-ef27-420b-8bea-b82f6aad9b9f",
+      "mandatory": true,
+      "question": " … portaissa, joissa porrasvälissä on aukko (avoin porrasväli) tai metallirappusia, joista näkee läpi? *",
+      "questionLabel": "open_or_metal_stairs"
+    },
+    {
+      "id": "d7d2d66d-08e0-4c9a-bd2f-94111783eaa5",
+      "mandatory": true,
+      "question": " … portaissa, joissa porrasvälissä ei ole aukkoa (suljettu porrasväli)? *",
+      "questionLabel": "closed_stairs"
+    },
+    {
+      "id": "7db66230-c70c-4930-8e5b-da1520a597ba",
+      "mandatory": true,
+      "question": " … alustalta toiselle (esim. siirtyy aristellen ulkoa sisätiloihin vieraassa paikassa)?*",
+      "questionLabel": "moving_surface"
+    },
+    {
+      "id": "88f3cb1b-bc08-489c-8780-63e1d219aefc",
+      "mandatory": true,
+      "question": " … liukkaalla lattialla? *",
+      "questionLabel": "slippery_floor"
+    }
+  ],
+  "type": "factorial"
+}

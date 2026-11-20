@@ -14,6 +14,12 @@ const config = {
         source: "/(.*)",
         headers: externallyEmbeddableIFrameResponseHeaders,
       },
+      {
+        // No max-age until old builds' chunks stay reachable after a deploy: a cached page
+        // pointing at chunks the new revision no longer serves fails to load.
+        source: "/iframe",
+        headers: [{ key: "Cache-Control", value: "no-cache" }],
+      },
     ]
   },
   output: "standalone",

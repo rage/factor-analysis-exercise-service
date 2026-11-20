@@ -43,14 +43,14 @@ jobs:
         run: npm run test
         working-directory: ./system-tests/
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: test-results
           path: ./system-tests/test-results/
           if-no-files-found: ignore
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: playwright-html-report

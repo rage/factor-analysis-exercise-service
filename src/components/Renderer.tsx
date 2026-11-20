@@ -1,3 +1,4 @@
+import { RequestIframeReloadMessage } from "@moocfi/exercise-protocol"
 import React, { Dispatch, SetStateAction } from "react"
 import { useTranslation } from "react-i18next"
 
@@ -16,7 +17,11 @@ interface RendererProps {
   port: MessagePort | null
 }
 
-const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({ state, setState, port }) => {
+const ViewRenderer: React.FC<React.PropsWithChildren<RendererProps>> = ({
+  state,
+  setState,
+  port,
+}) => {
   const { t } = useTranslation()
 
   if (!port) {
@@ -28,7 +33,14 @@ const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({ state, set
   }
 
   if (state.view_type === "answer-exercise") {
-    return <Exercise port={port} state={state.public_spec} userVariables={state.user_variables} />
+    return (
+      <Exercise
+        port={port}
+        state={state.public_spec}
+        userVariables={state.user_variables}
+        answerDraft={state.answer_draft}
+      />
+    )
   } else if (state.view_type === "view-submission") {
     const feedbackJson: unknown | null = state.grading?.feedback_json
     const exerciseFeedback = feedbackJson ? (feedbackJson as ExerciseFeedback) : null
@@ -53,5 +65,57 @@ const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = ({ state, set
     return <>{t("waiting-for-content")}</>
   }
 }
+
+const CrashMessage: React.FC = () => {
+  const { t } = useTranslation()
+  return <div role="alert">{t("error-exercise-crashed")}</div>
+}
+
+interface RendererErrorBoundaryProps {
+  port: MessagePort | null
+  /** A new state from the host clears the crash, in case the host does not reload the iframe. */
+  state: State | null
+  children: React.ReactNode
+}
+
+class RendererErrorBoundary extends React.Component<
+  RendererErrorBoundaryProps,
+  { hasCrashed: boolean }
+> {
+  state = { hasCrashed: false }
+  private hasRequestedReload = false
+
+  static getDerivedStateFromError() {
+    return { hasCrashed: true }
+  }
+
+  componentDidUpdate(prevProps: RendererErrorBoundaryProps, prevState: { hasCrashed: boolean }) {
+    // The state that arrived in the crashing commit would only crash again.
+    if (prevState.hasCrashed && prevProps.state !== this.props.state) {
+      this.setState({ hasCrashed: false })
+    }
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    // eslint-disable-next-line i18next/no-literal-string
+    console.error("Exercise renderer crashed", error, errorInfo.componentStack)
+    const { port } = this.props
+    if (port && !this.hasRequestedReload) {
+      this.hasRequestedReload = true
+      // eslint-disable-next-line i18next/no-literal-string
+      port.postMessage({ message: "request-iframe-reload" } satisfies RequestIframeReloadMessage)
+    }
+  }
+
+  render() {
+    return this.state.hasCrashed ? <CrashMessage /> : this.props.children
+  }
+}
+
+const Renderer: React.FC<React.PropsWithChildren<RendererProps>> = (props) => (
+  <RendererErrorBoundary port={props.port} state={props.state}>
+    <ViewRenderer {...props} />
+  </RendererErrorBoundary>
+)
 
 export default withNoSsr(Renderer)

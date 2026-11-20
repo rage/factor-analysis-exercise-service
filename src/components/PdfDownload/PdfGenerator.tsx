@@ -1,5 +1,6 @@
 /* eslint-disable react/forbid-component-props */
 import { css } from "@emotion/css"
+import { CustomViewIframeState, UserVariablesMap } from "@moocfi/exercise-protocol"
 import {
   Circle,
   Document,
@@ -22,10 +23,6 @@ import {
   CustomViewExerciseTaskSubmission,
 } from "../../shared-module/bindings"
 import Button from "../../shared-module/components/Button"
-import {
-  CustomViewIframeState,
-  UserVariablesMap,
-} from "../../shared-module/exercise-service-protocol-types"
 import { Survey, SurveyType } from "../../util/spec-types/privateSpec"
 import { PublicSpec } from "../../util/spec-types/publicSpec"
 import { AnsweredSurveyItem, UserAnswer } from "../../util/spec-types/userAnswer"
